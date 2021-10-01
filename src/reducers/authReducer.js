@@ -7,7 +7,11 @@ function authReducer(state=INITIAL_STATE, action){
         case "LOGIN":
             return {
                 ...state,
-                userToken: action.payload.userToken,
+                firstName: action.payload.first_name,
+                lastName: action.payload.last_name,
+                email: action.payload.email,
+                organizations: action.payload.organizations,
+                userToken: action.payload.userToken
             }
         default:
             return state

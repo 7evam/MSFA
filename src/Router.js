@@ -31,13 +31,14 @@ function Router(){
         <Switch>
           {/* <Route exact path='/create-account' render={(props)=><CreateAccount {...props} emailFromInvitation={emailFromInvitation} />}/> */}
           <Route exact path='/login' render={(props)=><LogIn {...props} />} />
-          {
+          <Route path = '/' component={App}/>
+          {/* {
             userToken
             ? 
             <Route path = '/' component={App}/>
             : 
             <Redirect to="/login"/>
-          }
+          } */}
         </Switch>
       </BrowserRouter>
     }
