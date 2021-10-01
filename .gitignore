@@ -1,0 +1,9 @@
+**/node_modules
+yarn-error.log*
+yarn-debug.log*
+.DS_Store
+.idea
+
+.env
+.env.dev
+.env.stage

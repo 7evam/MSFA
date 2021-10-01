@@ -1,0 +1,56 @@
+{
+  "name": "rofl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:7evam/rofl.git",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "https-browserify": "^1.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "react-router-dom": "^5.3.0",
+    "react-toastify": "^8.0.3",
+    "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-syntax-jsx": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/runtime": "^7.15.4",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.3.0",
+    "dotenv-webpack": "^7.0.3",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^5.3.2",
+    "html-webpack-template": "^6.2.0",
+    "mini-css-extract-plugin": "^2.3.0",
+    "style-loader": "^3.3.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.56.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0"
+  },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack serve --mode=development",
+    "build:dev": "webpack --mode=development",
+    "build:staging": "webpack --mode=production --env environment=staging",
+    "clean": "rimraf node_modules package-lock.json yarn.lock"
+  },
+  "webpack_build": {
+    "entry": "./src/index.js",
+    "output": "dist",
+    "title": "Regiment of Fantasy Leagues",
+    "react_mount_root": "app"
+  },
+  "peerDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}
