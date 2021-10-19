@@ -53,11 +53,15 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>Dashboard</span>
           </CustomNavLink>
 
+          <CustomNavLink to="/roster">
+            <span>Roster</span>
+          </CustomNavLink>
+
           <CustomNavLink to="/standings">
             <span>Standings</span>
           </CustomNavLink>
 
-          <CustomNavLink to="/standings">
+          <CustomNavLink to="/transactions">
             <span>Transactions</span>
           </CustomNavLink>
         </NavGroup>

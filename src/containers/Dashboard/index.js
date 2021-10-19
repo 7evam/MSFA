@@ -1,8 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import useDashboard from './useDashboard'
+import {convertMonthToReadable} from '../../utils'
 
 const Container =  styled.div``
+const Slot = styled.div`
+  margin-top: 25px;
+`
+const SelectButton = styled.button`
+background: ${props => props.selectedSlot && props.selectedSlot === props.name ? 'darkred' : 'limegreen'}
+`
+
+const BannerMessage =  styled.div`
+
+`
+
+const MonthButton = styled.button`
+background: ${props => props.selectedMonth ? 'limegreen' : 'white'}
+`
 
 function Dashboard(props) {
   
@@ -10,42 +25,38 @@ function Dashboard(props) {
     year,
     month,
     roster,
-    currentOrganization
+    currentOrganization,
+    setMonth,
 } = useDashboard()
-
-console.log("here i s current org")
-console.log(currentOrganization)
-
 
 const currentMonthRoster = roster ? roster[year][month] : null
 
-console.log('here is current month roster')
-console.log(currentMonthRoster)
-
   return (
     <Container>
+      
         <p>Welcome to the dashboard</p>
+        
         {
           roster && currentOrganization ?
           <div>
         <p>year: {year}</p>
-        <p>month: {month}</p>
-        <p>{currentOrganization.league_1.name}: {currentMonthRoster.league_1.city} {currentMonthRoster.league_1.name}</p>
-        <p>{currentOrganization.league_2.name}: {currentMonthRoster.league_2.city} {currentMonthRoster.league_2.name}</p>
+        <p>month: {convertMonthToReadable(month, year)}</p>
+        <Slot>{currentOrganization.league_1.name}: {currentMonthRoster.league_1.city} {currentMonthRoster.league_1.name}</Slot>
+        <Slot>{currentOrganization.league_2.name}: {currentMonthRoster.league_2.city} {currentMonthRoster.league_2.name}</Slot>
         {currentOrganization.league_3 ? 
-        <p>{currentOrganization.league_3.name}: {currentMonthRoster.league_3.city} {currentMonthRoster.league_3.name}</p>
+        <Slot>{currentOrganization.league_3.name}: {currentMonthRoster.league_3.city} {currentMonthRoster.league_3.name}</Slot>
       : null}
       {currentOrganization.league_4 ? 
-        <p>{currentOrganization.league_4.name}: {currentMonthRoster.league_4.city} {currentMonthRoster.league_4.name}</p>
+        <Slot>{currentOrganization.league_4.name}: {currentMonthRoster.league_4.city} {currentMonthRoster.league_4.name}</Slot>
       : null}
       {
         Array.from(Array(currentOrganization.flex_spots)).map((x, i) => (
-          <p>FLEX: {currentMonthRoster[`flex_${i+1}`].city} {currentMonthRoster[`flex_${i+1}`].name}</p>
+          <Slot key={`p-${i}`}>FLEX: {currentMonthRoster[`flex_${i+1}`].city} {currentMonthRoster[`flex_${i+1}`].name}</Slot>
         ))
       }
       {
         Array.from(Array(currentOrganization.bench_spots)).map((x, i) => (
-          <p>BENCH: {currentMonthRoster[`bench_${i+1}`].city} {currentMonthRoster[`bench_${i+1}`].name}</p>
+          <Slot key={`p-${i}`}>BENCH: {currentMonthRoster[`bench_${i+1}`].city} {currentMonthRoster[`bench_${i+1}`].name}</Slot>
         ))
       }
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-
+import 'react-toastify/dist/ReactToastify.css';
 import App from './App'
 import LogIn from './containers/LogIn'
 
