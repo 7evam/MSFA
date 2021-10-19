@@ -15,6 +15,10 @@ function useDashboard() {
     const {currentOrganization} = useSelector(state => ({
         ...state.authReducer
       }));
+
+    const {activeYears} = useSelector(state => ({
+      ...state.sportReducer
+    }))
     
     const [roster, setRoster] = useState(null)
     const [year, setYear]  = useState('2021')
@@ -36,8 +40,10 @@ function useDashboard() {
     }
 
   useEffect(() => {
-    fetchRoster()
-  }, []);
+    if(activeYears){
+      fetchRoster()
+    }
+  }, [activeYears]);
 
   return {
     year,

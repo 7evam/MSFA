@@ -15,16 +15,27 @@ function useRoster() {
     const {currentOrganization} = useSelector(state => ({
         ...state.authReducer
       }));
+
+      const {activeYears} = useSelector(state => ({
+        ...state.sportReducer
+      }))
+
+    //   console.log("HERE IS ACTIVE YEARS")
+    //   console.log(activeYears)
+    //   console.log(activeYears && Object.keys(activeYears[0])[0])
+    //   console.log(activeYears && activeYears[0][Object.keys(activeYears[0])[0]])
+
     
     const [roster, setRoster] = useState(null)
     const [originalRoster, setOriginalRoster] = useState(null)
-    const [year, setYear]  = useState('2021')
-    const [month, setMonth] =  useState('1')
+    const [year, setYear]  = useState(null)
+    const [month, setMonth] =  useState(null)
     const [selectedSlot, setSelectedSlot] = useState(null)
     const [areRostersEqual, setAreRostersEqual] = useState(true)
 
     const fetchRoster = async  () => {
         try{
+            console.log(`fetching for ${year}`)
             var res = await makeRequest({
                 method: "get",
                 route: `/users/roster/2/${currentOrganization.id}/${year}`
@@ -37,13 +48,25 @@ function useRoster() {
               })
         } catch(e){
           console.log('problem')
+          console.log('here is params')
+          console.log(currentOrganization.id)
+          console.log(year)
           console.error(e)
         }
     }
 
-  useEffect(() => {
-    fetchRoster()
-  }, []);
+    useEffect(() => {
+        if(activeYears){
+            setYear(Object.keys(activeYears[0])[0])
+            setMonth(activeYears[0][Object.keys(activeYears[0])[0]])
+        }
+      }, [activeYears]);
+
+    useEffect(() => {
+        if(year){
+          fetchRoster()
+        }
+      }, [year]);
 
   const checkIfSwapable = (team1, team2, slot1, slot2) => {
     
@@ -76,8 +99,6 @@ function useRoster() {
 
 const test = (slot) => {
   if(selectedSlot){
-    console.log('here is original roster')
-    console.log(originalRoster)
     const team1 = roster[year][month][slot]
     const team2 = roster[year][month][selectedSlot]
     if(checkIfSwapable(team1, team2, slot, selectedSlot)){
@@ -108,10 +129,6 @@ const handleSubmit = async () => {
     });
 
     if(res.statusCode === 200 && JSON.parse(res.body).success === true){
-      console.log('success')
-      console.log('here is original roster then roster')
-      console.log(originalRoster)
-      console.log(roster)
       // JSON.parse(JSON.stringify()) creates a deep copy
       setOriginalRoster(JSON.parse(JSON.stringify(roster)))
       setAreRostersEqual(true)

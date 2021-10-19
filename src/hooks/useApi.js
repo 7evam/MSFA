@@ -23,7 +23,6 @@ export default function useApi() {
 
     const makeRequest = async ({method, route, data = null, continueLoading = false, suppressIsLoading = false}) => {
         if(!suppressIsLoading) setIsLoading(true)
-        console.log('in  use  Api')
         try {
             return roflApi[method](route, data)
                 .then(res => {

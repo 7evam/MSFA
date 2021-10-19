@@ -1,7 +1,4 @@
 export const checkIfRostersAreEqual = (roster1, roster2) => {
-    console.log('checking if equal')
-    console.log(roster1)
-    console.log(roster2)
     let value = true
     const keys = Object.keys(roster1)
     keys.forEach(key => {
