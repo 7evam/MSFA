@@ -24,10 +24,13 @@ function App(props) {
       method: "get",
       route: `/sports/active`
     })
+    console.log('here i s res  now figure out what ta do with i t')
+    console.log(JSON.parse(res.body))
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",
       payload: {
-        activeYears: JSON.parse(res.body)
+        activeYears: JSON.parse(res.body).activeYears,
+        currentDate: JSON.parse(res.body).currentDate
       }
     });
   }
