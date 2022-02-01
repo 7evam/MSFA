@@ -5,8 +5,10 @@
   "repository": "git@github.com:7evam/rofl.git",
   "license": "MIT",
   "dependencies": {
+    "@fontsource/open-sans": "^4.5.3",
     "axios": "^0.22.0",
     "browserify": "^17.0.0",
+    "file-loader": "^6.2.0",
     "https-browserify": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

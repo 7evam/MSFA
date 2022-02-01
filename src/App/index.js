@@ -4,14 +4,16 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import useApi from '../hooks/useApi'
 
 import SideBar from './Sidebar'
+import TopBar from './TopBar'
 
+import MySquad from '../containers/MySquad'
 import Dashboard from '../containers/Dashboard'
 import Roster from '../containers/Roster'
+import Standings from '../containers/Standings'
 import { useDispatch } from 'react-redux';
 
 const Container =  styled.div`
     display: flex;
-    flex-direction: row;
 `
 
 function App(props) {
@@ -45,15 +47,17 @@ function App(props) {
     :
     <Container>
         <SideBar/>
-            <Switch>
-                <Route exact path="/">
-                  <Redirect to="/dashboard" />
-                </Route>
-                <Route exact path="/dashboard" component={Dashboard}/>
-                <Route exact path="/roster" component={Roster}/>
-                {/* <Route exact path="/standings" component={Standings}/>
-                <Route exact path="/transactions" component={Transactions}/> */}
-              </Switch>
+        <TopBar/>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/dashboard" />
+          </Route>
+          <Route exact path="/squad" component={MySquad}/>
+          <Route exact path="/dashboard" component={Dashboard}/>
+          <Route exact path="/roster" component={Roster}/>
+          <Route exact path="/standings" component={Standings}/>
+          {/* <Route exact path="/transactions" component={Transactions}/> */}
+        </Switch>
     </Container>
   )
 }

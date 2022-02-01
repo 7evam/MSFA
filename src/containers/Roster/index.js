@@ -122,6 +122,9 @@ function Roster(props) {
     ];
   };
 
+  console.log('here is table')
+  console.log(isActiveTable)
+
   const SlotContent = (leagueInfo, leagueName) => {
     <Slot>
       {leagueInfo.name}: {leagueInfo.city} {leagueInfo.name}{" "}

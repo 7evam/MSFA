@@ -202,17 +202,27 @@ function useRoster() {
   }
 
 
-const test = (slot) => {
+const changeRoster = (slot) => {
+    console.log('slot, selected slot')
+    console.log(slot)
+    console.log(selectedSlot)
   if(selectedSlot){
+      console.log('month year')
+      console.log(roflMonth)
+      console.log(selectedRoflYear)
+        console.log('heree is thing')
+        console.log(roster)
+        console.log(roster[`${roflMonth}-${selectedRoflYear}`])
+      console.log(roster[`${roflMonth}-${selectedRoflYear}`][slot])
     const team1 = {...roster[`${roflMonth}-${selectedRoflYear}`][slot]}
     const team2 = {...roster[`${roflMonth}-${selectedRoflYear}`][selectedSlot]}
+    // console.log('team 1 team 2')
+    // console.log(team1)
+    // console.log(team2)
     if(checkIfSwapable(team1, team2, slot, selectedSlot)){
       const newRoster = {...roster}
-      console.log('here is new Roster')
-      console.log(newRoster)
       newRoster[`${roflMonth}-${selectedRoflYear}`][slot] = team2
       newRoster[`${roflMonth}-${selectedRoflYear}`][selectedSlot] = team1
-
       setAreRostersEqual(checkIfRostersAreEqual(originalRoster[`${roflMonth}-${selectedRoflYear}`], newRoster[`${roflMonth}-${selectedRoflYear}`]))
     } else {
       console.log('teams not swapable')
@@ -262,7 +272,7 @@ const handleSubmit = async () => {
     roflMonth,
     roster,
     currentOrganization,
-    test,
+    changeRoster,
     selectedSlot,
     areRostersEqual,
     setRoflMonth,
