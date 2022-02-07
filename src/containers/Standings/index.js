@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useStandings from './useStandings';
 import { convertMonthToReadable } from "../../utils";
 import {useSelector} from 'react-redux'
+import MonthTicker from '../../components/MonthTicker'
 
 const Container = styled.div``;
 const Slot = styled.div`
@@ -64,7 +65,8 @@ function Standings(props) {
         standings,
         selectedRoflYear,
         roflMonth,
-        setRoflMonth
+        setRoflMonth,
+        lastMonth
     } = useStandings()
 
   const [appliedScroll, setAppliedScroll] = useState(false);
@@ -86,25 +88,6 @@ function Standings(props) {
     }
   }, [scrollRef]);
 
-  const monthsForScroll = (year) => {
-    year = Number(year);
-    return [
-      { number: 1, month: `April ${year}` },
-      { number: 2, month: `May ${year}` },
-      { number: 3, month: `June ${year}` },
-      { number: 4, month: `July ${year}` },
-      { number: 5, month: `August ${year}` },
-      { number: 6, month: `September ${year}` },
-      { number: 7, month: `October ${year}` },
-      { number: 8, month: `November ${year}` },
-      { number: 9, month: `December ${year}` },
-      { number: 10, month: `January ${year + 1}` },
-      { number: 11, month: `February ${year + 1}` },
-      { number: 12, month: `March ${year + 1}` },
-      { number: 13, month: `April ${year + 1}` },
-      { number: 14, month: `May ${year + 1}` }
-    ];
-  };
 
   return (
     
@@ -114,7 +97,9 @@ function Standings(props) {
       <div>
           <p>year: {selectedRoflYear}</p>
 
-          <ScrollMenuContainer>
+          <MonthTicker lastMonth={lastMonth} roflMonth={roflMonth} setRoflMonth={setRoflMonth} selectedRoflYear={selectedRoflYear}/>
+
+          {/* <ScrollMenuContainer>
             <ScrollMenuButton onClick={scrollLeft}>{"<"}</ScrollMenuButton>
             <ScrollMenu ref={scrollRef}>
               {monthsForScroll(selectedRoflYear).map((item) => (
@@ -128,7 +113,7 @@ function Standings(props) {
               ))}
             </ScrollMenu>
             <ScrollMenuButton onClick={scrollRight}>{">"}</ScrollMenuButton>
-          </ScrollMenuContainer>
+          </ScrollMenuContainer> */}
 
           <tr>
             <Td><strong>Rank</strong></Td>   
@@ -137,7 +122,7 @@ function Standings(props) {
             <Td><strong>Monthly Points</strong></Td>
             <Td><strong>Total points</strong></Td>
           </tr>
-          
+
           {standings[`${roflMonth}-${selectedRoflYear}`].map((val, index) => (
             ( 
             <tr key={val.userId}>

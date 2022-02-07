@@ -10,52 +10,58 @@ function useStandings() {
 
     const {activeYears} = useSelector(state => ({
         ...state.sportReducer
-      }))
+    }))
 
     const {makeRequest, isLoading} =  useApi()
 
     const [standings, setStandings] = useState(null)
     const [roflMonth, setRoflMonth] = useState(null)
     const [selectedRoflYear, setSelectedRoflYear] = useState(null)
+    const [lastMonth, setLastMonth] = useState(null)
 
     useEffect(() => {
-        fetchStandings()
-    }, []);
+      activeYears && fetchStandings()
+    }, [activeYears]);
+
+    const getInitialMonthAndYear = () => {
+      const year = Object.keys(activeYears[0])[0]
+      const maxMonth = Math.max.apply(Math, activeYears[0][year].map(function(o) { return o.roflMonth; }))
+      setRoflMonth(maxMonth)
+      setLastMonth(maxMonth)
+      setSelectedRoflYear(year)
+    }
+
+    const fillStandings = (standings, year) => {
+
+      let mostRecentSlot = null
+      for(let i=1;i<=15;i++){
+        if(standings[`${i}-${year}`]){
+          mostRecentSlot = [...standings[`${i}-${year}`]]
+        } else {
+          standings[`${i}-${year}`] = mostRecentSlot
+        }
+      }
+
+      return standings
+    }
 
     const fetchStandings = async () => {
+      getInitialMonthAndYear()
         var res = await makeRequest({
             method: "get",
             route: `/organizations/memberStandings/1`
           });
-          setRoflMonth(10)
-          setSelectedRoflYear(2021)
-          setStandings(JSON.parse(res.body))
+          const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)
+          setStandings(fullStandings)
     }
-
-    const test = 'hi'
 
   return {
     standings,
     roflMonth,
     selectedRoflYear,
-    setRoflMonth
-  }
+    setRoflMonth,
+    lastMonth
+    }
 }
 
 export default useStandings
-
-// 1-2021: {
-//    user_id: points
-// }
-
-// {
-//     1-2021: [
-//         {
-//             user_id
-//             user_team_name:
-//             user_name:
-//             monthlyPoints:
-//             cumulativePoints:
-//         }
-//     ]
-// }

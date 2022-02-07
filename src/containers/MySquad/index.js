@@ -128,6 +128,7 @@ function Roster(props) {
   const currentMonthRoster = roster
     ? roster[`${roflMonth}-${selectedRoflYear}`]
     : null;
+
   const scrollLeft = () => {
     scrollRef.current.scrollLeft -= 400;
   };
@@ -187,7 +188,7 @@ function Roster(props) {
           <YearContainer><p>RoFL Year: {selectedRoflYear}</p></YearContainer>
             <MonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} selectedRoflYear={selectedRoflYear}/>
           <MonthContainer><p>RoFL Month: {roflMonth}</p></MonthContainer>
-          <RosterComponent currentMonthRoster={currentMonthRoster} roflMonth={roflMonth} isActiveTable={isActiveTable} changeRoster={changeRoster} selectedSlot={selectedSlot}/>
+          <RosterComponent selectedRoflYear={selectedRoflYear} currentMonthRoster={currentMonthRoster} roflMonth={roflMonth} isActiveTable={isActiveTable} changeRoster={changeRoster} selectedSlot={selectedSlot}/>
           {areRostersEqual ? null : (
             <BannerMessage>
               You have unsaved changes

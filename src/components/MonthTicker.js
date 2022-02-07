@@ -38,7 +38,7 @@ const ScrollMenuButton = styled.a`
   cursor: pointer;
 `;
 
-function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear}) {
+function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, lastMonth}) {
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
@@ -61,22 +61,28 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear}) {
 
   const monthsForScroll = (year) => {
     year = Number(year);
-    return [
-      { number: 1, month: `April ${year}` },
-      { number: 2, month: `May ${year}` },
-      { number: 3, month: `June ${year}` },
-      { number: 4, month: `July ${year}` },
-      { number: 5, month: `August ${year}` },
-      { number: 6, month: `September ${year}` },
-      { number: 7, month: `October ${year}` },
-      { number: 8, month: `November ${year}` },
-      { number: 9, month: `December ${year}` },
-      { number: 10, month: `January ${year + 1}` },
-      { number: 11, month: `February ${year + 1}` },
-      { number: 12, month: `March ${year + 1}` },
-      { number: 13, month: `April ${year + 1}` },
-      { number: 14, month: `May ${year + 1}` }
-    ];
+    const allMonths = [
+        { number: 1, month: `April ${year}` },
+        { number: 2, month: `May ${year}` },
+        { number: 3, month: `June ${year}` },
+        { number: 4, month: `July ${year}` },
+        { number: 5, month: `August ${year}` },
+        { number: 6, month: `September ${year}` },
+        { number: 7, month: `October ${year}` },
+        { number: 8, month: `November ${year}` },
+        { number: 9, month: `December ${year}` },
+        { number: 10, month: `January ${year + 1}` },
+        { number: 11, month: `February ${year + 1}` },
+        { number: 12, month: `March ${year + 1}` },
+        { number: 13, month: `April ${year + 1}` },
+        { number: 14, month: `May ${year + 1}` }
+    ]
+    let finalMonth = lastMonth ? lastMonth : 14;
+    let months = []
+    for(let i=0;i<finalMonth;i++){
+        months.push(allMonths[i])
+    }
+    return months
   };
 
   return (
