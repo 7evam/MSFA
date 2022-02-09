@@ -50,10 +50,10 @@ function App(props) {
         <TopBar/>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/dashboard" />
+            <Redirect to="/squad" />
           </Route>
           <Route exact path="/squad" component={MySquad}/>
-          <Route exact path="/dashboard" component={Dashboard}/>
+          {/* <Route exact path="/dashboard" component={Dashboard}/> */}
           <Route exact path="/roster" component={Roster}/>
           <Route exact path="/standings" component={Standings}/>
           {/* <Route exact path="/transactions" component={Transactions}/> */}

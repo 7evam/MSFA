@@ -72,13 +72,13 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>My Squad</span>
           </CustomNavLink>
 
-          <CustomNavLink to="/dashboard">
+          {/* <CustomNavLink to="/dashboard">
             <span>Dashboard</span>
-          </CustomNavLink>
+          </CustomNavLink> */}
 
-          <CustomNavLink to="/roster">
+          {/* <CustomNavLink to="/roster">
             <span>Roster</span>
-          </CustomNavLink>
+          </CustomNavLink> */}
 
           <CustomNavLink to="/standings">
             <span>Standings</span>

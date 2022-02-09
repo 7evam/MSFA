@@ -277,8 +277,8 @@ const handleSubmit = async () => {
     areRostersEqual,
     setRoflMonth,
     handleSubmit,
-    activeYears,
-    activeRoflMonths
+    activeRoflMonths,
+    setSelectedRoflYear
   }
 }
 
