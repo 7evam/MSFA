@@ -3,58 +3,18 @@ import styled from "styled-components";
 import useRoster from "./useRoster";
 import { convertMonthToReadable } from "../../utils";
 import RosterSlot from "./RosterSlot";
-import {useSelector} from 'react-redux'
-
-const Container = styled.div``;
-const Slot = styled.div`
-  margin-top: 25px;
-`;
-const SelectButton = styled.button`
-  background: ${(props) =>
-    props.selectedSlot && props.selectedSlot === props.name
-      ? "darkred"
-      : "limegreen"};
-`;
-
-const BannerMessage = styled.div``;
-
-const MonthButton = styled.button`
-  background: ${(props) => (props.selectedMonth ? "limegreen" : "white")};
-`;
-
-const ScrollMenuContainer = styled.div`
-  background-color: #333;
-  width: 450px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const ScrollMenu = styled.div`
-  overflow: auto;
-  white-space: nowrap;
-  display: inline-block;
-  left: 100px;
-`;
-
-const ScrollMenuLink = styled.a`
-  display: inline-block;
-  color: ${(props) => (props.selected ? "limegreen" : "white")};
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-  width: 100px;
-  cursor: pointer;
-`;
-
-const ScrollMenuButton = styled.a`
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-  width: 25px;
-  cursor: pointer;
-`;
+import { useSelector } from "react-redux";
+import {
+  Container,
+  Slot,
+  SelectButton,
+  BannerMessage,
+  MonthButton,
+  ScrollMenuContainer,
+  ScrollMenu,
+  ScrollMenuLink,
+  ScrollMenuButton
+} from "./components";
 
 function Roster(props) {
   const {
@@ -70,15 +30,17 @@ function Roster(props) {
     activeRoflMonths
   } = useRoster();
 
-  const {activeYears} = useSelector(state => ({
+  const { activeYears } = useSelector((state) => ({
     ...state.sportReducer
-  }))
+  }));
 
-  const isActiveTable = {}
+  const isActiveTable = {};
 
-    activeRoflMonths && selectedRoflYear && activeRoflMonths[selectedRoflYear].forEach(month => {
-        isActiveTable[month.leagueId] = month.roflMonth
-    })
+  activeRoflMonths &&
+    selectedRoflYear &&
+    activeRoflMonths[selectedRoflYear].forEach((month) => {
+      isActiveTable[month.leagueId] = month.roflMonth;
+    });
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
@@ -122,9 +84,6 @@ function Roster(props) {
     ];
   };
 
-  console.log('here is table')
-  console.log(isActiveTable)
-
   const SlotContent = (leagueInfo, leagueName) => {
     <Slot>
       {leagueInfo.name}: {leagueInfo.city} {leagueInfo.name}{" "}
@@ -164,7 +123,10 @@ function Roster(props) {
 
           <p>month: {roflMonth}</p>
           <RosterSlot
-            isLocked={roflMonth <= isActiveTable[currentMonthRoster.league_1.sport_league.id]}
+            isLocked={
+              roflMonth <=
+              isActiveTable[currentMonthRoster.league_1.sport_league.id]
+            }
             isInactive={0 === currentMonthRoster.league_1.sport_league.active}
             test={test}
             teamInfo={currentMonthRoster.league_1}
@@ -173,8 +135,11 @@ function Roster(props) {
             leagueName="league_1"
           />
           <RosterSlot
-                      isLocked={roflMonth <= isActiveTable[currentMonthRoster.league_2.sport_league.id]}
-                      isInactive={0 === currentMonthRoster.league_2.sport_league.active}
+            isLocked={
+              roflMonth <=
+              isActiveTable[currentMonthRoster.league_2.sport_league.id]
+            }
+            isInactive={0 === currentMonthRoster.league_2.sport_league.active}
             table={isActiveTable}
             test={test}
             teamInfo={currentMonthRoster.league_2}
@@ -184,8 +149,11 @@ function Roster(props) {
           />
           {currentOrganization.league_3 ? (
             <RosterSlot
-            isLocked={roflMonth <= isActiveTable[currentMonthRoster.league_3.sport_league.id]}
-            isInactive={0 === currentMonthRoster.league_3.sport_league.active}
+              isLocked={
+                roflMonth <=
+                isActiveTable[currentMonthRoster.league_3.sport_league.id]
+              }
+              isInactive={0 === currentMonthRoster.league_3.sport_league.active}
               table={isActiveTable}
               test={test}
               teamInfo={currentMonthRoster.league_3}
@@ -196,8 +164,11 @@ function Roster(props) {
           ) : null}
           {currentOrganization.league_4 ? (
             <RosterSlot
-            isLocked={roflMonth <= isActiveTable[currentMonthRoster.league_4.sport_league.id]}
-            isInactive={0 === currentMonthRoster.league_4.sport_league.active}
+              isLocked={
+                roflMonth <=
+                isActiveTable[currentMonthRoster.league_4.sport_league.id]
+              }
+              isInactive={0 === currentMonthRoster.league_4.sport_league.active}
               test={test}
               teamInfo={currentMonthRoster.league_4}
               selectedSlot={selectedSlot}
@@ -207,8 +178,15 @@ function Roster(props) {
           ) : null}
           {Array.from(Array(currentOrganization.flex_spots)).map((x, i) => (
             <RosterSlot
-            isLocked={roflMonth <= isActiveTable[currentMonthRoster[`flex_${i + 1}`].sport_league.id]}
-            isInactive={0 === currentMonthRoster[`flex_${i + 1}`].sport_league.active}
+              isLocked={
+                roflMonth <=
+                isActiveTable[
+                  currentMonthRoster[`flex_${i + 1}`].sport_league.id
+                ]
+              }
+              isInactive={
+                0 === currentMonthRoster[`flex_${i + 1}`].sport_league.active
+              }
               test={test}
               teamInfo={currentMonthRoster[`flex_${i + 1}`]}
               selectedSlot={selectedSlot}
@@ -218,8 +196,15 @@ function Roster(props) {
           ))}
           {Array.from(Array(currentOrganization.bench_spots)).map((x, i) => (
             <RosterSlot
-            isLocked={roflMonth <= isActiveTable[currentMonthRoster[`bench_${i + 1}`].sport_league.id]}
-            isInactive={0 === currentMonthRoster[`bench_${i + 1}`].sport_league.active}
+              isLocked={
+                roflMonth <=
+                isActiveTable[
+                  currentMonthRoster[`bench_${i + 1}`].sport_league.id
+                ]
+              }
+              isInactive={
+                0 === currentMonthRoster[`bench_${i + 1}`].sport_league.active
+              }
               test={test}
               teamInfo={currentMonthRoster[`bench_${i + 1}`]}
               selectedSlot={selectedSlot}

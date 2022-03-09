@@ -32,12 +32,8 @@ function useRoster() {
 
     const getAndSetActiveRoflYearsAndReturnSelectedYear = () => {
       let populatedActiveYears = []
-      // console.log('get and set active rofl years called, here is raw active years data')
-      // console.log(activeYears)
+
       activeYears.forEach(year => {
-        // console.log("here is one year")
-        // console.log(year)
-        // console.log(Object.keys(year)[0])
         populatedActiveYears.push(Object.keys(year)[0])
       })
       setActiveRoflYears(populatedActiveYears)
@@ -56,23 +52,16 @@ function useRoster() {
       })
       setActiveRoflMonths(result)
       if(!roster){
-        // console.log('there is no roster setting lowest rofl month')
         const lowestMonth = getLowestRoflMonthOfYear(Object.keys(activeYears[0])[0], result)
-        // console.log('heres lowest active month')
-        // console.log(lowestMonth)
+
         setRoflMonth(lowestMonth)
       }
     }
 
     const getLowestRoflMonthOfYear = (year, activeRoflMonths) => {
-      // console.log('calling getlowest rofl month of year')
-      // console.log('here is year and 2nd param')
-      // console.log(year)
-      // console.log(activeRoflMonths)
 
       let lowestMonth = 100
-      console.log('heres active')
-      console.log(activeRoflMonths)
+
       activeRoflMonths[year].forEach(league => {
         if(league.roflMonth < lowestMonth) lowestMonth = league.roflMonth
       })
@@ -82,33 +71,6 @@ function useRoster() {
         return lowestMonth
       }
     }
-
-  //   const fetchRoster = async (selectedRoflYear) => {
-  //     try{
-  //         var res = await makeRequest({
-  //             method: "get",
-  //             route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
-  //           });
-  //           console.log('here is res')
-  //           console.log(res)
-  //           // setRoster({
-  //           //   [`${month}-${year}`]: JSON.parse(res.body)
-  //           // })
-  //           setRoster(JSON.parse(res.body))
-  //     } catch(e){
-  //       console.log('problem')
-  //       console.error(e)
-  //     }
-  // }
-
-  // const getClosestMonth = (roflMonth, selectedRoflYear, roster) => {
-  //   for(let i=roflMonth;i>=1;i--){
-  //     if(roster[`${i}-${selectedRoflYear}`]){
-  //       return roster[`${i}-${selectedRoflYear}`]
-  //     }
-  //   }
-  //   return null
-  // }
 
   const fillRoster = (roster, selectedRoflYear) => {
     let mostRecentSlot = null
@@ -129,12 +91,11 @@ function useRoster() {
                 route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
               });
               const originalRoster = JSON.parse(res.body)
-              console.log('raw roster')
-              console.log(originalRoster)
+
               const updatedRoster = fillRoster(originalRoster, selectedRoflYear)
               setRoster({...updatedRoster})
               setOriginalRoster(fillRoster(JSON.parse(res.body),selectedRoflYear))
-              console.log(originalRoster)
+
               // setOriginalRoster(JSON.parse(res.body))
         } catch(e){
           console.log('problem')

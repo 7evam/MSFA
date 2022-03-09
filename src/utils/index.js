@@ -32,9 +32,6 @@ export const convertMonthToReadable = (month, year) => {
 }
 
 export const convertRealToRofl = () => {
-        // console.log('convert to rofl month here arre args')
-        // console.log(realMonth)
-        // console.log(leagueId)
         realMonth = Number(realMonth)
         leagueId = Number(leagueId)
         let res
@@ -43,13 +40,9 @@ export const convertRealToRofl = () => {
         } else if(leagueId === 2 || leagueId === 3 || leagueId === 4){
             if(realMonth < 7){
                 res = realMonth += 9
-                // console.log(res)
-                // console.log('--end converrt to rofl momth--')
                 return res
             } else {
                 res = realMonth -=3
-                // console.log(res)
-                // console.log('--end converrt to rofl momth--')
                 return res
             }
         }
