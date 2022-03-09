@@ -71,6 +71,8 @@ function useRoster() {
       // console.log(activeRoflMonths)
 
       let lowestMonth = 100
+      console.log('heres active')
+      console.log(activeRoflMonths)
       activeRoflMonths[year].forEach(league => {
         if(league.roflMonth < lowestMonth) lowestMonth = league.roflMonth
       })
@@ -122,12 +124,13 @@ function useRoster() {
 
     const fetchRoster = async  (selectedRoflYear) => {
         try{
-            // console.log(`fetching for ${selectedRoflYear}`)
             var res = await makeRequest({
                 method: "get",
                 route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
               });
               const originalRoster = JSON.parse(res.body)
+              console.log('raw roster')
+              console.log(originalRoster)
               const updatedRoster = fillRoster(originalRoster, selectedRoflYear)
               setRoster({...updatedRoster})
               setOriginalRoster(fillRoster(JSON.parse(res.body),selectedRoflYear))
@@ -157,12 +160,8 @@ function useRoster() {
 
     useEffect(() => {
       if(activeYears){
-        // console.log('here is active Years')
-        // console.log(activeYears)
         getAndSetActiveRoflMonths()
         const returnedSelectedYear = getAndSetActiveRoflYearsAndReturnSelectedYear()
-        // console.log('here is returned selected year')
-        // console.log(returnedSelectedYear)
         fetchRoster(returnedSelectedYear)
       }
     }, [activeYears]);
@@ -203,22 +202,9 @@ function useRoster() {
 
 
 const changeRoster = (slot) => {
-    console.log('slot, selected slot')
-    console.log(slot)
-    console.log(selectedSlot)
   if(selectedSlot){
-      console.log('month year')
-      console.log(roflMonth)
-      console.log(selectedRoflYear)
-        console.log('heree is thing')
-        console.log(roster)
-        console.log(roster[`${roflMonth}-${selectedRoflYear}`])
-      console.log(roster[`${roflMonth}-${selectedRoflYear}`][slot])
     const team1 = {...roster[`${roflMonth}-${selectedRoflYear}`][slot]}
     const team2 = {...roster[`${roflMonth}-${selectedRoflYear}`][selectedSlot]}
-    // console.log('team 1 team 2')
-    // console.log(team1)
-    // console.log(team2)
     if(checkIfSwapable(team1, team2, slot, selectedSlot)){
       const newRoster = {...roster}
       newRoster[`${roflMonth}-${selectedRoflYear}`][slot] = team2
@@ -236,8 +222,6 @@ const changeRoster = (slot) => {
 
 const handleSubmit = async () => {
   const updatedRoster = {}
-  console.log('here is roster')
-  console.log(roster[`${roflMonth}-${selectedRoflYear}`])
   // consruct updated roster object by only getting slots with league flex or bench in them and adding them to object
   Object.keys(roster[`${roflMonth}-${selectedRoflYear}`]).filter(key => key.includes('league') || key.includes('flex') || key.includes('bench')).forEach(slot => {
     if(roster[`${roflMonth}-${selectedRoflYear}`][slot]) updatedRoster[slot] = Number(roster[`${roflMonth}-${selectedRoflYear}`][slot].id)

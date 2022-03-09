@@ -35,7 +35,8 @@ const Tbody = styled.tbody`
 
 
 function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedRoflYear}) {
-
+  console.log('here is current month roster')
+  console.log(currentMonthRoster)
     const endOfLeagueTable = PLAYOFF_MONTHS[selectedRoflYear]
 
     const benchSpots = (Object.values(endOfLeagueTable)).filter(val => val >= roflMonth).length - 1
