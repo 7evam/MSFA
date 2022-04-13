@@ -15,6 +15,7 @@ import {
   ScrollMenuLink,
   ScrollMenuButton
 } from "./components";
+import Loading from "../../components/Loading";
 
 function Roster(props) {
   const {
@@ -220,7 +221,7 @@ function Roster(props) {
           )}
         </div>
       ) : (
-        <p>loading...</p>
+        <Loading/>
       )}
     </Container>
   );

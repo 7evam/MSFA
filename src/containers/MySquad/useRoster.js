@@ -72,31 +72,38 @@ function useRoster() {
       }
     }
 
-  const fillRoster = (roster, selectedRoflYear) => {
-    let mostRecentSlot = null
-    for(let i=1;i<=15;i++){
-      if(roster[`${i}-${selectedRoflYear}`]){
-        mostRecentSlot = {...roster[`${i}-${selectedRoflYear}`]}
-      } else {
-        roster[`${i}-${selectedRoflYear}`] = {...mostRecentSlot, id: null}
-      }
-    }
-    return {...roster}
-  }
+    // const fillRoster = (roster, year) => {
+    //   const unlockSlotsInMonth = (month) => {
+    //     for(let slot in month){
+    //       month[slot].locked = false
+    //     }
+    //     return month
+    //   }
+    //   for(let i=2;i<=15;i++){
+    //     let key = `${i}-${year}`
+    //     if(!roster[key]){
+    //       console.log(`unlocking for month ${i}`)
+    //       roster[key] = unlockSlotsInMonth(JSON.parse(JSON.stringify(roster[`${i-1}-${year}`])))
+    //     }
+    //   }
+    //   return roster
+    // }
 
-    const fetchRoster = async  (selectedRoflYear) => {
+
+
+    const fetchRoster = async (selectedRoflYear) => {
         try{
             var res = await makeRequest({
                 method: "get",
                 route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
               });
-              const originalRoster = JSON.parse(res.body)
-
-              const updatedRoster = fillRoster(originalRoster, selectedRoflYear)
-              setRoster({...updatedRoster})
-              setOriginalRoster(fillRoster(JSON.parse(res.body),selectedRoflYear))
-
-              // setOriginalRoster(JSON.parse(res.body))
+              const roster = JSON.parse(res.body)
+              // const originalRoster = fillRoster(JSON.parse(res.body), selectedRoflYear)
+              // console.log("here is original roster")
+              // console.log(originalRoster)
+              // setRoster({...originalRoster})
+              setRoster({...roster})
+              setOriginalRoster({...roster})
         } catch(e){
           console.log('problem')
           console.log('here is params')

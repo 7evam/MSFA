@@ -11,6 +11,9 @@ import MySquad from "../containers/MySquad";
 import Dashboard from "../containers/Dashboard";
 import Roster from "../containers/Roster";
 import Standings from "../containers/Standings";
+
+import Settings from "../containers/Settings";
+
 import Loading from '../components/Loading'
 
 
@@ -55,6 +58,8 @@ function App(props) {
         {/* <Route exact path="/dashboard" component={Dashboard}/> */}
         <Route exact path="/roster" component={Roster} />
         <Route exact path="/standings" component={Standings} />
+        <Route exact path="/settings" component={Settings} />
+        
         {/* <Route exact path="/transactions" component={Transactions}/> */}
       </Switch>
     </Container>

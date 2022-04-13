@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
+
 import App from './App'
 import LogIn from './containers/LogIn'
+import CreateNewLeague from './containers/CreateNewLeague'
 
 import { Redirect, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 
@@ -34,7 +36,10 @@ function Router(){
           {
             userToken
             ? 
+            <Switch>
+            <Route exact path="/create-new-league" component={CreateNewLeague} />
             <Route path = '/' component={App}/>
+            </Switch>
             : 
             <Redirect to="/login"/>
           }
