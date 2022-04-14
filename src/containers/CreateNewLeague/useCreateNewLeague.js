@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useHistory } from "react-router-dom";
 import {useSelector} from 'react-redux'
+import { TEST_ROSTER } from "./testRoster";
 
 function useCreateNewLeague() {
   const { makeRequest, isLoading } = useApi();
@@ -112,11 +113,11 @@ const [stage,setStage] = useState('initial')
     let values = {
         leagueName: 'test',
         members: [
-            {memberName: "evan", memberEmail: 's'},
-            {memberName: "gaurav", memberEmail: 's'},
-            {memberName: "andy", memberEmail: 's'},
-            {memberName: "james", memberEmail: 's'},
-            {memberName: "hayden", memberEmail: 's'}
+            {memberName: "evan", memberEmail: 'evan@evanklane.com'},
+            {memberName: "gaurav", memberEmail: 'gauravemail@gmail.com'},
+            {memberName: "andy", memberEmail: 'andyemail@gmail.com'},
+            {memberName: "james", memberEmail: 'jamesemail@gmail.com'},
+            {memberName: "hayden", memberEmail: 'haydenemail@gmail.com'}
         ]
     }
     let res = []
@@ -124,6 +125,7 @@ const [stage,setStage] = useState('initial')
         res.push({
             cash: 200,
             name: member.memberName,
+            email: member.memberEmail,
             league1: {name: "", id: null, value: ""},
             league2: {name: "", id: null, value: ""},
             league3: {name: "", id: null, value: ""},
@@ -141,11 +143,11 @@ const [stage,setStage] = useState('initial')
     setValues({
         leagueName: 'test',
         members: [
-            {memberName: "evan", memberEmail: 's'},
-            {memberName: "gaurav", memberEmail: 's'},
-            {memberName: "andy", memberEmail: 's'},
-            {memberName: "james", memberEmail: 's'},
-            {memberName: "hayden", memberEmail: 's'}
+            {memberName: "evan", memberEmail: 'evan@evanklane.com'},
+            {memberName: "gaurav", memberEmail: 'gauravemail@gmail.com'},
+            {memberName: "andy", memberEmail: 'andyemail@gmail.com'},
+            {memberName: "james", memberEmail: 'jamesemail@gmail.com'},
+            {memberName: "hayden", memberEmail: 'haydenemail@gmail.com'}
         ]
     })
     //   //check for name
@@ -222,7 +224,10 @@ const [stage,setStage] = useState('initial')
 
   const submitRoster = (e) => {
       e.preventDefault()
+      console.log('inputted roster')
       console.log(memberRosters)
+      console.log('overriding, input, setting test roster')
+      setMemberRosters(TEST_ROSTER)
       setStage("reviewRoster")
   }
 
@@ -246,6 +251,83 @@ const [stage,setStage] = useState('initial')
     setMemberRosters(newMemberRosters)
   }
 
+  const submitFinalRoster = async (e) => {
+      e.preventDefault()
+      const object = {
+          members: values.members,
+          leagueName: values.leagueName,
+          rosterFormat: {
+            league1: true,
+            league2: true,
+            league3: true,
+            league4: true,
+            flexSpots: 1,
+            benchSpots: 3
+        },
+        rosters: memberRosters
+      }
+    //   console.log("here is object")
+    //   console.log(object)
+    //   object from post req
+    //   {
+    //       members: [
+    //           {
+    //               firstName: 'hayden',
+    //               lastName: 'freedman',
+    //               email: 'exampleemail@aol.com'
+    //           }, {
+    //               firstName: "andy",
+    //               lastName: "narotsky"
+    //               email: 'exampleemail2@gmail.com'
+    //           }
+    //       ]
+    //       leagueName: 'first rofl league',
+        //   rosterFormat: {
+        //       league1: true,
+        //       league2: true,
+        //       league3: true,
+        //       league4: true,
+        //       flexSpots: 1,
+        //       benchSpots: 3
+        //   }
+    //       rosters: [
+    //           {
+    //               name: 'evan',
+    //               league1: {id: 104, value: 14},
+    //               league2: {id: 204, value: 63},
+    //               league3: {id: 304, value: 10},
+    //               league4: {id: 406, value: 14},
+    //               flex1: {id: 124, value: 14},
+    //               bench1: {id: 109, value: 30},
+    //               bench2: {id: 225, value: 10},
+    //               bench3: {id: 305, value: 5}
+    //           },{
+    //               name: 'gaurav',
+    //               league1: {id: 105, value: 14},
+    //               league2: {id: 205, value: 63},
+    //               league3: {id: 306, value: 10},
+    //               league4: {id: 407, value: 14},
+    //               flex1: {id: 125, value: 14},
+    //               bench1: {id: 119, value: 30},
+    //               bench2: {id: 215, value: 10},
+    //               bench3: {id: 315, value: 5}
+    //           },
+    //       ]
+    //   }
+
+      try{
+        var res = await makeRequest({
+            method: "post",
+            route: "/organizations",
+            data: object
+          });
+        return JSON.parse(res.body)
+      } catch (e) {
+          console.log('problem')
+          console.error(e)
+      }
+  }
+
   return {
     values,
     handleChange,
@@ -263,7 +345,8 @@ const [stage,setStage] = useState('initial')
     getAutocompleteSuggestions,
     changeTeamInput,
     submitRoster,
-    changeTeamValue
+    changeTeamValue,
+    submitFinalRoster,
   };
 }
 

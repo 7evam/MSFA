@@ -29,8 +29,7 @@ function useLogIn() {
         dispatch({
           type: "LOGIN",
           payload: {
-            firstName: userInfo.first_name,
-            lastName: userInfo.last_name,
+            name: userInfo.name,
             email: userInfo.email,
             organizations: userInfo.organizations,
             userToken: userInfo.userToken

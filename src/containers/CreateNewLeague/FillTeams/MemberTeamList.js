@@ -17,7 +17,7 @@ function MemberTeamList({currentMember, changeTeamInput, getAutocompleteSuggesti
       <p>{currentMember.name}</p>
       <p>Cash: {currentMember.cash}</p>
         {
-          Object.keys(currentMember).filter(slot => slot !== 'name' && slot!=='cash').map((slot, i) => (
+          Object.keys(currentMember).filter(slot => slot !== 'name' && slot!=='cash' && slot!== 'email').map((slot, i) => (
           <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} getAutocompleteSuggestions={getAutocompleteSuggestions}/>
           ))
         }

@@ -10,28 +10,32 @@ const ReadOnlyRoster = styled.div`
 `
 const Slot = styled.div``
 
+const RosterContainer = styled.div``
+
 function ReviewRoster({cnlProps}){
 
     const {
-        memberRosters
+        memberRosters,
+        submitFinalRoster
     } = cnlProps
 
   return (
     <Container>
         <p>Review Roster</p>
-        
+          <RosterContainer>
           {memberRosters.map(roster => (
             <ReadOnlyRoster>
               <p>{roster.name}'s roster</p>
               <p>Cash: {roster.cash}</p>
-              {Object.keys(roster).filter(slot => slot !== 'name' && slot!=='cash').map((slot, i) => (
+              {Object.keys(roster).filter(slot => slot !== 'name' && slot!=='cash' && slot !== 'email').map((slot, i) => (
                 <Slot key={`${slot}-${i}-reviewRoster`}>
                     <p>{slot} - {roster[slot].name} - ${roster[slot].value}</p>
                 </Slot>
           ))}
             </ReadOnlyRoster>
           ))}
-        
+          </RosterContainer>
+        <button onClick={submitFinalRoster}>Submit</button>
     </Container>
   );
 }

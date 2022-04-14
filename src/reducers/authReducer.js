@@ -1,7 +1,6 @@
 const INITIAL_STATE = {
     userToken: null,
-    firstName: null,
-    lastName: null,
+    name: null,
     email: null,
     currentOrganization: null,
     organizations: null
@@ -13,8 +12,7 @@ function authReducer(state=INITIAL_STATE, action){
             const currentOrganization = action.payload.organizations.find(org => org.current === 1)
             return {
                 ...state,
-                firstName: action.payload.first_name,
-                lastName: action.payload.last_name,
+                name: action.payload.name,
                 email: action.payload.email,
                 organizations: action.payload.organizations,
                 userToken: action.payload.userToken,
