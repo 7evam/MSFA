@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import useCreateNewLeague from "./useCreateNewLeague";
 // import Autocomplete from './Autocomplete';
 import Datalist from './Datalist'
 import MemberTeamList from "./MemberTeamList";
@@ -50,7 +49,8 @@ function FillTeams({cnlProps}) {
     setMemberRosterIndex,
     getAutocompleteSuggestions,
     changeTeamInput,
-    submitRoster
+    submitRoster,
+    changeTeamValue
   } = cnlProps
 
   // const handleTeamValueChange = () => {
@@ -61,15 +61,16 @@ function FillTeams({cnlProps}) {
         <MemberTeamLists>
           {memberRosters.map((member, index) => (
             index === memberRosterIndex ?
-            <>
-            <SlideButton onClick={() => setMemberRosterIndex(memberRosterIndex-1)}>{'<-'}</SlideButton>
+            <div key={`${member.name}-${index}-fillTeams`}>
+            <SlideButton disabled={index===0 ? true : false} onClick={() => setMemberRosterIndex(memberRosterIndex-1)}>{'<-'}</SlideButton>
             <MemberTeamList
               currentMember={member}
               changeTeamInput={changeTeamInput}
               getAutocompleteSuggestions={getAutocompleteSuggestions}
+              changeTeamValue={changeTeamValue}
             />
-            <SlideButton onClick={() => setMemberRosterIndex(memberRosterIndex+1)}>{'->'}</SlideButton>
-            </>
+            <SlideButton disabled={index===memberRosters.length-1 ? true : false} onClick={() => setMemberRosterIndex(memberRosterIndex+1)}>{'->'}</SlideButton>
+            </div>
             : null
           ))}
 

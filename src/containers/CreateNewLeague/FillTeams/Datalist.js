@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import useCreateNewLeague from "./useCreateNewLeague";
 
 const Input = styled.input`
     border: 1px solid #999;
@@ -22,11 +21,11 @@ const Input = styled.input`
 function Datalist({suggestions, slot, currentMemberName, changeTeamInput, inputValue}){
   return (
     <>
-    <Input type="text" list={`${currentMemberName}-${slot}-data`} onChange={(e) => changeTeamInput(e, slot, currentMemberName)} value={inputValue} />
+    <Input placeholder="team" type="text" list={`${currentMemberName}-${slot}-data`} onChange={(e) => changeTeamInput(e, slot, currentMemberName)} value={inputValue} />
 
     <AutocompleteContainer id={`${currentMemberName}-${slot}-data`}>
       {suggestions.map((item, key) => (
-        <option value={item.text}/>
+        <option key={`${item.text}-${key}-datalist`} value={item.text}/>
       ))}
     </AutocompleteContainer>
   </>

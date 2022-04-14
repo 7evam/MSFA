@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import useCreateNewLeague from "./useCreateNewLeague";
 
 const Container = styled.div`
     margin-top: 40px;
@@ -46,7 +45,7 @@ function InitialInfo({cnlProps, setStage}){
     <p>Members</p>
         {
             values.members.map((member, i) => (
-            <>
+            <div key={`${member.memberName}-${i}-initial`}>
             <Input
                 id={i}
                 name={'memberName'}
@@ -56,6 +55,7 @@ function InitialInfo({cnlProps, setStage}){
                 onChange={handleChange}
             />
             <Input
+                disabled={i===0 ? true : false}
                 id={i}
                 name={'memberEmail'}
                 placeholder={`Member Email`}
@@ -64,7 +64,7 @@ function InitialInfo({cnlProps, setStage}){
                 onChange={handleChange}
             />
             <button type='button' disabled={values.members.length<=5} onClick={() => removeMember(i)}>x</button>
-            </>
+            </div>
             ))
         }
                 <br/>
@@ -81,14 +81,14 @@ function InitialInfo({cnlProps, setStage}){
                 <br/>
         <p>Flex Spots</p>
         {
-            <Select>
-                <Option selected disabled value={1}>1</Option>
+            <Select defaultValue={1}>
+                <Option disabled value={1}>1</Option>
             </Select>
         }
         <p>Bench Spots</p>
         {
-            <Select>
-                <Option selected disabled value={3}>3</Option>
+            <Select defaultValue={3}>
+                <Option disabled value={3}>3</Option>
             </Select>
         }
         </form>

@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import {useSelector} from 'react-redux'
 
 function useCreateNewLeague() {
   const { makeRequest, isLoading } = useApi();
+  const { email } = useSelector(state => ({
+    ...state.authReducer
+  }));
 //   const history = useHistory();
 //   const dispatch = useDispatch();
 const emptyMember = {memberName: '', memberEmail: ''}
-let emptySlot = {
-    league1: {name: "", id: null, value: null},
-    league2: {name: "", id: null, value: null},
-    league3: {name: "", id: null, value: null},
-    league4: {name: "", id: null, value: null},
-    flex1: {name: "", id: null, value: null},
-    bench1: {name: "", id: null, value: null},
-    bench2: {name: "", id: null, value: null},
-    bench3: {name: "", id: null, value: null}
-}
+const firstMember = {memberName: '', memberEmail: email}
 
 const [stage,setStage] = useState('initial')
   const [values, setValues] = useState({
     leagueName: "",
-    members: Array.from(Array(10)).fill(emptyMember)
+    members: Array.from(Array(10)).fill(firstMember).fill(emptyMember,1)
   });
   const [leaguesUsed, setLeaguesUsed] = useState([1,2,3,4])
 
@@ -128,21 +122,22 @@ const [stage,setStage] = useState('initial')
     let res = []
     values.members.forEach(member => {
         res.push({
+            cash: 200,
             name: member.memberName,
-            league1: {name: "", id: null, value: null},
-            league2: {name: "", id: null, value: null},
-            league3: {name: "", id: null, value: null},
-            league4: {name: "", id: null, value: null},
-            flex1: {name: "", id: null, value: null},
-            bench1: {name: "", id: null, value: null},
-            bench2: {name: "", id: null, value: null},
-            bench3: {name: "", id: null, value: null}
+            league1: {name: "", id: null, value: ""},
+            league2: {name: "", id: null, value: ""},
+            league3: {name: "", id: null, value: ""},
+            league4: {name: "", id: null, value: ""},
+            flex1: {name: "", id: null, value: ""},
+            bench1: {name: "", id: null, value: ""},
+            bench2: {name: "", id: null, value: ""},
+            bench3: {name: "", id: null, value: ""}
         })
     })
     setMemberRosters(res)
   }
 
-  const submitInitial = async () => {
+  const submitInitial = async (e) => {
     setValues({
         leagueName: 'test',
         members: [
@@ -170,7 +165,7 @@ const [stage,setStage] = useState('initial')
     //         return
     //     }
     //   }
-
+    
       await fillSportTeams()
       fillMemberRosters()
       setStage('fillTeams')
@@ -186,6 +181,7 @@ const [stage,setStage] = useState('initial')
         leaguesForSlot = [...leaguesUsed]
     }
 
+    // TODO
     // remove leagues if member has 3 teams from that league already
     let teamsToReturn = []
    
@@ -195,9 +191,6 @@ const [stage,setStage] = useState('initial')
     })
     //return array of team names
     teamsToReturn.sort()
-    console.log("slot and array")
-    console.log(slot)
-    console.log(teamsToReturn)
     return teamsToReturn
   }
 
@@ -212,6 +205,15 @@ const [stage,setStage] = useState('initial')
       if(found){
         newMemberRosters[memberRosterIndex][slot].id = found.id
         found.rostered = true
+      } else {
+          console.log('here is id')
+          if(newMemberRosters[memberRosterIndex][slot].id){
+            const unrosteredTeam = newSportTeams.find(item => item.id == newMemberRosters[memberRosterIndex][slot].id)
+            console.log('here is unrosteredTeam')
+            console.log(unrosteredTeam)
+            unrosteredTeam.rostered = false
+            newMemberRosters[memberRosterIndex][slot].id = null
+          }
       }
 
       setSportTeams(newSportTeams)
@@ -221,6 +223,27 @@ const [stage,setStage] = useState('initial')
   const submitRoster = (e) => {
       e.preventDefault()
       console.log(memberRosters)
+      setStage("reviewRoster")
+  }
+
+  const getUpdatedCashValue = (member) => {
+      let cash = 200
+      Object.keys(member).forEach(key => {
+          if(member[key].value && typeof member[key].value === 'number') cash -= member[key].value
+      })
+      console.log('here is cash')
+      console.log(cash)
+      return cash
+  }
+
+  const changeTeamValue = (value, slot) => {
+
+    let numberVal = Number(value)
+    if(!numberVal) numberVal = 0
+    const newMemberRosters = [...memberRosters]
+    newMemberRosters[memberRosterIndex][slot].value = numberVal
+    newMemberRosters[memberRosterIndex].cash = getUpdatedCashValue(newMemberRosters[memberRosterIndex])
+    setMemberRosters(newMemberRosters)
   }
 
   return {
@@ -239,7 +262,8 @@ const [stage,setStage] = useState('initial')
     setMemberRosterIndex,
     getAutocompleteSuggestions,
     changeTeamInput,
-    submitRoster
+    submitRoster,
+    changeTeamValue
   };
 }
 
