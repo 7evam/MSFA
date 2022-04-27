@@ -25,27 +25,17 @@ const Year = styled.div`
 
 
 
-function YearSelector({selectedRoflYear, setSelectedRoflYear}) {
-
-    const {activeYears} = useSelector(state => ({
-        ...state.sportReducer
-      }))
-
-    console.log('here is active years in year selector')
-    console.log(activeYears)
-
-    let activeYearArray = []
-    activeYears.forEach((year,i) => {
-        console.log('here is year')
-        console.log(i)
-        activeYearArray.push(Object.keys(year)[0])
-    })
+function YearSelector({selectedRoflYear, setSelectedRoflYear, activeYearArray}) {
 
   return (
+          activeYearArray 
+          ?
         <Container>
             <Year onClick={() => setSelectedRoflYear(activeYearArray[0])} selected={Number(selectedRoflYear)===Number(activeYearArray[0])}>{activeYearArray[0]}</Year>
             <Year onClick={() => setSelectedRoflYear(activeYearArray[1])} selected={Number(selectedRoflYear)===Number(activeYearArray[1])}>{activeYearArray[1]}</Year>
         </Container>
+        :
+        <p>loading...</p>
   );
 }
 

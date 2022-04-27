@@ -115,9 +115,7 @@ function Roster(props) {
     setSelectedRoflYear
   } = useRoster();
 
-  const { activeYears } = useSelector((state) => ({
-    ...state.sportReducer
-  }));
+let activeYearArray = Object.keys(currentOrganization.activeYears)
 
   const isActiveTable = {};
 
@@ -189,8 +187,9 @@ function Roster(props) {
 
       {roster && currentOrganization && selectedRoflYear ? (
         <div>
-          {activeYears.length === 2 ? (
+          {activeYearArray.length === 2 ? (
             <YearSelector
+              activeYearArray={activeYearArray}
               setSelectedRoflYear={setSelectedRoflYear}
               selectedRoflYear={selectedRoflYear}
             />

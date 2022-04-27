@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { checkIfRostersAreEqual } from "../../utils";
 import { toast } from "react-toastify";
-
+ 
 function useRoster() {
   const { makeRequest, isLoading } = useApi();
   const history = useHistory();
@@ -19,6 +19,8 @@ function useRoster() {
     ...state.sportReducer
   }));
 
+  let activeYearArray = Object.keys(currentOrganization.activeYears)
+
   const [roster, setRoster] = useState(null);
   const [originalRoster, setOriginalRoster] = useState(null);
   const [selectedRoflYear, setSelectedRoflYear] = useState(null);
@@ -30,14 +32,14 @@ function useRoster() {
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
 
   const getAndSetActiveRoflYearsAndReturnSelectedYear = () => {
-    let populatedActiveYears = [];
+    // let populatedActiveYears = [];
 
-    activeYears.forEach((year) => {
-      populatedActiveYears.push(Object.keys(year)[0]);
-    });
-    setActiveRoflYears(populatedActiveYears);
-    setSelectedRoflYear(populatedActiveYears[0]);
-    return populatedActiveYears[0];
+    // activeYears.forEach((year) => {
+    //   populatedActiveYears.push(Object.keys(year)[0]);
+    // });
+    setActiveRoflYears(activeYearArray);
+    setSelectedRoflYear(activeYearArray[0]);
+    return activeYearArray[0];
   };
 
   const getAndSetActiveRoflMonths = () => {
@@ -110,13 +112,13 @@ function useRoster() {
   };
 
   useEffect(() => {
-    if (activeYears) {
+    if (activeYearArray) {
       getAndSetActiveRoflMonths();
       const returnedSelectedYear = getAndSetActiveRoflYearsAndReturnSelectedYear();
 
       fetchRoster(returnedSelectedYear);
     }
-  }, [activeYears]);
+  }, [activeYearArray]);
 
   useEffect(() => {
     if (

@@ -35,8 +35,6 @@ const Tbody = styled.tbody`
 
 
 function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedRoflYear}) {
-  console.log('here is current month roster')
-  console.log(currentMonthRoster)
     const endOfLeagueTable = PLAYOFF_MONTHS[selectedRoflYear]
 
     const benchSpots = (Object.values(endOfLeagueTable)).filter(val => val >= roflMonth).length - 1
@@ -68,7 +66,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             team={`${currentMonthRoster.league_1.city} ${currentMonthRoster.league_1.name}`}
             points={currentMonthRoster.league_1.roflScore}
             changeRoster={changeRoster} selectedSlot={selectedSlot}
-            locked={currentMonthRoster.league_1.locked}
+            locked={currentMonthRoster.league_1.isLocked}
           />
         ) : null}
         {roflMonth <= endOfLeagueTable['2'] ? (
@@ -77,7 +75,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             team={`${currentMonthRoster.league_2.city} ${currentMonthRoster.league_2.name}`}
             points={currentMonthRoster.league_2.roflScore}
             changeRoster={changeRoster} selectedSlot={selectedSlot}
-            locked={currentMonthRoster.league_2.locked}
+            locked={currentMonthRoster.league_2.isLocked}
           />
         ) : null}
         {roflMonth <= endOfLeagueTable['3'] ? (
@@ -86,7 +84,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             team={`${currentMonthRoster.league_3.city} ${currentMonthRoster.league_3.name}`}
             points={currentMonthRoster.league_3.roflScore}
             changeRoster={changeRoster} selectedSlot={selectedSlot}
-            locked={currentMonthRoster.league_3.locked}
+            locked={currentMonthRoster.league_3.isLocked}
           />
         ) : null}
         {roflMonth <= endOfLeagueTable['4'] ? (
@@ -95,7 +93,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             team={`${currentMonthRoster.league_4.city} ${currentMonthRoster.league_4.name}`}
             points={currentMonthRoster.league_4.roflScore}
             changeRoster={changeRoster} selectedSlot={selectedSlot}
-            locked={currentMonthRoster.league_4.locked}
+            locked={currentMonthRoster.league_4.isLocked}
           />
         ) : null}
         {currentMonthRoster.flex_1 ? (
@@ -104,7 +102,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             team={roflMonth <= endOfLeagueTable[currentMonthRoster.flex_1.sport_league.id] ? `${currentMonthRoster.flex_1.city} ${currentMonthRoster.flex_1.name}`: 'empty'}
             points={currentMonthRoster.flex_1.roflScore}
             changeRoster={changeRoster} selectedSlot={selectedSlot}
-            locked={currentMonthRoster.flex_1.locked}
+            locked={currentMonthRoster.flex_1.isLocked}
           />
         ) : null}
 
@@ -117,7 +115,7 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
                 team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
                 points={currentMonthRoster[`bench_${i+1}`].roflScore}
                 changeRoster={changeRoster} selectedSlot={selectedSlot}
-                locked={currentMonthRoster[`bench_${i+1}`].locked}
+                locked={currentMonthRoster[`bench_${i+1}`].isLocked}
              /> 
             : 
             null

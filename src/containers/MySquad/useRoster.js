@@ -20,6 +20,8 @@ function useRoster() {
       ...state.sportReducer
     }))
 
+    let activeYearArray = Object.keys(currentOrganization.activeYears)
+
     const [roster, setRoster] = useState(null)
     const [originalRoster, setOriginalRoster] = useState(null)
     const [selectedRoflYear, setSelectedRoflYear] = useState(null)
@@ -31,18 +33,22 @@ function useRoster() {
     const [activeRoflMonths, setActiveRoflMonths] = useState(null)
 
     const getAndSetActiveRoflYearsAndReturnSelectedYear = () => {
-      let populatedActiveYears = []
-
-      activeYears.forEach(year => {
-        populatedActiveYears.push(Object.keys(year)[0])
-      })
-      setActiveRoflYears(populatedActiveYears)
-      setSelectedRoflYear(populatedActiveYears[0])
-      return populatedActiveYears[0]
-    }
+      // let populatedActiveYears = [];
+  
+      // activeYears.forEach((year) => {
+      //   populatedActiveYears.push(Object.keys(year)[0]);
+      // });
+      console.log('here is avtiv year array')
+      console.log(activeYearArray)
+      setActiveRoflYears(activeYearArray);
+      setSelectedRoflYear(activeYearArray[0]);
+      return activeYearArray[0];
+    };
 
     const getAndSetActiveRoflMonths = () => {
       let result = {}
+      console.log('heres active years')
+      console.log(activeYears)
       activeYears.forEach(yearObject => {
         const year = Object.keys(yearObject)[0]
         result[year] = []
