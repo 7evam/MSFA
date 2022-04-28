@@ -38,7 +38,7 @@ const ScrollMenuButton = styled.a`
   cursor: pointer;
 `;
 
-function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, lastMonth}) {
+function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay}) {
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
@@ -77,7 +77,7 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, lastMonth}) {
         { number: 13, month: `April ${year + 1}` },
         { number: 14, month: `May ${year + 1}` }
     ]
-    let finalMonth = lastMonth ? lastMonth : 14;
+    let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
     let months = []
     for(let i=0;i<finalMonth;i++){
         months.push(allMonths[i])

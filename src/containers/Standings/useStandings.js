@@ -8,51 +8,62 @@ import { toast } from 'react-toastify';
 
 function useStandings() {
 
-    const {activeYears} = useSelector(state => ({
-        ...state.sportReducer
-    }))
+    // const {activeYears} = useSelector(state => ({
+    //     ...state.sportReducer
+    // }))
+
+    const {currentOrganization} = useSelector(state => ({
+      ...state.authReducer
+  }))
+
+  let activeYearArray = Object.keys(currentOrganization.activeYears)
 
     const {makeRequest, isLoading} =  useApi()
 
     const [standings, setStandings] = useState(null)
     const [roflMonth, setRoflMonth] = useState(null)
-    const [selectedRoflYear, setSelectedRoflYear] = useState(null)
-    const [lastMonth, setLastMonth] = useState(null)
+    const [selectedRoflYear, setSelectedRoflYear] = useState(activeYearArray[0])
+    const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null)
 
     useEffect(() => {
-      activeYears && fetchStandings()
-    }, [activeYears]);
+      selectedRoflYear && fetchStandings()
+    }, [selectedRoflYear]);
 
     const getInitialMonthAndYear = () => {
-      const year = Object.keys(activeYears[0])[0]
-      const maxMonth = Math.max.apply(Math, activeYears[0][year].map(function(o) { return o.roflMonth; }))
+      // TODO get latest current rofl month
+      const year = activeYearArray[0]
+      // const maxMonth = Math.max.apply(Math, activeYear[0][year].map(function(o) { return o.roflMonth; }))
+      const maxMonth = 1
       setRoflMonth(maxMonth)
-      setLastMonth(maxMonth)
+      setFinalMonthForDisplay(maxMonth)
       setSelectedRoflYear(year)
     }
 
-    const fillStandings = (standings, year) => {
+    // const fillStandings = (standings, year) => {
 
-      let mostRecentSlot = null
-      for(let i=1;i<=15;i++){
-        if(standings[`${i}-${year}`]){
-          mostRecentSlot = [...standings[`${i}-${year}`]]
-        } else {
-          standings[`${i}-${year}`] = mostRecentSlot
-        }
-      }
+    //   let mostRecentSlot = null
+    //   for(let i=1;i<=15;i++){
+    //     if(standings[`${i}-${year}`]){
+    //       mostRecentSlot = [...standings[`${i}-${year}`]]
+    //     } else {
+    //       standings[`${i}-${year}`] = mostRecentSlot
+    //     }
+    //   }
 
-      return standings
-    }
+    //   return standings
+    // }
 
     const fetchStandings = async () => {
       getInitialMonthAndYear()
         var res = await makeRequest({
             method: "get",
-            route: `/organizations/memberStandings/1`
+            route: `/organizations/memberStandings/${currentOrganization.id}/${selectedRoflYear}`
           });
-          const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)
-          setStandings(fullStandings)
+          console.log('here is standings')
+          console.log(JSON.parse(res.body))
+          setStandings(JSON.parse(res.body))
+          // const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)
+          // setStandings(fullStandings)
     }
 
   return {
@@ -60,7 +71,7 @@ function useStandings() {
     roflMonth,
     selectedRoflYear,
     setRoflMonth,
-    lastMonth
+    finalMonthForDisplay
     }
 }
 

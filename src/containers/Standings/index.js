@@ -17,7 +17,7 @@ function Standings(props) {
     selectedRoflYear,
     roflMonth,
     setRoflMonth,
-    lastMonth
+    finalMonthForDisplay
   } = useStandings();
 
   const [appliedScroll, setAppliedScroll] = useState(false);
@@ -47,7 +47,7 @@ function Standings(props) {
           <p>year: {selectedRoflYear}</p>
 
           <MonthTicker
-            lastMonth={lastMonth}
+            finalMonthForDisplay={finalMonthForDisplay}
             roflMonth={roflMonth}
             setRoflMonth={setRoflMonth}
             selectedRoflYear={selectedRoflYear}
