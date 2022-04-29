@@ -45,7 +45,7 @@ function InitialInfo({cnlProps, setStage}){
     <p>Members</p>
         {
             values.members.map((member, i) => (
-            <div key={`${member.memberName}-${i}-initial`}>
+            <div key={`member-${i}-name`}>
             <Input
                 id={i}
                 name={'memberName'}
