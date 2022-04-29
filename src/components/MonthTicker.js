@@ -39,7 +39,9 @@ const ScrollMenuButton = styled.a`
 `;
 
 function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay}) {
-
+  console.log('here is roflmonth and type')
+  console.log(roflMonth)
+  console.log(typeof roflMonth)
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
@@ -91,7 +93,7 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
         <ScrollMenu ref={scrollRef}>
             {monthsForScroll(selectedRoflYear).map((item) => (
             <ScrollMenuLink
-                selected={item.number === roflMonth}
+                selected={Number(item.number) === Number(roflMonth)}
                 key={item.number}
                 onClick={() => setRoflMonth(item.number)}
             >

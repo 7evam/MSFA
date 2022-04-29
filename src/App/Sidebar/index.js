@@ -20,12 +20,12 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>Dashboard</span>
           </CustomNavLink> */}
 
-          {/* <CustomNavLink to="/roster">
-            <span>Roster</span>
+          {/* <CustomNavLink to="/rosters">
+            <span>Rosters</span>
           </CustomNavLink> */}
 
-          <CustomNavLink to="/standings">
-            <span>Standings</span>
+          <CustomNavLink to="/rofleague">
+            <span>My RoFL League</span>
           </CustomNavLink>
 
           <CustomNavLink to="/transactions">

@@ -214,6 +214,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
             isActiveTable={isActiveTable}
             changeRoster={changeRoster}
             selectedSlot={selectedSlot}
+            readOnly={false}
           />
           {areRostersEqual ? null : (
             <BannerMessage>

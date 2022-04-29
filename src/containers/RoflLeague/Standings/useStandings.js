@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import useApi from '../../hooks/useApi'
+import useApi from '../../../hooks/useApi'
 import {useHistory} from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import {useSelector} from 'react-redux'
-import {checkIfRostersAreEqual} from '../../utils'
+import {checkIfRostersAreEqual} from '../../../utils'
 import { toast } from 'react-toastify';
 
 function useStandings() {
@@ -15,6 +15,8 @@ function useStandings() {
     const {currentOrganization} = useSelector(state => ({
       ...state.authReducer
   }))
+
+  const history = useHistory()
 
   let activeYearArray = Object.keys(currentOrganization.activeYears)
 
@@ -66,12 +68,17 @@ function useStandings() {
           // setStandings(fullStandings)
     }
 
+    const goToSquad = (userId) => {
+      history.push(`/rofleague/${userId}/${selectedRoflYear}/${roflMonth}`)
+    }
+
   return {
     standings,
     roflMonth,
     selectedRoflYear,
     setRoflMonth,
-    finalMonthForDisplay
+    finalMonthForDisplay,
+    goToSquad
     }
 }
 

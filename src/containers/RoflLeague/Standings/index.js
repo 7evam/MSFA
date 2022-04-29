@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import useStandings from "./useStandings";
-import { convertMonthToReadable } from "../../utils";
+import { convertMonthToReadable } from "../../../utils";
 import { useSelector } from "react-redux";
-import MonthTicker from "../../components/MonthTicker";
-import Loading from "../../components/Loading";
+import MonthTicker from "../../../components/MonthTicker";
+import Loading from "../../../components/Loading";
 
 const Container = styled.div``;
 const Td = styled.td`
   padding: 12px;
+  &:hover {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 function Standings(props) {
@@ -17,7 +22,8 @@ function Standings(props) {
     selectedRoflYear,
     roflMonth,
     setRoflMonth,
-    finalMonthForDisplay
+    finalMonthForDisplay,
+    goToSquad
   } = useStandings();
 
   const [appliedScroll, setAppliedScroll] = useState(false);
@@ -75,7 +81,7 @@ function Standings(props) {
             <tr key={val.userId}>
               <Td>{index + 1}</Td>
               <Td>{val.personName}</Td>
-              <Td>{val.teamName}</Td>
+              <Td><a onClick={() => goToSquad(val.userId)}>{val.teamName}</a></Td>
               <Td>{val.monthlyPoints}</Td>
               <Td>{val.cumulativePoints}</Td>
             </tr>

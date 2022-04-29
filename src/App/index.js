@@ -10,7 +10,7 @@ import TopBar from "./TopBar";
 import MySquad from "../containers/MySquad";
 import Dashboard from "../containers/Dashboard";
 import Roster from "../containers/Roster";
-import Standings from "../containers/Standings";
+import RoflLeague from "../containers/RoflLeague";
 
 import Settings from "../containers/Settings";
 
@@ -57,8 +57,8 @@ function App(props) {
         </Route>
         <Route exact path="/squad" component={MySquad} />
         {/* <Route exact path="/dashboard" component={Dashboard}/> */}
-        <Route exact path="/roster" component={Roster} />
-        <Route exact path="/standings" component={Standings} />
+        {/* <Route exact path="/rosters" component={Roster} /> */}
+        <Route path="/rofleague" component={RoflLeague} />
         <Route exact path="/settings" component={Settings} />
         
         {/* <Route exact path="/transactions" component={Transactions}/> */}

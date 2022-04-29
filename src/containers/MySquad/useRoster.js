@@ -101,7 +101,7 @@ function useRoster() {
         try{
             var res = await makeRequest({
                 method: "get",
-                route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
+                route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
               });
               const roster = JSON.parse(res.body)
               // const originalRoster = fillRoster(JSON.parse(res.body), selectedRoflYear)
