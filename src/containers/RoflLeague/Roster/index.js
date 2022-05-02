@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import RosterComponent from "../../../components/Roster";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import MonthTicker from "../../../components/MonthTicker";
+import MonthlyPoints from "../../../components/MonthlyPoints";
 
 const Container = styled.div`
     margin-top: 50px;
@@ -15,6 +16,8 @@ function Roster(props) {
     const {currentOrganization} = useSelector(state => ({
         ...state.authReducer
       }));
+    
+    const history = useHistory()
 
       const { makeRequest, isLoading } = useApi();
 
@@ -26,6 +29,12 @@ function Roster(props) {
     useEffect(() => {
         fetchRoster()
     }, []);
+
+    useEffect(() => {
+        if(selectedRoflMonth){
+            history.push(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`)
+        }
+    }, [selectedRoflMonth]);
 
     const fetchRoster = async () => {
         try{
@@ -42,26 +51,28 @@ function Roster(props) {
           console.error(e)
         }
     }
-    console.log('here is full then current month roster')
-    console.log(fullRoster)
-    const currentMonthRoster = fullRoster ? fullRoster[`${roflMonth}-${roflYear}`] : null
-    console.log(currentMonthRoster)
+
   return (
     <Container>
+        <button onClick={() => history.push('/rofleague')}>Back to Standings</button>
+        
+        {
+        fullRoster && fullRoster[`${selectedRoflMonth}-${roflYear}`]
+        ? 
+        <>
+        <MonthlyPoints roflYear={roflYear}/>
         <MonthTicker
             roflMonth={selectedRoflMonth}
             setRoflMonth={setSelectedRoflMonth}
             selectedRoflYear={roflYear}
           />
-        {
-        currentMonthRoster
-        ? 
         <RosterComponent
             selectedRoflYear={roflYear}
-            currentMonthRoster={currentMonthRoster}
+            currentMonthRoster={fullRoster[`${selectedRoflMonth}-${roflYear}`]}
             roflMonth={selectedRoflMonth}
             readOnly={true}
           />
+          </>
         :
           <p>loading...</p>
         }

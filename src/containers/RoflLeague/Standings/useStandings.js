@@ -8,9 +8,9 @@ import { toast } from 'react-toastify';
 
 function useStandings() {
 
-    // const {activeYears} = useSelector(state => ({
-    //     ...state.sportReducer
-    // }))
+    const {activeYears} = useSelector(state => ({
+        ...state.sportReducer
+    }))
 
     const {currentOrganization} = useSelector(state => ({
       ...state.authReducer
@@ -31,11 +31,14 @@ function useStandings() {
       selectedRoflYear && fetchStandings()
     }, [selectedRoflYear]);
 
-    const getInitialMonthAndYear = () => {
-      // TODO get latest current rofl month
+    const getInitialMonthAndYear = (roster) => {
       const year = activeYearArray[0]
-      // const maxMonth = Math.max.apply(Math, activeYear[0][year].map(function(o) { return o.roflMonth; }))
-      const maxMonth = 1
+
+      const arrayOfMonths = []
+      Object.keys(roster).forEach(monthKey => {
+        arrayOfMonths.push(Number(monthKey.split('-')[0]))
+      })
+      const maxMonth = Math.max(...arrayOfMonths)
       setRoflMonth(maxMonth)
       setFinalMonthForDisplay(maxMonth)
       setSelectedRoflYear(year)
@@ -56,14 +59,14 @@ function useStandings() {
     // }
 
     const fetchStandings = async () => {
-      getInitialMonthAndYear()
+      
         var res = await makeRequest({
             method: "get",
             route: `/organizations/memberStandings/${currentOrganization.id}/${selectedRoflYear}`
           });
-          console.log('here is standings')
-          console.log(JSON.parse(res.body))
-          setStandings(JSON.parse(res.body))
+          const body = JSON.parse(res.body)
+          getInitialMonthAndYear(body)
+          setStandings(body)
           // const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)
           // setStandings(fullStandings)
     }
