@@ -28,6 +28,10 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>My RoFL League</span>
           </CustomNavLink>
 
+          <CustomNavLink to="/scoring">
+            <span>Scoring</span>
+          </CustomNavLink>
+
           <CustomNavLink to="/transactions">
             <span>Transactions</span>
           </CustomNavLink>
