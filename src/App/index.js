@@ -31,8 +31,7 @@ function App(props) {
       method: "get",
       route: `/sports/active`
     });
-    console.log('here is active years from active months get')
-    console.log(JSON.parse(res.body).activeYears)
+
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",
       payload: {

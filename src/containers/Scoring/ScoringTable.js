@@ -24,18 +24,75 @@ const League = styled.p`
 `
 
 function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
-    console.log('---')
-    console.log(teams)
 
-    console.log(Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]))
+    const [sortedTeams, setSortedTeams] = useState(null)
+    const [sortedField, setSortedField] = useState('team')
+    const [sortDirectionAsc, setSortDirectionAsc] = useState(true)
+
+    useEffect(() => {
+        const teamArray = []
+        Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
+            teamArray.push({
+                id: teamId,
+                teamName: `${teams[league][teamId].city} ${teams[league][teamId].name}`,
+                points: scores.points[league][`${roflMonth}-${roflYear}`][teamId]
+            })
+        })
+        setSortedTeams(teamArray)
+        setSortedField('team')
+        setSortDirectionAsc(true)
+    }, [roflMonth, league]);
+
+    useEffect(() => {
+        if(sortedTeams && sortedTeams.length){
+            const newTeams = [...sortedTeams]
+            if(sortedField === 'team'){
+                if(sortDirectionAsc){
+                    console.log('place 1')
+                    newTeams.sort((a, b) => (a.teamName > b.teamName) ? 1 : -1)
+                } else {
+                    console.log('place 2')
+                    newTeams.sort((a, b) => (a.teamName > b.teamName) ? -1 : 1)
+                }
+            }
+            if(sortedField === 'points'){
+                if(sortDirectionAsc){
+                    console.log('place 3')
+                    newTeams.sort((a, b) => (a.points > b.points) ? 1 : -1)
+                } else {
+                    console.log('place 4')
+                    newTeams.sort((a, b) => (a.points > b.points) ? -1 : 1)
+                }
+            }
+            setSortedTeams(newTeams)
+        }
+      }, [sortedField, sortDirectionAsc]);
+
+      const requestSort = (param) => {
+        setSortDirectionAsc(!sortDirectionAsc)
+        setSortedField(param)
+      }
+
   return (
-      <Container>
-          {Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).map(teamId => (
-              <div>
-                  <p><b>{teams[league][teamId].city} {teams[league][teamId].name}:</b> {scores.points[league][`${roflMonth}-${roflYear}`][teamId]}</p>
-              </div>
-          ))}
-      </Container>
+    sortedTeams ?
+    <table>
+    <caption>Teams</caption>
+    <thead>
+        <tr>
+            <th onClick={() => requestSort('team')}>Team {sortedField === 'team' ? sortDirectionAsc ? '↑' : '↓' : null}</th>
+            <th onClick={() => requestSort('points')}>Points {sortedField === 'points' ? sortDirectionAsc ? '↑' : '↓' : null}</th>
+        </tr>
+    </thead>
+    <tbody>
+      {sortedTeams.map(team => (
+          <tr key={team.id}>
+              <td>{team.teamName}</td>
+              <td>{team.points}</td>
+          </tr>
+      ))}
+    </tbody>
+    </table>
+    : null
   );
 }
 

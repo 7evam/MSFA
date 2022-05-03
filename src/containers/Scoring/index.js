@@ -48,26 +48,23 @@ function Scoring(props) {
 
   const { makeRequest } = useApi();
 
-  useEffect(() => {
-    fetchTeams()
-  }, []);
-
-  useEffect(() => {
-    fetchScores();
-  }, []);
-
-  const [scores, setScores] = useState(false);
+  const [scores, setScores] = useState(null);
   const [roflMonth, setRoflMonth] = useState(1);
   const [league, setLeague] = useState(1);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
   const [showScheme, setShowScheme] = useState(false);
   const [teams, setTeams] = useState(null)
 
+//   TODO somehow there is a memory leak here only when loading this page directly
+//   not sure why. look into fixing it. maybe with cleanup?
+  useEffect(() => {
+    fetchTeams();
+    fetchScores();
+  }, []);
+
   const calculateMonthsToDisplay = (records) => {
     const allMonths = [];
     Object.keys(records).forEach((leagueId) => {
-      console.log("here is a lleague id");
-      console.log(leagueId);
       Object.keys(records[leagueId]).forEach((monthKey) => {
         allMonths.push(Number(monthKey.split("-")[0]));
       });
@@ -82,8 +79,6 @@ function Scoring(props) {
     });
     if (res.statusCode === 200) {
       const scores = JSON.parse(res.body);
-      console.log("here are scores");
-      console.log(scores);
       calculateMonthsToDisplay(scores.records);
       setScores(scores);
     }
@@ -95,28 +90,20 @@ function Scoring(props) {
       for(let id of leagueIds){
           teams[id] = await getTeamsByLeagueId(id)
       }
-      console.log('here is teams')
-      console.log(teams)
       setTeams(teams)
   }
 
-  const getTeamsByLeagueId = async leagueId => {
-    try{
-      var res = await makeRequest({
-          method: 'get',
-          route: `/sports/teams/${leagueId}`
-      })
-      var response = JSON.parse(res.body)
-      const table = {}
+  const getTeamsByLeagueId = async(leagueId) => {
+    var res = await makeRequest({
+        method: 'get',
+        route: `/sports/teams/${leagueId}`
+    })
+    const response = JSON.parse(res.body)
+    const table = {}
     response.forEach(team => {
         table[team.id] = {...team}
     })
     return table
-    } catch (e) {
-        console.log('problem')
-        console.error(e)
-    }
-    
 }
 
   return (
