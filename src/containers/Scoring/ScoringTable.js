@@ -5,22 +5,13 @@ import useApi from "../../hooks/useApi";
 import { useSelector, useDispatch } from 'react-redux';
 import MonthTicker from "../../components/MonthTicker";
 
-const Container = styled.div`
-    margin-top: 40px;
-`;
-
-const LeagueSelector = styled.div`
-    display: flex;
-    flex-direction: row;
-`
-
-const League = styled.p`
-    margin-right: 10px;
+const Th = styled.th`
     &:hover {
         font-weight: 700;
         text-decoration: underline;
         cursor: pointer;
-      }
+    }
+    padding-right: 1em;
 `
 
 function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
@@ -48,19 +39,15 @@ function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
             const newTeams = [...sortedTeams]
             if(sortedField === 'team'){
                 if(sortDirectionAsc){
-                    console.log('place 1')
                     newTeams.sort((a, b) => (a.teamName > b.teamName) ? 1 : -1)
                 } else {
-                    console.log('place 2')
                     newTeams.sort((a, b) => (a.teamName > b.teamName) ? -1 : 1)
                 }
             }
             if(sortedField === 'points'){
                 if(sortDirectionAsc){
-                    console.log('place 3')
                     newTeams.sort((a, b) => (a.points > b.points) ? 1 : -1)
                 } else {
-                    console.log('place 4')
                     newTeams.sort((a, b) => (a.points > b.points) ? -1 : 1)
                 }
             }
@@ -79,8 +66,8 @@ function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
     <caption>Teams</caption>
     <thead>
         <tr>
-            <th onClick={() => requestSort('team')}>Team {sortedField === 'team' ? sortDirectionAsc ? '↑' : '↓' : null}</th>
-            <th onClick={() => requestSort('points')}>Points {sortedField === 'points' ? sortDirectionAsc ? '↑' : '↓' : null}</th>
+            <Th onClick={() => requestSort('team')}>Team {sortedField === 'team' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
+            <Th onClick={() => requestSort('points')}>Points {sortedField === 'points' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
         </tr>
     </thead>
     <tbody>

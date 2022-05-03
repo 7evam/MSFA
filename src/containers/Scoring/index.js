@@ -5,6 +5,7 @@ import useApi from "../../hooks/useApi";
 import { useSelector, useDispatch } from "react-redux";
 import MonthTicker from "../../components/MonthTicker";
 import ScoringTable from "./ScoringTable";
+import RecordsTable from "./RecordsTable";
 import Scheme from "./Scheme";
 
 const Container = styled.div`
@@ -16,7 +17,7 @@ const LeagueSelector = styled.div`
   flex-direction: row;
 `;
 
-const SchemeOrScore = styled.div`
+const DisplaySelector = styled.div`
   display: flex;
   flex-direction: row;
 `;
@@ -52,7 +53,7 @@ function Scoring(props) {
   const [roflMonth, setRoflMonth] = useState(1);
   const [league, setLeague] = useState(1);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
-  const [showScheme, setShowScheme] = useState(false);
+  const [display, setDisplay] = useState('score');
   const [teams, setTeams] = useState(null)
 
 //   TODO somehow there is a memory leak here only when loading this page directly
@@ -124,24 +125,29 @@ function Scoring(props) {
               NBA
             </League>
           </LeagueSelector>
-          <SchemeOrScore>
+          <DisplaySelector>
             <ScItem
-              selected={!showScheme}
-              onClick={() => setShowScheme(!showScheme)}
+              selected={display==='score'}
+              onClick={() => setDisplay('score')}
             >
               Score
             </ScItem>
             <ScItem
-              selected={showScheme}
-              onClick={() => setShowScheme(!showScheme)}
+              selected={display==='records'}
+              onClick={() => setDisplay('records')}
+            >
+              Records
+            </ScItem>
+            <ScItem
+              selected={display==='scheme'}
+              onClick={() => setDisplay('scheme')}
             >
               Scheme
             </ScItem>
-          </SchemeOrScore>
-          {showScheme ? (
-            <Scheme scheme={scores.scheme[league]} league={league}/>
-          ) : (
-            <>
+          </DisplaySelector>
+          {display === 'scheme' ? <Scheme scheme={scores.scheme[league]} league={league}/> : null}
+          {display === 'score' ? 
+          scores.records[league] ? <>
               <MonthTicker
                 roflMonth={roflMonth}
                 setRoflMonth={setRoflMonth}
@@ -155,8 +161,28 @@ function Scoring(props) {
                 roflYear={2022}
                 teams={teams}
               />
-            </>
-          )}
+            </> : <p>This League is not active</p> : null}
+            {display === 'records' ? 
+            scores.records[league] ? 
+            <>
+            <MonthTicker
+                roflMonth={roflMonth}
+                setRoflMonth={setRoflMonth}
+                selectedRoflYear={2022}
+                finalMonthForDisplay={finalMonthForDisplay}
+              />
+              <RecordsTable
+                league={league}
+                roflMonth={roflMonth}
+                scores={scores}
+                roflYear={2022}
+                teams={teams}
+              /> 
+              </>
+              : 
+              <p>This League is not active</p>
+            :
+            null}
         </div>
       ) : (
         <p>Loading...</p>

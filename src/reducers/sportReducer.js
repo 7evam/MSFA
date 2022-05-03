@@ -8,7 +8,15 @@ function sportReducer(state=INITIAL_STATE, action){
             return {
                 ...state,
                 activeYears: action.payload.activeYears,
-                currentDate: action.payload.currentDate
+                currentDate: action.payload.currentDate,
+                playoffMonths: {
+                    2022: {
+                        1: 7,
+                        2: 10,
+                        3: 14,
+                        4: 14
+                    }
+                }
             }
         default:
             return state
