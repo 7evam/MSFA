@@ -131,13 +131,13 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
     ? roster[`${roflMonth}-${selectedRoflYear}`]
     : null;
 
-  const scrollLeft = () => {
-    scrollRef.current.scrollLeft -= 400;
-  };
+  // const scrollLeft = () => {
+  //   scrollRef.current.scrollLeft -= 400;
+  // };
 
-  const scrollRight = () => {
-    scrollRef.current.scrollLeft += 400;
-  };
+  // const scrollRight = () => {
+  //   scrollRef.current.scrollLeft += 400;
+  // };
 
   const scrollRef = React.createRef();
 
@@ -148,38 +148,38 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
     }
   }, [scrollRef]);
 
-  const monthsForScroll = (year) => {
-    year = Number(year);
-    return [
-      { number: 1, month: `April ${year}` },
-      { number: 2, month: `May ${year}` },
-      { number: 3, month: `June ${year}` },
-      { number: 4, month: `July ${year}` },
-      { number: 5, month: `August ${year}` },
-      { number: 6, month: `September ${year}` },
-      { number: 7, month: `October ${year}` },
-      { number: 8, month: `November ${year}` },
-      { number: 9, month: `December ${year}` },
-      { number: 10, month: `January ${year + 1}` },
-      { number: 11, month: `February ${year + 1}` },
-      { number: 12, month: `March ${year + 1}` },
-      { number: 13, month: `April ${year + 1}` },
-      { number: 14, month: `May ${year + 1}` }
-    ];
-  };
+  // const monthsForScroll = (year) => {
+  //   year = Number(year);
+  //   return [
+  //     { number: 1, month: `April ${year}` },
+  //     { number: 2, month: `May ${year}` },
+  //     { number: 3, month: `June ${year}` },
+  //     { number: 4, month: `July ${year}` },
+  //     { number: 5, month: `August ${year}` },
+  //     { number: 6, month: `September ${year}` },
+  //     { number: 7, month: `October ${year}` },
+  //     { number: 8, month: `November ${year}` },
+  //     { number: 9, month: `December ${year}` },
+  //     { number: 10, month: `January ${year + 1}` },
+  //     { number: 11, month: `February ${year + 1}` },
+  //     { number: 12, month: `March ${year + 1}` },
+  //     { number: 13, month: `April ${year + 1}` },
+  //     { number: 14, month: `May ${year + 1}` }
+  //   ];
+  // };
 
-  const SlotContent = (leagueInfo, leagueName) => {
-    <Slot>
-      {leagueInfo.name}: {leagueInfo.city} {leagueInfo.name}{" "}
-      <SelectButton
-        selectedSlot={selectedSlot}
-        name={leagueName}
-        onClick={() => test(leagueName)}
-      >
-        Move
-      </SelectButton>
-    </Slot>;
-  };
+  // const SlotContent = (leagueInfo, leagueName) => {
+  //   <Slot>
+  //     {leagueInfo.name}: {leagueInfo.city} {leagueInfo.name}{" "}
+  //     <SelectButton
+  //       selectedSlot={selectedSlot}
+  //       name={leagueName}
+  //       onClick={() => test(leagueName)}
+  //     >
+  //       Move
+  //     </SelectButton>
+  //   </Slot>;
+  // };
 
   return (
     <Container>
