@@ -36,22 +36,9 @@ const Tbody = styled.tbody`
 
 function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedRoflYear, readOnly}) {
 
-    // console.log('----here are all props---')
-    // console.log(currentMonthRoster)
-    // console.log(roflMonth)
-    // console.log(changeRoster)
-    // console.log(selectedSlot)
-    // console.log(selectedRoflYear)
-    // console.log(readOnly)
-    // console.log('-------end props---------')
-
     const endOfLeagueTable = PLAYOFF_MONTHS[selectedRoflYear]
 
     const benchSpots = (Object.values(endOfLeagueTable)).filter(val => val >= roflMonth).length - 1
-
-    const {currentOrganization} = useSelector(state => ({
-        ...state.authReducer
-      }));
 
   return (
     <Container>
@@ -141,7 +128,6 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             : 
             null
         ))}
-        
       </Tbody>
     </Container>
   );

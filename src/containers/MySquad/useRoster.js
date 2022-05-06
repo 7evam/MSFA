@@ -30,6 +30,7 @@ function useRoster() {
   const [activeRoflYears, setActiveRoflYears] = useState(null);
   // this is an object like {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]} to help know which slots are locked
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
+  // const [currentTeams, setCurrentTeams] = useState(null)
 
   const fetchRoster = async (selectedRoflYear) => {
     try {
@@ -38,10 +39,6 @@ function useRoster() {
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
       });
       const roster = JSON.parse(res.body);
-      // const originalRoster = fillRoster(JSON.parse(res.body), selectedRoflYear)
-      // console.log("here is original roster")
-      // console.log(originalRoster)
-      // setRoster({...originalRoster})
       setRoster({ ...roster });
       setOriginalRoster({ ...roster });
     } catch (e) {
@@ -52,6 +49,23 @@ function useRoster() {
       console.error(e);
     }
   };
+
+  // const fetchCurrentTeams = async (selectedRoflYear) => {
+  //   try {
+  //     var res = await makeRequest({
+  //       method: "get",
+  //       route: `/users/currentTeams/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
+  //     });
+  //     const currentTeams = JSON.parse(res.body);
+  //     setCurrentTeams(currentTeams);
+  //   } catch (e) {
+  //     console.log("problem");
+  //     console.log("here is params");
+  //     console.log(currentOrganization.id);
+  //     console.log(selectedRoflYear);
+  //     console.error(e);
+  //   }
+  // }
 
   const initiateAndReturnRoflMonthAndYear = () => {
     // initiate year as earlliest active year for current org
