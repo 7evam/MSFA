@@ -17,13 +17,13 @@ const Td = styled.td`
   }
 `;
 
-function MonthlyPoints({roflYear}) {
+function MonthlyPoints({roflYear, userId}) {
 
     const {currentOrganization} = useSelector(state => ({
         ...state.authReducer
     }))
 
-    const userId = currentOrganization.user_id
+    // const userId = currentOrganization.user_id
 
     const {makeRequest} = useApi()
 
@@ -39,8 +39,6 @@ function MonthlyPoints({roflYear}) {
             route: `/organizations/memberStandings/${currentOrganization.id}/${roflYear}`
           });
           const body = JSON.parse(res.body)
-          console.log('here is body')
-          console.log(body)
           setStandings(body)
     }
 

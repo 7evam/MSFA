@@ -111,22 +111,39 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
             locked={readOnly ? null : currentMonthRoster.flex_1.isLocked}
           />
-        ) : null}
+        ) : 
+        <Slot
+        key={'empty flex'}
+        name={`flex_1`}
+        team={'empty'}
+        points={null}
+        readOnly={readOnly}
+        changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+        locked={false}
+      />}
 
         {Array.from(Array(benchSpots)).map((x, i) => (
-            `bench_${i+1}` in currentMonthRoster 
-            ? 
-            <Slot
-                key={currentMonthRoster[`bench_${i+1}`].name}
-                name={`bench_${i+1}`}
-                team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
-                points={currentMonthRoster[`bench_${i+1}`].roflScore}
-                readOnly={readOnly}
-                changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-                locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
-             /> 
-            : 
-            null
+          `bench_${i+1}` in currentMonthRoster 
+          ? 
+          <Slot
+              key={currentMonthRoster[`bench_${i+1}`].name}
+              name={`bench_${i+1}`}
+              team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
+              points={currentMonthRoster[`bench_${i+1}`].roflScore}
+              readOnly={readOnly}
+              changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+              locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
+          /> 
+          : 
+          <Slot
+            key={'empty'+i}
+            name={`bench_${i+1}`}
+            team={'empty'}
+            points={null}
+            readOnly={readOnly}
+            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+            locked={false}
+          />
         ))}
       </Tbody>
     </Container>
@@ -134,3 +151,19 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
 }
 
 export default RosterComponent;
+
+// {Array.from(Array(benchSpots)).map((x, i) => (
+  // `bench_${i+1}` in currentMonthRoster 
+  // ? 
+  // <Slot
+  //     key={currentMonthRoster[`bench_${i+1}`].name}
+  //     name={`bench_${i+1}`}
+  //     team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
+  //     points={currentMonthRoster[`bench_${i+1}`].roflScore}
+  //     readOnly={readOnly}
+  //     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+  //     locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
+  //  /> 
+  // : 
+  // null
+// ))}

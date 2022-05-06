@@ -25,16 +25,42 @@ function Roster(props) {
 
     const [fullRoster, setFullRoster] = useState(null)
     const [selectedRoflMonth, setSelectedRoflMonth] = useState(roflMonth)
+    const [memberInfo, setMemberInfo] = useState(null)
 
     useEffect(() => {
-        fetchRoster()
+        fetchInfo()
     }, []);
+
+    const fetchInfo = async () => {
+      await fetchOrgInfo()
+      await fetchRoster()
+    }
 
     useEffect(() => {
         if(selectedRoflMonth){
             history.push(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`)
         }
     }, [selectedRoflMonth]);
+
+    const fetchOrgInfo = async () => {
+      // TODO optimize this
+      // store it in redux and check if it exists before adding
+      try{
+        var res = await makeRequest({
+            method: "get",
+            route: `organizations/summary/${currentOrganization.id}`,
+            continueLoading: true
+          });
+          const body = JSON.parse(res.body)
+          const member = body.members.find(mem => mem.user_id === Number(userId))
+          setMemberInfo(member)
+      } catch(e){
+        console.log('problem')
+        console.log('here is params')
+        console.log(currentOrganization.id)
+        console.error(e)
+      }
+    }
 
     const fetchRoster = async () => {
         try{
@@ -57,10 +83,14 @@ function Roster(props) {
         <button onClick={() => history.push('/rofleague')}>Back to Standings</button>
         
         {
-        fullRoster && fullRoster[`${selectedRoflMonth}-${roflYear}`]
+        isLoading
         ? 
+        <p>loading...</p>
+        :
+        fullRoster && fullRoster[`${selectedRoflMonth}-${roflYear}`] ?
         <>
-        <MonthlyPoints roflYear={roflYear}/>
+        <div><p>Roster for {memberInfo.team_name} managed by {memberInfo.name}</p></div>
+        <MonthlyPoints userId={userId} roflYear={roflYear}/>
         <MonthTicker
             roflMonth={selectedRoflMonth}
             setRoflMonth={setSelectedRoflMonth}
@@ -73,8 +103,7 @@ function Roster(props) {
             readOnly={true}
           />
           </>
-        :
-          <p>loading...</p>
+          : <p>Loadinig..</p>
         }
         
     </Container>
@@ -83,3 +112,5 @@ function Roster(props) {
 }
 
 export default Roster;
+
+

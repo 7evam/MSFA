@@ -16,6 +16,14 @@ const Td = styled.td`
   }
 `;
 
+const YearContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+`;
+
 function Standings(props) {
   const {
     standings,
@@ -50,8 +58,9 @@ function Standings(props) {
       <p>Welcome to standings</p>
       {standings ? (
         <div>
-          <p>year: {selectedRoflYear}</p>
-
+          <YearContainer>
+          <p>RoFL Year: {selectedRoflYear}</p>
+          </YearContainer>
           <MonthTicker
             finalMonthForDisplay={finalMonthForDisplay}
             roflMonth={roflMonth}
