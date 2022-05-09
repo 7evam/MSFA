@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 
 import App from './App'
-import LogIn from './containers/LogIn'
+import Landing from './containers/Landing'
 import CreateNewLeague from './containers/CreateNewLeague'
 
 import { Redirect, BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
@@ -32,7 +32,7 @@ function Router(){
       <BrowserRouter>
         <Switch>
           {/* <Route exact path='/create-account' render={(props)=><CreateAccount {...props} emailFromInvitation={emailFromInvitation} />}/> */}
-          <Route exact path='/login' render={(props)=><LogIn {...props} />} />
+          <Route exact path='/login' render={(props)=><Landing {...props} />} />
           {
             userToken
             ? 
