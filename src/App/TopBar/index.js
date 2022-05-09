@@ -1,7 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { NavGroup, Topbar, Nav, CustomNavLink } from "./components";
 
+
 function TopBar() {
+
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const logOut = () => {
+
+    dispatch({
+      type: "LOGOUT",
+    });
+    // history.push('/')
+  }
  
   return (
     <Topbar>
@@ -10,8 +24,8 @@ function TopBar() {
           <CustomNavLink to="/settings">
             <span>Settings</span>
           </CustomNavLink>
-          <CustomNavLink to="/logOut">
-            <span>Log Out</span>
+          <CustomNavLink to="/">
+            <span onClick={logOut}>Log Out</span>
           </CustomNavLink>
         </NavGroup>
       </Nav>

@@ -20,6 +20,9 @@ const SelectEntryMode = styled.p`
   color: ${(props) => (props.selected ? "limegreen" : "black")};
 `
 
+console.log('in landing page')
+console.log(process.env.ROFL_API_BASE_URL)
+
 function Landing(props) {
   const {
       handleLogIn,

@@ -87,6 +87,7 @@ function useLogIn() {
         });
         history.push("/");
       } else if (res.message) {
+        toast.error(res.message)
         throw res.message;
       } else {
         console.error(res);
