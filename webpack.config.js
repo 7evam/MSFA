@@ -10,7 +10,10 @@ module.exports = (webpackServe, options) => {
   var ENV_CONFIG
 
   if(options.mode === 'development'){
-    ENV_CONFIG = new Dotenv({path: './.env.dev'})
+    ENV_CONFIG = new Dotenv({
+      path: './.env.dev',
+      systemvars: true
+    })
   }
 
   if(options.mode === 'production'){
