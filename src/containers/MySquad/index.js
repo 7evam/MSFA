@@ -112,7 +112,9 @@ function Roster(props) {
     setRoflMonth,
     handleSubmit,
     activeRoflMonths,
-    setSelectedRoflYear
+    setSelectedRoflYear,
+    updateOneMonth,
+    setUpdateOneMonth
   } = useRoster();
 
 let activeYearArray = Object.keys(currentOrganization.activeYears)
@@ -185,6 +187,10 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
           />
           {areRostersEqual ? null : (
             <BannerMessage>
+              <label>
+                <input type="checkbox" value={updateOneMonth} onClick={() => setUpdateOneMonth(!updateOneMonth)}/>
+                Update only this month
+              </label>
               You have unsaved changes
               <SubmitChangesButton onClick={handleSubmit}>
                 Submit

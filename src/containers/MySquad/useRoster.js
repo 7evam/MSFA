@@ -30,6 +30,7 @@ function useRoster() {
   const [activeRoflYears, setActiveRoflYears] = useState(null);
   // this is an object like {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]} to help know which slots are locked
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
+  const [updateOneMonth, setUpdateOneMonth] = useState(false);
   // const [currentTeams, setCurrentTeams] = useState(null)
 
   const fetchRoster = async (selectedRoflYear) => {
@@ -39,8 +40,8 @@ function useRoster() {
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
       });
       const roster = JSON.parse(res.body);
-      setRoster({ ...roster });
-      setOriginalRoster({ ...roster });
+      setRoster(roster);
+      setOriginalRoster(JSON.parse(JSON.stringify(roster)));
     } catch (e) {
       console.log("problem");
       console.log("here is params");
@@ -193,14 +194,19 @@ function useRoster() {
       const res = await makeRequest({
         method: "patch",
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}/${roflMonth}`,
-        data: updatedRoster
+        data: {
+          updateOneMonth,
+          roster: updatedRoster
+        }
       });
 
       if (res.statusCode === 200 && JSON.parse(res.body).success === true) {
         // JSON.parse(JSON.stringify()) creates a deep copy
-        setOriginalRoster(
-          fillRoster(JSON.parse(JSON.stringify(roster)), selectedRoflYear)
-        );
+        // setRoster(JSON.parse(JSON.stringify(roster)));
+        setOriginalRoster(JSON.parse(JSON.stringify(roster)));
+        // setOriginalRoster(
+        //   fillRoster(JSON.parse(JSON.stringify(roster)), selectedRoflYear)
+        // );
         setAreRostersEqual(true);
         toast.success("Roster updated successfully");
       } else {
@@ -227,7 +233,9 @@ function useRoster() {
     setRoflMonth,
     handleSubmit,
     activeRoflMonths,
-    setSelectedRoflYear
+    setSelectedRoflYear,
+    updateOneMonth,
+    setUpdateOneMonth
   };
 }
 
