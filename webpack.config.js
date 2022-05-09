@@ -18,9 +18,9 @@ module.exports = (webpackServe, options) => {
 
   if(options.mode === 'production'){
     if(options.env && options.env.environment === 'staging'){
-      ENV_CONFIG = new Dotenv({path: './.env.staging'})
+      ENV_CONFIG = new Dotenv({path: './.env.staging', systemvars: true})
     } else {
-      ENV_CONFIG = new Dotenv({path: './.env'})
+      ENV_CONFIG = new Dotenv({path: './.env', systemvars: true})
     }
   }
 
