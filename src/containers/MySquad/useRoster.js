@@ -39,7 +39,9 @@ function useRoster() {
         method: "get",
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
       });
-      const roster = JSON.parse(res.body);
+      console.log('here is res for roster')
+      console.log(res)
+      const roster = res.body
       setRoster(roster);
       setOriginalRoster(JSON.parse(JSON.stringify(roster)));
     } catch (e) {

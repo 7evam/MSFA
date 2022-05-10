@@ -31,12 +31,14 @@ function App(props) {
       method: "get",
       route: `/sports/active`
     });
+    
+    const parsedRes = JSON.parse(res.body)
 
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",
       payload: {
-        activeYears: JSON.parse(res.body).activeYears,
-        currentDate: JSON.parse(res.body).currentDate
+        activeYears: parsedRes.activeYears,
+        currentDate: parsedRes.currentDate
       }
     });
   };

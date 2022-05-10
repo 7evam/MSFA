@@ -96,6 +96,8 @@ function useRoster() {
         method: "get",
         route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
       });
+      console.log('here is res for roster')
+      console.log(res.body)
       const originalRoster = JSON.parse(res.body);
       const updatedRoster = fillRoster(originalRoster, selectedRoflYear);
       setRoster({ ...updatedRoster });

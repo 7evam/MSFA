@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {useSelector} from 'react-redux'
 import axios from 'axios'
+import { toast } from "react-toastify";
 
 // this is a hook that exports a function that can eventually 
 // be configured to call any api with any data or any headers
@@ -26,12 +27,24 @@ export default function useApi() {
         try {
             return roflApi[method](route, data)
                 .then(res => {
-                    return res.data
+                    console.log("HERE is a truly raw res")
+                    console.log(res)
+                    if(res.data?.statusCode){
+                        return res.data 
+                    } else {
+                        return {
+                            statusCode: res.status,
+                            body: res.data
+                        }
+                    }
                 })
                 .catch((e) => {
                     /**
                      * @TODO add logout on 401
                      */ 
+                    // console.log(e.response?.data)
+                    const errorMessage = e.response?.data?.message ? e.response.data.message : e.response?.data ? e.response.data : 'Your request could not be completed'
+                    toast.error(errorMessage)
                     throw e;
                 })
                 .finally(() => {
@@ -40,6 +53,8 @@ export default function useApi() {
                     }
                 });
         } catch(err) { 
+            console.log('here is error')
+            console.log(err)
             return err
         }
     }

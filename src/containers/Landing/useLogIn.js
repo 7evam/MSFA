@@ -33,8 +33,7 @@ function useLogIn() {
         }
       });
       if (res.statusCode === 200) {
-        console.log(res);
-        const userInfo = JSON.parse(res.body);
+        const userInfo = res.body;
         console.log('here is user info')
         console.log(userInfo)
         dispatch({
