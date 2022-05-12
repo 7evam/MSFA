@@ -9,6 +9,8 @@ const INITIAL_STATE = {
 function authReducer(state=INITIAL_STATE, action){
     switch(action.type){
         case "LOGIN":
+            console.log('here is action payload')
+            console.log(action.payload)
         const currentOrg = action.payload.organizations.find(org => org.current === 1)
         const currentOrganizationLogin = currentOrg ? currentOrg : action.payload.organizations[0]
             return {

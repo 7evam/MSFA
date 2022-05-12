@@ -83,17 +83,20 @@ function useLogIn() {
         }
       });
       if (res.statusCode === 200) {
-        const userInfo = JSON.parse(res.body);
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            name: userInfo.name,
-            email: userInfo.email,
-            organizations: userInfo.organizations,
-            userToken: userInfo.userToken
-          }
-        });
-        history.push("/");
+        console.log('here is res')
+        console.log(res)
+        toast.success("Your password has been created, you may now log in")
+        // const userInfo = JSON.parse(res.body);
+        // dispatch({
+        //   type: "LOGIN",
+        //   payload: {
+        //     name: userInfo.name,
+        //     email: userInfo.email,
+        //     organizations: userInfo.organizations,
+        //     userToken: userInfo.userToken
+        //   }
+        // });
+        // history.push("/");
       } else if (res.message) {
         toast.error(res.message)
         throw res.message;
