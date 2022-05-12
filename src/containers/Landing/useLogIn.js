@@ -23,6 +23,14 @@ function useLogIn() {
   const [entryModeLogIn, setEntryModeLogIn] = useState(true)
 
   const handleLogIn = async () => {
+    if(values.email.length < 6){
+      toast.error('Please input a valid email')
+      return
+    }
+    if(values.password.length < 8){
+      toast.error('Please create a password with at least 8 characters')
+      return
+    }
     try {
       var res = await makeRequest({
         method: "post",
@@ -56,6 +64,9 @@ function useLogIn() {
   };
 
   const handleRegister = async () => {
+    if(registerValues.email.length < 6){
+      toast.error('Please input a valid email')
+    }
     if(registerValues.password.length < 8){
       toast.error('Please create a password with at least 8 characters')
     }
