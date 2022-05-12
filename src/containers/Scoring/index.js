@@ -79,7 +79,7 @@ function Scoring(props) {
       route: `/sports/scores/${currentOrganization.id}/${2022}`
     });
     if (res.statusCode === 200) {
-      const scores = JSON.parse(res.body);
+      const scores = res.body;
       calculateMonthsToDisplay(scores.records);
       setScores(scores);
     }
@@ -99,7 +99,7 @@ function Scoring(props) {
         method: 'get',
         route: `/sports/teams/${leagueId}`
     })
-    const response = JSON.parse(res.body)
+    const response = res.body
     const table = {}
     response.forEach(team => {
         table[team.id] = {...team}

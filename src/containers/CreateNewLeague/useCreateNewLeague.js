@@ -73,7 +73,7 @@ const [stage,setStage] = useState('initial')
             method: 'get',
             route: `/sports/teams/${leagueId}`
         })
-        return JSON.parse(res.body)
+        return res.body
       } catch (e) {
           console.log('problem')
           console.error(e)

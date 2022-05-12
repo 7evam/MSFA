@@ -38,7 +38,7 @@ function MonthlyPoints({roflYear, userId}) {
             method: "get",
             route: `/organizations/memberStandings/${currentOrganization.id}/${roflYear}`
           });
-          const body = JSON.parse(res.body)
+          const body = res.body
           setStandings(body)
     }
 

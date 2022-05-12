@@ -34,8 +34,6 @@ function useLogIn() {
       });
       if (res.statusCode === 200) {
         const userInfo = res.body;
-        console.log('here is user info')
-        console.log(userInfo)
         dispatch({
           type: "LOGIN",
           payload: {

@@ -32,7 +32,8 @@ function App(props) {
       route: `/sports/active`
     });
     
-    const parsedRes = JSON.parse(res.body)
+    // const parsedRes = JSON.parse(res.body)
+    const parsedRes = res.body
 
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",

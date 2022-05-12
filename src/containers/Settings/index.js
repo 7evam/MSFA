@@ -29,12 +29,12 @@ function Settings(props) {
         history.push('/create-new-league')
     }
 
-    const setNewCurrentOrg = async (orgId) => {
+    const setNewCurrentOrg = async (organizationId) => {
         setIsLoading(true)
         var res = await makeRequest({
             method: "patch",
             route: `/users/changeOrg/${currentOrganization.user_id}`,
-            data: {orgId}
+            data: {organizationId}
           });
           if(res.statusCode === 200){
               const organizations = JSON.parse(res.body)

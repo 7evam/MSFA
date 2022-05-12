@@ -59,12 +59,12 @@ function useStandings() {
     // }
 
     const fetchStandings = async () => {
-      
         var res = await makeRequest({
             method: "get",
             route: `/organizations/memberStandings/${currentOrganization.id}/${selectedRoflYear}`
           });
-          const body = JSON.parse(res.body)
+          
+          const body = res.body
           getInitialMonthAndYear(body)
           setStandings(body)
           // const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)

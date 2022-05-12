@@ -6,8 +6,6 @@ import { Switch, Route } from "react-router-dom";
 
 function RoflLeague(props) {
 
-    console.log("rendering rofleague")
-
   return (
      <Switch>
         <Route exact path="/rofleague" component={Standings} />

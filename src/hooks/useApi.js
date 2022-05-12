@@ -22,13 +22,11 @@ export default function useApi() {
         roflApi.defaults.headers.common['userToken'] = userToken
     }
 
-    const makeRequest = async ({method, route, data = null, continueLoading = false, suppressIsLoading = false}) => {
+    const makeRequest = async ({method, route, data = null, continueLoading = false, suppressIsLoading = false, abort=null}) => {
         if(!suppressIsLoading) setIsLoading(true)
         try {
-            return roflApi[method](route, data)
+            return roflApi[method](route, data, {signal: abort})
                 .then(res => {
-                    console.log("HERE is a truly raw res")
-                    console.log(res)
                     if(res.data?.statusCode){
                         return res.data 
                     } else {
@@ -42,7 +40,6 @@ export default function useApi() {
                     /**
                      * @TODO add logout on 401
                      */ 
-                    // console.log(e.response?.data)
                     const errorMessage = e.response?.data?.message ? e.response.data.message : e.response?.data ? e.response.data : 'Your request could not be completed'
                     toast.error(errorMessage)
                     throw e;

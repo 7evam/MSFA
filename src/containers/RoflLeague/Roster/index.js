@@ -28,12 +28,15 @@ function Roster(props) {
     const [memberInfo, setMemberInfo] = useState(null)
 
     useEffect(() => {
-        fetchInfo()
+      const abortController = new AbortController()
+      fetchOrgInfo(abortController)
+      fetchRoster(abortController)
+      return () => abortController.abort()
     }, []);
 
-    const fetchInfo = async () => {
-      await fetchOrgInfo()
-      await fetchRoster()
+    const fetchInfo = () => {
+      fetchOrgInfo()
+      fetchRoster()
     }
 
     useEffect(() => {
@@ -42,18 +45,23 @@ function Roster(props) {
         }
     }, [selectedRoflMonth]);
 
-    const fetchOrgInfo = async () => {
+    const fetchOrgInfo = async (abort) => {
       // TODO optimize this
       // store it in redux and check if it exists before adding
       try{
         var res = await makeRequest({
             method: "get",
             route: `organizations/summary/${currentOrganization.id}`,
-            continueLoading: true
+            continueLoading: true,
+            abort: abort
           });
-          const body = JSON.parse(res.body)
-          const member = body.members.find(mem => mem.user_id === Number(userId))
-          setMemberInfo(member)
+          if(res.statusCode == 200){
+            const body = res.body
+            const member = body.members.find(mem => mem.user_id === Number(userId))
+            setMemberInfo(member)
+          } else{
+            throw ("Unable to fetch org info")
+          }     
       } catch(e){
         console.log('problem')
         console.log('here is params')
@@ -62,13 +70,14 @@ function Roster(props) {
       }
     }
 
-    const fetchRoster = async () => {
+    const fetchRoster = async (abort) => {
         try{
             var res = await makeRequest({
                 method: "get",
-                route: `/users/roster/${userId}/${currentOrganization.id}/${roflYear}`
+                route: `/users/roster/${userId}/${currentOrganization.id}/${roflYear}`,
+                abort
               });
-              const roster = JSON.parse(res.body)
+              const roster = res.body
               setFullRoster(roster)
         } catch(e){
           console.log('problem')
@@ -87,9 +96,9 @@ function Roster(props) {
         ? 
         <p>loading...</p>
         :
-        fullRoster && fullRoster[`${selectedRoflMonth}-${roflYear}`] ?
+        fullRoster && memberInfo && fullRoster[`${selectedRoflMonth}-${roflYear}`] ?
         <>
-        <div><p>Roster for {memberInfo.team_name} managed by {memberInfo.name}</p></div>
+        <div><p>Roster for {memberInfo?.team_name} managed by {memberInfo.name}</p></div>
         <MonthlyPoints userId={userId} roflYear={roflYear}/>
         <MonthTicker
             roflMonth={selectedRoflMonth}

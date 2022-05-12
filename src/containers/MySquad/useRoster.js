@@ -39,8 +39,6 @@ function useRoster() {
         method: "get",
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
       });
-      console.log('here is res for roster')
-      console.log(res)
       const roster = res.body
       setRoster(roster);
       setOriginalRoster(JSON.parse(JSON.stringify(roster)));
@@ -168,7 +166,7 @@ function useRoster() {
           )
         );
       } else {
-        console.log("teams not swapable");
+        toast.error("Teams not swapable")
       }
       setSelectedSlot(null);
     } else {
@@ -201,8 +199,7 @@ function useRoster() {
           roster: updatedRoster
         }
       });
-
-      if (res.statusCode === 200 && JSON.parse(res.body).success === true) {
+      if (res.statusCode === 200 && res.body.success === true) {
         // JSON.parse(JSON.stringify()) creates a deep copy
         // setRoster(JSON.parse(JSON.stringify(roster)));
         setOriginalRoster(JSON.parse(JSON.stringify(roster)));
