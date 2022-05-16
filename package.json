@@ -46,6 +46,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack serve --mode=development",
+    "test-prod": "webpack serve --mode=production",
     "build:dev": "webpack --mode=development",
     "build:staging": "webpack --mode=production --env environment=staging",
     "clean": "rimraf node_modules package-lock.json yarn.lock"
