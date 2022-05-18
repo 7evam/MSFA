@@ -10,12 +10,14 @@ import TopBar from "./TopBar";
 import MySquad from "../containers/MySquad";
 import Dashboard from "../containers/Dashboard";
 import Roster from "../containers/Roster";
+import AddTeam from '../containers/AddTeam'
 import RoflLeague from "../containers/RoflLeague";
 import Scoring from '../containers/Scoring'
 
 import Settings from "../containers/Settings";
 
 import Loading from '../components/Loading'
+
 
 
 const Container = styled.div`
@@ -65,7 +67,7 @@ function App(props) {
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/scoring" component={Scoring}/>
         
-        {/* <Route exact path="/transactions" component={Transactions}/> */}
+        <Route exact path="/add-team" component={AddTeam}/>
       </Switch>
     </Container>
   );

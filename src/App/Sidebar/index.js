@@ -32,8 +32,8 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>Scoring</span>
           </CustomNavLink>
 
-          <CustomNavLink to="/transactions">
-            <span>Transactions</span>
+          <CustomNavLink to="/add-team">
+            <span>Add Team</span>
           </CustomNavLink>
         </NavGroup>
       </Nav>
