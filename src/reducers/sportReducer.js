@@ -18,6 +18,16 @@ function sportReducer(state=INITIAL_STATE, action){
                     }
                 }
             }
+        case "HYDRATE_SPORT_TEAMS":
+            return {
+                ...state,
+                sportTeams: action.payload.sportTeams
+            }
+        case "HYDRATE_ORG_MEMBERS":
+            return {
+                ...state,
+                orgMembers: action.payload.orgMembers
+            }
         default:
             return state
     }
