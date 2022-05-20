@@ -47,3 +47,11 @@ export const convertRealToRofl = () => {
             }
         }
 }
+
+export const shortenName = (name) => {
+    if(name.length >=26){
+        return name.substring(0,25) + '...'
+    } else {
+        return name
+    }
+}

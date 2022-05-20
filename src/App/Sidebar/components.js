@@ -12,6 +12,7 @@ export const NavGroup = styled.div`
 
 export const SideBar = styled.div`
   z-index: 100;
+  height: 100vh;
 `;
 
 export const Nav = styled.nav`

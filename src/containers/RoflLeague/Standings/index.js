@@ -5,24 +5,8 @@ import { convertMonthToReadable } from "../../../utils";
 import { useSelector } from "react-redux";
 import MonthTicker from "../../../components/MonthTicker";
 import Loading from "../../../components/Loading";
-
-const Container = styled.div``;
-const Td = styled.td`
-  padding: 12px;
-  &:hover {
-    font-weight: 700;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
-
-const YearContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-family: "Roboto", sans-serif;
-  font-size: 18px;
-`;
+import {Container, Td, Th, SlotRow, YearContainer, TitleRow} from './components'
+import {shortenName} from '../../../utils'
 
 function Standings(props) {
   const {
@@ -68,32 +52,32 @@ function Standings(props) {
             selectedRoflYear={selectedRoflYear}
           />
 
-          <tr>
-            <Td>
+          <TitleRow>
+            <Th>
               <strong>Rank</strong>
-            </Td>
-            <Td>
+            </Th>
+            <Th>
               <strong>Person Name</strong>
-            </Td>
-            <Td>
+            </Th>
+            <Th>
               <strong>Team Name</strong>
-            </Td>
-            <Td>
+            </Th>
+            <Th>
               <strong>Monthly Points</strong>
-            </Td>
-            <Td>
+            </Th>
+            <Th>
               <strong>Total points</strong>
-            </Td>
-          </tr>
+            </Th>
+          </TitleRow>
 
           {standings[`${roflMonth}-${selectedRoflYear}`].map((val, index) => (
-            <tr key={val.userId}>
+            <SlotRow key={val.userId}>
               <Td>{index + 1}</Td>
               <Td>{val.personName}</Td>
-              <Td><a onClick={() => goToSquad(val.userId)}>{val.teamName}</a></Td>
+              <Td><a onClick={() => goToSquad(val.userId)}>{shortenName(val.teamName)}</a></Td>
               <Td>{val.monthlyPoints}</Td>
               <Td>{val.cumulativePoints}</Td>
-            </tr>
+            </SlotRow>
           ))}
         </div>
       ) : (

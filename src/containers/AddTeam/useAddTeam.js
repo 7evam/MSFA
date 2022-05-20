@@ -7,6 +7,7 @@ import RosterComponent from '../../components/Roster'
 import Loading from "../../components/Loading";
 import useHydration from "../../hooks/useHydration";
 import {Container, League, LeagueSelector} from './components'
+import { toast } from "react-toastify";
 
 function useAddTeam() {
 
@@ -107,9 +108,12 @@ function useAddTeam() {
         setSelectedMember(userId)
     }
     
+    const handleAction = () => {
+        toast.success('Free agency coming soon I promise')
+    }
 
   return {
-    readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams
+    handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
   };
 }
 
