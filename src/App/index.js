@@ -18,7 +18,7 @@ import Settings from "../containers/Settings";
 
 import Loading from '../components/Loading'
 
-
+import RenderModal from './RenderModal'
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +26,7 @@ const Container = styled.div`
 
 function App(props) {
   const dispatch = useDispatch();
+
   const { makeRequest, isLoading } = useApi();
 
   const getActiveMonths = async () => {
@@ -69,6 +70,7 @@ function App(props) {
         
         <Route exact path="/add-team" component={AddTeam}/>
       </Switch>
+      <RenderModal/>
     </Container>
   );
 }

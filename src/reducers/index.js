@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer'
 import sportReducer from './sportReducer'
+import modalReducer from './modalReducer';
 import {removeState} from '../utils/localStorage'
 
   const combinedReducer = combineReducers({
       authReducer,
-      sportReducer
+      sportReducer,
+      modalReducer
   })
 
   const rootReducer = (state, action) => {

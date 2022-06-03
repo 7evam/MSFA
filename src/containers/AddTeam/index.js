@@ -11,8 +11,29 @@ import useAddTeam from "./useAddTeam";
 
 function AddTeam(props) {
 
-    const {handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
+    const {handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
 
+    const getMemberActionButton = (teamId) => {
+        if(Number(selectedMember) === Number(currentOrganization.user_id)){
+            return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
+        } else {
+            return <ActionButton onClick={handleAction}>{"Trade"}</ActionButton>
+        }
+    }
+
+    const getUnownedActionButton = (leagueId) => {
+        const claim = <ActionButton onClick={handleClaim}>{"Claim"}</ActionButton>
+        const add = <ActionButton onClick={handleAction}>{"Add"}</ActionButton>
+        // TOODO return claim if 3 days before end of real month or season start, add otherwise
+        if(!activeYears[2022][leagueId]) return claim
+        const currentRoflMonth = activeYears[2022][leagueId].roflMonth
+        if(currentDate.date < deadlines[2022][leagueId][currentRoflMonth].deadline){
+            return claim
+        } else {
+            return add
+        }
+        
+    }
 
   return (
     readyToRender ?
@@ -50,7 +71,9 @@ function AddTeam(props) {
                         <SlotRow key={el}>
                         <Td>{sportTeams[leagueId][teamId].city} {sportTeams[leagueId][teamId].name} </Td>
                         <Td>${currentRoster[el].val}</Td>
-                        <Td><ActionButton onClick={handleAction}>{selectedMember === currentOrganization.user_id ? "Drop" : "Trade"}</ActionButton></Td>
+                        <Td>
+                            {getMemberActionButton(currentRoster[el].teamId)}
+                        </Td>
                         {/* <button>{selectedMember === currentOrganization.user_id ? "Trade" : "Drop"}</button> */}
                         </SlotRow>
                         )
@@ -85,7 +108,7 @@ function AddTeam(props) {
           {unownedTeams[league].map(team => (
               <SlotRow key={team}>
                   <Td>{sportTeams[league][team].city} {sportTeams[league][team].name}</Td>
-                  <Td><ActionButton onClick={handleAction}>Add</ActionButton></Td>
+                  <Td>{getUnownedActionButton(league)}</Td>
               </SlotRow>
           ))}
  </Section>

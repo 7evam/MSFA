@@ -123,7 +123,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
 
   activeRoflMonths &&
     selectedRoflYear &&
-    activeRoflMonths[selectedRoflYear].forEach((month) => {
+    Object.keys(activeRoflMonths[selectedRoflYear]).forEach((month) => {
       isActiveTable[month.leagueId] = month.roflMonth;
     });
 

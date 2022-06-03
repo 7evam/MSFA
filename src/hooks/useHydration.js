@@ -86,6 +86,36 @@ export default function useHydration() {
         return table
     }
 
+    const hydrateDeadlines = async (abortController, roflYear) => {
+      setIsHydrating(true)
+      try{
+        var res = await makeRequest({
+            method: "get",
+            route: `sports/deadlines/${roflYear}`,
+            abort: abortController
+          });
+          if(res.statusCode == 200){
+            const body = res.body
+            dispatch({
+              type: "HYDRATE_DEADLINES",
+              payload: {
+                roflYear,
+                deadlines: body
+              }
+            });
+          } else{
+            throw ("Unable to fetch org members")
+          }     
+      } catch(e){
+        console.log('problem')
+        console.log('here is params')
+        console.log(currentOrganization.id)
+        console.error(e)
+      } finally {
+          setIsHydrating(false)
+      }
+    }
 
-   return { isHydrating, hydrateSportTeams, hydrateOrgMembers };
+
+   return { isHydrating, hydrateSportTeams, hydrateOrgMembers, hydrateDeadlines };
 }

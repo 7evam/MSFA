@@ -74,18 +74,18 @@ function useRoster() {
 
     // initiate active rofl months for all active years within org
     let activeRoflMonths = {};
-    activeYears.forEach((activeYear) => {
-      if (activeYearArray.includes(Object.keys(activeYear)[0])) {
+    Object.keys(activeYears).forEach(roflYear => {
+      if (activeYearArray.includes(roflYear)){
         activeRoflMonths = {
           ...activeRoflMonths,
-          ...activeYear
+          ...activeYears
         };
       }
     });
 
     // show the latest current rofl month
     let roflMonthToShow = 1;
-    activeRoflMonths[initialYear].forEach((activeLeague) => {
+    Object.keys(activeRoflMonths[initialYear]).forEach((activeLeague) => {
       if (activeLeague.roflMonth > roflMonthToShow) {
         roflMonthToShow = activeLeague.roflMonth;
       }

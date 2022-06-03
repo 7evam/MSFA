@@ -44,23 +44,21 @@ function useRoster() {
 
   const getAndSetActiveRoflMonths = () => {
     let result = {};
-    activeYears.forEach((yearObject) => {
-      const year = Object.keys(yearObject)[0];
-      result[year] = [];
-      yearObject[year].forEach((league) => {
-        result[year].push({
-          leagueId: league.leagueId,
-          roflMonth: league.roflMonth
+    Object.keys(activeYears).forEach(roflYear => {
+      result[roflYear] = [];
+      Object.keys(activeYears[year]).forEach((leagueId) => {
+        result[roflYear].push({
+          leagueId,
+          roflMonth: activeYears[roflYear][leagueId].roflMonth
         });
       });
     });
     setActiveRoflMonths(result);
     if (!roster) {
       const lowestMonth = getLowestRoflMonthOfYear(
-        Object.keys(activeYears[0])[0],
+        Object.keys(activeYears)[0],
         result
       );
-
       setRoflMonth(lowestMonth);
     }
   };

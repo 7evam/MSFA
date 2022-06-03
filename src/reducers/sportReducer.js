@@ -1,5 +1,10 @@
 const INITIAL_STATE = {
-    activeYears: null
+    activeYears: null,
+    currentDate: null,
+    playoffMonths: null,
+    sportTeams: null,
+    orgMembers: null,
+    deadlines: null
   }
 
 function sportReducer(state=INITIAL_STATE, action){
@@ -28,6 +33,13 @@ function sportReducer(state=INITIAL_STATE, action){
                 ...state,
                 orgMembers: action.payload.orgMembers
             }
+        case "HYDRATE_DEADLINES":
+            const newState = {...state}
+            if(!newState.deadlines){
+                newState.deadlines = {}
+            }
+            newState.deadlines[action.payload.roflYear] = action.payload.deadlines
+            return newState
         default:
             return state
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "@fontsource/open-sans";
 import useApi from "../../hooks/useApi";
@@ -11,14 +11,16 @@ import { toast } from "react-toastify";
 
 function useAddTeam() {
 
+    const dispatch = useDispatch()
+
     const { currentOrganization } = useSelector((state) => ({
         ...state.authReducer
       }));
     
       const {makeRequest, isLoading} = useApi()
-      const {isHydrating, hydrateSportTeams, hydrateOrgMembers} = useHydration()
+      const {isHydrating, hydrateSportTeams, hydrateOrgMembers, hydrateDeadlines} = useHydration()
     
-    const { activeYears, currentDate, sportTeams, orgMembers } = useSelector((state) => ({
+    const { activeYears, currentDate, sportTeams, orgMembers, deadlines } = useSelector((state) => ({
         ...state.sportReducer
     }));
     
@@ -28,11 +30,15 @@ function useAddTeam() {
     const [unownedTeams, setUnownedTeams] = useState(null)
     const [league, setLeague] = useState(1)
     const [readyToRender, setReadyToRender] = useState(false)
+    const [currentYear, setCurrentYear] = useState(2022)
     
     // Load page data
     useEffect(() => {
         const abortController = new AbortController()
         fetchRoster(2022)
+        if(!deadlines){
+            hydrateDeadlines(abortController, 2022)
+        }
         if(!orgMembers){
             hydrateOrgMembers(abortController)
         }
@@ -46,11 +52,10 @@ function useAddTeam() {
     }, []);
     
     useEffect(() => {
-        if(currentRoster && orgMembers && sportTeams && unownedTeams){
+        if(currentRoster && orgMembers && sportTeams && deadlines && unownedTeams){
             setReadyToRender(true)
         }
-    }, [currentRoster, orgMembers, sportTeams, unownedTeams]);
-    
+    }, [currentRoster, orgMembers, sportTeams, deadlines, unownedTeams]);
     
     useEffect(() => {
         calculateAndSetUnownedTeams()
@@ -112,8 +117,50 @@ function useAddTeam() {
         toast.success('Free agency coming soon I promise')
     }
 
+    const dropTeam = async (teamId) => {
+        console.log('here is sport teams')
+        console.log(sportTeams)
+        const approved = confirm(`are you sure you want to drop the ${sportTeams[String(teamId)[0]][teamId].city} ${sportTeams[String(teamId)[0]][teamId].name}`)
+        if(approved){
+            try {
+                var res = await makeRequest({
+                  method: "post",
+                  route: `users/dropTeam`,
+                  data: {
+                      userId: currentOrganization.user_id,
+                      teamId,
+                      organizationId: currentOrganization.id,
+                      roflYear: currentYear
+                  }
+                });
+                if(res === 'success'){
+
+                } else {
+                    toast.error('There was an issue dropping your team')
+                }
+                console.log('here is res')
+                console.log(res)
+              } catch (e) {
+                console.log("problem");
+                console.error(e);
+              }
+        } else {
+            toast.error('OK')
+        }
+    }
+
+    const handleClaim = () => {
+        console.log('handling claim')
+        dispatch({
+            type: "SHOW_MODAL",
+            payload: {
+              modalContent: "SUBMIT_BID",
+            }
+          });
+    }
+
   return {
-    handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
+    handleClaim, currentDate, activeYears, deadlines, handleAction, dropTeam, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
   };
 }
 

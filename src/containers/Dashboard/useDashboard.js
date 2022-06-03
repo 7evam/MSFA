@@ -22,8 +22,8 @@ function useDashboard() {
   const getAndSetActiveRoflYearsAndReturnSelectedYear = () => {
     let populatedActiveYears = [];
 
-    activeYears.forEach((year) => {
-      populatedActiveYears.push(Object.keys(year)[0]);
+    Object.keys(activeYears).forEach((year) => {
+      populatedActiveYears.push(year);
     });
     setActiveRoflYears(populatedActiveYears);
     setSelectedRoflYear(populatedActiveYears[0]);
@@ -34,25 +34,24 @@ function useDashboard() {
   const [activeRoflYears, setActiveRoflYears] = useState(null);
   const [selectedRoflYear, setSelectedRoflYear] = useState(null);
   const [roflMonth, setRoflMonth] = useState(null);
-  // this is an object like {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]} to help know which slots are locked
+  // this is an object like {2021: [{league_id: 3, roflMonth: 10}, {league_id: 4, roflMonth: 10}]} to help know which slots are locked
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
 
   const getAndSetActiveRoflMonths = () => {
     let result = {};
-    activeYears.forEach((yearObject) => {
-      const year = Object.keys(yearObject)[0];
-      result[year] = [];
-      yearObject[year].forEach((league) => {
-        result[year].push({
-          leagueId: league.leagueId,
-          roflMonth: league.roflMonth
+    Object.keys(activeYears).forEach(roflYear => {
+      result[roflYear] = [];
+      Object.keys(activeYears[year]).forEach((leagueId) => {
+        result[roflYear].push({
+          leagueId,
+          roflMonth: activeYears[roflYear][leagueId].roflMonth
         });
       });
     });
     setActiveRoflMonths(result);
     if (!roster) {
       const lowestMonth = getLowestRoflMonthOfYear(
-        Object.keys(activeYears[0])[0],
+        Object.keys(activeYears)[0],
         result
       );
       setRoflMonth(lowestMonth);
