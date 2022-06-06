@@ -155,6 +155,7 @@ function useAddTeam() {
             type: "SHOW_MODAL",
             payload: {
               modalContent: "SUBMIT_BID",
+              props: {roster: currentRoster}
             }
           });
     }

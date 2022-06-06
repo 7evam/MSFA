@@ -10,6 +10,12 @@ export const checkIfRostersAreEqual = (roster1, roster2) => {
     return value
 }
 
+export const convertDateObjToReadable = (date) => {
+    console.log('here is date')
+    console.log(date)
+    return `${new Date(date).toDateString()}`;
+}
+
 export const convertMonthToReadable = (month, year) => {
     year = Number(year)
     const months = {
@@ -31,7 +37,15 @@ export const convertMonthToReadable = (month, year) => {
     return months[month]
 }
 
-export const convertRealToRofl = () => {
+export const convertRoflMonthToReal = (roflMonth) => {
+    // only use this function for inactive leagues before they start!
+    return Number(roflMonth) + 3
+}
+
+export const convertRealToRofl = (realMonth, leagueId) => {
+    console.log('converting real to rofl')
+    console.log(realMonth)
+    console.log(leagueId)
         realMonth = Number(realMonth)
         leagueId = Number(leagueId)
         let res
@@ -40,9 +54,12 @@ export const convertRealToRofl = () => {
         } else if(leagueId === 2 || leagueId === 3 || leagueId === 4){
             if(realMonth < 7){
                 res = realMonth += 9
+                console.log('here isi res')
+                console.log(res)
                 return res
             } else {
                 res = realMonth -=3
+                console.log(res)
                 return res
             }
         }
