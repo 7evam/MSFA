@@ -31,11 +31,14 @@ function useAddTeam() {
     const [league, setLeague] = useState(1)
     const [readyToRender, setReadyToRender] = useState(false)
     const [currentYear, setCurrentYear] = useState(2022)
+    const [currentBids, setCurrentBids] = useState(null)
+    const [tab, setTab] = useState("rosters")
     
     // Load page data
     useEffect(() => {
         const abortController = new AbortController()
-        fetchRoster(2022)
+        fetchRoster(2022, abortController)
+        fetchCurrentBids(2022, abortController)
         if(!deadlines){
             hydrateDeadlines(abortController, 2022)
         }
@@ -52,10 +55,10 @@ function useAddTeam() {
     }, []);
     
     useEffect(() => {
-        if(currentRoster && orgMembers && sportTeams && deadlines && unownedTeams){
+        if(currentRoster && orgMembers && sportTeams && deadlines && unownedTeams && currentBids){
             setReadyToRender(true)
         }
-    }, [currentRoster, orgMembers, sportTeams, deadlines, unownedTeams]);
+    }, [currentRoster, orgMembers, sportTeams, deadlines, unownedTeams, currentBids]);
     
     useEffect(() => {
         calculateAndSetUnownedTeams()
@@ -87,6 +90,21 @@ function useAddTeam() {
             }
             setUnownedTeams(unownedTeams)
         }
+    }
+
+    const fetchCurrentBids = async (selectedRoflYear, abortController) => {
+        try {
+            var res = await makeRequest({
+              method: "get",
+              route: `users/bids/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`,
+              abort: abortController
+            });
+            const body = res.body
+            setCurrentBids(body)
+          } catch (e) {
+            console.log("problem");
+            console.error(e);
+          }
     }
     
     
@@ -149,19 +167,24 @@ function useAddTeam() {
         }
     }
 
-    const handleClaim = () => {
+    const handleClaim = (team) => {
         console.log('handling claim')
+        console.log("here is team")
+        console.log(team)
         dispatch({
             type: "SHOW_MODAL",
             payload: {
               modalContent: "SUBMIT_BID",
-              props: {roster: currentRoster}
+              props: {
+                    roster: currentRoster,
+                    selectedTeam: team
+                    }
             }
           });
     }
 
   return {
-    handleClaim, currentDate, activeYears, deadlines, handleAction, dropTeam, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
+    tab, setTab, currentBids, handleClaim, currentDate, activeYears, deadlines, handleAction, dropTeam, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
   };
 }
 

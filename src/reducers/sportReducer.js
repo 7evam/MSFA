@@ -4,11 +4,16 @@ const INITIAL_STATE = {
     playoffMonths: null,
     sportTeams: null,
     orgMembers: null,
-    deadlines: null
+    deadlines: null,
+    roflYear: 2022
   }
 
 function sportReducer(state=INITIAL_STATE, action){
     switch(action.type){
+        case "SET_ROFL_YEAR":
+            return {
+                roflYear: action.payload.roflYear
+            }
         case "SET_ACTIVE_YEARS_AND_MONTHS":
             return {
                 ...state,

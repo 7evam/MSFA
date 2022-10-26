@@ -25,6 +25,21 @@ export const League = styled.p`
   font-weight: ${(props) => (props.selected ? "700" : "400")};
 `;
 
+export const TabSelector = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const Tab = styled.p`
+  margin-right: 10px;
+  &:hover {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  font-weight: ${(props) => (props.selected ? "700" : "400")};
+`;
+
 // const red  = '#DA2929'
 export const Table = styled.table``;
 

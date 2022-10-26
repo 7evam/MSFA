@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import CurrencyInput from 'react-currency-input-field';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import useApi from '../../../hooks/useApi';
+import sportReducer from '../../../reducers/sportReducer';
+// import useApi from '../../hooks/useApi'
 
 const Input = styled.input`
 font-family: "helvetica neue", Helvetica, arial, sans-serif; 
@@ -31,9 +34,15 @@ function SubmitBid() {
         ...state.modalReducer
       }));
 
-      const {sportTeams} = useSelector((state) => ({
+    const { currentOrganization } = useSelector((state) => ({
+        ...state.authReducer
+    }));
+
+    const {sportTeams, roflYear, activeYears} = useSelector((state) => ({
         ...state.sportReducer
-      }))
+    }))
+
+    const { makeRequest, isLoading } = useApi();
 
     let initialCheckedTeams = {}
     Object.keys(props.roster).forEach(team => {
@@ -82,7 +91,6 @@ function SubmitBid() {
     const handleTeamClick = (team) => {
         const newCheckedTeams = {...checkedTeams}
         newCheckedTeams[team.teamId] = !newCheckedTeams[team.teamId]
-
         if(Object.values(newCheckedTeams).filter(val => val === true).length >3){
             toast.error('You can conditionally drop a maximum of 3 teams')
             return
@@ -94,6 +102,32 @@ function SubmitBid() {
             checkForBidError(bidValue, newMaxBid)
         }
     }
+
+    const handleSubmit = async () => {
+        console.log("info to submit")
+        console.log("teams to drop")
+        console.log(Object.keys(checkedTeams).filter(team => checkedTeams[team] === true))
+        console.log("teams to add")
+        console.log(props.selectedTeam)
+        const res = await makeRequest({
+            method: "post",
+            route: `/users/bids`,
+            data: {
+                organizationId: currentOrganization.id,
+                userId: currentOrganization.user_id,
+                teamId: props.selectedTeam,
+                roflYear,
+                bidValue, 
+                droppedTeams: Object.keys(checkedTeams).filter(team => checkedTeams[team] === true).map(team => Number(team)),
+                roflMonth: 7
+                // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
+            }
+        });
+    }
+
+    // TODO
+    // - fix priority calculator on backend
+    // - invalidate bids for repeat teams/months/years from same user 
     
     return(
     <div>
@@ -128,7 +162,7 @@ function SubmitBid() {
             allowNegativeValue={false}
           />
           <ErrorContainer>{errors.bid ? <p>{errors.bid}</p> : null}</ErrorContainer>
-          <button>Submit</button>
+          <button onClick={handleSubmit}>Submit</button>
     </div>
     )
 }
