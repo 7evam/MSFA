@@ -9,6 +9,7 @@ import useHydration from "../../hooks/useHydration";
 import {Section, Select, Label, Headline, ActionButton, Container, League, LeagueSelector, slotData, SlotRow, Th, TitleRow, Td, Table, CashContainer} from './components'
 import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
+import { toast } from "react-toastify";
 
 function UnownedTeams({league, setLeague, unownedTeams, handleClaim, handleAction}) {
 
@@ -17,7 +18,9 @@ function UnownedTeams({league, setLeague, unownedTeams, handleClaim, handleActio
     }));
 
     const getUnownedActionButton = (leagueId, team) => {
-        const claim = <ActionButton onClick={() => handleClaim(team)}>{"Claim"}</ActionButton>
+        // const claim = <ActionButton onClick={() => handleClaim(team)}>{"Claim"}</ActionButton>
+        const claim = <ActionButton onClick={() => toast('Feature coming soon')}>{"Claim"}</ActionButton>
+
         const add = <ActionButton onClick={handleAction}>{"Add"}</ActionButton>
         // TODO return claim if 3 days before end of real month or season start, add otherwise
         if(!activeYears[2022][leagueId]) return claim

@@ -9,6 +9,7 @@ import useHydration from "../../hooks/useHydration";
 import {Section, Select, Label, Headline, ActionButton, Container, League, LeagueSelector, slotData, SlotRow, Th, TitleRow, Td, Table, CashContainer} from './components'
 import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
+import { toast } from "react-toastify";
 
 function CurrentRosters({selectedMember, handleChange, currentRoster}) {
     
@@ -22,7 +23,8 @@ function CurrentRosters({selectedMember, handleChange, currentRoster}) {
 
     const getMemberActionButton = (teamId) => {
         if(Number(selectedMember) === Number(currentOrganization.user_id)){
-            return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
+            return <ActionButton onClick={() => toast("Feature coming soon")}>{"Drop"}</ActionButton>
+            // return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
         } else {
             return <ActionButton onClick={handleAction}>{"Trade"}</ActionButton>
         }
