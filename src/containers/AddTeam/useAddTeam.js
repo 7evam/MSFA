@@ -23,12 +23,28 @@ function useAddTeam() {
     const { activeYears, currentDate, sportTeams, orgMembers, deadlines } = useSelector((state) => ({
         ...state.sportReducer
     }));
+
+    const getFirstLeagueToShow = () => {
+        // this function calculates the first league to show for free agency 
+        // IE removes leagues that are inactive or are in their final (playoff) month
+        let activeYear = activeYears[2022]
+        let result = 1
+        if(!activeYear[1] || activeYear[1].playoffs === 1){
+            result ++
+        }
+        if(!activeYear[2] || activeYear[2].playoffs === 1){
+            result ++
+        } 
+        return result
+    }
     
     const [currentRoster, setCurrentRoster] = useState(null)
     const [fullRoster, setFullRoster] = useState(null)
     const [selectedMember, setSelectedMember] = useState(currentOrganization.user_id)
     const [unownedTeams, setUnownedTeams] = useState(null)
-    const [league, setLeague] = useState(1)
+    // TODO this should be first available league not 1
+    const [league, setLeague] = useState(null)
+    const [firstLeagueToShow, setFirstLeagueToShow] = useState(null)
     const [readyToRender, setReadyToRender] = useState(false)
     const [currentYear, setCurrentYear] = useState(2022)
     const [currentBids, setCurrentBids] = useState(null)
@@ -55,14 +71,22 @@ function useAddTeam() {
     }, []);
     
     useEffect(() => {
-        if(currentRoster && orgMembers && sportTeams && deadlines && unownedTeams && currentBids){
+        if(currentRoster && league && orgMembers && sportTeams && deadlines && unownedTeams && currentBids){
             setReadyToRender(true)
         }
-    }, [currentRoster, orgMembers, sportTeams, deadlines, unownedTeams, currentBids]);
+    }, [currentRoster, orgMembers, sportTeams, deadlines, unownedTeams, currentBids, league]);
     
     useEffect(() => {
         calculateAndSetUnownedTeams()
     }, [sportTeams, fullRoster]);
+
+    useEffect(() => {
+        if(activeYears && currentDate){
+            let first = getFirstLeagueToShow()
+            setLeague(first)
+            setFirstLeagueToShow(first)
+        }
+    }, [activeYears, currentDate]);
 
     const calculateAndSetUnownedTeams = () => {
         if(fullRoster && sportTeams && Object.keys(sportTeams).length){
@@ -184,7 +208,7 @@ function useAddTeam() {
     }
 
   return {
-    tab, setTab, currentBids, handleClaim, currentDate, activeYears, deadlines, handleAction, dropTeam, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
+    tab, firstLeagueToShow, setTab, currentBids, handleClaim, currentDate, activeYears, deadlines, handleAction, dropTeam, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization
   };
 }
 

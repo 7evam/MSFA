@@ -15,7 +15,7 @@ import CurrentBids from "./CurrentBids";
 
 function AddTeam(props) {
     
-    const {tab, setTab, currentBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
+    const {firstLeagueToShow, tab, setTab, currentBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
 
     // const getRoflDeadline = (league) => {
     //     activeYears[2022][league] 
@@ -31,7 +31,8 @@ function AddTeam(props) {
     
     if(currentDate && deadlines){
         console.log('test')
-        console.log(deadlines[2022][2][currentDate.realMonth].deadline)
+        console.log(deadlines)
+        // console.log(deadlines[2022][2][currentDate.realMonth].deadline)
     }
 
     const getContent = (tab) => {
@@ -39,7 +40,7 @@ function AddTeam(props) {
             case 'rosters':
                 return <CurrentRosters selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster}/>
             case 'unownedTeams':
-                return <UnownedTeams handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
+                return <UnownedTeams firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
             case 'bids':
                 return <CurrentBids currentBids={currentBids} sportTeams={sportTeams} />
         }

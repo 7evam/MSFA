@@ -11,17 +11,17 @@ import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import { toast } from "react-toastify";
 
-function UnownedTeams({league, setLeague, unownedTeams, handleClaim, handleAction}) {
+function UnownedTeams({league, setLeague, unownedTeams, handleClaim, handleAction, firstLeagueToShow}) {
 
     const { activeYears, currentDate, sportTeams, deadlines } = useSelector((state) => ({
         ...state.sportReducer
     }));
 
     const getUnownedActionButton = (leagueId, team) => {
-        // const claim = <ActionButton onClick={() => handleClaim(team)}>{"Claim"}</ActionButton>
-        const claim = <ActionButton onClick={() => toast('Feature coming soon')}>{"Claim"}</ActionButton>
+        const claim = <ActionButton onClick={() => handleClaim(team)}>{"Claim"}</ActionButton>
+        // const claim = <ActionButton onClick={() => toast('Feature coming soon')}>{"Claim"}</ActionButton>
 
-        const add = <ActionButton onClick={handleAction}>{"Add"}</ActionButton>
+        const add = <ActionButton onClick={() => handleClaim(team)}>{"Add"}</ActionButton>
         // TODO return claim if 3 days before end of real month or season start, add otherwise
         if(!activeYears[2022][leagueId]) return claim
         const currentRoflMonth = activeYears[2022][leagueId].roflMonth
@@ -35,12 +35,19 @@ function UnownedTeams({league, setLeague, unownedTeams, handleClaim, handleActio
   return (
     <div>
             <LeagueSelector>
+                {
+                firstLeagueToShow === 1 ?
                 <League selected={league == 1} onClick={() => setLeague(1)}>
                 MLB
-                </League>
-                <League selected={league == 2} onClick={() => setLeague(2)}>
+                </League> : null
+                }
+                {
+                    firstLeagueToShow <= 2 ?
+                    <League selected={league == 2} onClick={() => setLeague(2)}>
                 NFL
-                </League>
+                </League> : null
+                }
+                
                 <League selected={league == 3} onClick={() => setLeague(3)}>
                 NHL
                 </League>
