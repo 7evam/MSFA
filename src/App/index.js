@@ -37,6 +37,8 @@ function App(props) {
     
     // const parsedRes = JSON.parse(res.body)
     const parsedRes = res.body
+    console.log('here is parsed res of current date')
+    console.log(parsedRes)
 
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",

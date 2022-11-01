@@ -38,7 +38,7 @@ function SubmitBid() {
         ...state.authReducer
     }));
 
-    const {sportTeams, roflYear, activeYears} = useSelector((state) => ({
+    const {sportTeams, roflYear, activeYears, playoffMonths} = useSelector((state) => ({
         ...state.sportReducer
     }))
 
@@ -46,8 +46,6 @@ function SubmitBid() {
 
     let initialCheckedTeams = {}
     Object.keys(props.roster).forEach(team => {
-        // console.log('here is team in for each')
-        // console.log(props.roster[team])
         if(props.roster[team].teamId){
             initialCheckedTeams[props.roster[team].teamId] = false
         }
@@ -96,19 +94,17 @@ function SubmitBid() {
             return
         } else {
             let newMaxBid = maxBid
-            newCheckedTeams[team.teamId] === true ? newMaxBid += team.val : newMaxBid -= team.val
+            if(playoffMonths[2022][team.leagueId] - 1 !== activeYears[2022][team.leagueId].roflMonth){
+                newCheckedTeams[team.teamId] === true ? newMaxBid += team.val : newMaxBid -= team.val
+                setMaxBid(newMaxBid)
+            }
             setCheckedTeams(newCheckedTeams)
-            setMaxBid(newMaxBid)
             checkForBidError(bidValue, newMaxBid)
+            
         }
     }
 
     const handleSubmit = async () => {
-        console.log("info to submit")
-        console.log("teams to drop")
-        console.log(Object.keys(checkedTeams).filter(team => checkedTeams[team] === true))
-        console.log("teams to add")
-        console.log(props.selectedTeam)
         const res = await makeRequest({
             method: "post",
             route: `/users/bids`,
@@ -128,25 +124,31 @@ function SubmitBid() {
     // TODO
     // - fix priority calculator on backend
     // - invalidate bids for repeat teams/months/years from same user 
-    
     return(
     <div>
         <p>Submit Bid</p>
         <p>Choose team(s) to drops</p>
+        <p>Teams in their last month before the playoffs have no cash value when dropped</p>
         {
             Object.keys(props.roster).filter(key => key!=='cash').map(key => {
                 const team = props.roster[key]
-                return(
-                    team.teamId ?
-                <TeamRow>
-                    <p>{sportTeams[team.leagueId][team.teamId].city} {sportTeams[team.leagueId][team.teamId].name} (${team.val})</p>
-                    <input
-                        type="checkbox"
-                        checked={checkedTeams[team.teamId]}
-                        onChange={() => handleTeamClick(team)}
-                    />
-                </TeamRow> : null
-                )
+                // only return team if they are droppable (active league not in playoffs)
+                if(activeYears[2022][team.leagueId] && activeYears[2022][team.leagueId].playoffs === 1){
+                    return null
+                } else {
+                    return(
+                        team.teamId ?
+                    <TeamRow>
+                        <p>{sportTeams[team.leagueId][team.teamId].city} {sportTeams[team.leagueId][team.teamId].name} {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.val})`}</p>
+                        <input
+                            type="checkbox"
+                            checked={checkedTeams[team.teamId]}
+                            onChange={() => handleTeamClick(team)}
+                        />
+                    </TeamRow> : null
+                    )
+                }
+                
             })
         }
         <p>Max bid allowed</p>
