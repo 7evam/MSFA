@@ -95,6 +95,7 @@ function UnownedTeams({
               deadlines[2022][league][currentDate.realMonth - 4].deadline
             )}
       </p>
+      <p>Teams added for this league will be available on your roster starting RoFL month {activeYears[2022][league].roflMonth}</p>
       <TitleRow>
         <Th style={{ width: "200px" }}>Team</Th>
         <Th style={{ width: "70px" }}>Action</Th>

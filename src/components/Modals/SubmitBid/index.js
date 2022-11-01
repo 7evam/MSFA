@@ -105,6 +105,12 @@ function SubmitBid() {
     }
 
     const handleSubmit = async () => {
+        console.log('here is bidValue')
+        console.log(bidValue)
+        if(bidValue <= 0){
+            toast.error("Bid Value must be at least $1")
+            return
+        } 
         const res = await makeRequest({
             method: "post",
             route: `/users/bids`,
@@ -133,7 +139,11 @@ function SubmitBid() {
             Object.keys(props.roster).filter(key => key!=='cash').map(key => {
                 const team = props.roster[key]
                 // only return team if they are droppable (active league not in playoffs)
-                if(activeYears[2022][team.leagueId] && activeYears[2022][team.leagueId].playoffs === 1){
+                if(
+                    activeYears[2022][team.leagueId] && activeYears[2022][team.leagueId].playoffs === 1
+                    ||
+                    activeYears[2022][team.leagueId].roflMonth !== activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth
+                    ){
                     return null
                 } else {
                     return(
