@@ -38,7 +38,9 @@ const ScrollMenuButton = styled.a`
   cursor: pointer;
 `;
 
-function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay}) {
+function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay, onlyShownMonths}) {
+  console.log('here is only shown months')
+  console.log(onlyShownMonths)
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
@@ -79,7 +81,8 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
     let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
     let months = []
     for(let i=0;i<finalMonth;i++){
-        months.push(allMonths[i])
+        // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
+        if(onlyShownMonths ? onlyShownMonths.includes(allMonths[i].number) : true) months.push(allMonths[i])
     }
     return months
   };

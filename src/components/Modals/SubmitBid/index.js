@@ -4,6 +4,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../../hooks/useApi';
+import { useDispatch } from 'react-redux';
 import sportReducer from '../../../reducers/sportReducer';
 // import useApi from '../../hooks/useApi'
 
@@ -29,6 +30,7 @@ const ErrorContainer = styled.div`
 `
 
 function SubmitBid() {
+    const dispatch = useDispatch();
 
     const { props } = useSelector((state) => ({
         ...state.modalReducer
@@ -109,6 +111,14 @@ function SubmitBid() {
                 // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
             }
         });
+        if(res.statusCode === 201){
+            toast.success('Request submitted successfully')
+            dispatch({
+                type: "CLOSE_MODAL",
+              });
+        } else {
+            toast.error("There was an error submitting your request")
+        }
     }
 
     let teamCountByLeague= {

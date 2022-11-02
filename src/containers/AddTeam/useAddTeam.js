@@ -59,7 +59,7 @@ function useAddTeam() {
   const [firstLeagueToShow, setFirstLeagueToShow] = useState(null);
   const [readyToRender, setReadyToRender] = useState(false);
   const [currentYear, setCurrentYear] = useState(2022);
-  const [currentBids, setCurrentBids] = useState(null);
+  const [allBids, setAllBids] = useState(null);
   const [tab, setTab] = useState("rosters");
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
 
@@ -67,7 +67,7 @@ function useAddTeam() {
   useEffect(() => {
     const abortController = new AbortController();
     fetchRoster(2022, abortController);
-    fetchCurrentBids(2022, abortController);
+    fetchAllBids(2022, abortController);
     if (!deadlines) {
       hydrateDeadlines(abortController, 2022);
     }
@@ -91,7 +91,7 @@ function useAddTeam() {
       sportTeams &&
       deadlines &&
       unownedTeams &&
-      currentBids
+      allBids
     ) {
       setReadyToRender(true);
     }
@@ -101,7 +101,7 @@ function useAddTeam() {
     sportTeams,
     deadlines,
     unownedTeams,
-    currentBids,
+    allBids,
     league
   ]);
 
@@ -163,7 +163,7 @@ function useAddTeam() {
     }
   };
 
-  const fetchCurrentBids = async (selectedRoflYear, abortController) => {
+  const fetchAllBids = async (selectedRoflYear, abortController) => {
     try {
       var res = await makeRequest({
         method: "get",
@@ -171,7 +171,15 @@ function useAddTeam() {
         abort: abortController
       });
       const body = res.body;
-      setCurrentBids(body);
+      const bidTable = {}
+      body.forEach(bid => {
+        if(bidTable[bid.rofl_month]){
+            bidTable[bid.rofl_month].push(bid)
+        } else {
+            bidTable[bid.rofl_month] = [bid]
+        }
+      })
+      setAllBids(bidTable);
     } catch (e) {
       console.log("problem");
       console.error(e);
@@ -259,7 +267,7 @@ function useAddTeam() {
     tab,
     firstLeagueToShow,
     setTab,
-    currentBids,
+    allBids,
     handleClaim,
     currentDate,
     activeYears,
