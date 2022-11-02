@@ -242,22 +242,17 @@ function useAddTeam() {
 
   const handleClaim = (team) => {
     const leagueId = Number(String(team)[0]);
-    if (teamCountByLeague[leagueId] < 3) {
       dispatch({
         type: "SHOW_MODAL",
         payload: {
           modalContent: "SUBMIT_BID",
           props: {
             roster: currentRoster,
-            selectedTeam: team
+            selectedTeam: team,
+            currentRoster
           }
         }
       });
-    } else {
-      toast.error(
-        "You may not add this team since you already own 3 teams from this league"
-      );
-    }
   };
 
   return {

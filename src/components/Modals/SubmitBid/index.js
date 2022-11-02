@@ -51,25 +51,12 @@ function SubmitBid() {
         }
     })
 
-
     const [bidValue, setBidValue] = useState(null)
     const [maxBid, setMaxBid] = useState(props.roster.cash)
     const [checkedTeams, setCheckedTeams] = useState(initialCheckedTeams)
     const [errors, setErrors] = useState({
         bid: null
     })
-
-    // useEffect(() => {
-    //     console.log('using effect')
-    //     let newErrors = errors
-    //     if(bidValue > maxBid){
-    //         console.log('error')
-    //         newErrors.bid = "Your bid is too high"
-    //     } else {
-    //         newErrors.bid = null
-    //     }
-    //     setErrors(newErrors)
-    // }, [bidValue, maxBid]);
 
     const checkForBidError = (bid, maxBid) => {
         let newErrors = errors
@@ -100,13 +87,10 @@ function SubmitBid() {
             }
             setCheckedTeams(newCheckedTeams)
             checkForBidError(bidValue, newMaxBid)
-            
         }
     }
 
     const handleSubmit = async () => {
-        console.log('here is bidValue')
-        console.log(bidValue)
         if(bidValue <= 0){
             toast.error("Bid Value must be at least $1")
             return
@@ -121,11 +105,24 @@ function SubmitBid() {
                 roflYear,
                 bidValue, 
                 droppedTeams: Object.keys(checkedTeams).filter(team => checkedTeams[team] === true).map(team => Number(team)),
-                roflMonth: 7
+                roflMonth: activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
                 // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
             }
         });
     }
+
+    let teamCountByLeague= {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      };
+      Object.keys(props.currentRoster)
+        .filter((key) => key !== "cash")
+        .forEach((team) => {
+          let leagueId = props.currentRoster[team].leagueId;
+          teamCountByLeague[leagueId]++;
+        });
 
     // TODO
     // - fix priority calculator on backend
@@ -154,6 +151,7 @@ function SubmitBid() {
                             type="checkbox"
                             checked={checkedTeams[team.teamId]}
                             onChange={() => handleTeamClick(team)}
+                            disabled={teamCountByLeague[Number(String(props.selectedTeam)[0])] >= 3 && Number(String(props.selectedTeam)[0]) !== team.leagueId}
                         />
                     </TeamRow> : null
                     )
