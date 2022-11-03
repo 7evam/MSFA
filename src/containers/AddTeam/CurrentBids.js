@@ -11,6 +11,7 @@ import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import MonthTicker from "../../components/MonthTicker";
 import YearSelector from "../../components/YearSelector";
+import { toast } from "react-toastify";
 
 const MonthContainer = styled.div`
   width: 100%;
@@ -28,19 +29,46 @@ const YearContainer = styled.div`
   font-size: 18px;
 `;
 
-function CurrentBids({allBids, sportTeams, currentOrganization}) {
-    console.log('here is current bids')
-    console.log(allBids)
+function CurrentBids({allBids, sportTeams, currentOrganization, reFetchBids}) {
+    const { makeRequest, isLoading } = useApi();
 
     const [selectedRoflYear, setSelectedRoflYear] = useState(2022)
     // default value should be latest month in allBids table
     const [roflMonth, setRoflMonth] = useState(Math.max(...Object.keys(allBids)))
+    const [currentMonthIncludesCurrentBid, setCurrentMonthIncludesCurrentBid] = useState(false)
+
+    useEffect(() => {
+        if(roflMonth){
+            let newValue = false
+            allBids[roflMonth].forEach(bid => {if(bid.current === 1) newValue = true})
+            setCurrentMonthIncludesCurrentBid(newValue)
+        }
+      }, [roflMonth]);
 
     let activeYearArray = Object.keys(currentOrganization.activeYears)
 
     const leagueFromTeamId = (team) => {
         return Number(String(team)[0])
     }
+
+    const deleteBid = async (bidId) => {
+        try {
+          var res = await makeRequest({
+            method: "delete",
+            route: `users/bids/${bidId}`
+          });
+          const body = res.body;
+        //   if success show message
+          if(body === "success"){
+            toast.success("Sucessfully deleted bid")
+          }
+        // then refetch bids
+          await reFetchBids()
+        } catch (e) {
+          console.log("problem");
+          console.error(e);
+        }
+      };
     
   return (
       <div>
@@ -71,6 +99,7 @@ function CurrentBids({allBids, sportTeams, currentOrganization}) {
         <Th style={{ width: "70px" }}>Value</Th>
         <Th style={{ width: "200px" }}>Teams Dropped</Th>
         <Th style={{ width: "70px" }}>Priority</Th>
+        {currentMonthIncludesCurrentBid ? <Th style={{ width: "70px" }}>Delete Bid</Th>: null}
       </TitleRow>
       {allBids[roflMonth].map(bid => 
         <SlotRow key={bid.team_id}>
@@ -84,6 +113,7 @@ function CurrentBids({allBids, sportTeams, currentOrganization}) {
           {bid.dropped_team_3 ? `, ${sportTeams[leagueFromTeamId(bid.dropped_team_3)][bid.dropped_team_3].city} ${sportTeams[leagueFromTeamId(bid.dropped_team_3)][bid.dropped_team_3].name}` : null}
           </Td>
           <Td>{bid.priority}</Td>
+          {currentMonthIncludesCurrentBid ? <Td>{bid.current ? <button onClick={() => deleteBid(bid.id)}>Delete</button> : null}</Td> : null}
         </SlotRow>
       )}
 

@@ -15,7 +15,7 @@ import CurrentBids from "./CurrentBids";
 
 function AddTeam(props) {
     
-    const {firstLeagueToShow, tab, setTab, allBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
+    const {reFetchBids, firstLeagueToShow, tab, setTab, allBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
 
     // const getRoflDeadline = (league) => {
     //     activeYears[2022][league] 
@@ -42,7 +42,7 @@ function AddTeam(props) {
             case 'unownedTeams':
                 return <UnownedTeams firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
             case 'bids':
-                return <CurrentBids currentOrganization={currentOrganization} allBids={allBids} sportTeams={sportTeams} />
+                return <CurrentBids reFetchBids={reFetchBids} currentOrganization={currentOrganization} allBids={allBids} sportTeams={sportTeams} />
         }
     }
     

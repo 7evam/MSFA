@@ -16,6 +16,10 @@ function useAddTeam() {
     ...state.authReducer
   }));
 
+  const {modalContent} = useSelector((state) => ({
+    ...state.modalReducer
+  }))
+
   const { makeRequest, isLoading } = useApi();
   const {
     isHydrating,
@@ -61,6 +65,7 @@ function useAddTeam() {
   const [currentYear, setCurrentYear] = useState(2022);
   const [allBids, setAllBids] = useState(null);
   const [tab, setTab] = useState("rosters");
+  const [modalHasBeenUsed, setModalHasBeenUsed] = useState(false)
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
 
   // Load page data
@@ -82,6 +87,12 @@ function useAddTeam() {
 
     return () => abortController.abort();
   }, []);
+
+  const reFetchBids = async () => {
+    const abortController = new AbortController();
+    fetchAllBids(2022, abortController)
+    return () => abortController.abort();
+  }
 
   useEffect(() => {
     if (
@@ -126,6 +137,16 @@ function useAddTeam() {
   useEffect(() => {
     calculateAndSetUnownedTeams();
   }, [sportTeams, fullRoster]);
+
+//   update bids only when the modal has been closed
+  useEffect(() => {
+    if(modalHasBeenUsed && !modalContent){
+        reFetchBids()
+        setModalHasBeenUsed(false)
+    } else if(!modalHasBeenUsed && modalContent){
+        setModalHasBeenUsed(true)
+    }
+  }, [modalContent]);
 
   useEffect(() => {
     if (activeYears && currentDate) {
@@ -214,8 +235,6 @@ function useAddTeam() {
   };
 
   const dropTeam = async (teamId) => {
-    console.log("here is sport teams");
-    console.log(sportTeams);
     const approved = confirm(
       `are you sure you want to drop the ${
         sportTeams[String(teamId)[0]][teamId].city
@@ -283,7 +302,8 @@ function useAddTeam() {
     league,
     setLeague,
     unownedTeams,
-    currentOrganization
+    currentOrganization,
+    reFetchBids
   };
 }
 
