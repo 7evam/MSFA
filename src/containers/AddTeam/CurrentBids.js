@@ -161,12 +161,12 @@ function CurrentBids({
     setAllBids(newBids)
 }
 
-const col1width = '8%'
-const col2width = '34%'
-const col3width = '8%'
-const col4width = '8%'
-const col5width = '34%'
-const col6width = '8%'
+const col1width = '40px'
+const col2width = '150px'
+const col3width = '50px'
+const col4width = '50px'
+const col5width = '150px'
+const col6width = '60px'
 
     return (
       <div>
@@ -194,14 +194,14 @@ const col6width = '8%'
 
         <TitleRow>
         {currentMonthIncludesCurrentBid ? (
-            <Th style={{ width: col1width}}>Move</Th>
+            <Th style={{ minWidth: col1width}}>Move</Th>
           ) : null}
-          <Th style={{ width: col2width}}>Team</Th>
-          <Th style={{ width: col3width}}>Priority</Th>
-          <Th style={{ width: col4width}}>Value</Th>
-          <Th style={{ width: col5width}}>Teams Dropped</Th>
+          <Th style={{ minWidth: col2width}}>Team</Th>
+          <Th style={{ minWidth: col3width}}>Priority</Th>
+          <Th style={{ minWidth: col4width}}>Value</Th>
+          <Th style={{ minWidth: col5width}}>Teams Dropped</Th>
           {currentMonthIncludesCurrentBid ? (
-            <Th style={{ width: col6width}}>Delete</Th>
+            <Th style={{ minWidth: col6width}}>Delete</Th>
           ) : null}
         </TitleRow>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -225,9 +225,9 @@ const col6width = '8%'
                         //   )}
                       >
                         {currentMonthIncludesCurrentBid ? (
-                        <Td style={{ width: col1width}}>{"   "}</Td>
+                        <Td style={{ minWidth: col1width, textAlign: 'center', fontSize: '32px'}}>{"≡"}</Td>
                     ) : null}
-                        <Td style={{ width: col2width}}>
+                        <Td style={{ minWidth: col2width}}>
                           {
                             sportTeams[leagueFromTeamId(bid.team_id)][
                               bid.team_id
@@ -239,9 +239,9 @@ const col6width = '8%'
                             ].name
                           }
                         </Td>
-                        <Td style={{ width: col3width}}>{bid.priority}</Td>
-                        <Td style={{ width: col4width}}>${bid.bid_value}</Td>
-                        <Td style={{ width: col5width}}>
+                        <Td style={{ minWidth: col3width}}>{bid.priority}</Td>
+                        <Td style={{ minWidth: col4width}}>${bid.bid_value}</Td>
+                        <Td style={{ minWidth: col5width}}>
                           {bid.dropped_team_1
                             ? `${
                                 sportTeams[
@@ -278,7 +278,7 @@ const col6width = '8%'
                         </Td>
                         
                         {currentMonthIncludesCurrentBid ? (
-                          <Td style={{ width: col6width}}>
+                          <Td style={{ minWidth: col6width}}>
                             {bid.current ? (
                               <button onClick={() => deleteBid(bid.id)}>
                                 Delete
