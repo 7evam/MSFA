@@ -3,15 +3,32 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "@fontsource/open-sans";
 import useApi from "../../hooks/useApi";
-import RosterComponent from '../../components/Roster'
+import RosterComponent from "../../components/Roster";
 import Loading from "../../components/Loading";
 import useHydration from "../../hooks/useHydration";
-import {Section, Select, Label, Headline, ActionButton, Container, League, LeagueSelector, slotData, SlotRow, Th, TitleRow, Td, Table, CashContainer} from './components'
+import {
+  Section,
+  Select,
+  Label,
+  Headline,
+  ActionButton,
+  Container,
+  League,
+  LeagueSelector,
+  slotData,
+  SlotRow,
+  Th,
+  TitleRow,
+  Td,
+  Table,
+  CashContainer
+} from "./components";
 import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import MonthTicker from "../../components/MonthTicker";
 import YearSelector from "../../components/YearSelector";
 import { toast } from "react-toastify";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const MonthContainer = styled.div`
   width: 100%;
@@ -29,125 +46,258 @@ const YearContainer = styled.div`
   font-size: 18px;
 `;
 
-function CurrentBids({allBids, sportTeams, currentOrganization, reFetchBids}) {
-    const { makeRequest, isLoading } = useApi();
+function CurrentBids({
+  allBids,
+  setAllBids,
+  sportTeams,
+  currentOrganization,
+  reFetchBids,
+  originalBids
+}) {
+  const { makeRequest, isLoading } = useApi();
 
-    const [selectedRoflYear, setSelectedRoflYear] = useState(2022)
-    // default value should be latest month in allBids table
-    const [roflMonth, setRoflMonth] = useState(Math.max(...Object.keys(allBids)))
-    const [currentMonthIncludesCurrentBid, setCurrentMonthIncludesCurrentBid] = useState(false)
+  const [selectedRoflYear, setSelectedRoflYear] = useState(2022);
+  // default value should be latest month in allBids table
+  const [roflMonth, setRoflMonth] = useState(Math.max(...Object.keys(allBids)));
+  const [
+    currentMonthIncludesCurrentBid,
+    setCurrentMonthIncludesCurrentBid
+  ] = useState(false);
+  const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false)
 
-    useEffect(() => {
-        if(roflMonth){
-            let newValue = false
-            allBids[roflMonth].forEach(bid => {if(bid.current === 1) newValue = true})
-            setCurrentMonthIncludesCurrentBid(newValue)
+
+  useEffect(() => {
+    if (roflMonth) {
+      let newValue = false;
+      allBids[roflMonth].forEach((bid) => {
+        if (bid.current === 1) newValue = true;
+      });
+      setCurrentMonthIncludesCurrentBid(newValue);
+    }
+  }, [roflMonth]);
+
+  let activeYearArray = Object.keys(currentOrganization.activeYears);
+
+  const sleep = async (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const saveRoster = async () => {
+    try{
+        var res = await makeRequest({
+            method: "patch",
+            route: `users/bids`,
+            data: {bids: allBids[roflMonth]}
+        })
+        const body = res.body
+        if(body === 'success'){
+            toast.success('Sucessfully changed bids')
+            setHavePrioritiesChanged(false)
+            // sleep is necessary to fetch correct data 
+            // yeah, theres probably a better way
+            await sleep(300)
+            await reFetchBids()
         }
-      }, [roflMonth]);
+    } catch (e) {
+        console.log('problem')
+        console.error(e)
+    }
+  }
 
-    let activeYearArray = Object.keys(currentOrganization.activeYears)
+  const leagueFromTeamId = (team) => {
+    return Number(String(team)[0]);
+  };
 
-    const leagueFromTeamId = (team) => {
-        return Number(String(team)[0])
+  const deleteBid = async (bidId) => {
+    try {
+      var res = await makeRequest({
+        method: "delete",
+        route: `users/bids/${bidId}`
+      });
+      const body = res.body;
+      //   if success show message
+      if (body === "success") {
+        toast.success("Sucessfully deleted bid");
+      }
+      // then refetch bids
+      await reFetchBids();
+    } catch (e) {
+      console.log("problem");
+      console.error(e);
+    }
+  };
+
+  const reorder = (list, startIndex, endIndex) => {
+
+    const result = Array.from(list)
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+
+    for(let i=0;i<result.length;i++){
+        result[i].priority = i+1
     }
 
-    const deleteBid = async (bidId) => {
-        try {
-          var res = await makeRequest({
-            method: "delete",
-            route: `users/bids/${bidId}`
-          });
-          const body = res.body;
-        //   if success show message
-          if(body === "success"){
-            toast.success("Sucessfully deleted bid")
-          }
-        // then refetch bids
-          await reFetchBids()
-        } catch (e) {
-          console.log("problem");
-          console.error(e);
-        }
-      };
-    
-  return (
-      <div>
-        {activeYearArray.length === 2 ? (
-            <YearSelector
-              activeYearArray={activeYearArray}
-              setSelectedRoflYear={setSelectedRoflYear}
-              selectedRoflYear={selectedRoflYear}
-            />
-          ) : (
-            <YearContainer>
-              <p>RoFL Year: {selectedRoflYear}</p>
-            </YearContainer>
-          )}
+    return result
+  }
 
-          <MonthTicker
-            roflMonth={roflMonth}
-            setRoflMonth={setRoflMonth}
-            selectedRoflYear={selectedRoflYear}
-            onlyShownMonths={Object.keys(allBids).map(n => Number(n))}
-          />
-          <MonthContainer>
-            <p>RoFL Month: {roflMonth}</p>
-          </MonthContainer>
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
 
-          <TitleRow>
-        <Th style={{ width: "200px" }}>Team</Th>
-        <Th style={{ width: "70px" }}>Value</Th>
-        <Th style={{ width: "200px" }}>Teams Dropped</Th>
-        <Th style={{ width: "70px" }}>Priority</Th>
-        {currentMonthIncludesCurrentBid ? <Th style={{ width: "70px" }}>Delete Bid</Th>: null}
-      </TitleRow>
-      {allBids[roflMonth].map(bid => 
-        <SlotRow key={bid.team_id}>
-          <Td>
-            {sportTeams[leagueFromTeamId(bid.team_id)][bid.team_id].city} {sportTeams[leagueFromTeamId(bid.team_id)][bid.team_id].name}
-          </Td>
-          <Td>${bid.bid_value}</Td>
-          <Td>
-          {bid.dropped_team_1 ? `${sportTeams[leagueFromTeamId(bid.dropped_team_1)][bid.dropped_team_1].city} ${sportTeams[leagueFromTeamId(bid.dropped_team_1)][bid.dropped_team_1].name}` : 'None'}
-          {bid.dropped_team_2 ? `, ${sportTeams[leagueFromTeamId(bid.dropped_team_2)][bid.dropped_team_2].city} ${sportTeams[leagueFromTeamId(bid.dropped_team_2)][bid.dropped_team_2].name}` : null}
-          {bid.dropped_team_3 ? `, ${sportTeams[leagueFromTeamId(bid.dropped_team_3)][bid.dropped_team_3].city} ${sportTeams[leagueFromTeamId(bid.dropped_team_3)][bid.dropped_team_3].name}` : null}
-          </Td>
-          <Td>{bid.priority}</Td>
-          {currentMonthIncludesCurrentBid ? <Td>{bid.current ? <button onClick={() => deleteBid(bid.id)}>Delete</button> : null}</Td> : null}
-        </SlotRow>
-      )}
-
-</div>
-  );
+    const newMonthBids = reorder(
+        allBids[roflMonth],
+        result.source.index,
+        result.destination.index
+    )
+    const newBids = allBids
+    newBids[roflMonth] = newMonthBids
+    if(originalBids !== JSON.stringify(newBids)){
+        setHavePrioritiesChanged(true)
+    } else {
+        setHavePrioritiesChanged(false)
+    }
+    setAllBids(newBids)
 }
 
-export default CurrentBids;
+const col1width = '8%'
+const col2width = '34%'
+const col3width = '8%'
+const col4width = '8%'
+const col5width = '34%'
+const col6width = '8%'
 
-// {
-//     currentBids.map(bid => {
-//         let teamsForDrop = []
-//         teamsForDrop.push(bid.dropped_team_1, bid.dropped_team_2, bid.dropped_team_3)
-//         return(
-//         <div key={bid.id} style={{border: '1px solid black'}}>
-//             <p>Priority: {bid.priority}</p>
-//             <p>Team: {sportTeams[String(bid.team_id)[0]][bid.team_id].city} {sportTeams[String(bid.team_id)[0]][bid.team_id].name}</p>
-//             <p>Value: {bid.bid_value}</p>
-//             {
-//                 !teamsForDrop[0] 
-//                 ? 
-//                 <p>No teams will be conditionally dropped for this transaction</p>
-//                 : 
-//                 <>
-//                     <p>If this bid is successful the following teams will be conditionally dropped:</p> 
-//                     <ul>
-//                         {<li>{sportTeams[String(teamsForDrop[0])[0]][teamsForDrop[0]].city} {sportTeams[String(teamsForDrop[0])[0]][teamsForDrop[0]].name}</li>}
-//                         {teamsForDrop[1] ? <li>{sportTeams[String(teamsForDrop[1])[0]][teamsForDrop[1]].city} {sportTeams[String(teamsForDrop[1])[0]][teamsForDrop[1]].name}</li> : null }
-//                         {teamsForDrop[2] ? <li>{sportTeams[String(teamsForDrop[2])[0]][teamsForDrop[2]].city} {sportTeams[String(teamsForDrop[2])[0]][teamsForDrop[2]].name}</li> : null }
+    return (
+      <div>
+        {activeYearArray.length === 2 ? (
+          <YearSelector
+            activeYearArray={activeYearArray}
+            setSelectedRoflYear={setSelectedRoflYear}
+            selectedRoflYear={selectedRoflYear}
+          />
+        ) : (
+          <YearContainer>
+            <p>RoFL Year: {selectedRoflYear}</p>
+          </YearContainer>
+        )}
+
+        <MonthTicker
+          roflMonth={roflMonth}
+          setRoflMonth={setRoflMonth}
+          selectedRoflYear={selectedRoflYear}
+          onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+        />
+        <MonthContainer>
+          <p>RoFL Month: {roflMonth}</p>
+        </MonthContainer>
+
+        <TitleRow>
+        {currentMonthIncludesCurrentBid ? (
+            <Th style={{ width: col1width}}>Move</Th>
+          ) : null}
+          <Th style={{ width: col2width}}>Team</Th>
+          <Th style={{ width: col3width}}>Priority</Th>
+          <Th style={{ width: col4width}}>Value</Th>
+          <Th style={{ width: col5width}}>Teams Dropped</Th>
+          {currentMonthIncludesCurrentBid ? (
+            <Th style={{ width: col6width}}>Delete</Th>
+          ) : null}
+        </TitleRow>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                //   style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {allBids[roflMonth].map((bid, index) => (
+                  <Draggable key={bid.id} draggableId={String(bid.id)} index={index}>
+                    {(provided, snapshot) => (
+                      <SlotRow
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        //   style={getItemStyle(
+                        //     snapshot.isDragging,
+                        //     provided.draggableProps.style
+                        //   )}
+                      >
+                        {currentMonthIncludesCurrentBid ? (
+                        <Td style={{ width: col1width}}>{"   "}</Td>
+                    ) : null}
+                        <Td style={{ width: col2width}}>
+                          {
+                            sportTeams[leagueFromTeamId(bid.team_id)][
+                              bid.team_id
+                            ].city
+                          }{" "}
+                          {
+                            sportTeams[leagueFromTeamId(bid.team_id)][
+                              bid.team_id
+                            ].name
+                          }
+                        </Td>
+                        <Td style={{ width: col3width}}>{bid.priority}</Td>
+                        <Td style={{ width: col4width}}>${bid.bid_value}</Td>
+                        <Td style={{ width: col5width}}>
+                          {bid.dropped_team_1
+                            ? `${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_1)
+                                ][bid.dropped_team_1].city
+                              } ${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_1)
+                                ][bid.dropped_team_1].name
+                              }`
+                            : "None"}
+                          {bid.dropped_team_2
+                            ? `, ${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_2)
+                                ][bid.dropped_team_2].city
+                              } ${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_2)
+                                ][bid.dropped_team_2].name
+                              }`
+                            : null}
+                          {bid.dropped_team_3
+                            ? `, ${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_3)
+                                ][bid.dropped_team_3].city
+                              } ${
+                                sportTeams[
+                                  leagueFromTeamId(bid.dropped_team_3)
+                                ][bid.dropped_team_3].name
+                              }`
+                            : null}
+                        </Td>
                         
-//                     </ul>
-//                 </>
-//             }
-//         </div>
-//         )
-//     })
-// }
+                        {currentMonthIncludesCurrentBid ? (
+                          <Td style={{ width: col6width}}>
+                            {bid.current ? (
+                              <button onClick={() => deleteBid(bid.id)}>
+                                Delete
+                              </button>
+                            ) : null}
+                          </Td>
+                        ) : null}
+                      </SlotRow>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {havePrioritiesChanged ? <div>Your roster priorities have changed <button onClick={saveRoster}>Save</button></div> : null}
+      </div>
+    );
+  };
+
+export default CurrentBids;

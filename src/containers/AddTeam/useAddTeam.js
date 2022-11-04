@@ -67,6 +67,7 @@ function useAddTeam() {
   const [tab, setTab] = useState("rosters");
   const [modalHasBeenUsed, setModalHasBeenUsed] = useState(false)
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
+  const [originalBids, setOriginalBids] = useState(null)
 
   // Load page data
   useEffect(() => {
@@ -201,6 +202,7 @@ function useAddTeam() {
         }
       })
       setAllBids(bidTable);
+      setOriginalBids(JSON.stringify(bidTable))
     } catch (e) {
       console.log("problem");
       console.error(e);
@@ -256,8 +258,6 @@ function useAddTeam() {
         } else {
           toast.error("There was an issue dropping your team");
         }
-        console.log("here is res");
-        console.log(res);
       } catch (e) {
         console.log("problem");
         console.error(e);
@@ -282,6 +282,8 @@ function useAddTeam() {
       });
   };
 
+  
+
   return {
     tab,
     firstLeagueToShow,
@@ -303,7 +305,9 @@ function useAddTeam() {
     setLeague,
     unownedTeams,
     currentOrganization,
-    reFetchBids
+    reFetchBids,
+    setAllBids,
+    originalBids
   };
 }
 
