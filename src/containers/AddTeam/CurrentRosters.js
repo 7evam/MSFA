@@ -11,7 +11,7 @@ import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import { toast } from "react-toastify";
 
-function CurrentRosters({selectedMember, handleChange, currentRoster}) {
+function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoster}) {
     
     const { sportTeams, orgMembers } = useSelector((state) => ({
         ...state.sportReducer
@@ -26,7 +26,7 @@ function CurrentRosters({selectedMember, handleChange, currentRoster}) {
             return <ActionButton onClick={() => toast("Feature coming soon")}>{"Drop"}</ActionButton>
             // return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
         } else {
-            return <ActionButton onClick={handleAction}>{"Trade"}</ActionButton>
+            return <ActionButton onClick={handleTrade}>{"Trade"}</ActionButton>
         }
     }
 
