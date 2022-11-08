@@ -271,6 +271,8 @@ function useAddTeam() {
 
   const handleClaim = (team) => {
     const leagueId = Number(String(team)[0]);
+    console.log("here is team")
+    console.log(team)
       dispatch({
         type: "SHOW_MODAL",
         payload: {

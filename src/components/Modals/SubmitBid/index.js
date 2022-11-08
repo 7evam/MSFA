@@ -40,7 +40,7 @@ function SubmitBid() {
         ...state.authReducer
     }));
 
-    const {sportTeams, roflYear, activeYears, playoffMonths} = useSelector((state) => ({
+    const {sportTeams, roflYear, activeYears, playoffMonths, leagueTable} = useSelector((state) => ({
         ...state.sportReducer
     }))
 
@@ -57,9 +57,12 @@ function SubmitBid() {
     const [maxBid, setMaxBid] = useState(props.roster.cash)
     const [checkedTeams, setCheckedTeams] = useState(initialCheckedTeams)
     const [errors, setErrors] = useState({
-        bid: null
+        bid: null,
+        leagueCount: null
     })
 
+    // this function sets errors in state and returns
+    // true if there is an error and false if there is NO error
     const checkForBidError = (bid, maxBid) => {
         let newErrors = errors
         if(bid > maxBid){
@@ -68,6 +71,11 @@ function SubmitBid() {
             newErrors.bid = null
         }
         setErrors(newErrors)
+        if(newErrors.bid){
+            return true
+        } else {
+            return false
+        }
     }
 
     const handleBidChange = (value) => {
@@ -83,6 +91,7 @@ function SubmitBid() {
             return
         } else {
             let newMaxBid = maxBid
+            // if team is league with active playoff month it cannot be dropped for cash
             if(playoffMonths[2022][team.leagueId] - 1 !== activeYears[2022][team.leagueId].roflMonth){
                 newCheckedTeams[team.teamId] === true ? newMaxBid += team.val : newMaxBid -= team.val
                 setMaxBid(newMaxBid)
@@ -92,11 +101,42 @@ function SubmitBid() {
         }
     }
 
+    // this function sends a toast error if there is an error and returns
+    // true if there is an error and false if there is NO error
+    const checkForLeagueCountError = () => {
+        teamCountByLeague[Number(String(props.selectedTeam)[0])]++
+        Object.keys(checkedTeams).forEach(team => {
+            if(checkedTeams[team]){
+                teamCountByLeague[Number(String(team)[0])]--
+            }
+        })
+        for(let league in teamCountByLeague){
+            if(teamCountByLeague[league] < 1 && Object.keys(activeYears[2022]).includes(league)){
+                toast.error(`This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`)
+                return false
+            } else if(teamCountByLeague[league] > 3){
+                toast.error(`This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`)
+                return false
+            }
+        }
+        return true
+    }
+
     const handleSubmit = async () => {
+        const leagueCountPassed = checkForLeagueCountError()
+        if(!leagueCountPassed) return
+
+        const bidValuePassed = checkForBidError()
+        if(!bidValuePassed){
+            toast.error(`Your bid value is too high, maximum bid value is ${maxBid}`)
+            return
+        }
+        
         if(bidValue <= 0){
             toast.error("Bid Value must be at least $1")
             return
         } 
+
         const res = await makeRequest({
             method: "post",
             route: `/users/bids`,
@@ -131,19 +171,16 @@ function SubmitBid() {
         .filter((key) => key !== "cash")
         .forEach((team) => {
           let leagueId = props.currentRoster[team].leagueId;
-          teamCountByLeague[leagueId]++;
+          if(leagueId) teamCountByLeague[leagueId]++;
         });
 
-    // TODO
-    // - fix priority calculator on backend
-    // - invalidate bids for repeat teams/months/years from same user 
     return(
     <div>
         <p>Submit Bid</p>
         <p>Choose team(s) to drops</p>
         <p>Teams in their last month before the playoffs have no cash value when dropped</p>
         {
-            Object.keys(props.roster).filter(key => key!=='cash').map(key => {
+            Object.keys(props.roster).filter(key => key!=='cash' && props.roster[key].teamId).map(key => {
                 const team = props.roster[key]
                 // only return team if they are droppable (active league not in playoffs)
                 if(
@@ -182,7 +219,7 @@ function SubmitBid() {
             allowNegativeValue={false}
           />
           <ErrorContainer>{errors.bid ? <p>{errors.bid}</p> : null}</ErrorContainer>
-          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={() => handleSubmit()}>Submit</button>
     </div>
     )
 }

@@ -29,11 +29,11 @@ function AddTeam(props) {
     // }
 
     
-    if(currentDate && deadlines){
-        console.log('test')
-        console.log(deadlines)
-        // console.log(deadlines[2022][2][currentDate.realMonth].deadline)
-    }
+    // if(currentDate && deadlines){
+    //     console.log('test')
+    //     console.log(deadlines)
+    //     // console.log(deadlines[2022][2][currentDate.realMonth].deadline)
+    // }
 
     const getContent = (tab) => {
         switch(tab){

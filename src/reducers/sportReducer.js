@@ -19,6 +19,7 @@ function sportReducer(state=INITIAL_STATE, action){
                 ...state,
                 activeYears: action.payload.activeYears,
                 currentDate: action.payload.currentDate,
+                // this data doesnt really change so api call is not necessary
                 playoffMonths: {
                     2022: {
                         1: 7,
@@ -26,6 +27,12 @@ function sportReducer(state=INITIAL_STATE, action){
                         3: 14,
                         4: 14
                     }
+                },
+                leagueTable: {
+                    1: "MLB",
+                    2: "NFL",
+                    3: "NHL",
+                    4: "NBA"
                 }
             }
         case "HYDRATE_SPORT_TEAMS":
