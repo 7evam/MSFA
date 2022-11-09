@@ -71,7 +71,7 @@ function SubmitBid() {
             newErrors.bid = null
         }
         setErrors(newErrors)
-        if(newErrors.bid){
+        if(bid > maxBid){
             return true
         } else {
             return false
@@ -126,8 +126,8 @@ function SubmitBid() {
         const leagueCountPassed = checkForLeagueCountError()
         if(!leagueCountPassed) return
 
-        const bidValuePassed = checkForBidError()
-        if(!bidValuePassed){
+        const bidValueHasError = checkForBidError()
+        if(bidValueHasError){
             toast.error(`Your bid value is too high, maximum bid value is ${maxBid}`)
             return
         }
