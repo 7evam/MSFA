@@ -2,7 +2,7 @@ import React from 'react';
 
 function Loading() {
     return(
-    <div>
+    <div style={{marginTop: '50px'}}>
         <p>Loading......</p>
     </div>
     )

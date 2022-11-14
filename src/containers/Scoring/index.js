@@ -80,8 +80,6 @@ function Scoring(props) {
     });
     if (res.statusCode === 200) {
       const scores = res.body;
-      // console.log('here is scores')
-      // console.log(scores)
       calculateMonthsToDisplay(scores.records);
       setScores(scores);
     }

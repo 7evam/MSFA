@@ -49,25 +49,25 @@ function RosterSlot({
         {nameTable[name] ? nameTable[name] : name.split("_")[0].toUpperCase()}
       </Td>
       <Td style={{ width: "230px" }}>{team === "empty" ? "EMPTY" : team}</Td>
-      {readOnly 
-      ? 
-      null : 
-            <Td style={{ width: "70px" }}>
-            {team === "empty" ? (
+      {readOnly ? null : (
+        <Td style={{ width: "70px" }}>
+          {locked ? (
+            team === "empty" ? (
               "--"
-            ) : locked ? (
-              "🔒"
             ) : (
-              <SelectButton
-                selectedSlot={selectedSlot}
-                name={name}
-                onClick={() => changeRoster(name)}
-              >
-                Move
-              </SelectButton>
-            )}
-          </Td>
-      }
+              "🔒"
+            )
+          ) : (
+            <SelectButton
+              selectedSlot={selectedSlot}
+              name={name}
+              onClick={() => changeRoster(name)}
+            >
+              Move
+            </SelectButton>
+          )}
+        </Td>
+      )}
 
       <Td style={{ width: "50px" }}>{points}</Td>
     </Tr>

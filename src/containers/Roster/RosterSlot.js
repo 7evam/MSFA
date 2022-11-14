@@ -9,7 +9,6 @@ background: ${props => props.selectedSlot && props.selectedSlot === props.name ?
 `
 
 function RosterSlot({isLocked, isInactive, test, teamInfo, slotName, leagueName, selectedSlot}) {
-
       return (
           isInactive ? null : 
           <Slot>

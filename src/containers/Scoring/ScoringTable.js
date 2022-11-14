@@ -22,16 +22,18 @@ function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
 
     useEffect(() => {
         const teamArray = []
-        Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
-            teamArray.push({
-                id: teamId,
-                teamName: `${teams[league][teamId].city} ${teams[league][teamId].name}`,
-                points: scores.points[league][`${roflMonth}-${roflYear}`][teamId]
-            })
-        })
-        setSortedTeams(teamArray)
-        setSortedField('team')
-        setSortDirectionAsc(true)
+            if(scores.points[league][`${roflMonth}-${roflYear}`]){
+                Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
+                    teamArray.push({
+                        id: teamId,
+                        teamName: `${teams[league][teamId].city} ${teams[league][teamId].name}`,
+                        points: scores.points[league][`${roflMonth}-${roflYear}`][teamId]
+                    })
+                })
+                setSortedTeams(teamArray)
+                setSortedField('team')
+                setSortDirectionAsc(true)
+            }
     }, [roflMonth, league]);
 
     useEffect(() => {

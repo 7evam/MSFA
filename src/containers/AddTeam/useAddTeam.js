@@ -192,8 +192,6 @@ function useAddTeam() {
         route: `users/bids/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`,
         abort: abortController
       });
-      console.log('here are all bids')
-      console.log(res.body)
       const body = res.body;
       const bidTable = {}
       body.forEach(bid => {
@@ -289,8 +287,6 @@ function useAddTeam() {
   const handleTrade = () => {
     toast('Trade proposals coming soon!')
   }
-
-  
 
   return {
     tab,
