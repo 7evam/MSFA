@@ -69,6 +69,7 @@ function useRoster() {
   // }
 
   const initiateAndReturnRoflMonthAndYear = () => {
+    console.log('in initiate and return')
     // initiate year as earlliest active year for current org
     const initialYear = activeYearArray[0];
 
@@ -86,8 +87,11 @@ function useRoster() {
     // show the latest current rofl month
     let roflMonthToShow = 1;
     Object.keys(activeRoflMonths[initialYear]).forEach((activeLeague) => {
-      if (activeLeague.roflMonth > roflMonthToShow) {
-        roflMonthToShow = activeLeague.roflMonth;
+      // console.log('here is an active league')
+      // console.log(activeRoflMonths[initialYear][activeLeague].roflMonth)
+      if (activeRoflMonths[initialYear][activeLeague].roflMonth > roflMonthToShow) {
+        console.log('making a change for rofl month to show')
+        roflMonthToShow = activeRoflMonths[initialYear][activeLeague].roflMonth;
       }
     });
 
@@ -100,6 +104,7 @@ function useRoster() {
   };
 
   useEffect(() => {
+    console.log('in use effect of active years')
     if (activeYears) {
       const initialYear = initiateAndReturnRoflMonthAndYear();
       fetchRoster(initialYear);

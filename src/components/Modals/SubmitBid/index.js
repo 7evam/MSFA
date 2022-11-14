@@ -182,11 +182,12 @@ function SubmitBid() {
         {
             Object.keys(props.roster).filter(key => key!=='cash' && props.roster[key].teamId).map(key => {
                 const team = props.roster[key]
+                const leagueId = team.leagueId ? team.leagueId : Number(String(team)[0])
                 // only return team if they are droppable (active league not in playoffs)
                 if(
-                    activeYears[2022][team.leagueId] && activeYears[2022][team.leagueId].playoffs === 1
+                    activeYears[2022][leagueId] && activeYears[2022][leagueId].playoffs === 1
                     ||
-                    activeYears[2022][team.leagueId].roflMonth !== activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth
+                    activeYears[2022][leagueId].roflMonth !== activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth
                     ){
                     return null
                 } else {
