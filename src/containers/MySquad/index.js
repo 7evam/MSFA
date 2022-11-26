@@ -23,7 +23,6 @@ const SelectButton = styled.button`
 `;
 
 const BannerMessage = styled.div`
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
   border: 1px solid grey;
   margin-top: 10px;
@@ -36,7 +35,6 @@ const MonthContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
 `;
 
@@ -44,7 +42,6 @@ const YearContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
 `;
 
@@ -94,7 +91,6 @@ const SubmitChangesButton = styled.button`
   border-color: #0066a2;
   height: 25px;
   width: 70px;
-  font-family: "Roboto", sans-serif;
   text-shadow: none;
   border-radius: 20px;
   margin-left: 15px;
@@ -152,8 +148,6 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
 
   return (
     <Container>
-      <p>Welcome to roster</p>
-
       {roster && currentOrganization && selectedRoflYear ? (
         <div>
           {activeYearArray.length === 2 ? (

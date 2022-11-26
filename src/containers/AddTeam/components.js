@@ -46,7 +46,6 @@ export const Table = styled.table``;
 export const Td = styled.td`
   padding: 12px;
   border-bottom: 1px solid gray;
-  font-family: "Roboto", sans-serif;
   font-size: 14px;
   border-left: 1px solid gray;
 `;
@@ -58,7 +57,6 @@ export const TitleRow = styled.tr`
 export const Th = styled.th`
 padding: 12px;
 border-bottom: 1px solid gray;
-font-family: "Roboto", sans-serif;
 font-size: 14px;
 border-left: 1px solid gray;
 `
@@ -70,7 +68,6 @@ border-left: 1px solid gray;
 export const slotData = styled.td`
   padding: 12px;
   border-bottom: 1px solid gray;
-  font-family: "Roboto", sans-serif;
   font-size: 14px;
   border-left: 1px solid gray;
 `;
@@ -89,7 +86,6 @@ export const ActionButton = styled.button`
     border-radius:0.12em;
     box-sizing: border-box;
     text-decoration:none;
-    font-family:'Roboto',sans-serif;
     font-weight:300;
     color:${blue};
     text-align:center;
@@ -100,13 +96,11 @@ export const ActionButton = styled.button`
 `
 export const Headline = styled.h1`
       font-size: 24px;
-      font-family:'Roboto',sans-serif;      
       color: ${blue}
 `
 
 export const Label = styled.label`
     font-size: 24px;
-    font-family:'Roboto',sans-serif;      
     color: ${blue}
 `
 
@@ -114,7 +108,6 @@ export const CashContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
 `;
 
@@ -123,7 +116,6 @@ export const Select = styled.select`
     background-color: ${lightBlue};
     font-weight: 800;
     padding-left: 10px;
-    font-family: "Roboto", sans-serif;
 `
 export const Section = styled.div`
       margin-right: 100px;

@@ -11,7 +11,7 @@ const Container = styled.table``;
 const Td = styled.td`
   padding: 12px;
   border-bottom: 1px solid gray;
-  font-family: "Roboto", sans-serif;
+  font-family: "Ariel", sans-serif;
   font-size: 14px;
   border-left: 1px solid gray;
 `;
@@ -24,7 +24,7 @@ const Tr = styled.tr`
 const Th = styled.th`
 padding: 12px;
 border-bottom: 1px solid gray;
-font-family: "Roboto", sans-serif;
+font-family: "Ariel", sans-serif;
 font-size: 14px;
 border-left: 1px solid gray;
 `

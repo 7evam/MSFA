@@ -20,9 +20,8 @@ import Loading from '../components/Loading'
 
 import RenderModal from './RenderModal'
 
-const Container = styled.div`
-  display: flex;
-`;
+import {Container, ContentContainer} from "./components"
+
 
 function App(props) {
   const dispatch = useDispatch();
@@ -35,10 +34,7 @@ function App(props) {
       route: `/sports/active`
     });
     
-    // const parsedRes = JSON.parse(res.body)
     const parsedRes = res.body
-    console.log('here is parsed res of current date')
-    console.log(parsedRes)
 
     dispatch({
       type: "SET_ACTIVE_YEARS_AND_MONTHS",
@@ -57,8 +53,9 @@ function App(props) {
     <Loading/>
   ) : (
     <Container>
-      <SideBar />
+      {/* <SideBar /> */}
       <TopBar />
+      <ContentContainer>
       <Switch>
         <Route exact path="/">
           <Redirect to="/squad" />
@@ -72,6 +69,7 @@ function App(props) {
         
         <Route exact path="/add-team" component={AddTeam}/>
       </Switch>
+      </ContentContainer>
       <RenderModal/>
     </Container>
   );
