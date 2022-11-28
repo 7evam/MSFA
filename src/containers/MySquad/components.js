@@ -3,7 +3,9 @@ import styled from "styled-components";
 import {mobileBreakPoint, lightBlue} from '../../constants/style'
 
 export const Container = styled.div`
-  
+@media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 export const Slot = styled.div`
   margin-top: 25px;
@@ -91,4 +93,6 @@ export const SubmitChangesButton = styled.button`
 
 export const TeamName = styled.p`
     font-size: 18px;
+    display: flex;
+    justify-content: center;
 `

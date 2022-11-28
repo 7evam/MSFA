@@ -4,9 +4,23 @@ import "@fontsource/open-sans";
 import Slot from "./Slot";
 import {useSelector} from 'react-redux'
 import { PLAYOFF_MONTHS } from "../constants";
+import { mobileBreakPoint, red } from "../constants/style";
 
-const red  = '#DA2929'
-const Container = styled.table``;
+// const red  = '#DA2929'
+
+const widths = {
+  slot: 10,
+  team: 50,
+  action: 20,
+  points: 20
+}
+
+const Container = styled.table`
+width: 700px;
+@media (max-width: ${mobileBreakPoint}){
+  width: 100vw;
+}
+`;
 
 const Td = styled.td`
   padding: 12px;
@@ -18,7 +32,8 @@ const Td = styled.td`
 
 const Tr = styled.tr`
 &:nth-child(odd) {
-    background-color: ${red}
+    background-color: ${red};
+}
 `;
 
 const Th = styled.th`

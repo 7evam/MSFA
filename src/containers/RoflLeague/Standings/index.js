@@ -5,7 +5,7 @@ import { convertMonthToReadable } from "../../../utils";
 import { useSelector } from "react-redux";
 import MonthTicker from "../../../components/MonthTicker";
 import Loading from "../../../components/Loading";
-import {Container, Td, Th, SlotRow, YearContainer, TitleRow} from './components'
+import {StandingsContainer, Heading, Container, Td, Th, SlotRow, YearContainer, TitleRow} from './components'
 import {shortenName} from '../../../utils'
 
 function Standings(props) {
@@ -39,9 +39,9 @@ function Standings(props) {
 
   return (
     <Container>
-      <p>Welcome to standings</p>
+      <Heading>League Standings</Heading>
       {standings ? (
-        <div>
+        <StandingsContainer>
           <YearContainer>
           <p>RoFL Year: {selectedRoflYear}</p>
           </YearContainer>
@@ -51,35 +51,35 @@ function Standings(props) {
             setRoflMonth={setRoflMonth}
             selectedRoflYear={selectedRoflYear}
           />
-
           <TitleRow>
-            <Th>
+            <Th column={"rank"}>
               <strong>Rank</strong>
             </Th>
-            <Th>
+            <Th column={"personName"}>
               <strong>Person Name</strong>
             </Th>
-            <Th>
+            <Th column={"teamName"}>
               <strong>Team Name</strong>
             </Th>
-            <Th>
+            <Th column={"monthPoints"}>
               <strong>Monthly Points</strong>
             </Th>
-            <Th>
+            <Th column={"totalPoints"}>
               <strong>Total points</strong>
             </Th>
           </TitleRow>
 
           {standings[`${roflMonth}-${selectedRoflYear}`].map((val, index) => (
             <SlotRow key={val.userId}>
-              <Td>{index + 1}</Td>
-              <Td>{val.personName}</Td>
-              <Td><a onClick={() => goToSquad(val.userId)}>{shortenName(val.teamName)}</a></Td>
-              <Td>{val.monthlyPoints}</Td>
-              <Td>{val.cumulativePoints}</Td>
+              <Td column={"rank"}>{index + 1}</Td>
+              <Td column={"personName"}>{val.personName}</Td>
+              <Td column={"teamName"}><a onClick={() => goToSquad(val.userId)}>{shortenName(val.teamName)}</a></Td>
+              <Td column={"monthPoints"}>{val.monthlyPoints}</Td>
+              <Td column={"totalPoints"}>{val.cumulativePoints}</Td>
             </SlotRow>
           ))}
-        </div>
+          </StandingsContainer>
+        
       ) : (
         <Loading />
       )}

@@ -64,7 +64,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
     <Container>
       {roster && currentOrganization && selectedRoflYear ? (
         <div>
-          <TeamName><b>{currentOrganization.team_name}</b> - managed by <b>{name}</b></TeamName>
+          <TeamName><p><b>{currentOrganization.team_name}</b> - managed by <b> {name}</b></p></TeamName>
           
           <hr/>
           {activeYearArray.length === 2 ? (

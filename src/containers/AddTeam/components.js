@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {red, blue, mediumBlue, lightBlue} from '../../constants/style'
+import {red, blue, mediumBlue, lightBlue, mobileBreakPoint} from '../../constants/style'
 
 export const Container = styled.div`
   margin-top: 50px;
@@ -41,7 +41,12 @@ export const Tab = styled.p`
 `;
 
 // const red  = '#DA2929'
-export const Table = styled.table``;
+export const Table = styled.table`
+width: 700x;
+@media (max-width: ${mobileBreakPoint}){
+  width: 100vw;
+}
+`;
 
 export const Td = styled.td`
   padding: 12px;

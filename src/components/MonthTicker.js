@@ -6,7 +6,7 @@ import MobileMonthTicker from "./MobileMonthTicker";
 
 const Container = styled.div`
 background-color: ${lightBlue};
-width: 500px;
+width: 700px;
 display: flex;
 flex-direction: row;
 height: 70px;
@@ -21,7 +21,6 @@ const ScrollMenu = styled.div`
   overflow: auto;
   white-space: nowrap;
   display: inline-block;
-  left: 100px;
 `;
 
 const ScrollMenuLink = styled.a`
@@ -32,18 +31,19 @@ const ScrollMenuLink = styled.a`
   padding-left: 5px;
   padding-right: 5px;
   text-decoration: none;
-  width: 125px;
+  width: 215px;
   cursor: pointer;
 `;
 
 const ScrollMenuButton = styled.a`
   display: inline-block;
   color: black;
-  text-align: center;
   padding: 15px;
   text-decoration: none;
-  width: 25px;
+  width: 29px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const MonthTextContainer = styled.div`
@@ -55,18 +55,18 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
-    scrollRef.current.scrollLeft -= 135;
+    scrollRef.current.scrollLeft -= 228;
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollLeft += 135;
+    scrollRef.current.scrollLeft += 228;
   };
 
   const scrollRef = React.createRef();
 
   useEffect(() => {
     if (scrollRef && scrollRef.current && !appliedScroll) {
-      scrollRef.current.scrollLeft += (roflMonth - 2) * 135;
+      scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
       setAppliedScroll(true);
     }
   }, [scrollRef]);

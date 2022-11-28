@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import "@fontsource/open-sans";
+import { mobileBreakPoint, blue, mediumBlue, lightBlue } from "../constants/style";
 
-const darkBlue = "#799cd9";
-const mediumBlue = "#C0CCD9";
-const lightBlue = "#DFE5EC";
+const widths = {
+  slot: 10,
+  team: 50,
+  action: 20,
+  points: 20
+}
 
 const Td = styled.td`
   padding: 12px;
@@ -19,13 +23,16 @@ const Tr = styled.tr`
   &:nth-child(odd) {
     background-color: ${lightBlue};
   }
+  @media (max-width: ${mobileBreakPoint}){
+    width: ${props => widths[props.column]}vw;
+  }
 `;
 
 const SelectButton = styled.button`
   background: ${(props) =>
     props.selectedSlot && props.selectedSlot === props.name
       ? "darkred"
-      : darkBlue};
+      : blue};
 `;
 const nameTable = {
   league_1: "MLB",
@@ -45,12 +52,12 @@ function RosterSlot({
 }) {
   return (
     <Tr>
-      <Td style={{ width: "50px", fontWeight: 800 }}>
+      <Td column={"slot"}>
         {nameTable[name] ? nameTable[name] : name.split("_")[0].toUpperCase()}
       </Td>
-      <Td style={{ width: "230px" }}>{team === "empty" ? "EMPTY" : team}</Td>
+      <Td column={'team'}>{team === "empty" ? "EMPTY" : team}</Td>
       {readOnly ? null : (
-        <Td style={{ width: "70px" }}>
+        <Td column={'action'}>
           {locked ? (
             team === "empty" ? (
               "--"
@@ -69,7 +76,7 @@ function RosterSlot({
         </Td>
       )}
 
-      <Td style={{ width: "50px" }}>{points}</Td>
+      <Td column={"points"}>{points}</Td>
     </Tr>
   );
 }

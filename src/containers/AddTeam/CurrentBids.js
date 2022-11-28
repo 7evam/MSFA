@@ -34,7 +34,6 @@ const MonthContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
 `;
 
@@ -42,7 +41,6 @@ const YearContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   font-size: 18px;
 `;
 
