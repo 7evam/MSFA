@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {useSelector} from 'react-redux'
+import { blue, lightBlue, mobileBreakPoint } from "../constants/style";
+import MobileMonthTicker from "./MobileMonthTicker";
 
 const Container = styled.div`
-background-color: #333;
+background-color: ${lightBlue};
 width: 500px;
 display: flex;
 flex-direction: row;
+height: 70px;
+@media (max-width: ${mobileBreakPoint}){
+  width: 0px;
+  display: none;
+  height: 0px;
+}
 `;
 
 const ScrollMenu = styled.div`
@@ -18,7 +26,7 @@ const ScrollMenu = styled.div`
 
 const ScrollMenuLink = styled.a`
   display: inline-block;
-  color: ${(props) => (props.selected ? "limegreen" : "white")};
+  color: ${(props) => (props.selected ? `#308AEB` : "black")};
   text-align: center;
   padding-top: 15px;
   padding-left: 5px;
@@ -30,7 +38,7 @@ const ScrollMenuLink = styled.a`
 
 const ScrollMenuButton = styled.a`
   display: inline-block;
-  color: white;
+  color: black;
   text-align: center;
   padding: 15px;
   text-decoration: none;
@@ -38,9 +46,12 @@ const ScrollMenuButton = styled.a`
   cursor: pointer;
 `;
 
+const MonthTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay, onlyShownMonths}) {
-  console.log('here is only shown months')
-  console.log(onlyShownMonths)
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
@@ -88,8 +99,10 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
   };
 
   return (
+    <div>
+      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths}/>
         <Container>
-        <ScrollMenuButton onClick={scrollLeft}>{"<"}</ScrollMenuButton>
+        <ScrollMenuButton onClick={scrollLeft}><MonthTextContainer><span>{"<"}</span></MonthTextContainer></ScrollMenuButton>
         <ScrollMenu ref={scrollRef}>
             {monthsForScroll(selectedRoflYear).map((item) => (
             <ScrollMenuLink
@@ -97,12 +110,16 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
                 key={item.number}
                 onClick={() => setRoflMonth(item.number)}
             >
-                {item.month}
+                <MonthTextContainer>
+                <span>Month {item.number}</span>
+                  <span>{item.month}</span>
+                </MonthTextContainer>
             </ScrollMenuLink>
             ))}
         </ScrollMenu>
         <ScrollMenuButton onClick={scrollRight}>{">"}</ScrollMenuButton>
         </Container>
+        </div>
   );
 }
 

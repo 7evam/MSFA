@@ -11,7 +11,7 @@ function useRoster() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { currentOrganization } = useSelector((state) => ({
+  const { name, currentOrganization } = useSelector((state) => ({
     ...state.authReducer
   }));
 
@@ -110,6 +110,11 @@ function useRoster() {
       fetchRoster(initialYear);
     }
   }, [activeYears]);
+
+  useEffect(() => {
+    console.log('rofl month changed')
+    console.log(roflMonth)
+  }, [roflMonth]);
 
   useEffect(() => {
     if (
@@ -239,7 +244,8 @@ function useRoster() {
     activeRoflMonths,
     setSelectedRoflYear,
     updateOneMonth,
-    setUpdateOneMonth
+    setUpdateOneMonth,
+    name
   };
 }
 
