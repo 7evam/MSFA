@@ -72,3 +72,34 @@ export const shortenName = (name) => {
         return name
     }
 }
+
+export const checkIfEmptySlot = (currentTeams, roflMonth) => {
+    const emptySlotsForFullRoster = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 2,
+        9: 2,
+        10: 2,
+        11: 4,
+        12: 4,
+        13: 4,
+        14: 4,
+    }
+
+    let emptySlotCount = 0
+    Object.keys(currentTeams).filter(key => key!=='cash').forEach(key => {
+        const team = currentTeams[key]
+        if(!team.teamId){
+            emptySlotCount ++
+        } 
+    })
+    let emptySlot = emptySlotCount > emptySlotsForFullRoster[roflMonth]
+    console.log('empty slot value')
+    console.log(emptySlot)
+    return emptySlot
+}

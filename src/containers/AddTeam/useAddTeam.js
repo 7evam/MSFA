@@ -141,7 +141,9 @@ function useAddTeam() {
 
 //   update bids only when the modal has been closed
   useEffect(() => {
+    console.log('modal content has changed')
     if(modalHasBeenUsed && !modalContent){
+      console.log('refetching content')
         reFetchBids()
         setModalHasBeenUsed(false)
     } else if(!modalHasBeenUsed && modalContent){
@@ -267,6 +269,23 @@ function useAddTeam() {
     }
   };
 
+  const handleAdd = (team) => {
+    const leagueId = Number(String(team)[0]);
+    console.log("here is team")
+    console.log(team)
+      dispatch({
+        type: "SHOW_MODAL",
+        payload: {
+          modalContent: "ADD_TEAM",
+          props: {
+            roster: currentRoster,
+            selectedTeam: team,
+            currentRoster
+          }
+        }
+      });
+  }
+
   const handleClaim = (team) => {
     const leagueId = Number(String(team)[0]);
     console.log("here is team")
@@ -312,7 +331,8 @@ function useAddTeam() {
     reFetchBids,
     setAllBids,
     originalBids,
-    handleTrade
+    handleTrade,
+    handleAdd
   };
 }
 

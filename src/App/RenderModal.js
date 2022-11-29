@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitBid from '../components/Modals/SubmitBid';
+import AddTeam from '../components/Modals/AddTeam';
 
 const ModalContainer = styled.div`
     margin-left: 170px;
@@ -28,6 +29,8 @@ function RenderModal() {
         switch(modalContent){
             case "SUBMIT_BID":
                 return <SubmitBid/>
+            case "ADD_TEAM":
+                return <AddTeam/>
             default:
                 return <p>Modal not found</p>
         }

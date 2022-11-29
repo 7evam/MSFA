@@ -32,6 +32,7 @@ function UnownedTeams({
   setLeague,
   unownedTeams,
   handleClaim,
+  handleAdd,
   handleAction,
   firstLeagueToShow
 }) {
@@ -56,7 +57,7 @@ function UnownedTeams({
     );
     // const claim = <ActionButton onClick={() => toast('Feature coming soon')}>{"Claim"}</ActionButton>
     const add = (
-      <ActionButton onClick={() => handleClaim(team)}>{"Add"}</ActionButton>
+      <ActionButton onClick={() => handleAdd(team)}>{"Add"}</ActionButton>
     );
 
     if (!activeYears[2022][leagueId]) return claim;
