@@ -6,10 +6,31 @@ import { useSelector } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import MonthTicker from "../../../components/MonthTicker";
 import MonthlyPoints from "../../../components/MonthlyPoints";
+import IconLeft from "../../../icons/iconLeft";
 
 const Container = styled.div`
     margin-top: 50px;
 `;
+
+const LeftIcon = styled.span`
+    transform: scale(-1, 1);
+`
+
+const Selector = styled.p`
+  margin-right: 10px;
+  &:hover {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  font-weight: ${(props) => (props.selected ? "700" : "400")};
+`;
+
+const TopMenu = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`
 
 function Roster(props) {
 
@@ -26,6 +47,7 @@ function Roster(props) {
     const [fullRoster, setFullRoster] = useState(null)
     const [selectedRoflMonth, setSelectedRoflMonth] = useState(roflMonth)
     const [memberInfo, setMemberInfo] = useState(null)
+    const [viewToRender, setViewToRender] = useState('single')
 
     useEffect(() => {
       const abortController = new AbortController()
@@ -89,30 +111,37 @@ function Roster(props) {
 
   return (
     <Container>
-        <button onClick={() => history.push('/rofleague')}>Back to Standings</button>
-        
+      <TopMenu>
+        <a onClick={() => history.push('/rofleague')}> <span>{IconLeft}</span> Back to Standings</a>
+        <Selector onClick={() => setViewToRender('single')}>Monthly</Selector>
+        <Selector onClick={() => setViewToRender('overview')}>Overview</Selector>
+        </TopMenu>
         {
         isLoading
         ? 
         <p>loading...</p>
         :
         fullRoster && memberInfo && fullRoster[`${selectedRoflMonth}-${roflYear}`] ?
-        <>
-        <div><p>Roster for {memberInfo?.team_name} managed by {memberInfo.name}</p></div>
-        <MonthlyPoints userId={userId} roflYear={roflYear}/>
+        viewToRender === 'single' ? 
+        <div>
         <MonthTicker
             roflMonth={selectedRoflMonth}
             setRoflMonth={setSelectedRoflMonth}
             selectedRoflYear={roflYear}
           />
-        <RosterComponent
+          <RosterComponent
             selectedRoflYear={roflYear}
             currentMonthRoster={fullRoster[`${selectedRoflMonth}-${roflYear}`]}
             roflMonth={selectedRoflMonth}
             readOnly={true}
           />
-          </>
-          : <p>Loadinig..</p>
+          </div>
+        : 
+        <div><div><p>Roster for {memberInfo?.team_name} managed by {memberInfo.name}</p></div>
+        <MonthlyPoints userId={userId} roflYear={roflYear}/>
+        </div>
+        
+          : <p>Loading..</p>
         }
         
     </Container>

@@ -41,6 +41,14 @@ function UnownedTeams({
     })
   );
 
+  const deadline = activeYears[2022][league] ? deadlines[2022][league][activeYears[2022][league].roflMonth].deadline : deadlines[2022][league][currentDate.realMonth - 4].deadline
+  const today = new Date()
+  const waiverPeriodEnded = new Date(deadline) < today 
+
+  // console.log('here is deadline and today')
+  // console.log(new Date(deadline))
+  // console.log(today)
+
   const getUnownedActionButton = (leagueId, team) => {
     // return claim if 3 days before end of real month or season start, add otherwise
     const claim = (
@@ -84,18 +92,14 @@ function UnownedTeams({
         </League>
       </LeagueSelector>
       <p>
-        Waiver period ends{" "}
-        {activeYears[2022][league]
-          ? // use current rofl month as lookup index in deadlines
-            convertDateObjToReadable(
-              deadlines[2022][league][activeYears[2022][league].roflMonth].deadline
-            )
-          : // get current actual month and convert to rofl month as lookup index in deadlines
-            convertDateObjToReadable(
-              deadlines[2022][league][currentDate.realMonth - 4].deadline
-            )}
+        Waiver period { waiverPeriodEnded ? 'ended' : 'ends'}{" "}
+        {convertDateObjToReadable(deadline)}
+        {" "}at 4 am EST
       </p>
-      <p>Teams added for this league will be available on your roster starting RoFL month {activeYears[2022][league].roflMonth}</p>
+      <p>{waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it ' : 
+      'Placing a bid on a team from this league will queue it for processing on the waiver deadline and, if you win, the team '} 
+      will be available starting RoFL month {activeYears[2022][league].roflMonth}
+      </p>
       <TitleRow>
         <Th style={{ width: "200px" }}>Team</Th>
         <Th style={{ width: "70px" }}>Action</Th>

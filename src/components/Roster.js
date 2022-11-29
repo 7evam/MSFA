@@ -17,8 +17,10 @@ const widths = {
 
 const Container = styled.table`
 width: 700px;
+border: 5px solid black;
 @media (max-width: ${mobileBreakPoint}){
   width: 100vw;
+  border: 0px;
 }
 `;
 

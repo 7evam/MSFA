@@ -6,10 +6,17 @@ const widths = {
   rank: 10,
   personName: 20,
   teamName: 40,
-  monthPoints: 20,
-  totalPoints: 20
+  monthPoints: 15,
+  totalPoints: 15
 }
 
+const widthsFixed = {
+  rank: 60,
+  personName: 140,
+  teamName: 180,
+  monthPoints: 100,
+  totalPoints: 100
+}
 
 export const Container = styled.div`
 @media (max-width: ${mobileBreakPoint}){
@@ -25,6 +32,7 @@ justify-content: center;
 
 export const Td = styled.td`
   padding: 12px;
+  width: ${props => widthsFixed[props.column]}px;
   &:hover {
     font-weight: 700;
     text-decoration: underline;
