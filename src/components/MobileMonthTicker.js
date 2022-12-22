@@ -33,7 +33,7 @@ cursor: pointer;
 cursor: ${(props) => (props.rendered ? 'pointer' : 'default')};
 `
 
-function MobileMonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay, onlyShownMonths}) {
+function MobileMonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths}) {
 
   const monthsForScroll = (year) => {
     year = Number(year);
@@ -54,8 +54,10 @@ function MobileMonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMont
         { number: 14, month: `May ${year + 1}` }
     ]
     let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
+    let firstMonth = firstMonthForDisplay ? firstMonthForDisplay : 1
+
     let months = []
-    for(let i=0;i<finalMonth;i++){
+    for(let i=firstMonth-1;i<finalMonth;i++){
         // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
         if(onlyShownMonths ? onlyShownMonths.includes(allMonths[i].number) : true) months.push(allMonths[i])
     }

@@ -29,7 +29,6 @@ const Table = styled.table`
 
 const TableContainer = styled.div`
     width: 700px;
-    padding: 0 10px 10px 10px;
     overflow: scroll;
 `
 
