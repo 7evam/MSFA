@@ -57,7 +57,6 @@ export default function useHydration() {
       }
 
     const hydrateSportTeams = async (abortController) => {
-      console.log('hydrating sport teeams')
         setIsHydrating(true)
         const leagueIds = [1,2,3,4]
         const sportTeams = {}
@@ -126,8 +125,6 @@ export default function useHydration() {
           abort: abortController
         });
         const parsedRes = res.body
-        console.log('here is active years res in hydrate')
-        console.log(parsedRes)
         dispatch({
           type: "SET_ACTIVE_YEARS_AND_MONTHS",
           payload: {

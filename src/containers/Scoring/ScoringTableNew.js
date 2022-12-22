@@ -23,7 +23,8 @@ background-color: ${mediumBlue};
 `
 
 const Table = styled.table`
-    width: 300px;
+    width: 100%;
+    overflow-x: scroll;
 `
 
 function ScoringTableNew({roflMonth, scores, roflYear, sportTeams, league}) {
@@ -81,7 +82,7 @@ function ScoringTableNew({roflMonth, scores, roflYear, sportTeams, league}) {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
+    debugTable: false,
   })
 
   return (

@@ -98,8 +98,8 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDi
     ]
     let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
     let firstMonth = firstMonthForDisplay ? firstMonthForDisplay : 1
-    console.log('here is first month')
-    console.log(firstMonth)
+    // console.log('here is first month')
+    // console.log(firstMonth)
     let months = []
     for(let i=firstMonth-1;i<finalMonth;i++){
         // if onlyShownMonths array prop exists, only push months in that array. otherwise push all

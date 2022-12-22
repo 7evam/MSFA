@@ -23,7 +23,7 @@ background-color: ${mediumBlue};
 `
 
 const Table = styled.table`
-    width: 300px;
+    width: 100%;
 `
 
 function Scheme({scheme, league}) {

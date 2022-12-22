@@ -72,70 +72,71 @@ function Scoring(props) {
   const {hydrateSportTeams, hydrateActiveYears} = useHydration()
 
   const [scores, setScores] = useState(null);
-  const [roflMonth, setRoflMonth] = useState(1);
+  const [roflMonth, setRoflMonth] = useState(null);
   const [league, setLeague] = useState(null);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
   const [display, setDisplay] = useState('score');
   const [teams, setTeams] = useState(null)
   const [firstMonthForDisplay, setFirstMonthForDisplay] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [hydrating, setHydrating] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [hydrated, setHydrated] = useState(false)
 
   const hydrateGlobalState = async () => {
-    setHydrating(true)
     // hydrate redux data that isn't already loaded
     const abortController = new AbortController();
     if (!sportTeams) {
-      hydrateSportTeams(abortController);
+      await hydrateSportTeams(abortController);
     }
     if(!activeYears){
-      hydrateActiveYears(abortController)
+      await hydrateActiveYears(abortController)
     }
-    setHydrating(false)
+    setHydrated(true)
     return () => abortController.abort();
   }
 
   const loadPageState = async () => {
-        setLoading(true)
         // calculate starting league
         let activeLeagueArray = Object.keys(activeYears[2022])
         let startingActiveLeague = Math.min(...activeLeagueArray)
         setLeague(startingActiveLeague)
+        
         // fetch page specific data
         await fetchScores();
         await fetchTeams();
+        setDisplayMonthRange(startingActiveLeague)
         setLoading(false)
   }
-    
+  
+  // ---- START TWO PART useEffect ----
   useEffect(() => {
+    // on page load, load global state
+    setLoading(true)
     hydrateGlobalState()
   }, []);
 
   useEffect(() => {
-    console.log('in load state use effect')
-    console.log(activeYears)
-    console.log(sportTeams)
-    console.log(hydrating)
-    if(activeYears && !hydrating){
+    // this loads page state after global state has been loaded
+    if(hydrated){
       loadPageState()
     }
-  }, [hydrating]);
+  }, [hydrated]);
+    // ---- END TWO PART useEffect ----
 
   useEffect(() => {
-    if(league && activeYears && startingMonths && roflMonth && playoffMonths){
-      let newFinalMonth = activeYears[2022][league] ? activeYears[2022][league].roflMonth : playoffMonths[2022][league]
-      console.log('new final month')
-      console.log(newFinalMonth)
-      console.log(league)
-      let newStartingMonth = startingMonths[2022][league]
-      let newCurrentMonth = (roflMonth > newStartingMonth) && (roflMonth < newFinalMonth) ? roflMonth : newFinalMonth
-      setFinalMonthForDisplay(newFinalMonth)
-      setFirstMonthForDisplay(newStartingMonth)
-      setRoflMonth(newCurrentMonth)
-      console.log('new current month')
-      console.log(newCurrentMonth)
+    
+    if(league && hydrated && !loading){
+      setDisplayMonthRange(league)
     }
   }, [league]);
+
+  const setDisplayMonthRange = (league) => {
+    let newFinalMonth = activeYears[2022][league] ? activeYears[2022][league].roflMonth : playoffMonths[2022][league]
+    let newStartingMonth = startingMonths[2022][league]
+    let newCurrentMonth = (roflMonth > newStartingMonth) && (roflMonth < newFinalMonth) ? roflMonth : newFinalMonth
+    setFinalMonthForDisplay(newFinalMonth)
+    setFirstMonthForDisplay(newStartingMonth)
+    setRoflMonth(newCurrentMonth)
+  }
 
   const calculateMonthsToDisplay = (records) => {
     const allMonths = [];
@@ -185,8 +186,7 @@ function Scoring(props) {
 
   return (
     <Container>
-      {(loading || hydrating) && <Loading/>}
-      {(!loading || !hydrating) && scores && sportTeams && teams && activeYears && (
+      {loading ? <Loading/> : (firstMonthForDisplay) ?
           <div>
           <LeagueSelector>
             <League selected={league == 1} onClick={() => setLeague(1)}>
@@ -266,9 +266,7 @@ function Scoring(props) {
             :
             null}
         </div>
-        )
-        }
-        {(!loading || !hydrating) && !scores && <p>Error loading data</p>}
+         : (<p>Error loading data</p>)}
     </Container>
   );
 }

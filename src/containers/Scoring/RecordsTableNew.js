@@ -12,8 +12,8 @@ import { mediumBlue, lightBlue } from "../../constants/style";
 import {mlbReg, nhlReg, nbaReg, nflReg, mlbPlayoffs, nflPlayoffs, nhlPlayoffs, nbaPlayoffs} from './tableSchemes'
 
 const Td = styled.td`
-    width: 33%;
     height: 20px;
+    min-width: ${(props) => (props.isName ? '200px' : '40px')};
 `
 
 const Tr = styled.tr`
@@ -24,7 +24,13 @@ background-color: ${mediumBlue};
 `
 
 const Table = styled.table`
-    width: 300px;
+    width: 100%;
+`
+
+const TableContainer = styled.div`
+    width: 700px;
+    padding: 0 10px 10px 10px;
+    overflow: scroll;
 `
 
 function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, league}) {
@@ -79,49 +85,9 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
         }
     }, [league, playoffs]);
 
-    const formatForRecords = (scores, league, roflMonth, roflYear) => {
-        console.log("here is what youre workinng with")
-        console.log(scores.records[league][`${roflMonth}-${roflYear}`])
-        let result = []
-        Object.values(scores.records[league][`${roflMonth}-${roflYear}`]).forEach(item => {
-          let team = {}
-          console.log(sportTeams)
-          team.name = `${sportTeams[league][item.team_id].city} ${sportTeams[league][item.team_id].name}`
-          team.wins = item.rs_wins
-          team.losses = item.rs_losses
-          if(league == 2) team.ties = item.rs_tie_otl
-          if(league == 3) team.otl = item.rs_tie_otl
-          team.playoffBonus = item.playoff_bonus
-          result.push(team)
-        })
-        return result
-      }
     
   const [sorting, setSorting] = useState([])
   const [columns, setColumns] = useState(nflReg)
-
-//   const columns = useMemo(
-//     () => nflReg,
-//     []
-//   )
-
-//   const [data, setData] = useState([
-//     {
-//         name: 'Houston',
-//         regWin: 4,
-//         regLoss: 48
-//     },{
-//         name: 'Seattle',
-//         regWin: 49,
-//         regLoss: 4
-//     },{
-//         name: "Oakland",
-//         regWin: 25,
-//         regLoss: 27
-//     }
-//   ])
-
-
 
   const table = useReactTable({
     data,
@@ -135,10 +101,18 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
     debugTable: true,
   })
 
+  const calculateIsName = (cell) => {
+    console.log("here is cell")
+    console.log(cell)
+    let result = false
+    if(cell.id.includes('name')) result = true
+    return result
+  }
+
   return (
     data 
     ?
-    (<div>
+    (<TableContainer>
       <Table>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
@@ -177,7 +151,7 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
                 <Tr key={row.id}>
                   {row.getVisibleCells().map(cell => {
                     return (
-                      <Td key={cell.id}>
+                      <Td key={cell.id} isName={calculateIsName(cell)}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -190,7 +164,7 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
             })}
         </tbody>
       </Table>
-    </div> 
+    </TableContainer> 
     )
     : 
     <p>loading...</p>
