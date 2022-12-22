@@ -51,7 +51,7 @@ const MonthTextContainer = styled.div`
   flex-direction: column;
 `
 
-function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDisplay, onlyShownMonths}) {
+function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths}) {
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
@@ -70,6 +70,13 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
       setAppliedScroll(true);
     }
   }, [scrollRef]);
+
+  useEffect(() => {
+    if (scrollRef && scrollRef.current && !appliedScroll) {
+      scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
+      setAppliedScroll(true);
+    }
+  }, [roflMonth]);
 
   const monthsForScroll = (year) => {
     year = Number(year);
@@ -90,8 +97,11 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
         { number: 14, month: `May ${year + 1}` }
     ]
     let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
+    let firstMonth = firstMonthForDisplay ? firstMonthForDisplay : 1
+    console.log('here is first month')
+    console.log(firstMonth)
     let months = []
-    for(let i=0;i<finalMonth;i++){
+    for(let i=firstMonth-1;i<finalMonth;i++){
         // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
         if(onlyShownMonths ? onlyShownMonths.includes(allMonths[i].number) : true) months.push(allMonths[i])
     }
@@ -100,7 +110,7 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, finalMonthForDi
 
   return (
     <div>
-      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths}/>
+      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths}/>
         <Container>
         <ScrollMenuButton onClick={scrollLeft}><MonthTextContainer><span>{"<"}</span></MonthTextContainer></ScrollMenuButton>
         <ScrollMenu ref={scrollRef}>

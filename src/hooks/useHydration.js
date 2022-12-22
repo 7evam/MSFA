@@ -57,6 +57,7 @@ export default function useHydration() {
       }
 
     const hydrateSportTeams = async (abortController) => {
+      console.log('hydrating sport teeams')
         setIsHydrating(true)
         const leagueIds = [1,2,3,4]
         const sportTeams = {}
@@ -116,6 +117,35 @@ export default function useHydration() {
       }
     }
 
+    const hydrateActiveYears = async (abortController) => {
+      setIsHydrating(true)
+      try{
+        var res = await makeRequest({
+          method: "get",
+          route: `/sports/active`,
+          abort: abortController
+        });
+        const parsedRes = res.body
+        console.log('here is active years res in hydrate')
+        console.log(parsedRes)
+        dispatch({
+          type: "SET_ACTIVE_YEARS_AND_MONTHS",
+          payload: {
+            activeYears: parsedRes.activeYears,
+            currentDate: parsedRes.currentDate
+          }
+        });
+        return {
+          activeYears: parsedRes.activeYears,
+          currentDate: parsedRes.currentDate
+        }
+      } catch(e){
+        console.error(e)
+      } finally {
+        setIsHydrating(false)
+      }
+    };
 
-   return { isHydrating, hydrateSportTeams, hydrateOrgMembers, hydrateDeadlines };
+
+   return { isHydrating, hydrateSportTeams, hydrateActiveYears, hydrateOrgMembers, hydrateDeadlines };
 }

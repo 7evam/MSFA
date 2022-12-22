@@ -20,6 +20,14 @@ function sportReducer(state=INITIAL_STATE, action){
                 activeYears: action.payload.activeYears,
                 currentDate: action.payload.currentDate,
                 // this data doesnt really change so api call is not necessary
+                startingMonths: {
+                    2022: {
+                        1: 1,
+                        2: 6,
+                        3: 7,
+                        4: 7
+                    }
+                },
                 playoffMonths: {
                     2022: {
                         1: 7,

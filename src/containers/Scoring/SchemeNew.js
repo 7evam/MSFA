@@ -3,7 +3,14 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import { useSelector, useDispatch } from 'react-redux';
-import MonthTicker from "../../components/MonthTicker";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getSortedRowModel,
+    SortingState,
+    useReactTable,
+  } from '@tanstack/react-table'
 import { mediumBlue, lightBlue } from "../../constants/style";
 
 const Container = styled.div`
@@ -96,19 +103,129 @@ function Scheme({scheme, league}) {
             rs_losses: "Lose Regular Season Game",
             rs_wins: "Win Regular Season Game"
         }
-        
     }
 
+    const [data, setData] = useState(null)
+
+    const setDataAndColumns = (league) => {
+        // change data
+        let result = []
+        const columns = []
+        console.log('here is scheme')
+        console.log(scheme)
+        Object.keys(scheme).forEach(item => {
+            console.log('here is item')
+            console.log(item)
+            result.push({
+                [item]: scheme[item]
+            })
+            columns.push({
+                header: displayTable[league][item],
+                accessorKey: item
+            })
+            // <p><b>{displayTable[league][item]}</b>: {scheme[item]}</p>
+    })
+        console.log('here is result the columns')
+        console.log(result)
+        console.log(columns)
+        setData(result)
+        setColumns(columns)
+    }
+
+    useEffect(() => {
+        setDataAndColumns(league)
+    }, [league]);
+
+    useEffect(() => {
+        setDataAndColumns(league)
+    }, []);
+
+    // useEffect(() => {
+    //     // change format
+    //     if(league === 1){
+    //         playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg)
+    //     } else if(league === 2){
+    //         playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg)
+    //     } else if(league === 3){
+    //         playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg)
+    //     } else if(league ===4){
+    //         playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg)
+    //     }
+    // }, [league, playoffs]);
+
+    
+  const [sorting, setSorting] = useState([])
+  const [columns, setColumns] = useState(null)
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: true,
+  })
+
+    
+
   return (
+    columns ? (
       <Container>
-          <Table>
-          {
-              Object.keys(scheme).filter(item => displayTable[league][item]).map(item => (
-                  <Tr><Td><b>{displayTable[league][item]}</b>:</Td><Td>{scheme[item]}</Td></Tr>
-              ))
-          }
-          </Table>
-      </Container>
+        <Table>
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => {
+                return (
+                  <th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted()] ?? null}
+                      </div>
+                    )}
+                  </th>
+                )
+              })}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table
+            .getRowModel()
+            .rows
+            .map(row => {
+              return (
+                <Tr key={row.id}>
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <Td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    )
+                  })}
+                </Tr>
+              )
+            })}
+        </tbody>
+      </Table>
+      </Container> ) : <p>loading..</p>
   );
 }
 

@@ -161,13 +161,22 @@ function useAddTeam() {
 
   const calculateAndSetUnownedTeams = () => {
     if (fullRoster && sportTeams && Object.keys(sportTeams).length) {
+      console.log('here is full roster')
+      console.log(fullRoster)
       // get owned teams
       let ownedTeams = [];
       Object.keys(fullRoster).forEach((member) => {
+        console.log('here is member')
+        console.log(member)
         Object.keys(fullRoster[member]).forEach((slot) => {
-          ownedTeams.push(fullRoster[member][slot].teamId);
+          let teamId = fullRoster[member][slot].teamId
+          if(teamId) ownedTeams.push(teamId)
+          // ownedTeams.push(fullRoster[member][slot].teamId);
         });
       });
+
+      console.log('here is owned teams')
+      console.log(ownedTeams)
 
       let unownedTeams = {
         1: [],
