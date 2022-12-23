@@ -8,7 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table'
-import { mediumBlue, lightBlue } from "../../constants/style";
+import { mediumBlue, lightBlue, mobileBreakPoint } from "../../constants/style";
 import {mlbReg, nhlReg, nbaReg, nflReg, mlbPlayoffs, nflPlayoffs, nhlPlayoffs, nbaPlayoffs} from './tableSchemes'
 
 const Td = styled.td`
@@ -30,6 +30,9 @@ const Table = styled.table`
 const TableContainer = styled.div`
     width: 700px;
     overflow: scroll;
+    @media (max-width: ${mobileBreakPoint}){
+        width: 100vw;
+      }
 `
 
 function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, league}) {

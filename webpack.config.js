@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
 // const { env } = require('process');
 
 module.exports = (webpackServe, options) => {
@@ -28,7 +29,7 @@ module.exports = (webpackServe, options) => {
     entry: "./src/index.js",
     output: {
       path: path.join(__dirname, '/dist'),
-      filename: 'index_bundle.js',
+      filename: '[name].bundle.js',
       publicPath: '/'
     },
     module: {
@@ -97,6 +98,11 @@ module.exports = (webpackServe, options) => {
         index: '/'
       },
     },
+    optimization: {
+      splitChunks: {
+        chunks: "all"
+      }
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.html'
@@ -109,6 +115,9 @@ module.exports = (webpackServe, options) => {
       }),
       new webpack.ProvidePlugin({
         process: 'process/browser',
+      }),
+      new BundleAnalyzerPlugin({
+        generateStatsFile: true
       }),
       ENV_CONFIG
     ]

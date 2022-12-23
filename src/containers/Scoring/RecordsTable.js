@@ -4,6 +4,14 @@ import { useHistory } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import { useSelector, useDispatch } from 'react-redux';
 import MonthTicker from "../../components/MonthTicker";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getSortedRowModel,
+    SortingState,
+    useReactTable,
+  } from '@tanstack/react-table'
 // import { getTableColumns, getTableHeaders } from "./getTableData";
 
 const Th = styled.th`
@@ -136,6 +144,8 @@ function RecordsTable({league, roflMonth, scores, roflYear, teams}) {
         }
         
     }
+
+    
 
   return (
     sortedTeams ?

@@ -12,10 +12,16 @@ import Scheme from "./Scheme";
 import SchemeNew from './SchemeNew'
 import useHydration from "../../hooks/useHydration";
 import Loading from "../../components/Loading";
-import { lightBlue } from "../../constants/style";
+import { lightBlue, mobileBreakPoint } from "../../constants/style";
+
+// const Container = styled.div`
+//   margin-top: 40px;
+// `;
 
 const Container = styled.div`
-  margin-top: 40px;
+@media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 const LeagueSelector = styled.div`
@@ -26,6 +32,9 @@ const LeagueSelector = styled.div`
   background-color: ${lightBlue};
   height: 30px;
   align-items: center;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 const DisplaySelector = styled.div`
@@ -36,6 +45,9 @@ const DisplaySelector = styled.div`
   height: 30px;
   align-items: center;
   width: 700px;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 const ScItem = styled.p`
