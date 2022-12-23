@@ -81,8 +81,8 @@ function MobileMonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMont
 
   return (
         <Container>
-                <IconContainer rendered={roflMonth >= 2 ? true : false} onClick={() => handlePointerClick(-1)}>
-                {roflMonth >=2 ?<LeftIcon>{IconRight}</LeftIcon>: null
+                <IconContainer rendered={roflMonth >= (firstMonthForDisplay ? firstMonthForDisplay : 2) ? true : false} onClick={() => handlePointerClick(-1)}>
+                {roflMonth >= (firstMonthForDisplay ? firstMonthForDisplay : 2) ?<LeftIcon>{IconRight}</LeftIcon>: null
             }
             </IconContainer> 
             <Select
@@ -98,8 +98,8 @@ function MobileMonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMont
             </Option>
             ))}
             </Select>
-            <IconContainer rendered={roflMonth <= 13 ? true : false} onClick={() => handlePointerClick(1)}>
-           {roflMonth <= 13 ? IconRight : null} 
+            <IconContainer rendered={roflMonth <= (finalMonthForDisplay ? finalMonthForDisplay : 13) ? true : false} onClick={() => handlePointerClick(1)}>
+           {roflMonth <= (finalMonthForDisplay ? finalMonthForDisplay : 13) ? IconRight : null} 
             </IconContainer>
         </Container>
   );

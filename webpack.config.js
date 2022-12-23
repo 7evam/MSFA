@@ -100,7 +100,14 @@ module.exports = (webpackServe, options) => {
     },
     optimization: {
       splitChunks: {
-        chunks: "all"
+        chunks: "all",
+        cacheGroups: {
+          vendor: {
+            name: "vendor",
+            chunks: "initial",
+            minChunks: 2
+          }
+        }
       }
     },
     plugins: [
