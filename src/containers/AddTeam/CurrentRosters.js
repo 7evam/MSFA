@@ -11,7 +11,7 @@ import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import { toast } from "react-toastify";
 
-function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoster}) {
+function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoster, dropTeam}) {
     
     const { sportTeams, orgMembers } = useSelector((state) => ({
         ...state.sportReducer
@@ -23,7 +23,7 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
 
     const getMemberActionButton = (teamId) => {
         if(Number(selectedMember) === Number(currentOrganization.user_id)){
-            return <ActionButton onClick={() => toast("Feature coming soon")}>{"Drop"}</ActionButton>
+            return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
             // return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
         } else {
             return <ActionButton onClick={handleTrade}>{"Trade"}</ActionButton>
@@ -31,7 +31,7 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
     }
 
   return (
-<div>
+<Container>
         <Label>Choose a member</Label>
         <Select value={selectedMember} onChange={e => handleChange(e.target.value)}name="currentTeams">
         {
@@ -61,9 +61,9 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
                 if(currentRoster[el].teamId) {
                     return(
                         <SlotRow key={el}>
-                        <Td>{sportTeams[leagueId][teamId].city} {sportTeams[leagueId][teamId].name} </Td>
-                        <Td>${currentRoster[el].val}</Td>
-                        <Td>
+                        <Td style={{ width: "200px" }}>{sportTeams[leagueId][teamId].city} {sportTeams[leagueId][teamId].name} </Td>
+                        <Td style={{ width: "70px" }}>${currentRoster[el].val}</Td>
+                        <Td style={{ width: "70px" }}>
                             {getMemberActionButton(currentRoster[el].teamId)}
                         </Td>
                         {/* <button>{selectedMember === currentOrganization.user_id ? "Trade" : "Drop"}</button> */}
@@ -72,7 +72,7 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
                 }
             })
         }
-</div>
+</Container>
   );
 }
 

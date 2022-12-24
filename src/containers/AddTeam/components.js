@@ -4,15 +4,23 @@ import {red, blue, mediumBlue, lightBlue, mobileBreakPoint} from '../../constant
 
 export const Container = styled.div`
   margin-top: 50px;
-  width: 500px;
+  width: 700px;
   margin-bottom: 100px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 export const LeagueSelector = styled.div`
   display: flex;
   flex-direction: row;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 export const League = styled.p`
@@ -28,6 +36,8 @@ export const League = styled.p`
 export const TabSelector = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  width: 700px;
 `;
 
 export const Tab = styled.p`

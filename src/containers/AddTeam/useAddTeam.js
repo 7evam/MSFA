@@ -95,6 +95,10 @@ function useAddTeam() {
     return () => abortController.abort();
   }
 
+  const sleep = async (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   useEffect(() => {
     if (
       currentRoster &&
@@ -248,10 +252,9 @@ function useAddTeam() {
   };
 
   const dropTeam = async (teamId) => {
+    const teamName = `${sportTeams[String(teamId)[0]][teamId].city} ${sportTeams[String(teamId)[0]][teamId].name}`
     const approved = confirm(
-      `are you sure you want to drop the ${
-        sportTeams[String(teamId)[0]][teamId].city
-      } ${sportTeams[String(teamId)[0]][teamId].name}`
+      `are you sure you want to drop the ${teamName}`
     );
     if (approved) {
       try {
@@ -265,9 +268,14 @@ function useAddTeam() {
             roflYear: currentYear
           }
         });
-        if (res === "success") {
+        console.log('here is res')
+        console.log(res)
+        if (res.body === "success") {
+          toast.success(`Successfully dropped ${teamName}`)
+          await sleep(300)
+          await fetchRoster(2022, new AbortController())
         } else {
-          toast.error("There was an issue dropping your team");
+          toast.error(res.body);
         }
       } catch (e) {
         console.log("problem");

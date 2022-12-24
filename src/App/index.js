@@ -19,8 +19,10 @@ import Loading from '../components/Loading'
 import RenderModal from './RenderModal'
 
 import {Container, ContentContainer} from "./components"
+// import Settings from '../containers/Settings'
 
 const Settings = lazy(() => import('../containers/Settings'))
+
 
 
 

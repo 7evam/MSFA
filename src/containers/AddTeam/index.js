@@ -38,7 +38,7 @@ function AddTeam(props) {
     const getContent = (tab) => {
         switch(tab){
             case 'rosters':
-                return <CurrentRosters handleTrade={handleTrade} selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster}/>
+                return <CurrentRosters dropTeam={dropTeam} handleTrade={handleTrade} selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster}/>
             case 'unownedTeams':
                 return <UnownedTeams handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
             case 'bids':
