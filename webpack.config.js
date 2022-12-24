@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
+const { DuplicatesPlugin } = require("inspectpack/plugin");
 // const { env } = require('process');
 
 module.exports = (webpackServe, options) => {
@@ -24,11 +25,45 @@ module.exports = (webpackServe, options) => {
     }
   }
 
+  const plugins = [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+    ENV_CONFIG
+  ]
+
+  if(options.mode !== 'production') plugins.push(
+    new BundleAnalyzerPlugin({
+      generateStatsFile: true
+    }),
+    new DuplicatesPlugin({
+      // Emit compilation warning or error? (Default: `false`)
+      emitErrors: false,
+      // Display full duplicates information? (Default: `false`)
+      verbose: false
+    })
+  )
+
   return {
     mode: options.mode,
+    // entry: {
+    //   index: "./src/index.js",
+    //   app: "./src/App/index.js",
+    //   createNewLeague: "./src/containers/CreateNewLeague/index.js"
+    // },
     entry: "./src/index.js",
     output: {
-      path: path.join(__dirname, '/dist'),
+      // path: path.join(__dirname, '/dist'),
+      path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
       publicPath: '/'
     },
@@ -39,7 +74,12 @@ module.exports = (webpackServe, options) => {
           use:  [{
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-react']
+              presets: ['@babel/preset-react'],
+              // plugins: [
+              //   'import',
+              //   {libraryName: 'antd', style: true},
+              //   'antd',
+              // ]
             }
           }],
           // exclude: /node_modules/
@@ -108,25 +148,9 @@ module.exports = (webpackServe, options) => {
             minChunks: 2
           }
         }
-      }
+      },
+      usedExports: true
     },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './src/index.html'
-      }),
-      new MiniCssExtractPlugin({
-        filename: '[name].css'
-      }),
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
-      new BundleAnalyzerPlugin({
-        generateStatsFile: true
-      }),
-      ENV_CONFIG
-    ]
+    plugins
   }
 };

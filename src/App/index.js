@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import styled from "styled-components";
 import { Redirect, Route, Switch } from "react-router-dom";
 import useApi from "../hooks/useApi";
@@ -14,13 +14,14 @@ import AddTeam from '../containers/AddTeam'
 import RoflLeague from "../containers/RoflLeague";
 import Scoring from '../containers/Scoring'
 
-import Settings from "../containers/Settings";
-
 import Loading from '../components/Loading'
 
 import RenderModal from './RenderModal'
 
 import {Container, ContentContainer} from "./components"
+
+const Settings = lazy(() => import('../containers/Settings'))
+
 
 
 function App(props) {
@@ -57,6 +58,7 @@ function App(props) {
       <TopBar />
       <ContentContainer>
       <Switch>
+      <Suspense fallback={<Loading/>}>
         <Route exact path="/">
           <Redirect to="/squad" />
         </Route>
@@ -68,6 +70,7 @@ function App(props) {
         <Route exact path="/scoring" component={Scoring}/>
         
         <Route exact path="/add-team" component={AddTeam}/>
+        </Suspense>
       </Switch>
       </ContentContainer>
       <RenderModal/>
