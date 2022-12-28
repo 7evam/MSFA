@@ -278,6 +278,8 @@ function useAddTeam() {
           toast.error(res.body);
         }
       } catch (e) {
+        console.log('here is res')
+        console.log(res)
         console.log("problem");
         console.error(e);
       }
@@ -320,8 +322,29 @@ function useAddTeam() {
       });
   };
 
-  const handleTrade = () => {
-    toast('Trade proposals coming soon!')
+  // console.log('here is initla checked teams')
+  // console.log(initialCheckedTeams)
+
+  // let initialCheckedTeams = {}
+  //   Object.keys(props.roster).forEach(team => {
+  //       if(props.roster[team].teamId){
+  //           initialCheckedTeams[props.roster[team].teamId] = false
+  //       }
+  //   })
+
+  const handleTrade = (team, user) => {
+    dispatch({
+      type: "SHOW_MODAL",
+      payload: {
+        modalContent: "PROPOSE_TRADE",
+        props: {
+          currentRoster,
+          selectedTeam: team,
+          currentUserRoster: fullRoster[currentOrganization.user_id],
+          userToTradeWith: selectedMember
+        }
+      }
+    });
   }
 
   return {

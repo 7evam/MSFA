@@ -31,170 +31,81 @@ const ErrorContainer = styled.div`
 `
 
 function AddTeam() {
-    const dispatch = useDispatch();
 
     const { props } = useSelector((state) => ({
         ...state.modalReducer
       }));
 
-    const { currentOrganization } = useSelector((state) => ({
-        ...state.authReducer
-    }));
+    // let initialCheckedTeams = {}
+    // Object.keys(props.roster).forEach(team => {
+    //     if(props.roster[team].teamId){
+    //         initialCheckedTeams[props.roster[team].teamId] = false
+    //     }
+    // })
 
-    const {sportTeams, roflYear, activeYears, playoffMonths, leagueTable} = useSelector((state) => ({
-        ...state.sportReducer
-    }))
+    const transformToCheckable = (roster) => {
+        console.log("transforming this roster")
+        console.log(roster)
+        let checkableRoster = {}
+        checkableRoster.cash = roster.cash
+        Object.keys(roster).forEach(teamNum => {
+            const team = roster[teamNum]
+            console.log("here is team")
+            console.log(team)
+            if(team.teamId){
+                checkableRoster[team.teamId] = {
+                    checked: props.selectedTeam === team.teamId ? true : false,
+                    val: team.val,
+                    leagueId: team.leagueId
+                }
+            }
+        })
+        console.log('here is transformed roster')
+        console.log(checkableRoster)
+        return checkableRoster
+    }
 
-    const { makeRequest, isLoading } = useApi();
-
-    let initialCheckedTeams = {}
-    Object.keys(props.roster).forEach(team => {
-        if(props.roster[team].teamId){
-            initialCheckedTeams[props.roster[team].teamId] = false
-        }
-    })
-
-    const leagueFromTeamId = (team) => {
-        return Number(String(team)[0]);
-      };
-
-    const [maxBid, setMaxBid] = useState(props.roster.cash)
-    const [checkedTeams, setCheckedTeams] = useState(initialCheckedTeams)
+    const [checkedTeams, setCheckedTeams] = useState(transformToCheckable(props.roster))
+    const [bid, setBid] = useState(0)
     const [errors, setErrors] = useState({
+        bid: null,
         leagueCount: null
     })
 
-    // const roflMonth = activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
-    const userMustDropTeam = !checkIfEmptySlot(props.currentRoster, activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1)
-    const selectedTeamName = `${sportTeams[leagueFromTeamId(props.selectedTeam)][props.selectedTeam].city} ${sportTeams[leagueFromTeamId(props.selectedTeam)][props.selectedTeam].name}`
+    const handleCashValueChange = (val, maxBid) => {
+        checkForBidError(val, maxBid)
+        setBid(val)
+    }
 
-    const handleTeamClick = (team) => {
+    // this function sets errors in state and returns
+    // true if there is an error and false if there is NO error
+    const checkForBidError = (bid, maxBid) => {
+        let newErrors = errors
+        if(bid > maxBid){
+            newErrors.bid = "Your bid is too high"
+        } else {
+            newErrors.bid = null
+        }
+        setErrors(newErrors)
+        if(bid > maxBid){
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const handleTeamClick = (teamId) => {
         const newCheckedTeams = {...checkedTeams}
-        newCheckedTeams[team.teamId] = !newCheckedTeams[team.teamId]
-        if(Object.values(newCheckedTeams).filter(val => val === true).length >1){
-            toast.error('You can only drop 1 team to add a team')
+        newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked
+        if(Object.values(newCheckedTeams[stage]).filter(team => team.checked === true).length > 3){
+            toast.error('You can drop a maximum of 3 teams')
             return
         } else {
-            let newMaxBid = maxBid
-            // if team is league with active playoff month it cannot be dropped for cash
-            if(playoffMonths[2022][team.leagueId] - 1 !== activeYears[2022][team.leagueId].roflMonth){
-                newCheckedTeams[team.teamId] === true ? newMaxBid += team.val : newMaxBid -= team.val
-                setMaxBid(newMaxBid)
-            }
             setCheckedTeams(newCheckedTeams)
         }
     }
 
-    // this function sends a toast error if there is an error and returns
-    // true if there is an error and false if there is NO error
-    const checkForLeagueCountError = () => {
-        teamCountByLeague[Number(String(props.selectedTeam)[0])]++
-        Object.keys(checkedTeams).forEach(team => {
-            if(checkedTeams[team]){
-                teamCountByLeague[Number(String(team)[0])]--
-            }
-        })
-        for(let league in teamCountByLeague){
-            if(teamCountByLeague[league] < 1 && Object.keys(activeYears[2022]).includes(league)){
-                toast.error(`This add would result in you having not enough ${leagueTable[league]} teams, you need at least 1`)
-                return false
-            } else if(teamCountByLeague[league] > 3){
-                toast.error(`This add would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`)
-                return false
-            }
-        }
-        return true
-    }
-
-    // const sleep = async (ms) => {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    //   }
-
-    const handleSubmit = async () => {
-        const leagueCountPassed = checkForLeagueCountError()
-        if(!leagueCountPassed) return
-
-        const res = await makeRequest({
-            method: "post",
-            route: `/users/addTeam`,
-            data: {
-                organizationId: Number(currentOrganization.id),
-                userId: currentOrganization.user_id,
-                teamId: Number(props.selectedTeam),
-                roflYear,
-                droppedTeams: Object.keys(checkedTeams).filter(team => checkedTeams[team] === true).map(team => Number(team)),
-                roflMonth: activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
-                // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
-            }
-        });
-        if(res.statusCode === 200 && res.body === 'success'){
-            toast.success('Request submitted successfully')
-            // sleep is necessary to refetch bids
-            // await sleep(3000)
-            dispatch({
-                type: "CLOSE_MODAL",
-              });
-        } else {
-            toast.error("There was an error submitting your request")
-        }
-    }
-
-    let teamCountByLeague= {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0
-      };
-      Object.keys(props.currentRoster)
-        .filter((key) => key !== "cash")
-        .forEach((team) => {
-          let leagueId = props.currentRoster[team].leagueId;
-          if(leagueId) teamCountByLeague[leagueId]++;
-        });
-
-    return(
-    <div>
-        <p>Add Team</p>
-        {
-            userMustDropTeam ?
-            <div>
-            <p>In order to add the {selectedTeamName} you need an empty slot. Select which team you would like to drop to add the {selectedTeamName}. You will receive the cash value for the team you drop and add the {selectedTeamName} for $1</p>
-            <p>Choose team(s) to drops</p>
-            <p>Teams in their last month before the playoffs have no cash value when dropped</p>
-            {
-            Object.keys(props.roster).filter(key => key!=='cash' && props.roster[key].teamId).map(key => {
-                const team = props.roster[key]
-                const leagueId = team.leagueId ? team.leagueId : Number(String(team)[0])
-                // only return team if they are droppable (active league not in playoffs)
-                if(
-                    activeYears[2022][leagueId] && activeYears[2022][leagueId].playoffs === 1
-                    ||
-                    activeYears[2022][leagueId].roflMonth !== activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth
-                    ){
-                    return null
-                } else {
-                    return(
-                        team.teamId ?
-                    <TeamRow>
-                        <p>{sportTeams[team.leagueId][team.teamId].city} {sportTeams[team.leagueId][team.teamId].name} {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.val})`}</p>
-                        <input
-                            type="checkbox"
-                            checked={checkedTeams[team.teamId]}
-                            onChange={() => handleTeamClick(team)}
-                            disabled={teamCountByLeague[Number(String(props.selectedTeam)[0])] >= 3 && Number(String(props.selectedTeam)[0]) !== team.leagueId}
-                        />
-                    </TeamRow> : null
-                    )
-                }
-            })
-            }
-            </div>
-            :
-            <p>You have an empty slot on your roster and may add the {selectedTeamName} for $1. Press confirm below to continue.</p>
-        }
-          <button onClick={() => handleSubmit()}>Confirm</button>
-    </div>
-    )
+    return <TeamSelect mode={'addTeam'} errors={errors} checkedTeam={checkedTeams} handleTeamClick={handleTeamClick} cashValue={bid} handleCashValueChange={handleCashValueChange}/>
 }
 
 

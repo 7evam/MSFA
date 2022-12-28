@@ -41,17 +41,17 @@ module.exports = (webpackServe, options) => {
     ENV_CONFIG
   ]
 
-  if(options.mode !== 'production') plugins.push(
-    new BundleAnalyzerPlugin({
-      generateStatsFile: true
-    }),
-    new DuplicatesPlugin({
-      // Emit compilation warning or error? (Default: `false`)
-      emitErrors: false,
-      // Display full duplicates information? (Default: `false`)
-      verbose: false
-    })
-  )
+  // if(options.mode !== 'production') plugins.push(
+  //   new BundleAnalyzerPlugin({
+  //     generateStatsFile: true
+  //   }),
+  //   new DuplicatesPlugin({
+  //     // Emit compilation warning or error? (Default: `false`)
+  //     emitErrors: false,
+  //     // Display full duplicates information? (Default: `false`)
+  //     verbose: false
+  //   })
+  // )
 
   return {
     mode: options.mode,

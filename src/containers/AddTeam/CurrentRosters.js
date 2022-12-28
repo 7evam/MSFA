@@ -26,7 +26,7 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
             return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
             // return <ActionButton onClick={() => dropTeam(teamId)}>{"Drop"}</ActionButton>
         } else {
-            return <ActionButton onClick={handleTrade}>{"Trade"}</ActionButton>
+            return <ActionButton onClick={() => handleTrade(teamId, selectedMember)}>{"Trade"}</ActionButton>
         }
     }
 
