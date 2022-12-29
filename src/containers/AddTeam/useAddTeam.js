@@ -64,16 +64,18 @@ function useAddTeam() {
   const [readyToRender, setReadyToRender] = useState(false);
   const [currentYear, setCurrentYear] = useState(2022);
   const [allBids, setAllBids] = useState(null);
-  const [tab, setTab] = useState("rosters");
+  const [tab, setTab] = useState("trades");
   const [modalHasBeenUsed, setModalHasBeenUsed] = useState(false)
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
   const [originalBids, setOriginalBids] = useState(null)
+  const [trades, setTrades] = useState(null)
 
   // Load page data
   useEffect(() => {
     const abortController = new AbortController();
     fetchRoster(2022, abortController);
     fetchAllBids(2022, abortController);
+    fetchTrades(2022, abortController)
     if (!deadlines) {
       hydrateDeadlines(abortController, 2022);
     }
@@ -95,6 +97,12 @@ function useAddTeam() {
     return () => abortController.abort();
   }
 
+  const reFetchTrades = async () => {
+    const abortController = new AbortController();
+    fetchTrades(2022, abortController)
+    return () => abortController.abort();
+  }
+
   const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -107,7 +115,8 @@ function useAddTeam() {
       sportTeams &&
       deadlines &&
       unownedTeams &&
-      allBids
+      allBids &&
+      trades
     ) {
       setReadyToRender(true);
     }
@@ -118,7 +127,8 @@ function useAddTeam() {
     deadlines,
     unownedTeams,
     allBids,
-    league
+    league,
+    trades
   ]);
 
   useEffect(() => {
@@ -170,8 +180,6 @@ function useAddTeam() {
       // get owned teams
       let ownedTeams = [];
       Object.keys(fullRoster).forEach((member) => {
-        console.log('here is member')
-        console.log(member)
         Object.keys(fullRoster[member]).forEach((slot) => {
           let teamId = fullRoster[member][slot].teamId
           if(teamId) ownedTeams.push(teamId)
@@ -197,6 +205,33 @@ function useAddTeam() {
         });
       }
       setUnownedTeams(unownedTeams);
+    }
+  };
+
+  const fetchTrades = async (selectedRoflYear, abortController) => {
+    try {
+      var res = await makeRequest({
+        method: "get",
+        route: `users/trades/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`,
+        abort: abortController
+      });
+      const body = res.body;
+      console.log('here is trades')
+      console.log(body)
+      setTrades(body)
+      // const bidTable = {}
+      // body.forEach(bid => {
+      //   if(bidTable[bid.rofl_month]){
+      //       bidTable[bid.rofl_month].push(bid)
+      //   } else {
+      //       bidTable[bid.rofl_month] = [bid]
+      //   }
+      // })
+      // setAllBids(bidTable);
+      // setOriginalBids(JSON.stringify(bidTable))
+    } catch (e) {
+      console.log("problem");
+      console.error(e);
     }
   };
 
@@ -372,7 +407,9 @@ function useAddTeam() {
     setAllBids,
     originalBids,
     handleTrade,
-    handleAdd
+    handleAdd,
+    trades,
+    reFetchTrades
   };
 }
 

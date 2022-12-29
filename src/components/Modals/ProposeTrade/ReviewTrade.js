@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import useApi from "../../../hooks/useApi";
+import {toast} from 'react-toastify'
 
 function ReviewTrade({setStage, teamsForTrade, cash}) {
 
-    const {sportTeams} = useSelector((state) => ({
+    const {sportTeams,playoffMonths, activeYears} = useSelector((state) => ({
         ...state.sportReducer
     }))
+
+    const { props } = useSelector((state) => ({
+        ...state.modalReducer
+      }));
+
+      const { currentOrganization } = useSelector((state) => ({
+        ...state.authReducer
+    }));
+
+    const {makeRequest, isLoading} = useApi()
+
+    const dispatch = useDispatch()
 
   const tradeForTeams = []
   Object.keys(teamsForTrade['tradeFor']).forEach(teamId => {
     if(teamsForTrade['tradeFor'][teamId].checked === true){
         const leagueId = Number(String(teamId)[0])
         tradeForTeams.push({
+            teamId,
             name: `${sportTeams[leagueId][teamId].city} ${sportTeams[leagueId][teamId].name}`,
-            value: teamsForTrade['tradeFor'][teamId].val
+            value: teamsForTrade['tradeFor'][teamId].val,
+            leagueId: teamsForTrade['tradeFor'][teamId].leagueId,
         })
     }
   })
@@ -23,11 +39,62 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
     if(teamsForTrade['tradeAway'][teamId].checked === true){
         const leagueId = Number(String(teamId)[0])
         tradeAwayTeams.push({
+            teamId,
             name: `${sportTeams[leagueId][teamId].city} ${sportTeams[leagueId][teamId].name}`,
-            value: teamsForTrade['tradeAway'][teamId].val
+            value: teamsForTrade['tradeAway'][teamId].val,
+            leagueId: teamsForTrade['tradeAway'][teamId].leagueId,
         })
     }
   })
+
+  const submitTrade = async () => {
+    console.log('here is user to trade with')
+    console.log(props.userToTradeWith)
+    // validate trade
+    const tradeProposerTrades = {
+        cash: cash.tradeAway,
+        teams: []
+    }
+    tradeAwayTeams.forEach(team => {
+        tradeProposerTrades.teams.push({
+            id: team.teamId,
+            value: team.value
+        })
+    })
+    
+    const tradeReceiverTrades = {
+        cash:cash.tradeFor,
+        teams: []
+    }
+    tradeForTeams.forEach(team => {
+        tradeReceiverTrades.teams.push({
+            id: team.teamId,
+            value: team.value
+        })
+    })
+
+    const res = await makeRequest({
+        method: "post",
+        route: `/users/trades`,
+        data: {
+            organizationId: currentOrganization.id,
+            tradeProposerId: currentOrganization.user_id,
+            tradeReceiverId: props.userToTradeWith,
+            tradeProposerTrades,
+            tradeReceiverTrades,
+            roflMonth: activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1,
+            roflYear: 2022
+        }
+    });
+    if(res.statusCode === 201){
+        toast.success('Trade submitted successfully')
+        dispatch({
+            type: "CLOSE_MODAL",
+          });
+    } else {
+        toast.error("There was an error submitting your request")
+    }
+  }
 
   console.log('trade for teams')
   console.log(tradeForTeams)
@@ -39,16 +106,19 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
     <p>Review Trade</p>
     <p>You receive</p>
     {tradeForTeams.map(team => (
-        <p>{team.name} (${team.value})</p>
+        <p>{team.name} {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.value})`}</p>
     ))}
     {cash.tradeFor > 0 ? <p>${cash.tradeFor} Rofl Cash</p> : null}
     <p>Opponent receives</p>
     {tradeAwayTeams.map(team => (
-        <p>{team.name} (${team.value})</p>
-    ))}
+        <p>{team.name} {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.value})`}</p>
+        ))}
     {cash.tradeAway > 0 ? <p>${cash.tradeAway} Rofl Cash</p> : null}
     <button onClick={() => setStage('tradeAway')}>Go Back</button>
+    <button onClick={submitTrade}>Submit</button>
   </div>
 }
 
 export default ReviewTrade;
+
+

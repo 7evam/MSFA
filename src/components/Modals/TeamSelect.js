@@ -264,9 +264,9 @@ function TeamSelect({errors, mode, setStage, checkedTeams, handleTeamClick, cash
             allowDecimals={false}
             allowNegativeValue={false}
           />
-          <ErrorContainer>{errors.bid ? <p>{errors.bid}</p> : null}</ErrorContainer>
+          <ErrorContainer>{errors?.bid ? <p>{errors.bid}</p> : null}</ErrorContainer>
           {mode==='tradeAway' ? <button onClick={goBack}>Go Back</button>: null}
-          <button disabled={errors.bid} onClick={() => handleSubmit()}>{submitText[mode]}</button>
+          <button disabled={errors?.bid} onClick={() => handleSubmit()}>{submitText[mode]}</button>
           
     </div>
     )
