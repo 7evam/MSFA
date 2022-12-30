@@ -67,6 +67,11 @@ function TradeCard({ trade, state, reFetchTrades }) {
     false: "from"
   };
 
+  const otherUser = {
+    true: `${orgMembers[trade.receiverId].team_name} (${orgMembers[trade.receiverId].name})`,
+    false: `${orgMembers[trade.proposerId].team_name} (${orgMembers[trade.proposerId].name})`
+  }
+
   const sendTense = {
     received: "send",
     proposed: "send",
@@ -104,11 +109,57 @@ function TradeCard({ trade, state, reFetchTrades }) {
     }
   };
 
+  const rejectTrade = async () => {
+    const confimred = confirm("Are you sure you'd like to reject this trade?");
+    if (!confimred) return;
+    try {
+      var res = await makeRequest({
+        method: "patch",
+        route: `users/trades/tradeId/${trade.tradeId}`,
+        data: {
+            tradeId: trade.tradeId,
+            accepted: false
+        }
+      });
+      if (res.body === "success") {
+        toast.success("Rejected trade");
+      }
+      await sleep(300);
+      await reFetchTrades();
+    } catch (e) {
+      console.log("problem");
+      console.error(e);
+    }
+  }
+
+  const acceptTrade = async () => {
+    const confimred = confirm("Are you sure you'd like to accept this trade?");
+    if (!confimred) return;
+    try {
+      var res = await makeRequest({
+        method: "patch",
+        route: `users/trades/tradeId/${trade.tradeId}`,
+        data: {
+            tradeId: trade.tradeId,
+            accepted: true
+        }
+      });
+      if (res.body === "success") {
+        toast.success("Accepted trade");
+      }
+      await sleep(300);
+      await reFetchTrades();
+    } catch (e) {
+      console.log("problem");
+      console.error(e);
+    }
+  }
+
   const getButtons = (state) => {
     if (state === "received") {
       return (
         <>
-          <Button>Reject</Button> <Button accept={true}>Accept</Button>
+          <Button onClick={rejectTrade}>Reject</Button> <Button onClick={acceptTrade} accept={"true"}>Accept</Button>
         </>
       );
     } else {
@@ -120,18 +171,21 @@ function TradeCard({ trade, state, reFetchTrades }) {
     }
   };
 
+  const sendTeams = trade.isProposedByUser ? trade.proposerTeams : trade.receiverTeams
+  const receiveTeams = trade.isProposedByUser ? trade.receiverTeams : trade.proposerTeams
+
   return (
     <Container>
       <ContentContainer>
         <p>
           Trade {topText[trade.isProposedByUser]}{" "}
-          {orgMembers[trade.receiverId].team_name} (
-          {orgMembers[trade.receiverId].name})
+          {otherUser[trade.isProposedByUser]}
         </p>
         <TradeSidesContainer>
           <TradeSide>
             <TradeSideHeader>You {sendTense[state]}</TradeSideHeader>
-            {trade.proposerTeams.map((team) =>
+            {
+            sendTeams.map((team) =>
               toTeamName(team.id) ? (
                 <p>
                   {toTeamName(team.id)} (${team.value})
@@ -139,11 +193,12 @@ function TradeCard({ trade, state, reFetchTrades }) {
               ) : (
                 <p>${team.value} Rofl Cash</p>
               )
-            )}
+            )
+            }
           </TradeSide>
           <TradeSide>
             <TradeSideHeader>You {receiveTense[state]}</TradeSideHeader>
-            {trade.receiverTeams.map((team) =>
+            {receiveTeams.map((team) =>
               toTeamName(team.id) ? (
                 <p>
                   {toTeamName(team.id)} (${team.value})

@@ -57,6 +57,22 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
 
     const benchSpots = (Object.values(endOfLeagueTable)).filter(val => val >= roflMonth).length - 1
 
+    const leagues = ['league_1','league_2','league_3','league_4']
+
+    const emptySlot = (league) => {
+      return(
+          <Slot
+            key={league}
+            name={league}
+            team={'empty'}
+            points={null}
+            readOnly={readOnly}
+            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+            locked={false}
+          />
+      )
+    }
+
   return (
     <Container>
       <Tbody>
@@ -79,46 +95,22 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
             Points
           </Th>
         </Tr>
-        {roflMonth <= endOfLeagueTable['1'] ? (
-          <Slot
-            name={"league_1"}
-            team={`${currentMonthRoster.league_1.city} ${currentMonthRoster.league_1.name}`}
-            points={currentMonthRoster.league_1.roflScore}
+        {
+          leagues.map((league, i) => (
+            roflMonth <= endOfLeagueTable[i+1] ? (
+              currentMonthRoster[league] ?
+            <Slot
+            name={league}
+            team={`${currentMonthRoster[league].city} ${currentMonthRoster[league].name}`}
+            points={currentMonthRoster[league].roflScore}
             readOnly={readOnly}
             changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={readOnly ? null : currentMonthRoster.league_1.isLocked}
-          />
-        ) : null}
-        {roflMonth <= endOfLeagueTable['2'] ? (
-          <Slot
-            name={"league_2"}
-            team={`${currentMonthRoster.league_2.city} ${currentMonthRoster.league_2.name}`}
-            points={currentMonthRoster.league_2.roflScore}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={readOnly ? null : currentMonthRoster.league_2.isLocked}
-          />
-        ) : null}
-        {roflMonth <= endOfLeagueTable['3'] ? (
-          <Slot
-            name={"league_3"}
-            team={`${currentMonthRoster.league_3.city} ${currentMonthRoster.league_3.name}`}
-            points={currentMonthRoster.league_3.roflScore}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={readOnly ? null : currentMonthRoster.league_3.isLocked}
-          />
-        ) : null}
-        {roflMonth <= endOfLeagueTable['4'] ? (
-          <Slot
-            name={"league_4"}
-            team={`${currentMonthRoster.league_4.city} ${currentMonthRoster.league_4.name}`}
-            points={currentMonthRoster.league_4.roflScore}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={readOnly ? null : currentMonthRoster.league_4.isLocked}
-          />
-        ) : null}
+            locked={readOnly ? null : currentMonthRoster[league].isLocked}
+          /> : emptySlot(league)
+            ) : null
+          ))
+        }
+      
         {currentMonthRoster.flex_1 ? (
           <Slot
             name={"flex_1"}
@@ -184,3 +176,44 @@ export default RosterComponent;
   // : 
   // null
 // ))}
+
+// {roflMonth <= endOfLeagueTable['1'] ? (
+//   <Slot
+//     name={"league_1"}
+//     team={`${currentMonthRoster.league_1.city} ${currentMonthRoster.league_1.name}`}
+//     points={currentMonthRoster.league_1.roflScore}
+//     readOnly={readOnly}
+//     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+//     locked={readOnly ? null : currentMonthRoster.league_1.isLocked}
+//   />
+// ) : null}
+// {roflMonth <= endOfLeagueTable['2'] ? (
+//   <Slot
+//     name={"league_2"}
+//     team={`${currentMonthRoster.league_2.city} ${currentMonthRoster.league_2.name}`}
+//     points={currentMonthRoster.league_2.roflScore}
+//     readOnly={readOnly}
+//     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+//     locked={readOnly ? null : currentMonthRoster.league_2.isLocked}
+//   />
+// ) : null}
+// {roflMonth <= endOfLeagueTable['3'] ? (
+//   <Slot
+//     name={"league_3"}
+//     team={`${currentMonthRoster.league_3.city} ${currentMonthRoster.league_3.name}`}
+//     points={currentMonthRoster.league_3.roflScore}
+//     readOnly={readOnly}
+//     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+//     locked={readOnly ? null : currentMonthRoster.league_3.isLocked}
+//   />
+// ) : null}
+// {roflMonth <= endOfLeagueTable['4'] ? (
+//   <Slot
+//     name={"league_4"}
+//     team={`${currentMonthRoster.league_4.city} ${currentMonthRoster.league_4.name}`}
+//     points={currentMonthRoster.league_4.roflScore}
+//     readOnly={readOnly}
+//     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+//     locked={readOnly ? null : currentMonthRoster.league_4.isLocked}
+//   />
+// ) : null}

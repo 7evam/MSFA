@@ -28,7 +28,7 @@ function TopBar() {
       <Nav className="grid-container">
         <NavGroup>
           <AppRoutes>
-        <CustomNavLink to="/squad" isSelected={history.location.pathname == '/squad'}>
+        <CustomNavLink to="/squad" selected={history.location.pathname == '/squad'}>
             Squad
           </CustomNavLink>
 
@@ -40,20 +40,20 @@ function TopBar() {
             <span>Rosters</span>
           </CustomNavLink> */}
 
-          <CustomNavLink to="/rofleague" isSelected={history.location.pathname == '/rofleague'}>
+          <CustomNavLink to="/rofleague" selected={history.location.pathname == '/rofleague'}>
             League
           </CustomNavLink>
 
-          <CustomNavLink to="/scoring" isSelected={history.location.pathname == '/scoring'}>
+          <CustomNavLink to="/scoring" selected={history.location.pathname == '/scoring'}>
             Scoring
           </CustomNavLink>
 
-          <CustomNavLink to="/add-team" isSelected={history.location.pathname == '/add-team'}>
+          <CustomNavLink to="/add-team" selected={history.location.pathname == '/add-team'}>
             Transactions
           </CustomNavLink>
           </AppRoutes>
           <AppActions>
-          <CustomNavLink to="/settings" isSelected={history.location.pathname == '/settings'}>
+          <CustomNavLink to="/settings" selected={history.location.pathname == '/settings'}>
             Settings
           </CustomNavLink>
           <CustomNavLink to="/">

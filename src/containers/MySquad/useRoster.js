@@ -69,7 +69,6 @@ function useRoster() {
   // }
 
   const initiateAndReturnRoflMonthAndYear = () => {
-    console.log('in initiate and return')
     // initiate year as earlliest active year for current org
     const initialYear = activeYearArray[0];
 
@@ -90,7 +89,6 @@ function useRoster() {
       // console.log('here is an active league')
       // console.log(activeRoflMonths[initialYear][activeLeague].roflMonth)
       if (activeRoflMonths[initialYear][activeLeague].roflMonth > roflMonthToShow) {
-        console.log('making a change for rofl month to show')
         roflMonthToShow = activeRoflMonths[initialYear][activeLeague].roflMonth;
       }
     });
@@ -104,17 +102,11 @@ function useRoster() {
   };
 
   useEffect(() => {
-    console.log('in use effect of active years')
     if (activeYears) {
       const initialYear = initiateAndReturnRoflMonthAndYear();
       fetchRoster(initialYear);
     }
   }, [activeYears]);
-
-  useEffect(() => {
-    console.log('rofl month changed')
-    console.log(roflMonth)
-  }, [roflMonth]);
 
   useEffect(() => {
     if (
@@ -160,6 +152,10 @@ function useRoster() {
   };
 
   const changeRoster = (slot) => {
+    console.log('here is slot')
+    console.log(slot)
+    console.log('here is selectedSlot')
+    console.log(selectedSlot)
     if (selectedSlot) {
       const team1 = { ...roster[`${roflMonth}-${selectedRoflYear}`][slot] };
       const team2 = {
