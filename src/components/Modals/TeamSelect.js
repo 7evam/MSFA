@@ -218,7 +218,7 @@ function TeamSelect({errors, mode, setStage, checkedTeams, handleTeamClick, cash
     //     Object.keys(props.roster)
     // }
 
-    const calculateIfDisabled = () => {
+    const calculateIfDisabled = (leagueId) => {
         // disabled checkbox if they already have the max number of teams 
         // from a league and want to add another one
         teamCountByLeague[Number(String(props.selectedTeam)[0])] == 3 
@@ -250,7 +250,7 @@ function TeamSelect({errors, mode, setStage, checkedTeams, handleTeamClick, cash
                             type="checkbox"
                             checked={checkedTeams[teamId].checked}
                             onChange={() => handleTeamClick(teamId)}
-                            disabled={calculateIfDisabled()}
+                            disabled={calculateIfDisabled(leagueId)}
                         />
                     </TeamRow>
                     )

@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../../hooks/useApi';
 import { useDispatch } from 'react-redux';
-import sportReducer from '../../../reducers/sportReducer';
 // import useApi from '../../hooks/useApi'
 
 const Input = styled.input`

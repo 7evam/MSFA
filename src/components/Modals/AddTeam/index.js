@@ -7,6 +7,7 @@ import useApi from '../../../hooks/useApi';
 import { useDispatch } from 'react-redux';
 import sportReducer from '../../../reducers/sportReducer';
 import { checkIfEmptySlot } from '../../../utils';
+import TeamSelect from '../TeamSelect';
 // import useApi from '../../hooks/useApi'
 
 const Input = styled.input`

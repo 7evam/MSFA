@@ -14,7 +14,7 @@ import {
   ActionButton,
   Container,
   League,
-  LeagueSelector,
+
   slotData,
   SlotRow,
   Th,
@@ -26,6 +26,27 @@ import {
 import useAddTeam from "./useAddTeam";
 import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
 import { toast } from "react-toastify";
+import { lightBlue, mobileBreakPoint } from "../../constants/style";
+
+const LeagueSelector = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 700px;
+  justify-content: space-evenly;
+  background-color: ${lightBlue};
+  height: 30px;
+  align-items: center;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
+`;
+
+const TopText = styled.p`
+  padding: 10px;
+  width: 85%;
+  font-size: px;
+  text-align: center;
+`
 
 function UnownedTeams({
   league,
@@ -72,7 +93,7 @@ function UnownedTeams({
   };
 
   return (
-    <div>
+    <Container>
       <LeagueSelector>
         {firstLeagueToShow === 1 ? (
           <League selected={league == 1} onClick={() => setLeague(1)}>
@@ -97,23 +118,23 @@ function UnownedTeams({
         {convertDateObjToReadable(deadline)}
         {" "}at 4 am EST
       </p>
-      <p>{waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it ' : 
+      <TopText>{waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it ' : 
       'Placing a bid on a team from this league will queue it for processing on the waiver deadline and, if you win, the team '} 
-      will be available starting RoFL month {activeYears[2022][league].roflMonth}
-      </p>
+      will be available starting RoFL month {activeYears[2022][league].roflMonth + 1}
+      </TopText>
       <TitleRow>
         <Th style={{ width: "200px" }}>Team</Th>
         <Th style={{ width: "70px" }}>Action</Th>
       </TitleRow>
       {unownedTeams[league].map((team) => (
         <SlotRow key={team}>
-          <Td>
+          <Td style={{ width: "200px" }}>
             {sportTeams[league][team].city} {sportTeams[league][team].name}
           </Td>
-          <Td>{getUnownedActionButton(league, team)}</Td>
+          <Td style={{ width: "70px" }}>{getUnownedActionButton(league, team)}</Td>
         </SlotRow>
       ))}
-    </div>
+    </Container>
   );
 }
 

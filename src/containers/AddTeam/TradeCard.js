@@ -2,7 +2,7 @@ import React, { useState, useEffect, useInsertionEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "@fontsource/open-sans";
-import { red } from "../../constants/style";
+import { red, lightBlue, mediumBlue } from "../../constants/style";
 import useApi from "../../hooks/useApi";
 import { toast } from "react-toastify";
 
@@ -10,7 +10,10 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
+  &:nth-child(even) {
+    background-color: ${mediumBlue};
+}
 `;
 
 const ContentContainer = styled.div`

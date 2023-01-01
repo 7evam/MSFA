@@ -51,24 +51,24 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
     console.log('here is user to trade with')
     console.log(props.userToTradeWith)
     // validate trade
-    const tradeProposerTrades = {
+    const proposerTrades = {
         cash: cash.tradeAway,
         teams: []
     }
     tradeAwayTeams.forEach(team => {
-        tradeProposerTrades.teams.push({
-            id: team.teamId,
+        proposerTrades.teams.push({
+            teamId: team.teamId,
             value: team.value
         })
     })
     
-    const tradeReceiverTrades = {
+    const receiverTrades = {
         cash:cash.tradeFor,
         teams: []
     }
     tradeForTeams.forEach(team => {
-        tradeReceiverTrades.teams.push({
-            id: team.teamId,
+        receiverTrades.teams.push({
+            teamId: team.teamId,
             value: team.value
         })
     })
@@ -78,10 +78,10 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
         route: `/users/trades`,
         data: {
             organizationId: currentOrganization.id,
-            tradeProposerId: currentOrganization.user_id,
-            tradeReceiverId: props.userToTradeWith,
-            tradeProposerTrades,
-            tradeReceiverTrades,
+            proposerId: currentOrganization.user_id,
+            receiverId: props.userToTradeWith,
+            proposerTrades,
+            receiverTrades,
             roflMonth: activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1,
             roflYear: 2022
         }

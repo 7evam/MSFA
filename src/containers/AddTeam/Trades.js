@@ -5,6 +5,7 @@ import "@fontsource/open-sans";
 import TradeCard from "./TradeCard";
 import MonthTicker from "../../components/MonthTicker";
 import YearSelector from "../../components/YearSelector";
+import {red} from '../../constants/style'
 
 const Container = styled.div`
   width: 100%;

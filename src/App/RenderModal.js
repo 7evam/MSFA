@@ -4,16 +4,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubmitBid from '../components/Modals/SubmitBid';
 import AddTeam from '../components/Modals/AddTeam';
 import ProposeTrade from '../components/Modals/ProposeTrade';
+import { lightBlue } from '../constants/style';
+
+// const ModalContainer = styled.div`
+//     margin-left: 170px;
+//     margin-top: 30px;
+//     position: fixed;
+//     top: 8%;
+//     left: 10%;
+//     right: 10%;
+//     bottom: 10%;
+//     background-color: ${lightBlue};
+//     z-index: 4;
+//     border: 1px solid black;
+// `
 
 const ModalContainer = styled.div`
-    margin-left: 170px;
-    margin-top: 30px;
     position: fixed;
-    top: 8%;
+    top: 100px;
     left: 10%;
     right: 10%;
     bottom: 10%;
-    background-color: grey;
+    background-color: ${lightBlue};
     z-index: 4;
     border: 1px solid black;
 `
