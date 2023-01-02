@@ -52,7 +52,7 @@ export const CustomNavLink = styled(NavLink)`
   color: black
   display: flex;
   margin-right: 20px;
-  font-weight: ${props => props.isSelected ? "800" : "400"};
+  font-weight: ${props => props.selected ? "800" : "400"};
   &:hover{
     font-weight: 800;
   }

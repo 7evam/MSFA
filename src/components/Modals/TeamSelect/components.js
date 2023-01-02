@@ -116,3 +116,12 @@ export const Title = styled.h1`
   margin-left: 30px;
 `;
 
+export const currencyInputStyle = {
+    width: "75px",
+    padding: "12px 12px",
+    margin: "4px 0",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    boxSizing: "border-box"
+  }
+

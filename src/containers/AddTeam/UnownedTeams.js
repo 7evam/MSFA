@@ -14,7 +14,6 @@ import {
   ActionButton,
   Container,
   League,
-
   slotData,
   SlotRow,
   Th,
@@ -55,7 +54,8 @@ function UnownedTeams({
   handleClaim,
   handleAdd,
   handleAction,
-  firstLeagueToShow
+  firstLeagueToShow,
+  firstActiveMonthForClaim
 }) {
   const { activeYears, currentDate, sportTeams, deadlines } = useSelector(
     (state) => ({
@@ -120,7 +120,7 @@ function UnownedTeams({
       </p>
       <TopText>{waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it ' : 
       'Placing a bid on a team from this league will queue it for processing on the waiver deadline and, if you win, the team '} 
-      will be available starting RoFL month {activeYears[2022][league].roflMonth + 1}
+      will be available starting RoFL month {firstActiveMonthForClaim}
       </TopText>
       <TitleRow>
         <Th style={{ width: "200px" }}>Team</Th>

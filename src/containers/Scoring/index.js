@@ -1,75 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";import { useHistory } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import { useSelector, useDispatch } from "react-redux";
 import MonthTicker from "../../components/MonthTicker";
 import ScoringTable from "./ScoringTable";
 import RecordsTable from "./RecordsTable";
-import ScoringTableNew from "./ScoringTableNew";
-import RecordsTableNew from "./RecordsTableNew";
 import Scheme from "./Scheme";
-import SchemeNew from './SchemeNew'
 import useHydration from "../../hooks/useHydration";
 import Loading from "../../components/Loading";
-import { lightBlue, mobileBreakPoint } from "../../constants/style";
 
-// const Container = styled.div`
-//   margin-top: 40px;
-// `;
-
-const Container = styled.div`
-margin-top: 20px;
-@media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
-  }
-`;
-
-const LeagueSelector = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 700px;
-  justify-content: space-evenly;
-  background-color: ${lightBlue};
-  height: 30px;
-  align-items: center;
-  @media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
-  }
-`;
-
-const DisplaySelector = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  background-color: #FFCCCB;
-  height: 30px;
-  align-items: center;
-  width: 700px;
-  @media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
-  }
-`;
-
-const ScItem = styled.p`
-  margin-right: 10px;
-  &:hover {
-    font-weight: 700;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  font-weight: ${(props) => (props.selected ? "700" : "400")};
-`;
-
-const League = styled.p`
-  margin-right: 10px;
-  &:hover {
-    font-weight: 700;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  font-weight: ${(props) => (props.selected ? "700" : "400")};
-`;
+import { Container, LeagueSelector, DisplaySelector, ScItem, League } from "./components";
 
 function Scoring(props) {
   const { organizations, currentOrganization } = useSelector((state) => ({
@@ -245,7 +184,7 @@ function Scoring(props) {
                 finalMonthForDisplay={finalMonthForDisplay}
                 firstMonthForDisplay={firstMonthForDisplay}
               />
-              <ScoringTableNew
+              <ScoringTable
                 league={league}
                 roflMonth={roflMonth}
                 scores={scores}
@@ -264,7 +203,7 @@ function Scoring(props) {
                 finalMonthForDisplay={finalMonthForDisplay}
                 firstMonthForDisplay={firstMonthForDisplay}
               />
-              <RecordsTableNew
+              <RecordsTable
                 league={league}
                 roflMonth={roflMonth}
                 scores={scores}

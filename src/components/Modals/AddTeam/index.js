@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -20,11 +20,12 @@ function AddTeam() {
 
   const { makeRequest } = useApi();
 
-  const transformToCheckable = (roster) => {
+  const transformToCheckable = (roster) => { 
     let checkableRoster = {};
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
-      if (team.teamId) {
+      // don't show a team if it wont be active next month
+      if (team.teamId && props.currentRoflMonths[team.leagueId] +1 >= props.firstActiveMonthForClaim) {
         checkableRoster[team.teamId] = {
           checked: props.selectedTeam === team.teamId ? true : false,
           val: team.val,
@@ -35,41 +36,46 @@ function AddTeam() {
     return checkableRoster;
   };
 
+  const calculateInitialTeamCount = () => {
+    let teamCountByLeague = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      };
+      Object.keys(props.currentUserRoster)
+        .filter((key) => key !== "cash")
+        .forEach((team) => {
+          let leagueId = props.currentUserRoster[team].leagueId;
+          if (leagueId) teamCountByLeague[leagueId]++;
+        });
+        return teamCountByLeague
+  }
+  
+  const initialTeamCountByLeague = useMemo(() => { return calculateInitialTeamCount()}, [])
   const [checkedTeams, setCheckedTeams] = useState(
-    transformToCheckable(props.roster)
+    transformToCheckable(props.currentUserRoster)
   );
 
   // this function sends a toast error if there is an error and returns
   // true if there is an error and false if there is NO error
   const checkForLeagueCountError = () => {
-    let teamCountByLeague = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0
-    };
-    Object.keys(props.currentRoster)
-      .filter((key) => key !== "cash")
-      .forEach((team) => {
-        let leagueId = props.currentRoster[team].leagueId;
-        if (leagueId) teamCountByLeague[leagueId]++;
-      });
-    teamCountByLeague[Number(String(props.selectedTeam)[0])]++;
+    initialTeamCountByLeague[Number(String(props.selectedTeam)[0])]++;
     Object.keys(checkedTeams).forEach((team) => {
       if (checkedTeams[team].checked) {
-        teamCountByLeague[Number(String(team)[0])]--;
+        initialTeamCountByLeague[Number(String(team)[0])]--;
       }
     });
     for (let league in teamCountByLeague) {
       if (
-        teamCountByLeague[league] < 1 &&
+        initialTeamCountByLeague[league] < 1 &&
         Object.keys(activeYears[2022]).includes(league)
       ) {
         toast.error(
           `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`
         );
         return false;
-      } else if (teamCountByLeague[league] > 3) {
+      } else if (initialTeamCountByLeague[league] > 3) {
         toast.error(
           `This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`
         );
@@ -95,7 +101,7 @@ function AddTeam() {
           .filter((team) => checkedTeams[team].checked === true)
           .map((team) => Number(team)),
         roflMonth:
-          activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
+          props.firstActiveMonthForClaim
         // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
       }
     });
@@ -130,6 +136,7 @@ function AddTeam() {
       submitFunction={handleSubmit}
       checkedTeams={checkedTeams}
       handleTeamClick={handleTeamClick}
+      initialTeamCountByLeague={initialTeamCountByLeague}
     />
   );
 }

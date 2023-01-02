@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import CurrencyInput from "react-currency-input-field";
 import { useSelector } from "react-redux";
@@ -32,11 +32,13 @@ function SubmitBid() {
   const { makeRequest, isLoading } = useApi();
 
   const transformToCheckable = (roster) => {
+      
     let checkableRoster = {};
     checkableRoster.cash = roster.cash;
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
-      if (team.teamId) {
+      // don't show a team if it wont be active next month
+      if (team.teamId && props.currentRoflMonths[team.leagueId] +1 >= props.firstActiveMonthForClaim) {
         checkableRoster[team.teamId] = {
           checked: props.selectedTeam === team.teamId ? true : false,
           val: team.val,
@@ -47,26 +49,39 @@ function SubmitBid() {
     return checkableRoster;
   };
 
+  const calculateInitialTeamCount = () => {
+    let teamCountByLeague = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+      };
+      Object.keys(props.currentUserRoster)
+        .filter((key) => key !== "cash")
+        .forEach((team) => {
+          let leagueId = props.currentUserRoster[team].leagueId;
+          if (leagueId) teamCountByLeague[leagueId]++;
+        });
+        return teamCountByLeague
+  }
+  
+
   const [bidValue, setBidValue] = useState(null);
-  const [maxBid, setMaxBid] = useState(props.roster.cash);
+  const [maxBid, setMaxBid] = useState(props.currentUserRoster.cash);
   const [checkedTeams, setCheckedTeams] = useState(
-    transformToCheckable(props.roster)
+    transformToCheckable(props.currentUserRoster)
   );
-  const [errors, setErrors] = useState({
-    bid: null,
-    leagueCount: null
-  });
+  const [errorMessage, setErrorMessage] = useState(null);
+  const initialTeamCountByLeague = useMemo(() => { return calculateInitialTeamCount()}, [])
 
   // this function sets errors in state and returns
   // true if there is an error and false if there is NO error
   const checkForBidError = (bid, maxBid) => {
-    let newErrors = errors;
+    let newError
     if (bid > maxBid) {
-      newErrors.bid = "Your bid is too high";
-    } else {
-      newErrors.bid = null;
+      newError = "Your bid is too high";
     }
-    setErrors(newErrors);
+    setErrorMessage(newError);
     if (bid > maxBid) {
       return true;
     } else {
@@ -151,19 +166,8 @@ function SubmitBid() {
   // this function sends a toast error if there is an error and returns
   // true if there is an error and false if there is NO error
   const checkForLeagueCountError = () => {
-    let teamCountByLeague = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0
-    };
-    Object.keys(props.currentRoster)
-      .filter((key) => key !== "cash")
-      .forEach((team) => {
-        let leagueId = props.currentRoster[team].leagueId;
-        if (leagueId) teamCountByLeague[leagueId]++;
-      });
-    teamCountByLeague[Number(String(props.selectedTeam)[0])]++;
+    
+    initialTeamCountByLeague[Number(String(props.selectedTeam)[0])]++;
     Object.keys(checkedTeams).forEach((team) => {
       if (checkedTeams[team].checked) {
         teamCountByLeague[Number(String(team)[0])]--;
@@ -193,11 +197,12 @@ function SubmitBid() {
       mode="submitBid"
       submitFunction={handleSubmit}
       handleCashValueChange={handleBidChange}
-      errors={errors}
+      errorMessage={errorMessage}
       cashValue={bidValue}
       handleTeamClick={handleTeamClick}
       checkedTeams={checkedTeams}
       maxBid={maxBid}
+      initialTeamCountByLeague={initialTeamCountByLeague}
     />
   );
 }

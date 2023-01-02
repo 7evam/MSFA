@@ -16,7 +16,7 @@ import Trades from "./Trades"
 
 function AddTeam(props) {
     
-    const {reFetchTrades, trades, handleTrade, handleAdd, setAllBids, originalBids, reFetchBids, firstLeagueToShow, tab, setTab, allBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
+    const {firstActiveMonthForClaim, reFetchTrades, trades, handleTrade, handleAdd, setAllBids, originalBids, reFetchBids, firstLeagueToShow, tab, setTab, allBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization} = useAddTeam()
 
     // const getRoflDeadline = (league) => {
     //     activeYears[2022][league] 
@@ -41,7 +41,7 @@ function AddTeam(props) {
             case 'rosters':
                 return <CurrentRosters dropTeam={dropTeam} handleTrade={handleTrade} selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster}/>
             case 'unownedTeams':
-                return <UnownedTeams handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
+                return <UnownedTeams firstActiveMonthForClaim={firstActiveMonthForClaim} handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league ={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams}/>
             case 'bids':
                 return <CurrentBids originalBids={originalBids} setAllBids={setAllBids} reFetchBids={reFetchBids} currentOrganization={currentOrganization} allBids={allBids} sportTeams={sportTeams} />
             case 'trades':

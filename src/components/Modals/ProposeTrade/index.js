@@ -13,15 +13,12 @@ function ProposeTrade() {
       }));
 
     const transformToCheckable = (roster) => {
-        console.log("transforming this roster")
-        console.log(roster)
         let checkableRoster = {}
         checkableRoster.cash = roster.cash
         Object.keys(roster).forEach(teamNum => {
             const team = roster[teamNum]
-            console.log("here is team")
-            console.log(team)
-            if(team.teamId){
+            // don't show a team if it wont be active next month
+            if(team.teamId && props.currentRoflMonths[team.leagueId] +1 >= props.firstActiveMonthForClaim) {
                 checkableRoster[team.teamId] = {
                     checked: props.selectedTeam === team.teamId ? true : false,
                     val: team.val,
@@ -29,17 +26,13 @@ function ProposeTrade() {
                 }
             }
         })
-        console.log('here is transformed roster')
-        console.log(checkableRoster)
         return checkableRoster
-    }
-    
+    }    
 
-    
 
     const [stage, setStage] = useState('tradeFor')
     const [teamsForTrade, setTeamsForTrade] = useState({
-        tradeFor: transformToCheckable(props.currentRoster),
+        tradeFor: transformToCheckable(props.receiverRoster),
         tradeAway: transformToCheckable(props.currentUserRoster)
     })   
     const [cash, setCash] = useState({

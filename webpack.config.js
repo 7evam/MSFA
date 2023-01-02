@@ -41,6 +41,9 @@ module.exports = (webpackServe, options) => {
     ENV_CONFIG
   ]
 
+// These tools are very helpful but they can be very annoying if they pop up every build
+// periodically run webpack with these uncommented to check your bundle size
+
   // if(options.mode !== 'production') plugins.push(
   //   new BundleAnalyzerPlugin({
   //     generateStatsFile: true

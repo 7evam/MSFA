@@ -11,8 +11,6 @@ export const checkIfRostersAreEqual = (roster1, roster2) => {
 }
 
 export const convertDateObjToReadable = (date) => {
-    console.log('here is date')
-    console.log(date)
     return `${new Date(date).toDateString()}`;
 }
 

@@ -1,162 +1,197 @@
-// import React, { useState, useEffect } from "react";
-// import styled from "styled-components";
-// import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect, useReducer, useMemo } from "react";
+import styled from "styled-components";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table'
+import { mediumBlue, lightBlue, mobileBreakPoint } from "../../constants/style";
+import {mlbReg, nhlReg, nbaReg, nflReg, mlbPlayoffs, nflPlayoffs, nhlPlayoffs, nbaPlayoffs} from './tableSchemes'
 
-// const Th = styled.th`
-//     &:hover {
-//         font-weight: 700;
-//         text-decoration: underline;
-//         cursor: pointer;
-//     }
-//     padding-right: 8em;
-// `
+const Td = styled.td`
+    height: 20px;
+    min-width: ${(props) => (props.isName ? '200px' : '40px')};
+    text-align: ${(props) => (props.isBonus ? 'center' : null)};
+    width: ${(props) => (props.isBonus ? '20px' : null)};
+`
 
-// const Td = styled.td`
-// `
+const Tr = styled.tr`
+background-color: ${mediumBlue};
+    &:nth-child(odd) {
+    background-color: ${lightBlue};
+    }
+`
 
-// function RecordsTable({league, roflMonth, scores, roflYear, teams}) {
+const Table = styled.table`
+    width: 100%;
+`
 
-//     const { playoffMonths } = useSelector((state) => ({
-//         ...state.sportReducer
-//       }));
+const Th = styled.th`
+    font-weight: 800;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+`
 
-//     const [sortedTeams, setSortedTeams] = useState(null)
-//     const [sortedField, setSortedField] = useState('teamName')
-//     const [sortDirectionAsc, setSortDirectionAsc] = useState(true)
-//     const [playoffs, setPlayoffs] = useState(playoffMonths[2022][league] === roflMonth ? true : false)
+const TableContainer = styled.div`
+    width: 700px;
+    overflow: scroll;
+    @media (max-width: ${mobileBreakPoint}){
+        width: 100vw;
+      }
+`
 
-//     useEffect(() => {
-//         const teamArray = []
-//         Object.keys(scores.records[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
-//             teamArray.push({
-//                 id: teamId,
-//                 teamName: `${teams[league][teamId].city} ${teams[league][teamId].name}`,
-//                 rsWins: scores.records[league][`${roflMonth}-${roflYear}`][teamId].rs_wins,
-//                 rsLosses: scores.records[league][`${roflMonth}-${roflYear}`][teamId].rs_losses,
-//                 playoffBonus: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].playoff_bonus),
-//                 r1WinGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r1_win_game),
-//                 r1LoseGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r1_lose_game),
-//                 r1WinSeries: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r1_win_series),
-//                 r2WinGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r2_win_game),
-//                 r2LoseGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r2_lose_game),
-//                 r2WinSeries: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r2_win_series),
-//                 r3WinGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r3_win_game),
-//                 r3LoseGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r3_lose_game),
-//                 r3WinSeries: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r3_win_series),
-//                 r4WinGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r4_win_game),
-//                 r4LoseGame: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r4_lose_game),
-//                 r4WinSeries: Number(scores.records[league][`${roflMonth}-${roflYear}`][teamId].r4_win_series),
-//             })
-//         })
-//         setSortedTeams(teamArray)
-//         setSortedField('teamName')
-//         setSortDirectionAsc(true)
-//         setPlayoffs(playoffMonths[2022][league] === roflMonth ? true : false)
-//     }, [roflMonth, league]);
+function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, league}) {
 
-//     useEffect(() => {
-//         if(sortedTeams && sortedTeams.length){
-//             const newTeams = [...sortedTeams]
+    const [data, setData] = useState(null)
+    const [sorting, setSorting] = useState([])
+    const [columns, setColumns] = useState(null)
+    const [renderPlayoffBonus, setRenderPlayoffBonus] = useState(null)
 
-//             if(sortDirectionAsc){
-//                 newTeams.sort((a, b) => (a[sortedField] > b[sortedField]) ? 1 : -1)
-//             } else {
-//                 newTeams.sort((a, b) => (a[sortedField] > b[sortedField]) ? -1 : 1)
-//             }
-//             setSortedTeams(newTeams)
-//         }
-//       }, [sortedField, sortDirectionAsc]);
+    useEffect(() => {
+        // change data
+        let result = []
+        let renderPlayoffBonus = false
+        const selectedRecords = scores.records[league][`${roflMonth}-${roflYear}`]
+        if(selectedRecords){
+        if(Object.values(selectedRecords).filter(item => !!item.playoff_bonus).length){
+          renderPlayoffBonus = true
+        } 
+            Object.values(selectedRecords).forEach(item => {
+                let team = {}
+                team.name = `${sportTeams[league][item.team_id].city} ${sportTeams[league][item.team_id].name}`
+                team.wins = item.rs_wins
+                team.losses = item.rs_losses
+                if(league == 2) team.ties = item.rs_tie_otl
+                if(league == 3) team.otl = item.rs_tie_otl
+                if(renderPlayoffBonus) team.playoffBonus = item.playoff_bonus ? '✅' : null
+                if(playoffs){
+                    team.r1LoseGame = item.r1_lose_game
+                    team.r1WinGame = item.r1_win_game
+                    team.r1WinSeries = item.r1_win_series
+                    team.r2LoseGame = item.r2_lose_game
+                    team.r2WinGame = item.r2_win_game
+                    team.r2WinSeries = item.r2_win_series
+                    team.r3LoseGame = item.r3_lose_game
+                    team.r3WinGame = item.r3_win_game
+                    team.r3WinSeries = item.r3_win_series
+                    team.r4LoseGame = item.r4_lose_game
+                    team.r4WinGame = item.r4_win_game
+                    team.r4WinSeries = item.r4_win_series
+                }
+                result.push(team)
+            })
+        }
+        setData(result)
+        setRenderPlayoffBonus(renderPlayoffBonus)
+    }, [roflMonth, roflYear, league]);
 
-//       const requestSort = (param) => {
-//         setSortDirectionAsc(!sortDirectionAsc)
-//         setSortedField(param)
-//       }
-
-//       const getTableHeaders = () => {
-//         if(league === 1){
-//             if(playoffs){
-//                 return <>
-//                 <Th onClick={() => requestSort('r1WinGame')}>Win Round 1 Game{sortedField === 'r1WinGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r1LoseGame')}>Lose Round 1 Game{sortedField === 'r1LoseGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r1WinSeries')}>Win Round 1 Series{sortedField === 'r1WinSeries' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-
-//                 <Th onClick={() => requestSort('r2WinGame')}>Win Round 2 Game{sortedField === 'r2WinGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r2LoseGame')}>Lose Round 2 Game{sortedField === 'r2LoseGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r2WinSeries')}>Win Round 2 Series{sortedField === 'r2WinSeries' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-
-//                 <Th onClick={() => requestSort('r3WinGame')}>Win Round 3 Game{sortedField === 'r3WinGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r3LoseGame')}>Lose Round 3 Game{sortedField === 'r3LoseGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r3WinSeries')}>Win Round 3 Series{sortedField === 'r3WinSeries' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-
-//                 <Th onClick={() => requestSort('r4WinGame')}>Win World Series Game{sortedField === 'r4WinGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r4LoseGame')}>Lose World Series Game{sortedField === 'r4LoseGame' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('r4WinSeries')}>Win World Series{sortedField === 'r4WinSeries' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 </>
-//             } else {
-//                 return <>
-//                 <Th onClick={() => requestSort('rsWins')}>Regular Season Wins {sortedField === 'rsWins' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('rsLosses')}>Regular Season Losses {sortedField === 'rsLosses' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 <Th onClick={() => requestSort('playoffBonus')}>Playoff Bonus {sortedField === 'playoffBonus' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//                 </>
-//             } 
-//         }
-//       }
-
-//     const getTableColumns = (team) => {
-//         if(league === 1){
-//             if(playoffs){
-//                 return(<>
-//                     <Td>{team.r1WinGame}</Td>
-//                     <Td>{team.r1LoseGame}</Td>
-//                     <Td>{team.r1WinSeries}</Td>
-
-//                     <Td>{team.r2WinGame}</Td>
-//                     <Td>{team.r2LoseGame}</Td>
-//                     <Td>{team.r2WinSeries}</Td>
-
-//                     <Td>{team.r3WinGame}</Td>
-//                     <Td>{team.r3LoseGame}</Td>
-//                     <Td>{team.r3WinSeries}</Td>
-
-//                     <Td>{team.r4WinGame}</Td>
-//                     <Td>{team.r4LoseGame}</Td>
-//                     <Td>{team.r4WinSeries}</Td>
-//                 </>)
-//             } else {
-//                 return (<>
-//                     <Td>{team.rsWins}</Td>
-//                     <Td>{team.rsLosses}</Td>
-//                     <Td>{team.playoffBonus}</Td>
-//                     </>)
-//             }
-//         }
-        
-//     }
+    useEffect(() => {
+        // change format
+        if(league === 1){
+            playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg(renderPlayoffBonus))
+        } else if(league === 2){
+            playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg(renderPlayoffBonus))
+        } else if(league === 3){
+            playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg(renderPlayoffBonus))
+        } else if(league ===4){
+            playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg(renderPlayoffBonus))
+        }
+        setSorting([])
+    }, [league, playoffs, renderPlayoffBonus]);
 
     
 
-//   return (
-//     sortedTeams ?
-//     <table>
-//     <caption>Records</caption>
-//     <thead>
-//         <tr>
-//             <Th onClick={() => requestSort('teamName')}>Team {sortedField === 'teamName' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//             {getTableHeaders()}
-            
-//         </tr>
-//     </thead>
-//     <tbody>
-//       {sortedTeams.map(team => (
-//           <tr key={team.id}>
-//               <Td>{team.teamName}</Td>
-//               {getTableColumns(team)}
-//           </tr>
-//       ))}
-//     </tbody>
-//     </table>
-//     : null
-//   );
-// }
 
-// export default RecordsTable;
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: true,
+  })
+
+  const calculateIsName = (cell) => {
+    let result = false
+    if(cell.id.includes('name')) result = true
+    return result
+  }
+
+  const calculateIsBonus = (cell) => {
+
+    let result = false
+    if(cell.id.includes('playoff')) result = true
+    return result
+  }
+
+  return (
+    data && columns
+    ?
+    (<TableContainer>
+      <Table>
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => {
+                return (
+                  <Th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted()] ?? null}
+                      </div>
+                    )}
+                  </Th>
+                )
+              })}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table
+            .getRowModel()
+            .rows
+            .map(row => {
+              return (
+                <Tr key={row.id}>
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <Td key={cell.id} isBonus={calculateIsBonus(cell)} isName={calculateIsName(cell)}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    )
+                  })}
+                </Tr>
+              )
+            })}
+        </tbody>
+      </Table>
+    </TableContainer> 
+    )
+    : 
+    <p>loading...</p>
+  )
+}
+
+export default RecordsTableNew;

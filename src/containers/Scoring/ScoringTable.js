@@ -1,88 +1,158 @@
-// import React, { useState, useEffect } from "react";
-// import styled from "styled-components";
-// import { useHistory } from "react-router-dom";
-// import useApi from "../../hooks/useApi";
-// import { useSelector, useDispatch } from 'react-redux';
-// import MonthTicker from "../../components/MonthTicker";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
+import styled from "styled-components";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table'
+import { mediumBlue, lightBlue } from "../../constants/style";
 
-// const Th = styled.th`
-//     &:hover {
-//         font-weight: 700;
-//         text-decoration: underline;
-//         cursor: pointer;
-//     }
-//     padding-right: 1em;
-// `
+const Td = styled.td`
+    width: 33%;
+    height: 20px;
+`
 
-// function ScoringTable({league, roflMonth, scores, roflYear, teams}) {
+const Tr = styled.tr`
+background-color: ${mediumBlue};
+    &:nth-child(odd) {
+    background-color: ${lightBlue};
+    }
+`
 
-//     const [sortedTeams, setSortedTeams] = useState(null)
-//     const [sortedField, setSortedField] = useState('team')
-//     const [sortDirectionAsc, setSortDirectionAsc] = useState(true)
+const Table = styled.table`
+    width: 100%;
+    overflow-x: scroll;
+`
 
-//     useEffect(() => {
-//         const teamArray = []
-//             if(scores.points[league][`${roflMonth}-${roflYear}`]){
-//                 Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
-//                     teamArray.push({
-//                         id: teamId,
-//                         teamName: `${teams[league][teamId].city} ${teams[league][teamId].name}`,
-//                         points: scores.points[league][`${roflMonth}-${roflYear}`][teamId]
-//                     })
-//                 })
-//                 setSortedTeams(teamArray)
-//                 setSortedField('team')
-//                 setSortDirectionAsc(true)
-//             }
-//     }, [roflMonth, league]);
+const Th = styled.th`
+    font-weight: 800;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+`
 
-//     useEffect(() => {
-//         if(sortedTeams && sortedTeams.length){
-//             const newTeams = [...sortedTeams]
-//             if(sortedField === 'team'){
-//                 if(sortDirectionAsc){
-//                     newTeams.sort((a, b) => (a.teamName > b.teamName) ? 1 : -1)
-//                 } else {
-//                     newTeams.sort((a, b) => (a.teamName > b.teamName) ? -1 : 1)
-//                 }
-//             }
-//             if(sortedField === 'points'){
-//                 if(sortDirectionAsc){
-//                     newTeams.sort((a, b) => (a.points > b.points) ? 1 : -1)
-//                 } else {
-//                     newTeams.sort((a, b) => (a.points > b.points) ? -1 : 1)
-//                 }
-//             }
-//             setSortedTeams(newTeams)
-//         }
-//       }, [sortedField, sortDirectionAsc]);
+function ScoringTableNew({roflMonth, scores, roflYear, sportTeams, league}) {
 
-//       const requestSort = (param) => {
-//         setSortDirectionAsc(!sortDirectionAsc)
-//         setSortedField(param)
-//       }
+    const [data, setData] = useState(null)
 
-//   return (
-//     sortedTeams ?
-//     <table>
-//     <caption>Teams</caption>
-//     <thead>
-//         <tr>
-//             <Th onClick={() => requestSort('team')}>Team {sortedField === 'team' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//             <Th onClick={() => requestSort('points')}>Points {sortedField === 'points' ? sortDirectionAsc ? '↑' : '↓' : null}</Th>
-//         </tr>
-//     </thead>
-//     <tbody>
-//       {sortedTeams.map(team => (
-//           <tr key={team.id}>
-//               <td>{team.teamName}</td>
-//               <td>{team.points}</td>
-//           </tr>
-//       ))}
-//     </tbody>
-//     </table>
-//     : null
-//   );
-// }
+    useEffect(() => {
+        const result = []
+            if(scores.points[league][`${roflMonth}-${roflYear}`]){
+                Object.keys(scores.points[league][`${roflMonth}-${roflYear}`]).forEach(teamId => {
+                    result.push({
+                        id: teamId,
+                        teamName: `${sportTeams[league][teamId].city} ${sportTeams[league][teamId].name}`,
+                        points: scores.points[league][`${roflMonth}-${roflYear}`][teamId]
+                    })
+                })
+                setData(result)
+            }
+    }, [roflMonth, league]);
 
-// export default ScoringTable;
+
+
+    // useEffect(() => {
+    //     // change format
+    //     if(league === 1){
+    //         playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg)
+    //     } else if(league === 2){
+    //         playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg)
+    //     } else if(league === 3){
+    //         playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg)
+    //     } else if(league ===4){
+    //         playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg)
+    //     }
+    // }, [league, playoffs]);
+
+    
+  const [sorting, setSorting] = useState([])
+  const [columns, setColumns] = useState([
+    {
+    header: "Name",
+    accessorKey: "teamName"
+    },
+    {
+        header: "Points",
+        accessorKey: "points"
+    }
+])
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: false,
+  })
+
+  return (
+    data 
+    ?
+    (<div>
+      <Table>
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => {
+                return (
+                  <Th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted()] ?? null}
+                      </div>
+                    )}
+                  </Th>
+                )
+              })}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table
+            .getRowModel()
+            .rows
+            .map(row => {
+              return (
+                <Tr key={row.id}>
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <Td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    )
+                  })}
+                </Tr>
+              )
+            })}
+        </tbody>
+      </Table>
+    </div> 
+    )
+    : 
+    <p>loading...</p>
+  )
+}
+
+export default ScoringTableNew;

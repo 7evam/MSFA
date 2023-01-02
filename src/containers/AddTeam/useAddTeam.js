@@ -69,6 +69,7 @@ function useAddTeam() {
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
   const [originalBids, setOriginalBids] = useState(null)
   const [trades, setTrades] = useState(null)
+  const [firstActiveMonthForClaim, setFirstActiveMonthForClaim] = useState(null)
 
   // Load page data
   useEffect(() => {
@@ -165,6 +166,19 @@ function useAddTeam() {
     }
   }, [modalContent]);
 
+  const calculateCurrentRoflMonths =  () => {
+    const currentRoflMonths = {
+        1: null,
+        2: null,
+        3: null,
+        4: null
+    }
+    Object.keys(currentRoflMonths).forEach(leagueId => {
+        if(activeYears[2022] && activeYears[2022][leagueId]?.roflMonth) currentRoflMonths[leagueId] = activeYears[2022][leagueId].roflMonth
+    })
+    return currentRoflMonths
+}
+
   useEffect(() => {
     if (activeYears && currentDate) {
       let first = getFirstLeagueToShow();
@@ -173,10 +187,15 @@ function useAddTeam() {
     }
   }, [activeYears, currentDate]);
 
+  useEffect(() => {
+    if(activeYears){
+      const currentRoflMonths= calculateCurrentRoflMonths()
+      setFirstActiveMonthForClaim(currentRoflMonths[league] + 1)
+    }
+  }, [league, activeYears]);
+
   const calculateAndSetUnownedTeams = () => {
     if (fullRoster && sportTeams && Object.keys(sportTeams).length) {
-      console.log('here is full roster')
-      console.log(fullRoster)
       // get owned teams
       let ownedTeams = [];
       Object.keys(fullRoster).forEach((member) => {
@@ -186,9 +205,6 @@ function useAddTeam() {
           // ownedTeams.push(fullRoster[member][slot].teamId);
         });
       });
-
-      console.log('here is owned teams')
-      console.log(ownedTeams)
 
       let unownedTeams = {
         1: [],
@@ -207,6 +223,8 @@ function useAddTeam() {
       setUnownedTeams(unownedTeams);
     }
   };
+
+
 
   const fetchTrades = async (selectedRoflYear, abortController) => {
     try {
@@ -325,16 +343,15 @@ function useAddTeam() {
 
   const handleAdd = (team) => {
     const leagueId = Number(String(team)[0]);
-    console.log("here is team")
-    console.log(team)
       dispatch({
         type: "SHOW_MODAL",
         payload: {
           modalContent: "ADD_TEAM",
           props: {
-            roster: currentRoster,
             selectedTeam: team,
-            currentRoster
+            currentUserRoster: fullRoster[currentOrganization.user_id],
+            firstActiveMonthForClaim,
+            currentRoflMonths: calculateCurrentRoflMonths()
           }
         }
       });
@@ -349,9 +366,10 @@ function useAddTeam() {
         payload: {
           modalContent: "SUBMIT_BID",
           props: {
-            roster: currentRoster,
             selectedTeam: team,
-            currentRoster
+            currentUserRoster: fullRoster[currentOrganization.user_id],
+            firstActiveMonthForClaim,
+            currentRoflMonths: calculateCurrentRoflMonths()
           }
         }
       });
@@ -373,10 +391,11 @@ function useAddTeam() {
       payload: {
         modalContent: "PROPOSE_TRADE",
         props: {
-          currentRoster,
+          receiverRoster: fullRoster[selectedMember],
           selectedTeam: team,
           currentUserRoster: fullRoster[currentOrganization.user_id],
-          userToTradeWith: selectedMember
+          userToTradeWith: selectedMember,
+          currentRoflMonths: calculateCurrentRoflMonths()
         }
       }
     });
@@ -409,7 +428,8 @@ function useAddTeam() {
     handleTrade,
     handleAdd,
     trades,
-    reFetchTrades
+    reFetchTrades,
+    firstActiveMonthForClaim
   };
 }
 
