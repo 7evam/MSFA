@@ -23,9 +23,6 @@ import {Container, ContentContainer} from "./components"
 
 const Settings = lazy(() => import('../containers/Settings'))
 
-
-
-
 function App(props) {
   const dispatch = useDispatch();
 

@@ -5,21 +5,6 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../../hooks/useApi';
 import { useDispatch } from 'react-redux';
-import sportReducer from '../../../reducers/sportReducer';
-// import useApi from '../../hooks/useApi'
-
-const Input = styled.input`
-font-family: "helvetica neue", Helvetica, arial, sans-serif; 
-
-  height: 50px;
-  width: 100%;
-  border: 0;
-  border-radius: 4px;
-  font-size: 0.9em;
-  background-color: #ECF1F4;
-  text-indent: 20px;
-  margin-bottom: 10px;
-`;
 
 const TeamRow = styled.div`
     display: flex;

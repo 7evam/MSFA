@@ -19,6 +19,7 @@ import { lightBlue, mobileBreakPoint } from "../../constants/style";
 // `;
 
 const Container = styled.div`
+margin-top: 20px;
 @media (max-width: ${mobileBreakPoint}){
     width: 100vw;
   }

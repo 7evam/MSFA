@@ -24,7 +24,6 @@ const ModalContainer = styled.div`
     top: 100px;
     left: 10%;
     right: 10%;
-    bottom: 10%;
     background-color: ${lightBlue};
     z-index: 4;
     border: 1px solid black;
@@ -51,17 +50,12 @@ function RenderModal() {
         }
     }
 
-    const closeModal = () => {
-        dispatch({
-            type: "CLOSE_MODAL",
-          });
-    }
+
 
     return(
      modalContent ?   
     <ModalContainer>
         {getContent()}
-        <button onClick={closeModal}>Close</button>
     </ModalContainer>
     : null
     )

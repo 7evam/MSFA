@@ -64,7 +64,7 @@ function useAddTeam() {
   const [readyToRender, setReadyToRender] = useState(false);
   const [currentYear, setCurrentYear] = useState(2022);
   const [allBids, setAllBids] = useState(null);
-  const [tab, setTab] = useState("trades");
+  const [tab, setTab] = useState("rosters");
   const [modalHasBeenUsed, setModalHasBeenUsed] = useState(false)
   const [teamCountByLeague, setTeamCountByLeague] = useState(null);
   const [originalBids, setOriginalBids] = useState(null)

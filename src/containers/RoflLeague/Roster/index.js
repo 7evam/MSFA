@@ -32,7 +32,7 @@ const TopMenu = styled.div`
   align-items: center;
 `
 
-function Roster(props) {
+function Roster() {
 
     const {currentOrganization} = useSelector(state => ({
         ...state.authReducer
@@ -85,9 +85,6 @@ function Roster(props) {
             throw ("Unable to fetch org info")
           }     
       } catch(e){
-        console.log('problem')
-        console.log('here is params')
-        console.log(currentOrganization.id)
         console.error(e)
       }
     }
@@ -102,9 +99,6 @@ function Roster(props) {
               const roster = res.body
               setFullRoster(roster)
         } catch(e){
-          console.log('problem')
-          console.log('here is params')
-          console.log(currentOrganization.id)
           console.error(e)
         }
     }

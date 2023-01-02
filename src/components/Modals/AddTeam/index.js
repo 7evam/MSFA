@@ -1,113 +1,137 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components'
-import CurrencyInput from 'react-currency-input-field';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import useApi from '../../../hooks/useApi';
-import { useDispatch } from 'react-redux';
-import sportReducer from '../../../reducers/sportReducer';
-import { checkIfEmptySlot } from '../../../utils';
-import TeamSelect from '../TeamSelect';
-// import useApi from '../../hooks/useApi'
-
-const Input = styled.input`
-font-family: "helvetica neue", Helvetica, arial, sans-serif; 
-
-  height: 50px;
-  width: 100%;
-  border: 0;
-  border-radius: 4px;
-  font-size: 0.9em;
-  background-color: #ECF1F4;
-  text-indent: 20px;
-  margin-bottom: 10px;
-`;
-
-const TeamRow = styled.div`
-    display: flex;
-    flex-direction: row;
-`
-const ErrorContainer = styled.div`
-    color: red;
-`
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import useApi from "../../../hooks/useApi";
+import TeamSelect from "../TeamSelect";
 
 function AddTeam() {
+  const { props } = useSelector((state) => ({
+    ...state.modalReducer
+  }));
 
-    const { props } = useSelector((state) => ({
-        ...state.modalReducer
-      }));
+  const { roflYear, activeYears, leagueTable } = useSelector((state) => ({
+    ...state.sportReducer
+  }));
 
-    // let initialCheckedTeams = {}
-    // Object.keys(props.roster).forEach(team => {
-    //     if(props.roster[team].teamId){
-    //         initialCheckedTeams[props.roster[team].teamId] = false
-    //     }
-    // })
+  const { currentOrganization } = useSelector((state) => ({
+    ...state.authReducer
+  }));
 
-    const transformToCheckable = (roster) => {
-        console.log("transforming this roster")
-        console.log(roster)
-        let checkableRoster = {}
-        checkableRoster.cash = roster.cash
-        Object.keys(roster).forEach(teamNum => {
-            const team = roster[teamNum]
-            console.log("here is team")
-            console.log(team)
-            if(team.teamId){
-                checkableRoster[team.teamId] = {
-                    checked: props.selectedTeam === team.teamId ? true : false,
-                    val: team.val,
-                    leagueId: team.leagueId
-                }
-            }
-        })
-        console.log('here is transformed roster')
-        console.log(checkableRoster)
-        return checkableRoster
+  const { makeRequest } = useApi();
+
+  const transformToCheckable = (roster) => {
+    let checkableRoster = {};
+    Object.keys(roster).forEach((teamNum) => {
+      const team = roster[teamNum];
+      if (team.teamId) {
+        checkableRoster[team.teamId] = {
+          checked: props.selectedTeam === team.teamId ? true : false,
+          val: team.val,
+          leagueId: team.leagueId
+        };
+      }
+    });
+    return checkableRoster;
+  };
+
+  const [checkedTeams, setCheckedTeams] = useState(
+    transformToCheckable(props.roster)
+  );
+
+  // this function sends a toast error if there is an error and returns
+  // true if there is an error and false if there is NO error
+  const checkForLeagueCountError = () => {
+    let teamCountByLeague = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0
+    };
+    Object.keys(props.currentRoster)
+      .filter((key) => key !== "cash")
+      .forEach((team) => {
+        let leagueId = props.currentRoster[team].leagueId;
+        if (leagueId) teamCountByLeague[leagueId]++;
+      });
+    teamCountByLeague[Number(String(props.selectedTeam)[0])]++;
+    Object.keys(checkedTeams).forEach((team) => {
+      if (checkedTeams[team].checked) {
+        teamCountByLeague[Number(String(team)[0])]--;
+      }
+    });
+    for (let league in teamCountByLeague) {
+      if (
+        teamCountByLeague[league] < 1 &&
+        Object.keys(activeYears[2022]).includes(league)
+      ) {
+        toast.error(
+          `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`
+        );
+        return false;
+      } else if (teamCountByLeague[league] > 3) {
+        toast.error(
+          `This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`
+        );
+        return false;
+      }
     }
+    return true;
+  };
 
-    const [checkedTeams, setCheckedTeams] = useState(transformToCheckable(props.roster))
-    const [bid, setBid] = useState(0)
-    const [errors, setErrors] = useState({
-        bid: null,
-        leagueCount: null
-    })
+  const handleSubmit = async () => {
+    const leagueCountPassed = checkForLeagueCountError();
+    if (!leagueCountPassed) return;
 
-    const handleCashValueChange = (val, maxBid) => {
-        checkForBidError(val, maxBid)
-        setBid(val)
+    const res = await makeRequest({
+      method: "post",
+      route: `/users/addTeam`,
+      data: {
+        organizationId: Number(currentOrganization.id),
+        userId: currentOrganization.user_id,
+        teamId: Number(props.selectedTeam),
+        roflYear,
+        droppedTeams: Object.keys(checkedTeams)
+          .filter((team) => checkedTeams[team].checked === true)
+          .map((team) => Number(team)),
+        roflMonth:
+          activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
+        // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
+      }
+    });
+    if (res.statusCode === 200 && res.body === "success") {
+      toast.success("Request submitted successfully");
+      // sleep is necessary to refetch bids
+      // await sleep(3000)
+      dispatch({
+        type: "CLOSE_MODAL"
+      });
+    } else {
+      toast.error("There was an error submitting your request");
     }
+  };
 
-    // this function sets errors in state and returns
-    // true if there is an error and false if there is NO error
-    const checkForBidError = (bid, maxBid) => {
-        let newErrors = errors
-        if(bid > maxBid){
-            newErrors.bid = "Your bid is too high"
-        } else {
-            newErrors.bid = null
-        }
-        setErrors(newErrors)
-        if(bid > maxBid){
-            return true
-        } else {
-            return false
-        }
+  const handleTeamClick = (teamId) => {
+    const newCheckedTeams = { ...checkedTeams };
+    newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
+    if (
+      Object.values(newCheckedTeams).filter((val) => val === true).length > 3
+    ) {
+      toast.error("You can drop a maximum of 3 teams");
+      return;
+    } else {
+      setCheckedTeams(newCheckedTeams);
     }
+  };
 
-    const handleTeamClick = (teamId) => {
-        const newCheckedTeams = {...checkedTeams}
-        newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked
-        if(Object.values(newCheckedTeams[stage]).filter(team => team.checked === true).length > 3){
-            toast.error('You can drop a maximum of 3 teams')
-            return
-        } else {
-            setCheckedTeams(newCheckedTeams)
-        }
-    }
-
-    return <TeamSelect mode={'addTeam'} errors={errors} checkedTeam={checkedTeams} handleTeamClick={handleTeamClick} cashValue={bid} handleCashValueChange={handleCashValueChange}/>
+  return (
+    <TeamSelect
+      mode={"addTeam"}
+      submitFunction={handleSubmit}
+      checkedTeams={checkedTeams}
+      handleTeamClick={handleTeamClick}
+    />
+  );
 }
 
-
-export default AddTeam
+export default AddTeam;
