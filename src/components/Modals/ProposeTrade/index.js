@@ -45,6 +45,9 @@ function ProposeTrade() {
         newTeamsForTrade[stage][teamId].checked = !newTeamsForTrade[stage][teamId].checked
         if(Object.values(newTeamsForTrade[stage]).filter(team => team.checked === true).length > 3){
             toast.error('You can trade a maximum of 3 teams')
+            // must explicitly set team as unchecked or else it shows up as checked again
+            newTeamsForTrade[stage][teamId].checked = !newTeamsForTrade[stage][teamId].checked
+            setTeamsForTrade(newTeamsForTrade)
             return
         } else {
             setTeamsForTrade(newTeamsForTrade)
@@ -52,8 +55,6 @@ function ProposeTrade() {
     }
 
     const handleCashValueChange = (value) => {
-        console.log('value in handle change')
-        console.log(value)
         if(value > teamsForTrade[stage].cash){
             console.log("user doesnt have that money")
         } else {

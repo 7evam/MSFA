@@ -41,9 +41,6 @@ export const convertRoflMonthToReal = (roflMonth) => {
 }
 
 export const convertRealToRofl = (realMonth, leagueId) => {
-    console.log('converting real to rofl')
-    console.log(realMonth)
-    console.log(leagueId)
         realMonth = Number(realMonth)
         leagueId = Number(leagueId)
         let res
@@ -52,12 +49,9 @@ export const convertRealToRofl = (realMonth, leagueId) => {
         } else if(leagueId === 2 || leagueId === 3 || leagueId === 4){
             if(realMonth < 7){
                 res = realMonth += 9
-                console.log('here isi res')
-                console.log(res)
                 return res
             } else {
                 res = realMonth -=3
-                console.log(res)
                 return res
             }
         }

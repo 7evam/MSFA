@@ -79,8 +79,6 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
   })
 
   const submitTrade = async () => {
-    console.log('here is user to trade with')
-    console.log(props.userToTradeWith)
     // validate trade
     const proposerTrades = {
         cash: cash.tradeAway,
@@ -126,12 +124,6 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
         toast.error("There was an error submitting your request")
     }
   }
-
-  console.log('trade for teams')
-  console.log(tradeForTeams)
-
-  console.log('trade away teams')
-  console.log(tradeAwayTeams)
 
   const closeModal = () => {
         dispatch({

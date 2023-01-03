@@ -104,6 +104,12 @@ function useAddTeam() {
     return () => abortController.abort();
   }
 
+  const reFetchRoster = async () => {
+    const abortController = new AbortController();
+    fetchRoster(2022, abortController)
+    return () => abortController.abort();
+  }
+
   const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -160,6 +166,7 @@ function useAddTeam() {
     if(modalHasBeenUsed && !modalContent){
       console.log('refetching content')
         reFetchBids()
+        reFetchRoster()
         setModalHasBeenUsed(false)
     } else if(!modalHasBeenUsed && modalContent){
         setModalHasBeenUsed(true)
@@ -234,8 +241,6 @@ function useAddTeam() {
         abort: abortController
       });
       const body = res.body;
-      console.log('here is trades')
-      console.log(body)
       setTrades(body)
       // const bidTable = {}
       // body.forEach(bid => {
@@ -287,7 +292,8 @@ function useAddTeam() {
       });
       const body = res.body;
       setFullRoster(body);
-      setCurrentRoster(body[currentOrganization.user_id]);
+      let userId = selectedMember ? selectedMember : currentOrganization.user_id
+      setCurrentRoster(body[userId]);
       //   setRoster(JSON.parse(res.body));
     } catch (e) {
       console.log("problem");
@@ -395,7 +401,8 @@ function useAddTeam() {
           selectedTeam: team,
           currentUserRoster: fullRoster[currentOrganization.user_id],
           userToTradeWith: selectedMember,
-          currentRoflMonths: calculateCurrentRoflMonths()
+          currentRoflMonths: calculateCurrentRoflMonths(),
+          firstActiveMonthForClaim
         }
       }
     });

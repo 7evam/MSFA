@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import useApi from "../../../hooks/useApi";
 import TeamSelect from "../TeamSelect";
@@ -19,6 +19,8 @@ function AddTeam() {
   }));
 
   const { makeRequest } = useApi();
+
+  const dispatch = useDispatch()
 
   const transformToCheckable = (roster) => { 
     let checkableRoster = {};
@@ -60,22 +62,23 @@ function AddTeam() {
   // this function sends a toast error if there is an error and returns
   // true if there is an error and false if there is NO error
   const checkForLeagueCountError = () => {
-    initialTeamCountByLeague[Number(String(props.selectedTeam)[0])]++;
+    const teamCountByLeague = {...initialTeamCountByLeague}
+    teamCountByLeague[Number(String(props.selectedTeam)[0])]++;
     Object.keys(checkedTeams).forEach((team) => {
       if (checkedTeams[team].checked) {
-        initialTeamCountByLeague[Number(String(team)[0])]--;
+        teamCountByLeague[Number(String(team)[0])]--;
       }
     });
     for (let league in teamCountByLeague) {
       if (
-        initialTeamCountByLeague[league] < 1 &&
+        teamCountByLeague[league] < 1 &&
         Object.keys(activeYears[2022]).includes(league)
       ) {
         toast.error(
           `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`
         );
         return false;
-      } else if (initialTeamCountByLeague[league] > 3) {
+      } else if (teamCountByLeague[league] > 3) {
         toast.error(
           `This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`
         );
@@ -123,6 +126,9 @@ function AddTeam() {
     if (
       Object.values(newCheckedTeams).filter((val) => val === true).length > 3
     ) {
+      // must explicitly set team as unchecked or else it shows up as checked again
+      newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
+      setCheckedTeams(newCheckedTeams)
       toast.error("You can drop a maximum of 3 teams");
       return;
     } else {

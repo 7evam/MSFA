@@ -152,10 +152,6 @@ function useRoster() {
   };
 
   const changeRoster = (slot) => {
-    console.log('here is slot')
-    console.log(slot)
-    console.log('here is selectedSlot')
-    console.log(selectedSlot)
     if (selectedSlot) {
       const team1 = { ...roster[`${roflMonth}-${selectedRoflYear}`][slot] };
       const team2 = {

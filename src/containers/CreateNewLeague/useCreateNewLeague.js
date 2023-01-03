@@ -187,11 +187,8 @@ const [stage,setStage] = useState('initial')
         newMemberRosters[memberRosterIndex][slot].id = found.id
         found.rostered = true
       } else {
-          console.log('here is id')
           if(newMemberRosters[memberRosterIndex][slot].id){
             const unrosteredTeam = newSportTeams.find(item => item.id == newMemberRosters[memberRosterIndex][slot].id)
-            console.log('here is unrosteredTeam')
-            console.log(unrosteredTeam)
             unrosteredTeam.rostered = false
             newMemberRosters[memberRosterIndex][slot].id = null
           }
