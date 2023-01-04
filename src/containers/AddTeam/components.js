@@ -4,7 +4,7 @@ import {red, blue, mediumBlue, lightBlue, mobileBreakPoint} from '../../constant
 
 export const Container = styled.div`
   margin-top: 50px;
-  width: 700px;
+  
   margin-bottom: 100px;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,9 @@ export const Container = styled.div`
   @media (max-width: ${mobileBreakPoint}){
     width: 100vw;
   }
+  width: 700px;
 `;
+
 
 export const LeagueSelector = styled.div`
   display: flex;
@@ -22,6 +24,7 @@ export const LeagueSelector = styled.div`
     width: 100vw;
   }
 `;
+
 
 export const League = styled.p`
   margin-right: 10px;
@@ -52,47 +55,86 @@ export const Tab = styled.p`
 
 // const red  = '#DA2929'
 export const Table = styled.table`
-width: 700x;
-@media (max-width: ${mobileBreakPoint}){
-  width: 100vw;
-}
+  width: 700px;
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
+
+
+const columnWidthsMobile = {
+  col1width: '5%',
+  col2width: '30%',
+  col3width: '10%',
+  col4width: '5%',
+  col5width: '30%',
+  col6width: '25%'
+}
+
+const columnWidthsDesktop = {
+  col1width: '40px',
+  col2width: '150px',
+  col3width: '60px',
+  col4width: '60px',
+  col5width: '150px',
+  col6width: '80px'
+}
+
 
 export const Td = styled.td`
   padding: 12px;
   border-bottom: 1px solid gray;
   font-size: 14px;
   border-left: 1px solid gray;
+  min-width: ${(props) => (columnWidthsDesktop[props.width])};
+  @media (max-width: ${mobileBreakPoint}){
+    min-width: ${(props) => (columnWidthsMobile[props.width])}
+  }
 `;
 
-export const TitleRow = styled.tr`
-    background-color: ${red}
-`;
+
+
+
 
 export const Th = styled.th`
 padding: 12px;
 border-bottom: 1px solid gray;
 font-size: 14px;
 border-left: 1px solid gray;
+min-width: ${(props) => (columnWidthsDesktop[props.width])};
+@media (max-width: ${mobileBreakPoint}){
+  min-width: ${(props) => (columnWidthsMobile[props.width])}
+}
+
 `
 
 // export const Tbody = styled.tbody`
 
 // `;
 
-export const slotData = styled.td`
-  padding: 12px;
-  border-bottom: 1px solid gray;
-  font-size: 14px;
-  border-left: 1px solid gray;
-`;
+// export const slotData = styled.td`
+//   padding: 12px;
+//   border-bottom: 1px solid gray;
+//   font-size: 14px;
+//   border-left: 1px solid gray;
+//   @media (max-width: ${mobileBreakPoint}){
+//     width: ${(props) => (columnWidthsMobile[props.width])}
+//   }
+// `;
 
 export const SlotRow = styled.tr`
   background-color: ${mediumBlue};
   &:nth-child(odd) {
     background-color: ${lightBlue};
   }
+  
 `;
+
+export const TitleRow = styled.tr`
+    background-color: ${red};
+`;
+
+
 
 export const ActionButton = styled.button`
     padding:0.35em 1.2em;
@@ -120,11 +162,11 @@ export const Label = styled.label`
 `
 
 export const CashContainer = styled.div`
-  width: 100%;
   display: flex;
   justify-content: center;
   font-size: 18px;
 `;
+// width: 100%;
 
 export const Select = styled.select`
     height: 40px;

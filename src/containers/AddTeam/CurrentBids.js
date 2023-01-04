@@ -29,6 +29,7 @@ import MonthTicker from "../../components/MonthTicker";
 import YearSelector from "../../components/YearSelector";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import BidRow from "./BidRow";
 
 const MonthContainer = styled.div`
   width: 100%;
@@ -43,6 +44,10 @@ const YearContainer = styled.div`
   justify-content: center;
   font-size: 18px;
 `;
+
+const Test = styled.div`
+  width: 100%;
+`
 
 function CurrentBids({
   allBids,
@@ -159,13 +164,6 @@ function CurrentBids({
     setAllBids(newBids)
 }
 
-const col1width = '40px'
-const col2width = '150px'
-const col3width = '50px'
-const col4width = '50px'
-const col5width = '150px'
-const col6width = '60px'
-
 console.log('here is all bids')
 console.log(allBids)
 
@@ -196,17 +194,17 @@ console.log(allBids)
             <MonthContainer>
               <p>RoFL Month: {roflMonth}</p>
             </MonthContainer>
-    
+              <Test>
             <TitleRow>
             {currentMonthIncludesCurrentBid ? (
-                <Th style={{ minWidth: col1width}}>Move</Th>
+                <Th width={'col1width'}>Move</Th>
               ) : null}
-              <Th style={{ minWidth: col2width}}>Team</Th>
-              <Th style={{ minWidth: col3width}}>Priority</Th>
-              <Th style={{ minWidth: col4width}}>Value</Th>
-              <Th style={{ minWidth: col5width}}>Teams Dropped</Th>
+              <Th width={'col2width'}>Team</Th>
+              <Th width={'col3width'}>Priority</Th>
+              <Th width={'col4width'}>Value</Th>
+              <Th width={'col5width'}>Teams Dropped</Th>
               {currentMonthIncludesCurrentBid ? (
-                <Th style={{ minWidth: col6width}}>Delete</Th>
+                <Th width={'col6width'}>Delete</Th>
               ) : null}
             </TitleRow>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -218,82 +216,14 @@ console.log(allBids)
                     //   style={getListStyle(snapshot.isDraggingOver)}
                   >
                     {allBids[roflMonth].map((bid, index) => (
-                      <Draggable key={bid.id} draggableId={String(bid.id)} index={index}>
-                        {(provided, snapshot) => (
-                          <SlotRow
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            //   style={getItemStyle(
-                            //     snapshot.isDragging,
-                            //     provided.draggableProps.style
-                            //   )}
-                          >
-                            {currentMonthIncludesCurrentBid ? (
-                            <Td style={{ minWidth: col1width, textAlign: 'center', fontSize: '32px'}}>{"≡"}</Td>
-                        ) : null}
-                            <Td style={{ minWidth: col2width}}>
-                              {
-                                sportTeams[leagueFromTeamId(bid.team_id)][
-                                  bid.team_id
-                                ].city
-                              }{" "}
-                              {
-                                sportTeams[leagueFromTeamId(bid.team_id)][
-                                  bid.team_id
-                                ].name
-                              }
-                            </Td>
-                            <Td style={{ minWidth: col3width}}>{bid.priority}</Td>
-                            <Td style={{ minWidth: col4width}}>${bid.bid_value}</Td>
-                            <Td style={{ minWidth: col5width}}>
-                              {bid.dropped_team_1
-                                ? `${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_1)
-                                    ][bid.dropped_team_1].city
-                                  } ${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_1)
-                                    ][bid.dropped_team_1].name
-                                  }`
-                                : "None"}
-                              {bid.dropped_team_2
-                                ? `, ${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_2)
-                                    ][bid.dropped_team_2].city
-                                  } ${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_2)
-                                    ][bid.dropped_team_2].name
-                                  }`
-                                : null}
-                              {bid.dropped_team_3
-                                ? `, ${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_3)
-                                    ][bid.dropped_team_3].city
-                                  } ${
-                                    sportTeams[
-                                      leagueFromTeamId(bid.dropped_team_3)
-                                    ][bid.dropped_team_3].name
-                                  }`
-                                : null}
-                            </Td>
-                            
-                            {currentMonthIncludesCurrentBid ? (
-                              <Td style={{ minWidth: col6width}}>
-                                {bid.current ? (
-                                  <button onClick={() => deleteBid(bid.id)}>
-                                    Delete
-                                  </button>
-                                ) : null}
-                              </Td>
-                            ) : null}
-                          </SlotRow>
-                        )}
-                      </Draggable>
+                      <BidRow
+                      bid={bid}
+                      index={index}
+                      sportTeams={sportTeams}
+                      currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
+                      deleteBid={deleteBid}
+                      leagueFromTeamId={leagueFromTeamId}
+                      />
                     ))}
                     {provided.placeholder}
                   </div>
@@ -301,6 +231,7 @@ console.log(allBids)
               </Droppable>
             </DragDropContext>
             {havePrioritiesChanged ? <div>Your roster priorities have changed <button onClick={saveRoster}>Save</button></div> : null}
+            </Test>
             </div>
             : <p>There are no bids to show</p>
         }
