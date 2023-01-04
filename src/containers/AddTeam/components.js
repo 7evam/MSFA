@@ -87,13 +87,33 @@ export const Td = styled.td`
   font-size: 14px;
   border-left: 1px solid gray;
   min-width: ${(props) => (columnWidthsDesktop[props.width])};
+  display: ${(props) => props.details ? 'none' : null};
+
   @media (max-width: ${mobileBreakPoint}){
-    min-width: ${(props) => (columnWidthsMobile[props.width])}
+    min-width: ${(props) => (columnWidthsMobile[props.width])};
+    display: ${(props) => props.width == 'col4width' || props.width == 'col5width' || props.width == 'col6width' ? 'none' : null};
   }
 `;
 
 
+export const DetailsHeader = styled.th`
+display: none;
+  @media (max-width: ${mobileBreakPoint}){
+    display: table-cell;
+  }
 
+`
+
+export const Details = styled.td`
+  padding: 12px;
+  border-bottom: 1px solid gray;
+  font-size: 14px;
+  border-left: 1px solid gray;
+  display: none;
+  @media (max-width: ${mobileBreakPoint}){
+    display: table-cell;
+  }
+`
 
 
 export const Th = styled.th`
@@ -102,8 +122,11 @@ border-bottom: 1px solid gray;
 font-size: 14px;
 border-left: 1px solid gray;
 min-width: ${(props) => (columnWidthsDesktop[props.width])};
+display: ${(props) => props.details ? 'none' : null};
+
 @media (max-width: ${mobileBreakPoint}){
-  min-width: ${(props) => (columnWidthsMobile[props.width])}
+  min-width: ${(props) => (columnWidthsMobile[props.width])};
+  display: ${(props) => props.width == 'col4width' || props.width == 'col5width' || props.width == 'col6width' ? 'none' : null};
 }
 
 `

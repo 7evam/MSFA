@@ -1,8 +1,7 @@
 import React from "react";
 import {
   SlotRow,
-  Td,
-  Details
+  Td
 } from "./components";
 
 import { Draggable } from "react-beautiful-dnd";
@@ -18,7 +17,16 @@ function BidRow({
     leagueFromTeamId
 }) {
   return (
+    <Draggable key={bid.id} draggableId={String(bid.id)} index={index}>
+      {(provided, snapshot) => (
         <SlotRow
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          //   style={getItemStyle(
+          //     snapshot.isDragging,
+          //     provided.draggableProps.style
+          //   )}
         >
           {currentMonthIncludesCurrentBid ? (
             <Td
@@ -80,11 +88,10 @@ function BidRow({
                 <button onClick={() => deleteBid(bid.id)}>Delete</button>
               ) : null}
             </Td>
-
           ) : null}
-        <Details><button onClick={() => console.log("works")}>Details</button></Details>
-
         </SlotRow>
+      )}
+    </Draggable>
   );
 }
 

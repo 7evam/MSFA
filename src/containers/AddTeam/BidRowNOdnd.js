@@ -1,8 +1,7 @@
 import React from "react";
 import {
   SlotRow,
-  Td,
-  Details
+  Td
 } from "./components";
 
 import { Draggable } from "react-beautiful-dnd";
@@ -80,10 +79,7 @@ function BidRow({
                 <button onClick={() => deleteBid(bid.id)}>Delete</button>
               ) : null}
             </Td>
-
           ) : null}
-        <Details><button onClick={() => console.log("works")}>Details</button></Details>
-
         </SlotRow>
   );
 }

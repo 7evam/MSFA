@@ -20,8 +20,7 @@ import {
   Th,
   TitleRow,
   Td,
-  Details,
-  DetailsHeader,
+  Table,
   CashContainer
 } from "./components";
 import useAddTeam from "./useAddTeam";
@@ -45,10 +44,6 @@ const YearContainer = styled.div`
   justify-content: center;
   font-size: 18px;
 `;
-
-const Table = styled.table`
-
-`
 
 const Test = styled.div`
 `
@@ -172,7 +167,7 @@ console.log('here is all bids')
 console.log(allBids)
 
     return (
-      <Test>
+      <div>
         {
             allBids && allBids[roflMonth] && allBids[roflMonth].length
             ?
@@ -198,8 +193,7 @@ console.log(allBids)
             <MonthContainer>
               <p>RoFL Month: {roflMonth}</p>
             </MonthContainer>
-              <Table>
-                <tbody>
+              <Test>
             <TitleRow>
             {currentMonthIncludesCurrentBid ? (
                 <Th width={'col1width'}>Move</Th>
@@ -208,11 +202,18 @@ console.log(allBids)
               <Th width={'col3width'}>Priority</Th>
               <Th width={'col4width'}>Value</Th>
               <Th width={'col5width'}>Teams Dropped</Th>
-              <DetailsHeader>Details</DetailsHeader>
               {currentMonthIncludesCurrentBid ? (
                 <Th width={'col6width'}>Delete</Th>
               ) : null}
             </TitleRow>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    //   style={getListStyle(snapshot.isDraggingOver)}
+                  >
                     {allBids[roflMonth].map((bid, index) => (
                       <BidRow
                       bid={bid}
@@ -223,13 +224,17 @@ console.log(allBids)
                       leagueFromTeamId={leagueFromTeamId}
                       />
                     ))}
-                    </tbody>
-              </Table>
-              {havePrioritiesChanged ? <div>Your roster priorities have changed <button onClick={saveRoster}>Save</button></div> : null}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            {havePrioritiesChanged ? <div>Your roster priorities have changed <button onClick={saveRoster}>Save</button></div> : null}
+            </Test>
             </div>
             : <p>There are no bids to show</p>
         }
-      </Test>
+      </div>
     );
   };
 

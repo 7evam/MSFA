@@ -20,8 +20,6 @@ import {
   Th,
   TitleRow,
   Td,
-  Details,
-  DetailsHeader,
   CashContainer
 } from "./components";
 import useAddTeam from "./useAddTeam";
@@ -47,7 +45,7 @@ const YearContainer = styled.div`
 `;
 
 const Table = styled.table`
-
+  width: 100vw;
 `
 
 const Test = styled.div`
@@ -208,7 +206,6 @@ console.log(allBids)
               <Th width={'col3width'}>Priority</Th>
               <Th width={'col4width'}>Value</Th>
               <Th width={'col5width'}>Teams Dropped</Th>
-              <DetailsHeader>Details</DetailsHeader>
               {currentMonthIncludesCurrentBid ? (
                 <Th width={'col6width'}>Delete</Th>
               ) : null}
