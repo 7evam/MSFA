@@ -44,6 +44,7 @@ function Trades({ trades, reFetchTrades }) {
   let activeYearArray = Object.keys(currentOrganization.activeYears);
 
   return (
+    trades && trades.length ?
     <Container>
       {roflMonth ? (
         <Container>
@@ -93,7 +94,7 @@ function Trades({ trades, reFetchTrades }) {
       ) : (
         <div>You have no trades</div>
       )}
-    </Container>
+    </Container> : <Container><p>You have no trades yet. To create a trade, use the rosters tab and explore someone else's roster. Click the trade button next to a team you'd like to trade for</p></Container>
   );
 }
 
