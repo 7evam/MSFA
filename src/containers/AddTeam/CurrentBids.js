@@ -31,6 +31,7 @@ import YearSelector from "../../components/YearSelector";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import BidRow from "./BidRow";
+import { mobileBreakPoint } from "../../constants/style";
 
 
 const MonthContainer = styled.div`
@@ -48,6 +49,9 @@ const YearContainer = styled.div`
 `;
 
 const Table = styled.table`
+@media (max-width: ${mobileBreakPoint}){
+   width: 100%;
+  }
 
 `
 

@@ -41,6 +41,10 @@ export const TabSelector = styled.div`
   flex-direction: row;
   justify-content: space-around;
   width: 700px;
+  background-color: ${mediumBlue};
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
 `;
 
 export const Tab = styled.p`
