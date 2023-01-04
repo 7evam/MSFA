@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useInsertionEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import "@fontsource/open-sans";
 import useApi from "../../hooks/useApi";
@@ -32,6 +32,7 @@ import { toast } from "react-toastify";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import BidRow from "./BidRow";
 
+
 const MonthContainer = styled.div`
   width: 100%;
   display: flex;
@@ -63,6 +64,8 @@ function CurrentBids({
 }) {
   const { makeRequest, isLoading } = useApi();
 
+  const dispatch = useDispatch()
+
   const [selectedRoflYear, setSelectedRoflYear] = useState(2022);
   // default value should be latest month in allBids table
   const [roflMonth, setRoflMonth] = useState(allBids ? Math.max(...Object.keys(allBids)) : null);
@@ -71,6 +74,12 @@ function CurrentBids({
     setCurrentMonthIncludesCurrentBid
   ] = useState(false);
   const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false)
+  const [selectedBid, setSelectedBid] = useState(null)
+
+  useEffect(() => {
+    console.log("selected bid changed")
+    console.log(selectedBid)
+  }, [selectedBid]);
 
 
   useEffect(() => {
@@ -116,6 +125,10 @@ function CurrentBids({
   };
 
   const deleteBid = async (bidId) => {
+    const isConfirmed = confirm("Are you sure you want to delete this bid?")
+    if(!isConfirmed){
+        return
+    }
     try {
       var res = await makeRequest({
         method: "delete",
@@ -147,6 +160,41 @@ function CurrentBids({
     return result
   }
 
+  const mobileSwitch = (bidIndex) => {
+    if(selectedBid === null){
+        console.log("in if")
+        setSelectedBid(bidIndex)
+    } else {
+        console.log('in else')
+        const newMonthBids = reorder(
+            allBids[roflMonth],
+            selectedBid,
+            bidIndex
+        )
+        const newBids = allBids
+        newBids[roflMonth] = newMonthBids
+        if(originalBids !== JSON.stringify(newBids)){
+            setHavePrioritiesChanged(true)
+        } else {
+            setHavePrioritiesChanged(false)
+        }
+        setAllBids(newBids)
+        setSelectedBid(null)
+    }
+  }
+
+  const showBidDetails = (bid) => {
+    dispatch({
+        type: "SHOW_MODAL",
+        payload: {
+          modalContent: "BID_DETAILS",
+          props: {
+            bid
+          }
+        }
+      });
+  }
+
   const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
@@ -167,9 +215,6 @@ function CurrentBids({
     }
     setAllBids(newBids)
 }
-
-console.log('here is all bids')
-console.log(allBids)
 
     return (
       <Test>
@@ -221,6 +266,10 @@ console.log(allBids)
                       currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
                       deleteBid={deleteBid}
                       leagueFromTeamId={leagueFromTeamId}
+                      mobileSwitch={mobileSwitch}
+                      selectedBid={selectedBid}
+                      setSelectedBid={setSelectedBid}
+                      showBidDetails={showBidDetails}
                       />
                     ))}
                     </tbody>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubmitBid from '../components/Modals/SubmitBid';
 import AddTeam from '../components/Modals/AddTeam';
 import ProposeTrade from '../components/Modals/ProposeTrade';
+import BidDetails from '../components/Modals/BidDetails'
 import { lightBlue } from '../constants/style';
 
 // const ModalContainer = styled.div`
@@ -45,6 +46,8 @@ function RenderModal() {
                 return <AddTeam/>
             case "PROPOSE_TRADE":
                 return <ProposeTrade/>
+            case "BID_DETAILS":
+                return <BidDetails/>
             default:
                 return <p>Modal not found</p>
         }

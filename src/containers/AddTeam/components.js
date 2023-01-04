@@ -101,6 +101,10 @@ display: none;
   @media (max-width: ${mobileBreakPoint}){
     display: table-cell;
   }
+`
+
+export const MoveSign = styled.span`
+  display: none;
 
 `
 
@@ -157,7 +161,24 @@ export const TitleRow = styled.tr`
     background-color: ${red};
 `;
 
+export const SwitchButton = styled.button`
+    padding:0.35em 1.2em;
+    border:0.1em solid #FFFFFF;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-weight:300;
+    color:${blue};
+    text-align:center;
+    background-color: ${lightBlue};
+    background-color: ${(props) => props.selected ? 'green' : `${lightBlue}`};
 
+    &:hover {
+        cursor: pointer;
+      }
+      
+`
 
 export const ActionButton = styled.button`
     padding:0.35em 1.2em;
@@ -173,6 +194,7 @@ export const ActionButton = styled.button`
     &:hover {
         cursor: pointer;
       }
+
 `
 export const Headline = styled.h1`
       font-size: 24px;

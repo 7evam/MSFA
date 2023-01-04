@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    ActionButton,
   SlotRow,
   Td
 } from "./components";
@@ -14,7 +15,8 @@ function BidRow({
     sportTeams,
     currentMonthIncludesCurrentBid,
     deleteBid,
-    leagueFromTeamId
+    leagueFromTeamId,
+    mobileSwitch
 }) {
   return (
     <Draggable key={bid.id} draggableId={String(bid.id)} index={index}>
@@ -37,6 +39,7 @@ function BidRow({
                 fontSize: "32px"
               }}
             >
+                <ActionButton onClick={() => mobileSwitch()}>Switch</ActionButton>
               {"≡"}
             </Td>
           ) : null}

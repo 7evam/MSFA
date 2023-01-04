@@ -2,12 +2,13 @@ import React from "react";
 import {
   SlotRow,
   Td,
-  Details
+  Details,
+  MoveSign,
+  ActionButton,
+  SwitchButton
 } from "./components";
 
 import { Draggable } from "react-beautiful-dnd";
-
-
 
 function BidRow({
     bid,
@@ -15,9 +16,13 @@ function BidRow({
     sportTeams,
     currentMonthIncludesCurrentBid,
     deleteBid,
-    leagueFromTeamId
+    leagueFromTeamId,
+    mobileSwitch,
+    selectedBid,
+    showBidDetails
 }) {
-  return (
+
+    return (
         <SlotRow
         >
           {currentMonthIncludesCurrentBid ? (
@@ -29,7 +34,7 @@ function BidRow({
                 fontSize: "32px"
               }}
             >
-              {"≡"}
+                <SwitchButton selected={index==selectedBid} onClick={() => mobileSwitch(index)}>Switch</SwitchButton>
             </Td>
           ) : null}
           <Td width={'col2width'}>
@@ -77,12 +82,12 @@ function BidRow({
           {currentMonthIncludesCurrentBid ? (
             <Td width={'col6width'}>
               {bid.current ? (
-                <button onClick={() => deleteBid(bid.id)}>Delete</button>
+                <ActionButton onClick={() => deleteBid(bid.id)}>Delete</ActionButton>
               ) : null}
             </Td>
 
           ) : null}
-        <Details><button onClick={() => console.log("works")}>Details</button></Details>
+        <Details><ActionButton onClick={() => showBidDetails(bid)}>Details</ActionButton></Details>
 
         </SlotRow>
   );
