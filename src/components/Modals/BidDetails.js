@@ -80,6 +80,8 @@ function BidDetails() {
       };
 
     const deleteBid = async (bidId) => {
+        console.log("here iis bid id")
+        console.log(bidId)
         const isConfirmed = confirm("Are you sure you want to delete this bid?")
         if(!isConfirmed){
             return
