@@ -137,8 +137,7 @@ function BidDetails() {
     </BidContainer>
     </MainContent>
     <BottomBar>
-        {props.bid.current ? <BottomButton onClick={() => deleteBid(bid.id)} style={{backgroundColor: "red"}}>Delete</BottomButton> : null}
-    
+        {props.bid.current ? <BottomButton onClick={() => deleteBid(props.bid.id)} style={{backgroundColor: "red"}}>Delete</BottomButton> : null}
     </BottomBar>
   </Container>
 }
