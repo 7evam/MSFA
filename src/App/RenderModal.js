@@ -5,7 +5,7 @@ import SubmitBid from '../components/Modals/SubmitBid';
 import AddTeam from '../components/Modals/AddTeam';
 import ProposeTrade from '../components/Modals/ProposeTrade';
 import BidDetails from '../components/Modals/BidDetails'
-import { lightBlue } from '../constants/style';
+import { lightBlue, mobileBreakPoint } from '../constants/style';
 
 // const ModalContainer = styled.div`
 //     margin-left: 170px;
@@ -28,6 +28,14 @@ const ModalContainer = styled.div`
     background-color: ${lightBlue};
     z-index: 4;
     border: 1px solid black;
+    @media (max-width: ${mobileBreakPoint}){
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        overflow-y: scroll;
+        height: 100%;
+        z-index: 10;
+      }
 `
 
 function RenderModal() {
