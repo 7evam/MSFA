@@ -87,7 +87,7 @@ function BidDetails() {
         try {
           var res = await makeRequest({
             method: "delete",
-            route: `users/bids/delete/${Number(bidId)}`
+            route: `users/bids/delete/${bidId}`
           });
           const body = res.body;
           //   if success show message
