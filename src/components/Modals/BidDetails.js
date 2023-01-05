@@ -80,10 +80,10 @@ function BidDetails() {
       };
 
     const deleteBid = async (bidId) => {
-        const isConfirmed = confirm("Are you sure you want to delete this bid?")
-        if(!isConfirmed){
-            return
-        }
+        // const isConfirmed = confirm("Are you sure you want to delete this bid?")
+        // if(!isConfirmed){
+        //     return
+        // }
         try {
           var res = await makeRequest({
             method: "delete",
