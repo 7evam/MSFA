@@ -94,7 +94,7 @@ function ScoringTable({roflMonth, scores, roflYear, sportTeams, league}) {
   })
 
   return (
-    data 
+    (data && league)
     ?
     (<div>
       <Table>

@@ -58,11 +58,7 @@ export default function useHydration() {
 
     const hydrateSportTeams = async (abortController) => {
         setIsHydrating(true)
-        const leagueIds = [1,2,3,4]
-        const sportTeams = {}
-        for(let leagueId of leagueIds){
-            sportTeams[leagueId] = await getTeamsByLeagueId(leagueId, abortController)
-        }
+        const sportTeams = await getTeams(abortController)
         dispatch({
             type: "HYDRATE_SPORT_TEAMS",
             payload: {
@@ -70,6 +66,16 @@ export default function useHydration() {
             }
           });
           setIsHydrating(false)
+    }
+
+    const getTeams = async(abortController) => {
+      var res = await makeRequest({
+        method: 'get',
+        route: `/sports/teams`,
+        abort: abortController
+      })
+      const response = res.body
+      return response
     }
 
     const getTeamsByLeagueId = async(leagueId, abortController) => {

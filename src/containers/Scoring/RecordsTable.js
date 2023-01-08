@@ -133,7 +133,7 @@ function RecordsTable({roflMonth, scores, roflYear, sportTeams, playoffs, league
   }
 
   return (
-    data && columns
+    (data && columns && league)
     ?
     (<TableContainer>
       <Table>
