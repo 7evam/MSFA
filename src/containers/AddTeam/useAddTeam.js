@@ -74,23 +74,41 @@ function useAddTeam() {
   // Load page data
   useEffect(() => {
     const abortController = new AbortController();
-    fetchRoster(2022, abortController);
-    fetchAllBids(2022, abortController);
-    fetchTrades(2022, abortController)
-    if (!deadlines) {
-      hydrateDeadlines(abortController, 2022);
-    }
-    if (!orgMembers) {
-      hydrateOrgMembers(abortController);
-    }
-    if (!sportTeams) {
-      hydrateSportTeams(abortController);
-    } else {
-      calculateAndSetUnownedTeams();
-    }
+  
+    makeInitialRequests(abortController)
 
     return () => abortController.abort();
   }, []);
+
+  const makeInitialRequests = async (abortController) => {
+
+    // * Some API calls dont need to be made, but since these
+    // run concurrently, it wont really effect performance
+
+    // this commented legacy code can help if i want to refactor 
+    // unecessary api calls out later anyway
+
+    // if (!deadlines) {
+    //   requestsToMake.push()
+    // }
+    // if (!orgMembers) {
+    //   requestsToMake.push();
+    // }
+    // if (!sportTeams) {
+    //   requestsToMake.push();
+    // } else {
+    //   requestsToMake.push();
+    // }
+
+    await Promise.all([
+      fetchRoster(2022, abortController),
+      fetchAllBids(2022, abortController),
+      fetchTrades(2022, abortController),
+      hydrateDeadlines(abortController, 2022),
+      hydrateOrgMembers(abortController),
+      hydrateSportTeams(abortController)
+    ])
+  }
 
   const reFetchBids = async () => {
     const abortController = new AbortController();

@@ -45,7 +45,7 @@ const TableContainer = styled.div`
       }
 `
 
-function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, league}) {
+function RecordsTable({roflMonth, scores, roflYear, sportTeams, playoffs, league}) {
 
     const [data, setData] = useState(null)
     const [sorting, setSorting] = useState([])
@@ -116,7 +116,7 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
+    debugTable: false
   })
 
   const calculateIsName = (cell) => {
@@ -194,4 +194,4 @@ function RecordsTableNew({roflMonth, scores, roflYear, sportTeams, playoffs, lea
   )
 }
 
-export default RecordsTableNew;
+export default RecordsTable;

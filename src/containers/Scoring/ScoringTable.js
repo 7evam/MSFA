@@ -35,7 +35,7 @@ const Th = styled.th`
     }
 `
 
-function ScoringTableNew({roflMonth, scores, roflYear, sportTeams, league}) {
+function ScoringTable({roflMonth, scores, roflYear, sportTeams, league}) {
 
     const [data, setData] = useState(null)
 
@@ -155,4 +155,4 @@ function ScoringTableNew({roflMonth, scores, roflYear, sportTeams, league}) {
   )
 }
 
-export default ScoringTableNew;
+export default ScoringTable;

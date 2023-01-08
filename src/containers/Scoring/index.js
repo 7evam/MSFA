@@ -30,57 +30,84 @@ function Scoring(props) {
   const [display, setDisplay] = useState('score');
   const [teams, setTeams] = useState(null)
   const [firstMonthForDisplay, setFirstMonthForDisplay] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [hydrated, setHydrated] = useState(false)
+  const [readyToRender, setReadyToRender] = useState(false)
+  const [renderCount, setRenderCount] = useState(0)
 
-  const hydrateGlobalState = async () => {
-    // hydrate redux data that isn't already loaded
-    const abortController = new AbortController();
-    if (!sportTeams) {
-      await hydrateSportTeams(abortController);
-    }
-    if(!activeYears){
-      await hydrateActiveYears(abortController)
-    }
-    setHydrated(true)
-    return () => abortController.abort();
-  }
+  // --use effects for initial render--
 
-  const loadPageState = async () => {
-        // calculate starting league
-        let activeLeagueArray = Object.keys(activeYears[2022])
-        let startingActiveLeague = Math.min(...activeLeagueArray)
-        setLeague(startingActiveLeague)
-        
-        // fetch page specific data
-        await fetchScores();
-        await fetchTeams();
-        setDisplayMonthRange(startingActiveLeague)
-        setLoading(false)
-  }
-  
-  // ---- START TWO PART useEffect ----
+  // this function runs on page load and makes all api requests
   useEffect(() => {
-    // on page load, load global state
-    setLoading(true)
-    hydrateGlobalState()
+    const abortController = new AbortController();
+
+    makeInitialRequests(abortController)
+
+    return () => abortController.abort();
   }, []);
 
+  // when all api requests have been made, update state derrived from api calls
   useEffect(() => {
-    // this loads page state after global state has been loaded
-    if(hydrated){
-      loadPageState()
+    if (
+      scores &&
+      teams &&
+      activeYears &&
+      !readyToRender
+    ) {
+      let activeLeagueArray = Object.keys(activeYears[2022])
+      let startingActiveLeague = Math.min(...activeLeagueArray)
+      setLeague(startingActiveLeague)
+      setDisplayMonthRange(startingActiveLeague)
+      
     }
-  }, [hydrated]);
-    // ---- END TWO PART useEffect ----
+  }, [
+      scores,
+      league,
+      finalMonthForDisplay,
+      teams,
+      firstMonthForDisplay
+  ]);
 
+  // if all derrived state has been set, the app must be ready to render
   useEffect(() => {
+    if (
+      firstMonthForDisplay &&
+      finalMonthForDisplay &&
+      !readyToRender
+    ) {
+      setReadyToRender(true);
+    }
+  }, [
+      finalMonthForDisplay,
+      firstMonthForDisplay
+  ]);
+
+    // initial requests functiioin
+    const makeInitialRequests = async (abortController) => {
     
-    if(league && hydrated && !loading){
+      // if (!sportTeams) {
+     //   await hydrateSportTeams(abortController);
+     // }
+     // if(!activeYears){
+     //   await hydrateActiveYears(abortController)
+     // }
+ 
+     await Promise.all([
+       fetchScores(abortController),
+       fetchTeams(abortController),
+       hydrateSportTeams(abortController),
+       hydrateActiveYears(abortController)
+     ])
+   }
+
+  //  --post initial render use effect--
+
+  //  change data on league change
+   useEffect(() => {
+    if(league && readyToRender){
       setDisplayMonthRange(league)
     }
   }, [league]);
 
+// find the current, first and last rofl month for display
   const setDisplayMonthRange = (league) => {
     let newFinalMonth = activeYears[2022][league] ? activeYears[2022][league].roflMonth : playoffMonths[2022][league]
     let newStartingMonth = startingMonths[2022][league]
@@ -115,30 +142,17 @@ function Scoring(props) {
   };
 
   const fetchTeams = async () => {
-      const leagueIds = [1,2,3,4]
-      const teams = {}
-      for(let id of leagueIds){
-          teams[id] = await getTeamsByLeagueId(id)
-      }
-      setTeams(teams)
-  }
-
-  const getTeamsByLeagueId = async(leagueId) => {
     var res = await makeRequest({
-        method: 'get',
-        route: `/sports/teams/${leagueId}`
+      method: 'get',
+      route: `/sports/teams`
     })
     const response = res.body
-    const table = {}
-    response.forEach(team => {
-        table[team.id] = {...team}
-    })
-    return table
-}
+    setTeams(response)
+  }
 
   return (
     <Container>
-      {loading ? <Loading/> : (firstMonthForDisplay) ?
+      {readyToRender ? (
           <div>
           <LeagueSelector>
             <League selected={league == 1} onClick={() => setLeague(1)}>
@@ -217,8 +231,7 @@ function Scoring(props) {
               <p>This League is not active</p>
             :
             null}
-        </div>
-         : (<p>Error loading data</p>)}
+        </div> ): <Loading/> }
     </Container>
   );
 }
