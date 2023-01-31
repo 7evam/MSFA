@@ -143,7 +143,7 @@ function useAddTeam() {
       allBids &&
       trades
     ) {
-      // setReadyToRender(true);
+      setReadyToRender(true);
     }
   }, [
     currentRoster,

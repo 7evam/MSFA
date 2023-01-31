@@ -43,7 +43,7 @@ function Standings(props) {
       {standings ? (
         <StandingsContainer>
           <YearContainer>
-          <p>RoFL Year: {selectedRoflYear}</p>
+          <p>MSFA Year: {selectedRoflYear}</p>
           </YearContainer>
           <MonthTicker
             finalMonthForDisplay={finalMonthForDisplay}

@@ -65,8 +65,12 @@ export const CustomNavLink = styled(NavLink)`
 export const Logo = styled.img`
   width: 220px;
   z-index: 15;
+  height: 80px;
   @media (max-width: ${mobileBreakPoint}){
     width: 170px;
+    height: auto;
+    border: 1px solid ${blue};
+    margin-top: 10px;
   }
 `
 

@@ -8,6 +8,7 @@ import YearSelector from "../../components/YearSelector";
 import RosterComponent from "../../components/Roster";
 import "@fontsource/open-sans";
 import {Container, Slot, SelectButton, BannerMessage, MonthButton, MonthContainer, YearContainer, ScrollMenu, ScrollMenuContainer, ScrollMenuLink, ScrollMenuButton, SubmitChangesButton, TeamName} from './components'
+import Loading from "../../components/Loading";
 
 function Roster(props) {
   const {
@@ -75,7 +76,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
             />
           ) : (
             <YearContainer>
-              <p>RoFL Year: {selectedRoflYear}</p>
+              <p>MSFA Year: {selectedRoflYear}</p>
             </YearContainer>
           )}
 
@@ -110,7 +111,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
           )}
         </div>
       ) : (
-        <p>loading...</p>
+        <Loading/>
       )}
     </Container>
   );

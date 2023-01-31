@@ -41,7 +41,7 @@ function CurrentRosters({selectedMember, handleChange, handleTrade, currentRoste
         }
         </Select>
         <CashContainer>
-        <p>RoFL cash: ${currentRoster.cash}</p>
+        <p>MSFA cash: ${currentRoster.cash}</p>
         </CashContainer>
         <TitleRow>
             <Th style={{ width: "200px" }}>

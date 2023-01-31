@@ -32,11 +32,11 @@ function InitialInfo({cnlProps, setStage}){
 
   return (
     <Container>
-        <p>Create New RoFL League</p>
+        <p>Create New MSFA League</p>
         <form>
         <Input
             name="leagueName"
-            placeholder="RoFL League Name"
+            placeholder="MSFA League Name"
             type="text"
             value={values.leagueName}
             onChange={handleChange}

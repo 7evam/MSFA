@@ -78,8 +78,8 @@ function Landing(props) {
 
   return (
     <Container>
-      <Headline>Welcome to RoFL - Regiment of Fantasy Leagues</Headline>
-      <Logo style={{marginLeft: '140px'}} src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/RoflLogo.png'} alt="roflLogo"/>
+      <Headline>Welcome to MSFA - Multi-Sport Fantasy Association</Headline>
+      <Logo style={{marginLeft: '140px'}} src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png'} alt="roflLogo"/>
         <EntryModes>
         <SelectEntryMode selected={entryModeLogIn} onClick={() => setEntryModeLogIn(!entryModeLogIn)}>Log In</SelectEntryMode>
         <SelectEntryMode selected={!entryModeLogIn} onClick={() => setEntryModeLogIn(!entryModeLogIn)}>Create Account</SelectEntryMode>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {keyframes} from 'styled-components'
-import { blue } from '../constants/style';
+import { blue, mobileBreakPoint } from '../constants/style';
 
 const spinner = keyframes`
     0% { transform: rotate(0deg); }
@@ -22,6 +22,19 @@ const Loader = styled.div`
     height: 300px;
     animation: ${spinner} 2s linear infinite;
     position: fixed;
+    @media (max-width: ${mobileBreakPoint}){
+        height: 200px;
+        width: 200px;
+      }
+`
+
+const Img = styled.img`
+    height: 300px;
+    width: 300px;
+    @media (max-width: ${mobileBreakPoint}){
+        height: 200px;
+        width: 200px;
+      }
 `
 
 
@@ -29,7 +42,7 @@ function Loading() {
     return(
         <Container>
         <Loader></Loader>
-        <img src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogo.PNG" height="300" width="300"/>
+        <Img src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogo.PNG"/>
         </Container>
     )
 }

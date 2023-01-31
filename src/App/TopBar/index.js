@@ -22,7 +22,7 @@ function TopBar() {
     <Topbar>
       <LogoContainer>
         <MobileSettings><CustomNavLink to="/settings">{SettingsIcon}</CustomNavLink></MobileSettings>
-        <Logo src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/RoflLogo.png'} alt="roflLogo"/>
+        <Logo src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png'} alt="msfaLogo"/>
         <MobileLogOut onClick={logOut}>{LogOutIcon}</MobileLogOut>
       </LogoContainer>
       <Nav className="grid-container">

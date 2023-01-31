@@ -56,7 +56,7 @@ function Trades({ trades, reFetchTrades }) {
             />
           ) : (
             <YearContainer>
-              <p>RoFL Year: {selectedRoflYear}</p>
+              <p>MSFA Year: {selectedRoflYear}</p>
             </YearContainer>
           )}
 
@@ -67,7 +67,7 @@ function Trades({ trades, reFetchTrades }) {
             onlyShownMonths={Object.keys(trades).map((n) => Number(n))}
           />
           <MonthContainer>
-            <p>RoFL Month: {roflMonth}</p>
+            <p>MSFA Month: {roflMonth}</p>
           </MonthContainer>
           {tradeStates.map((state) => {
             const hasLength =

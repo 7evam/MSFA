@@ -234,7 +234,7 @@ function CurrentBids({
               />
             ) : (
               <YearContainer>
-                <p>RoFL Year: {selectedRoflYear}</p>
+                <p>MSFAs Year: {selectedRoflYear}</p>
               </YearContainer>
             )}
     
@@ -245,7 +245,7 @@ function CurrentBids({
               onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
             />
             <MonthContainer>
-              <p>RoFL Month: {roflMonth}</p>
+              <p>MSFA Month: {roflMonth}</p>
             </MonthContainer>
               <Table>
                 <tbody>

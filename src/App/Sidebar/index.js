@@ -9,7 +9,7 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
 
   return (
     <SideBar className="sidebar">
-      <Logo src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/RoflLogo.png'} alt="roflLogo"/>
+      <Logo src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png'} alt="MSFA Logo"/>
       <Nav className="grid-container">
         <NavGroup>
         <CustomNavLink to="/squad">

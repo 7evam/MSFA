@@ -180,7 +180,7 @@ console.log(allBids)
               />
             ) : (
               <YearContainer>
-                <p>RoFL Year: {selectedRoflYear}</p>
+                <p>MSFA Year: {selectedRoflYear}</p>
               </YearContainer>
             )}
     
@@ -191,7 +191,7 @@ console.log(allBids)
               onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
             />
             <MonthContainer>
-              <p>RoFL Month: {roflMonth}</p>
+              <p>MSFA Month: {roflMonth}</p>
             </MonthContainer>
               <Test>
             <TitleRow>
