@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import axios from 'axios'
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 // this is a hook that exports a function that can eventually 
 // be configured to call any api with any data or any headers
@@ -22,6 +23,9 @@ export default function useApi() {
         roflApi.defaults.headers.common['userToken'] = userToken
     }
 
+    const dispatch = useDispatch()
+    const history = useHistory();
+
     const makeRequest = async ({method, route, data = null, continueLoading = false, suppressIsLoading = false, abort=null}) => {
         if(!suppressIsLoading) setIsLoading(true)
         try {
@@ -39,9 +43,19 @@ export default function useApi() {
                 .catch((e) => {
                     /**
                      * @TODO add logout on 401
+                     * Initiate refresh token process
                      */ 
                     const errorMessage = e.response?.data?.message ? e.response.data.message : e.response?.data ? e.response.data : 'Your request could not be completed'
-                    toast.error(errorMessage)
+                    
+                    if(errorMessage.includes("Unauthorized")){
+                        console.log('401 code detected')
+                            dispatch({
+                              type: "LOGOUT",
+                            });
+                            history.push('/login')
+                    } else {
+                        toast.error(errorMessage)
+                    }
                     throw e;
                 })
                 .finally(() => {
