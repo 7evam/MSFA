@@ -60,7 +60,7 @@ function MonthlyPoints({roflYear, userId}) {
               const currentUser = standings[val].find(el => el.userId == userId)
               return(
                 <tr key={index}>
-                    <Td>{convertMonthToReadable(val.split('-')[0], 2022)}</Td>
+                    <Td>{convertMonthToReadable(val.split('-')[0], roflYear)}</Td>
                     <Td>{currentUser.monthlyPoints}</Td>
                     <Td>{currentUser.cumulativePoints}</Td>
                 </tr>

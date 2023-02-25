@@ -1,24 +1,33 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-// import Autocomplete from './Autocomplete';
-import Datalist from './Datalist'
-import Slot from './Slot'
+import React from 'react';
+import styled from 'styled-components';
+import Slot from './Slot';
 
-const Container = styled.div``;
-const TeamValue = styled.div``
-const TeamName = styled.div``
-const SlotContent = styled.div``
-const SlotName = styled.div``
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+const MemberName = styled.p`
+    font-family: "helvetica neue", Helvetica, arial, sans-serif; 
+    font-size: 16px;
+    font-weight: 800;
+`;
 
-function MemberTeamList({currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue}) {
-
+function MemberTeamList({
+  currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
+}) {
   return (
     <Container>
-      <p>{currentMember.name}</p>
-      <p>Cash: {currentMember.cash}</p>
-        {
-          Object.keys(currentMember).filter(slot => slot !== 'name' && slot!=='cash' && slot!== 'email').map((slot, i) => (
-          <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} getAutocompleteSuggestions={getAutocompleteSuggestions}/>
+      <MemberName>{currentMember.name}</MemberName>
+      <p>
+        Cash:
+        {' '}
+        {currentMember.cash}
+      </p>
+      {
+          Object.keys(currentMember).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email').map((slot, i) => (
+            <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} getAutocompleteSuggestions={getAutocompleteSuggestions} />
           ))
         }
     </Container>

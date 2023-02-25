@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import {NavLink} from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import RoflLogo from './RoflLogo.png';
-import {NavGroup, SideBar, Nav, Logo, CustomNavLink} from './components'
+import {
+  NavGroup, SideBar, Nav, Logo, CustomNavLink,
+} from './components';
 
 function Sidebar({ setSidebarSelection, sidebarSelection }) {
- 
-
   return (
     <SideBar className="sidebar">
-      <Logo src={'https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png'} alt="MSFA Logo"/>
+      <Logo src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="MSFA Logo" />
       <Nav className="grid-container">
         <NavGroup>
-        <CustomNavLink to="/squad">
+          <CustomNavLink to="/squad">
             <span>My Squad</span>
           </CustomNavLink>
 
@@ -25,7 +25,7 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
           </CustomNavLink> */}
 
           <CustomNavLink to="/rofleague">
-            <span>My RoFL League</span>
+            <span>My MSFA League</span>
           </CustomNavLink>
 
           <CustomNavLink to="/scoring">

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {useSelector} from 'react-redux'
+import { blue } from "../constants/style";
 
 const Container = styled.div`
-background-color: #333;
-width: 500px;
+background-color: ${blue};
 display: flex;
 flex-direction: row;
 `;

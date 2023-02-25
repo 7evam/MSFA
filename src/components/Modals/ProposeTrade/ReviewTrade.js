@@ -34,7 +34,7 @@ const TradeContainer = styled.div`
 //   }
 // `;
 
-function ReviewTrade({setStage, teamsForTrade, cash}) {
+function ReviewTrade({setStage, teamsForTrade, cash, roflYear}) {
 
     const {sportTeams,playoffMonths, activeYears} = useSelector((state) => ({
         ...state.sportReducer
@@ -111,8 +111,8 @@ function ReviewTrade({setStage, teamsForTrade, cash}) {
             receiverId: props.userToTradeWith,
             proposerTrades,
             receiverTrades,
-            roflMonth: activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1,
-            roflYear: 2022
+            roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth + 1,
+            roflYear
         }
     });
     if(res.statusCode === 201){

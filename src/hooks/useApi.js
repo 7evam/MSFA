@@ -47,7 +47,7 @@ export default function useApi() {
                      */ 
                     const errorMessage = e.response?.data?.message ? e.response.data.message : e.response?.data ? e.response.data : 'Your request could not be completed'
                     
-                    if(errorMessage.includes("Unauthorized")){
+                    if(typeof errorMessage === "string" && errorMessage.includes("Unauthorized")){
                         console.log('401 code detected')
                             dispatch({
                               type: "LOGOUT",

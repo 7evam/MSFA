@@ -61,6 +61,9 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
     }
   }, [scrollRef]);
 
+  console.log('here is active year array')
+  console.log(activeYearArray)
+
   return (
     <Container>
       {roster && currentOrganization && selectedRoflYear ? (

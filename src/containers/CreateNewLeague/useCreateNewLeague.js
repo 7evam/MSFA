@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useApi from "../../hooks/useApi";
 import { useHistory } from "react-router-dom";
 import {useSelector} from 'react-redux'
 import { TEST_ROSTER } from "./testRoster";
 
-function useCreateNewLeague() {
+function useCreateNewLeague(existingOrganizationId) {
   const { makeRequest, isLoading } = useApi();
   const { email } = useSelector(state => ({
     ...state.authReducer
@@ -26,6 +26,12 @@ const [stage,setStage] = useState('initial')
   const [memberRosters, setMemberRosters] = useState(null)
 
   const [memberRosterIndex, setMemberRosterIndex] = useState(0)
+
+  useEffect(() => {
+    if(existingOrganizationId){
+      fetchUsersInOrg(existingOrganizationId)
+    }
+  }, []);
 
   const handleChange = (e) => {
     if(e.target.name.includes('member')){
@@ -175,6 +181,37 @@ const [stage,setStage] = useState('initial')
     return teamsToReturn
   }
 
+  const fetchUsersInOrg = async (organization) => {
+    // this function fetches userrs in an existing organization 
+    // and sets them as default values in values
+    try {
+        // console.log(`fetching for ${selectedRoflYear}`)
+        var res = await makeRequest({
+          method: "get",
+          route: `organizations/summary/${organization.id}`
+        });
+        console.log('here is res for fetch users in org')
+        console.log(res.body)
+        if(res.body && res.body.members && res.body.members.length){
+            const existingMembers = res.body.members
+            const members = []
+            existingMembers.forEach(member => {
+              members.push({
+                memberEmail: member.email,
+                memberName: member.name
+              })
+            })
+            setValues({
+              leagueName: res.body.name,
+              members
+            })
+        }
+
+      } catch (e) {
+        console.error(e);
+      }
+}
+
   const changeTeamInput = (e, slot, memberName) => {
     // update text value in member roster
       const newMemberRosters = [...memberRosters]
@@ -268,7 +305,7 @@ const [stage,setStage] = useState('initial')
     changeTeamInput,
     submitRoster,
     changeTeamValue,
-    submitFinalRoster,
+    submitFinalRoster
   };
 }
 

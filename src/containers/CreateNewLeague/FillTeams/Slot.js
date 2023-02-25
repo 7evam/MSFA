@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 // import Autocomplete from './Autocomplete';
-import Datalist from './Datalist'
 import CurrencyInput from 'react-currency-input-field';
+import Datalist from './Datalist';
 
-const TeamValue = styled.div``
-const TeamName = styled.div``
-const SlotContent = styled.div``
-const SlotName = styled.div``
-const Container = styled.div``
+const TeamValue = styled.div``;
+const TeamName = styled.div``;
+const SlotContent = styled.div``;
+const SlotName = styled.div``;
+const Container = styled.div``;
 
-function Slot({slot, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue}) {
-
-    const suggestions = getAutocompleteSuggestions(slot, currentMember.name)
+function Slot({
+  slot, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
+}) {
+  const suggestions = getAutocompleteSuggestions(slot, currentMember.name);
 
   return (
     <Container key={slot}>
@@ -29,7 +30,7 @@ function Slot({slot, currentMember, changeTeamInput, getAutocompleteSuggestions,
         </TeamName>
         <TeamValue>
           <CurrencyInput
-            prefix={'$'}
+            prefix="$"
             placeholder="Cash Value"
             defaultValue={0}
             value={currentMember[slot].value}
