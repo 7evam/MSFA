@@ -1,291 +1,304 @@
-import React, { useState, useEffect } from "react";
-import useApi from "../../hooks/useApi";
-import { useHistory } from "react-router-dom";
-import {useSelector} from 'react-redux'
-import { TEST_ROSTER } from "./testRoster";
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import useApi from '../../hooks/useApi';
+import { TEST_ROSTER } from './testRoster';
 
 function useCreateNewLeague(existingOrganizationId) {
   const { makeRequest, isLoading } = useApi();
-  const { email } = useSelector(state => ({
-    ...state.authReducer
+  const { email } = useSelector((state) => ({
+    ...state.authReducer,
   }));
-//   const history = useHistory();
-//   const dispatch = useDispatch();
-const emptyMember = {memberName: '', memberEmail: ''}
-const firstMember = {memberName: '', memberEmail: email}
+  //   const history = useHistory();
+  //   const dispatch = useDispatch();
+  const emptyMember = { memberName: '', memberEmail: '' };
+  const firstMember = { memberName: '', memberEmail: email };
 
-const [stage,setStage] = useState('initial')
+  const [stage, setStage] = useState('initial');
   const [values, setValues] = useState({
-    leagueName: "",
-    members: Array.from(Array(10)).fill(firstMember).fill(emptyMember,1)
+    leagueName: '',
+    members: Array.from(Array(10)).fill(firstMember).fill(emptyMember, 1),
   });
-  const [leaguesUsed, setLeaguesUsed] = useState([1,2,3,4])
+  const [leaguesUsed, setLeaguesUsed] = useState([1, 2, 3, 4]);
 
-  const [sportTeams, setSportTeams] = useState(null)
+  const [sportTeams, setSportTeams] = useState(null);
 
-  const [memberRosters, setMemberRosters] = useState(null)
+  const [memberRosters, setMemberRosters] = useState(null);
 
-  const [memberRosterIndex, setMemberRosterIndex] = useState(0)
+  const [memberRosterIndex, setMemberRosterIndex] = useState(0);
 
   useEffect(() => {
-    if(existingOrganizationId){
-      fetchUsersInOrg(existingOrganizationId)
+    if (existingOrganizationId) {
+      fetchUsersInOrg(existingOrganizationId);
     }
   }, []);
 
   const handleChange = (e) => {
-    if(e.target.name.includes('member')){
-        let newMembers = JSON.parse(JSON.stringify(values.members))
-        newMembers[e.target.id][e.target.name] = e.target.value
-        setValues({
-            ...values,
-            members: newMembers
-        })
-        
+    if (e.target.name.includes('member')) {
+      const newMembers = JSON.parse(JSON.stringify(values.members));
+      newMembers[e.target.id][e.target.name] = e.target.value;
+      setValues({
+        ...values,
+        members: newMembers,
+      });
     } else {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value
-          });
+      setValues({
+        ...values,
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
   const addMember = () => {
-      const newMembers = [...values.members]
-      newMembers.push(emptyMember)
-      setValues({
-          ...values,
-          members: newMembers
-      })
-  }
+    const newMembers = [...values.members];
+    newMembers.push(emptyMember);
+    setValues({
+      ...values,
+      members: newMembers,
+    });
+  };
 
   const removeMember = (index) => {
-    let newMembers = [...values.members]
-    newMembers.splice(index, 1)
+    const newMembers = [...values.members];
+    newMembers.splice(index, 1);
     setValues({
-        ...values,
-        members:newMembers
-    })
-  }
+      ...values,
+      members: newMembers,
+    });
+  };
 
   const submitForm = (e) => {
-      e.preventDefault()
-      console.log(values)
-  }
+    e.preventDefault();
+    console.log(values);
+  };
 
-  const getTeamsByLeagueId = async leagueId => {
-      try{
-        var res = await makeRequest({
-            method: 'get',
-            route: `/sports/teams/${leagueId}`
-        })
-        return res.body
-      } catch (e) {
-          console.log('problem')
-          console.error(e)
-      }
-  }
+  const getTeamsByLeagueId = async (leagueId) => {
+    try {
+      const res = await makeRequest({
+        method: 'get',
+        route: `/sports/teams/${leagueId}`,
+      });
+      return res.body;
+    } catch (e) {
+      console.log('problem');
+      console.error(e);
+    }
+  };
 
-//   const fetchRoster = async (selectedRoflYear) => {
-//     try {
-//       var res = await makeRequest({
-//         method: "get",
-//         route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
-//       });
+  //   const fetchRoster = async (selectedRoflYear) => {
+  //     try {
+  //       var res = await makeRequest({
+  //         method: "get",
+  //         route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
+  //       });
 
-//       setRoster(JSON.parse(res.body));
-//     } catch (e) {
-//       console.log("problem");
-//       console.error(e);
-//     }
-//   };
+  //       setRoster(JSON.parse(res.body));
+  //     } catch (e) {
+  //       console.log("problem");
+  //       console.error(e);
+  //     }
+  //   };
 
   const fillSportTeams = async () => {
-    let res = []
-    for(let i=0;i<leaguesUsed.length;i++){
-        const leagueId = leaguesUsed[i]
-        const teams = await getTeamsByLeagueId(leagueId)
-        // teams.forEach(team => {
-        //     team = {...team, crossedOut: false}
-        // })
-        const teamsFromLeague = teams.map(team => ({ ...team, rostered: false, value: 0 }))
-        res = [...res, ...teamsFromLeague]
+    let res = [];
+    for (let i = 0; i < leaguesUsed.length; i++) {
+      const leagueId = leaguesUsed[i];
+      const teams = await getTeamsByLeagueId(leagueId);
+      // teams.forEach(team => {
+      //     team = {...team, crossedOut: false}
+      // })
+      const teamsFromLeague = teams.map((team) => ({ ...team, rostered: false, value: 0 }));
+      res = [...res, ...teamsFromLeague];
     }
-    setSportTeams([...res])
-  }
+    setSportTeams([...res]);
+  };
 
   const fillMemberRosters = () => {
-    let res = []
-    values.members.forEach(member => {
-        res.push({
-            cash: 200,
-            name: member.memberName,
-            email: member.memberEmail,
-            league1: {name: "", id: null, value: ""},
-            league2: {name: "", id: null, value: ""},
-            league3: {name: "", id: null, value: ""},
-            league4: {name: "", id: null, value: ""},
-            flex1: {name: "", id: null, value: ""},
-            bench1: {name: "", id: null, value: ""},
-            bench2: {name: "", id: null, value: ""},
-            bench3: {name: "", id: null, value: ""}
-        })
-    })
-    setMemberRosters(res)
-  }
+    const res = [];
+    values.members.forEach((member) => {
+      res.push({
+        cash: 200,
+        name: member.memberName,
+        email: member.memberEmail,
+        league1: { name: '', id: null, value: '' },
+        league2: { name: '', id: null, value: '' },
+        league3: { name: '', id: null, value: '' },
+        league4: { name: '', id: null, value: '' },
+        flex1: { name: '', id: null, value: '' },
+        bench1: { name: '', id: null, value: '' },
+        bench2: { name: '', id: null, value: '' },
+        bench3: { name: '', id: null, value: '' },
+      });
+    });
+    setMemberRosters(res);
+  };
 
   const submitInitial = async (e) => {
-      //check for name
-      if(!values.leagueName){
-          console.log('no league name')
-        return
-      }
+    // check for name
+    if (!values.leagueName) {
+      console.log('no league name');
+      return;
+    }
 
-      // check for member info
-      for(let i=0;i<values.members.length;i++){
-          if(!values.members[0].memberName){
-              console.log('no name')
-              return
-          }
-          if(!values.members[0].memberEmail){
-            console.log('no email')
-            return
-        }
+    // check for member info
+    for (let i = 0; i < values.members.length; i++) {
+      if (!values.members[0].memberName) {
+        console.log('no name');
+        return;
       }
-  
-      await fillSportTeams()
-      fillMemberRosters()
-      setStage('fillTeams')
-  }
+      if (!values.members[0].memberEmail) {
+        console.log('no email');
+        return;
+      }
+    }
+
+    await fillSportTeams();
+    fillMemberRosters();
+    setStage('fillTeams');
+  };
 
   const getAutocompleteSuggestions = (slot, name) => {
-    let leaguesForSlot = []
+    let leaguesForSlot = [];
     // get all leagues that fit slot
-    if(slot.includes('league')){
-        const leagueId = slot.split('league')[1]
-        leaguesForSlot = [Number(leagueId)]
+    if (slot.includes('league')) {
+      const leagueId = slot.split('league')[1];
+      leaguesForSlot = [Number(leagueId)];
     } else {
-        leaguesForSlot = [...leaguesUsed]
+      leaguesForSlot = [...leaguesUsed];
     }
 
     // TODO
     // remove leagues if member has 3 teams from that league already
-    let teamsToReturn = []
-   
-    let teams = [...sportTeams]
-    teams.forEach(team => {
-        if(team.rostered === false && leaguesForSlot.includes(team.sport_league)) teamsToReturn.push({text:`${team.city} ${team.name}`, id: team.id})
-    })
-    //return array of team names
-    teamsToReturn.sort()
-    return teamsToReturn
-  }
+    const teamsToReturn = [];
+
+    const teams = [...sportTeams];
+    teams.forEach((team) => {
+      if (team.rostered === false && leaguesForSlot.includes(team.sport_league)) teamsToReturn.push({ text: `${team.city} ${team.name}`, id: team.id });
+    });
+    // return array of team names
+    teamsToReturn.sort();
+    return teamsToReturn;
+  };
 
   const fetchUsersInOrg = async (organization) => {
-    // this function fetches userrs in an existing organization 
+    // this function fetches userrs in an existing organization
     // and sets them as default values in values
     try {
-        // console.log(`fetching for ${selectedRoflYear}`)
-        var res = await makeRequest({
-          method: "get",
-          route: `organizations/summary/${organization.id}`
+      // console.log(`fetching for ${selectedRoflYear}`)
+      const res = await makeRequest({
+        method: 'get',
+        route: `organizations/summary/${organization.id}`,
+      });
+      console.log('here is res for fetch users in org');
+      console.log(res.body);
+      if (res.body && res.body.members && res.body.members.length) {
+        const existingMembers = res.body.members;
+        const members = [];
+        existingMembers.forEach((member) => {
+          members.push({
+            memberEmail: member.email,
+            memberName: member.name,
+          });
         });
-        console.log('here is res for fetch users in org')
-        console.log(res.body)
-        if(res.body && res.body.members && res.body.members.length){
-            const existingMembers = res.body.members
-            const members = []
-            existingMembers.forEach(member => {
-              members.push({
-                memberEmail: member.email,
-                memberName: member.name
-              })
-            })
-            setValues({
-              leagueName: res.body.name,
-              members
-            })
-        }
-
-      } catch (e) {
-        console.error(e);
+        setValues({
+          leagueName: res.body.name,
+          members,
+        });
       }
-}
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const changeTeamInput = (e, slot, memberName) => {
     // update text value in member roster
-      const newMemberRosters = [...memberRosters]
-      newMemberRosters[memberRosterIndex][slot].name = e.target.value
+    const newMemberRosters = [...memberRosters];
+    newMemberRosters[memberRosterIndex][slot].name = e.target.value;
 
-      // if complete team (as found in sport team array), update whether this value is available for datalist
-      let newSportTeams = [...sportTeams]
-      const found = newSportTeams.find(item => `${item.city} ${item.name}` === e.target.value)
-      if(found){
-        newMemberRosters[memberRosterIndex][slot].id = found.id
-        found.rostered = true
-      } else {
-          if(newMemberRosters[memberRosterIndex][slot].id){
-            const unrosteredTeam = newSportTeams.find(item => item.id == newMemberRosters[memberRosterIndex][slot].id)
-            unrosteredTeam.rostered = false
-            newMemberRosters[memberRosterIndex][slot].id = null
-          }
-      }
+    // if complete team (as found in sport team array), update whether this value is available for datalist
+    const newSportTeams = [...sportTeams];
+    const found = newSportTeams.find((item) => `${item.city} ${item.name}` === e.target.value);
+    if (found) {
+      newMemberRosters[memberRosterIndex][slot].id = found.id;
+      found.rostered = true;
+    } else if (newMemberRosters[memberRosterIndex][slot].id) {
+      const unrosteredTeam = newSportTeams.find((item) => item.id == newMemberRosters[memberRosterIndex][slot].id);
+      unrosteredTeam.rostered = false;
+      newMemberRosters[memberRosterIndex][slot].id = null;
+    }
 
-      setSportTeams(newSportTeams)
-      setMemberRosters(newMemberRosters)
-  }
+    setSportTeams(newSportTeams);
+    setMemberRosters(newMemberRosters);
+  };
 
   const submitRoster = (e) => {
-      e.preventDefault()
-      setMemberRosters(memberRosters)
-      setStage("reviewRoster")
-  }
+    e.preventDefault();
+    setMemberRosters(memberRosters);
+    setStage('reviewRoster');
+  };
 
   const getUpdatedCashValue = (member) => {
-      let cash = 200
-      Object.keys(member).forEach(key => {
-          if(member[key].value && typeof member[key].value === 'number') cash -= member[key].value
-      })
-      return cash
-  }
+    let cash = 200;
+    Object.keys(member).forEach((key) => {
+      if (member[key].value && typeof member[key].value === 'number') cash -= member[key].value;
+    });
+    return cash;
+  };
 
   const changeTeamValue = (value, slot) => {
-
-    let numberVal = Number(value)
-    if(!numberVal) numberVal = 0
-    const newMemberRosters = [...memberRosters]
-    newMemberRosters[memberRosterIndex][slot].value = numberVal
-    newMemberRosters[memberRosterIndex].cash = getUpdatedCashValue(newMemberRosters[memberRosterIndex])
-    setMemberRosters(newMemberRosters)
-  }
+    let numberVal = Number(value);
+    if (!numberVal) numberVal = 0;
+    const newMemberRosters = [...memberRosters];
+    newMemberRosters[memberRosterIndex][slot].value = numberVal;
+    newMemberRosters[memberRosterIndex].cash = getUpdatedCashValue(newMemberRosters[memberRosterIndex]);
+    setMemberRosters(newMemberRosters);
+  };
 
   const submitFinalRoster = async (e) => {
-      e.preventDefault()
-      const object = {
-          members: values.members,
-          leagueName: values.leagueName,
-          rosterFormat: {
-            league1: true,
-            league2: true,
-            league3: true,
-            league4: true,
-            flexSpots: 1,
-            benchSpots: 3
-        },
-        rosters: memberRosters
-      }
-      try{
-        var res = await makeRequest({
-            method: "post",
-            route: "/organizations",
-            data: object
-          });
-        return JSON.parse(res.body)
-      } catch (e) {
-          console.log('problem')
-          console.error(e)
-      }
-  }
+    e.preventDefault();
+    const dataObject = {
+      existingOrganizationId,
+      members: values.members,
+      leagueName: values.leagueName,
+      rosterFormat: {
+        league1: true,
+        league2: true,
+        league3: true,
+        league4: true,
+        flexSpots: 1,
+        benchSpots: 3,
+      },
+      rosters: memberRosters,
+    };
+    try {
+      const res = existingOrganizationId
+        ? await makeRequest({
+          method: 'post',
+          route: '/organizations/newSeason',
+          data: dataObject,
+        })
+        : await makeRequest({
+          method: 'post',
+          route: '/organizations',
+          data: dataObject,
+        });
+      return JSON.parse(res.body);
+    } catch (e) {
+      console.log('problem');
+      console.error(e);
+    }
+  };
+
+  const slotHashMap = {
+    league1: 'MLB',
+    league2: 'NFL',
+    league3: 'NHL',
+    league4: 'NBA',
+    flex1: 'FLEX',
+    bench1: 'Bench',
+    bench2: 'Bench',
+    bench3: 'Bench',
+  };
 
   return {
     values,
@@ -305,7 +318,8 @@ const [stage,setStage] = useState('initial')
     changeTeamInput,
     submitRoster,
     changeTeamValue,
-    submitFinalRoster
+    submitFinalRoster,
+    slotHashMap,
   };
 }
 

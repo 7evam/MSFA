@@ -12,7 +12,7 @@ const Headline = styled.h1`
     text-align: center;
 `;
 
-function NewSeason(props) {
+function NewSeason() {
   const { currentOrganization, organizations } = useSelector((state) => ({
     ...state.authReducer,
   }));

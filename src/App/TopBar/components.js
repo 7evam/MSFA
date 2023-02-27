@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import {NavLink} from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import {red, blue, mediumBlue, lightBlue, mobileBreakPoint} from '../../constants/style'
+import {
+  red, blue, mediumBlue, lightBlue, mobileBreakPoint,
+} from '../../constants/style';
 
 export const Topbar = styled.div`
     display: flex;
@@ -52,7 +54,7 @@ export const CustomNavLink = styled(NavLink)`
   color: black
   display: flex;
   margin-right: 20px;
-  font-weight: ${props => props.selected ? "800" : "400"};
+  font-weight: ${(props) => (props.selected ? '800' : '400')};
   &:hover{
     font-weight: 800;
   }
@@ -72,7 +74,7 @@ export const Logo = styled.img`
     border: 1px solid ${blue};
     margin-top: 10px;
   }
-`
+`;
 
 export const LogoContainer = styled.div`
 z-index: 15;
@@ -86,14 +88,14 @@ z-index: 15;
 }
 
 
-`
+`;
 export const MobileSettings = styled.div`
   display: none;
   @media (max-width: ${mobileBreakPoint}){
     display: block;
     cursor: pointer;
   }
-`
+`;
 
 export const MobileLogOut = styled.div`
   display: none;
@@ -102,13 +104,13 @@ export const MobileLogOut = styled.div`
     cursor: pointer;
   }
 
-`
+`;
 
 export const AppActions = styled.div`
 @media (max-width: ${mobileBreakPoint}){
   display: none;
 }
-`
+`;
 
 export const AppRoutes = styled.div`
   display: block;
@@ -117,4 +119,4 @@ export const AppRoutes = styled.div`
     display: flex;
     justify-content: space-evenly;
   }
-`
+`;

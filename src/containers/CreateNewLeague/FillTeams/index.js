@@ -9,7 +9,9 @@ import Button from '../../../components/Button';
 const Container = styled.div`
     margin-top: 40px;
     width: 100%;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const Input = styled.input`
@@ -23,17 +25,18 @@ const Input = styled.input`
 `;
 
 const TeamList = styled.div`
-border: 1px solid black;
+
 `;
 
 const MemberTeamLists = styled.div`
-  border: 1px solid black;
+
 `;
 
 const FillTeamsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 const TeamText = styled.p``;
@@ -65,6 +68,11 @@ const SlideButton = styled.button`
   -moz-transition: all 0.5s; 
   -o-transition: all 0.5s; 
   transition: all 0.5s;
+
+`;
+
+const Dummy = styled.div`
+  width: 57px;
 `;
 
 function FillTeams({ cnlProps }) {
@@ -78,6 +86,7 @@ function FillTeams({ cnlProps }) {
     changeTeamInput,
     submitRoster,
     changeTeamValue,
+    slotHashMap,
   } = cnlProps;
 
   // const handleTeamValueChange = () => {
@@ -85,15 +94,18 @@ function FillTeams({ cnlProps }) {
   // }
   return (
     <Container>
-
+      <p>
+        Fill out the teams and values of teams for each of the members
+        in your season. Use the arrow buttons to switch between members
+      </p>
       {memberRosters.map((member, index) => (
         index === memberRosterIndex
           ? (
             <FillTeamsContainer>
               {
                 index === 0
-                  ? null
-                  : <Button onClick={() => setMemberRosterIndex(memberRosterIndex - 1)}>⬅️</Button>
+                  ? <Dummy />
+                  : <Button style={{ marginRight: '15px' }} onClick={() => setMemberRosterIndex(memberRosterIndex - 1)}>⬅️</Button>
               }
               <MemberTeamLists>
                 <div key={`${member.name}-${index}-fillTeams`}>
@@ -102,27 +114,17 @@ function FillTeams({ cnlProps }) {
                     changeTeamInput={changeTeamInput}
                     getAutocompleteSuggestions={getAutocompleteSuggestions}
                     changeTeamValue={changeTeamValue}
+                    slotHashMap={slotHashMap}
                   />
                 </div>
               </MemberTeamLists>
-              {index === memberRosters.length - 1 ? null : <Button onClick={() => setMemberRosterIndex(memberRosterIndex + 1)}>➡️</Button>}
+              {index === memberRosters.length - 1 ? <Dummy /> : <Button style={{ marginLeft: '15px' }} onClick={() => setMemberRosterIndex(memberRosterIndex + 1)}>➡️</Button>}
             </FillTeamsContainer>
           )
           : null
       ))}
 
-      <button type="button" onClick={submitRoster}>Submit Roster</button>
-      {/* {
-          leaguesUsed.map(league => (
-            <TeamList>
-              <p>League {league}</p>
-              {sportTeams[league].map(team => (
-                <TeamText crossedOut={team.crossedOut}>{team.city} {team.name}</TeamText>
-              ))}
-
-            </TeamList>
-          ))
-        } */}
+      <Button type="button" onClick={submitRoster}>Review Rosters</Button>
     </Container>
   );
 }

@@ -6,19 +6,27 @@ import Datalist from './Datalist';
 
 const TeamValue = styled.div``;
 const TeamName = styled.div``;
-const SlotContent = styled.div``;
+const SlotContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const SlotName = styled.div``;
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const marginBetweenInputs = '5px';
 
 function Slot({
-  slot, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
+  slot, slotHashMap, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
 }) {
   const suggestions = getAutocompleteSuggestions(slot, currentMember.name);
 
   return (
     <Container key={slot}>
-      <SlotName>{slot}</SlotName>
       <SlotContent>
+        <SlotName>{slotHashMap[slot]}</SlotName>
         <TeamName>
           <Datalist
             slot={slot}
@@ -26,8 +34,12 @@ function Slot({
             changeTeamInput={changeTeamInput}
             inputValue={currentMember[slot].name}
             suggestions={suggestions}
+
           />
         </TeamName>
+      </SlotContent>
+      <SlotContent>
+        <SlotName style={{ marginLeft: marginBetweenInputs }}>Cash Value</SlotName>
         <TeamValue>
           <CurrencyInput
             prefix="$"
@@ -37,6 +49,7 @@ function Slot({
             onValueChange={(value) => changeTeamValue(value, slot)}
             allowDecimals={false}
             allowNegativeValue={false}
+            style={{ height: '30px', border: '1px solid #999', marginLeft: marginBetweenInputs }}
           />
         </TeamValue>
       </SlotContent>

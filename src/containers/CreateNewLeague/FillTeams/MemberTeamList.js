@@ -15,7 +15,7 @@ const MemberName = styled.p`
 `;
 
 function MemberTeamList({
-  currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
+  currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue, slotHashMap,
 }) {
   return (
     <Container>
@@ -27,7 +27,7 @@ function MemberTeamList({
       </p>
       {
           Object.keys(currentMember).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email').map((slot, i) => (
-            <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} getAutocompleteSuggestions={getAutocompleteSuggestions} />
+            <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} slotHashMap={slotHashMap} getAutocompleteSuggestions={getAutocompleteSuggestions} />
           ))
         }
     </Container>
