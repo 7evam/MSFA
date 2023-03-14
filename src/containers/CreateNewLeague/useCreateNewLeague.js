@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import useApi from '../../hooks/useApi';
 import { TEST_ROSTER } from './testRoster';
 
-function useCreateNewLeague(existingOrganizationId) {
+function useCreateNewLeague(existingOrganization) {
+  const history = useHistory();
   const { makeRequest, isLoading } = useApi();
   const { email } = useSelector((state) => ({
     ...state.authReducer,
@@ -27,9 +29,11 @@ function useCreateNewLeague(existingOrganizationId) {
 
   const [memberRosterIndex, setMemberRosterIndex] = useState(0);
 
+  const [test, setTest] = useState(true);
+
   useEffect(() => {
-    if (existingOrganizationId) {
-      fetchUsersInOrg(existingOrganizationId);
+    if (existingOrganization) {
+      fetchUsersInOrg(existingOrganization.id);
     }
   }, []);
 
@@ -114,6 +118,10 @@ function useCreateNewLeague(existingOrganizationId) {
   };
 
   const fillMemberRosters = () => {
+    if (test) {
+      setMemberRosters(TEST_ROSTER);
+      return;
+    }
     const res = [];
     values.members.forEach((member) => {
       res.push({
@@ -180,14 +188,14 @@ function useCreateNewLeague(existingOrganizationId) {
     return teamsToReturn;
   };
 
-  const fetchUsersInOrg = async (organization) => {
+  const fetchUsersInOrg = async (organizationId) => {
     // this function fetches userrs in an existing organization
     // and sets them as default values in values
     try {
       // console.log(`fetching for ${selectedRoflYear}`)
       const res = await makeRequest({
         method: 'get',
-        route: `organizations/summary/${organization.id}`,
+        route: `organizations/summary/${organizationId}`,
       });
       console.log('here is res for fetch users in org');
       console.log(res.body);
@@ -198,6 +206,7 @@ function useCreateNewLeague(existingOrganizationId) {
           members.push({
             memberEmail: member.email,
             memberName: member.name,
+            memberId: member.user_id,
           });
         });
         setValues({
@@ -257,7 +266,6 @@ function useCreateNewLeague(existingOrganizationId) {
   const submitFinalRoster = async (e) => {
     e.preventDefault();
     const dataObject = {
-      existingOrganizationId,
       members: values.members,
       leagueName: values.leagueName,
       rosterFormat: {
@@ -271,10 +279,11 @@ function useCreateNewLeague(existingOrganizationId) {
       rosters: memberRosters,
     };
     try {
-      const res = existingOrganizationId
+      console.log(existingOrganization);
+      const res = existingOrganization
         ? await makeRequest({
           method: 'post',
-          route: '/organizations/newSeason',
+          route: `/organizations/newSeason/${existingOrganization.id}`,
           data: dataObject,
         })
         : await makeRequest({
@@ -282,10 +291,16 @@ function useCreateNewLeague(existingOrganizationId) {
           route: '/organizations',
           data: dataObject,
         });
+
+      console.log('here iis res');
+      console.log(res);
+      if (res.statusCode === 201) history.push('/squad');
       return JSON.parse(res.body);
     } catch (e) {
+      // toast.error('there was a problem creating your season');
       console.log('problem');
       console.error(e);
+      return e;
     }
   };
 

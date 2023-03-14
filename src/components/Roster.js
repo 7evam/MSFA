@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import "@fontsource/open-sans";
-import Slot from "./Slot";
-import {useSelector} from 'react-redux'
-import { PLAYOFF_MONTHS } from "../constants";
-import { mobileBreakPoint, red } from "../constants/style";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import '@fontsource/open-sans';
+import { useSelector } from 'react-redux';
+import Slot from './Slot';
+import { PLAYOFF_MONTHS } from '../constants';
+import { mobileBreakPoint, red } from '../constants/style';
 
 // const red  = '#DA2929'
 
@@ -12,8 +12,8 @@ const widths = {
   slot: 10,
   team: 50,
   action: 20,
-  points: 20
-}
+  points: 20,
+};
 
 const Container = styled.table`
 width: 700px;
@@ -44,115 +44,127 @@ border-bottom: 1px solid gray;
 font-family: "Ariel", sans-serif;
 font-size: 14px;
 border-left: 1px solid gray;
-`
+`;
 
 const Tbody = styled.tbody`
 
 `;
 
+function RosterComponent({
+  currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedRoflYear, readOnly,
+}) {
+  const endOfLeagueTable = PLAYOFF_MONTHS[selectedRoflYear];
+  console.log('end of league table');
+  console.log(endOfLeagueTable);
 
-function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedRoflYear, readOnly}) {
+  const benchSpots = (Object.values(endOfLeagueTable)).filter((val) => val >= roflMonth).length - 1;
 
-    const endOfLeagueTable = PLAYOFF_MONTHS[selectedRoflYear]
+  const leagues = ['league_1', 'league_2', 'league_3', 'league_4'];
 
-    const benchSpots = (Object.values(endOfLeagueTable)).filter(val => val >= roflMonth).length - 1
-
-    const leagues = ['league_1','league_2','league_3','league_4']
-
-    const emptySlot = (league) => {
-      return(
-          <Slot
-            key={league}
-            name={league}
-            team={'empty'}
-            points={null}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={false}
-          />
-      )
-    }
+  const emptySlot = (league) => (
+    <Slot
+      key={league}
+      name={league}
+      team="empty"
+      points={null}
+      readOnly={readOnly}
+      changeRoster={readOnly ? null : changeRoster}
+      selectedSlot={readOnly ? null : selectedSlot}
+      locked={false}
+    />
+  );
 
   return (
     <Container>
       <Tbody>
         <Tr>
-          <Th style={{ width: "50px" }}>
+          <Th style={{ width: '50px' }}>
             Slot
           </Th>
-          <Th style={{ width: "200px" }}>
+          <Th style={{ width: '200px' }}>
             Team
           </Th>
-          {readOnly 
-          ? null 
-          : 
-          <Th style={{ width: "70px" }}>
-            Action
-          </Th>
-          }
-          
-          <Th style={{ width: "50px" }}>
+          {readOnly
+            ? null
+            : (
+              <Th style={{ width: '70px' }}>
+                Action
+              </Th>
+            )}
+
+          <Th style={{ width: '50px' }}>
             Points
           </Th>
         </Tr>
         {
           leagues.map((league, i) => (
-            roflMonth <= endOfLeagueTable[i+1] ? (
-              currentMonthRoster[league] ?
-            <Slot
-            name={league}
-            team={`${currentMonthRoster[league].city} ${currentMonthRoster[league].name}`}
-            points={currentMonthRoster[league].roflScore}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={readOnly ? null : currentMonthRoster[league].isLocked}
-          /> : emptySlot(league)
+            roflMonth <= endOfLeagueTable[i + 1] ? (
+              currentMonthRoster[league]
+                ? (
+                  <Slot
+                    name={league}
+                    team={`${currentMonthRoster[league].city} ${currentMonthRoster[league].name}`}
+                    points={currentMonthRoster[league].roflScore}
+                    readOnly={readOnly}
+                    changeRoster={readOnly ? null : changeRoster}
+                    selectedSlot={readOnly ? null : selectedSlot}
+                    locked={readOnly ? null : currentMonthRoster[league].isLocked}
+                  />
+                ) : emptySlot(league)
             ) : null
           ))
         }
-      
+
         {currentMonthRoster.flex_1 ? (
           <Slot
-            name={"flex_1"}
-            team={roflMonth <= endOfLeagueTable[currentMonthRoster.flex_1.sport_league.id] ? `${currentMonthRoster.flex_1.city} ${currentMonthRoster.flex_1.name}`: 'empty'}
+            name="flex_1"
+            team={roflMonth <= endOfLeagueTable[currentMonthRoster.flex_1.sport_league.id] ? `${currentMonthRoster.flex_1.city} ${currentMonthRoster.flex_1.name}` : 'empty'}
             points={currentMonthRoster.flex_1.roflScore}
             readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+            changeRoster={readOnly ? null : changeRoster}
+            selectedSlot={readOnly ? null : selectedSlot}
             locked={readOnly ? null : currentMonthRoster.flex_1.isLocked}
           />
-        ) : 
-        <Slot
-        key={'empty flex'}
-        name={`flex_1`}
-        team={'empty'}
-        points={null}
-        readOnly={readOnly}
-        changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-        locked={false}
-      />}
+        )
+          : (
+            <Slot
+              key="empty flex"
+              name="flex_1"
+              team="empty"
+              points={null}
+              readOnly={readOnly}
+              changeRoster={readOnly ? null : changeRoster}
+              selectedSlot={readOnly ? null : selectedSlot}
+              locked={false}
+            />
+          )}
 
         {Array.from(Array(benchSpots)).map((x, i) => (
-          `bench_${i+1}` in currentMonthRoster 
-          ? 
-          <Slot
-              key={currentMonthRoster[`bench_${i+1}`].name}
-              name={`bench_${i+1}`}
-              team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
-              points={currentMonthRoster[`bench_${i+1}`].roflScore}
-              readOnly={readOnly}
-              changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-              locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
-          /> 
-          : 
-          <Slot
-            key={'empty'+i}
-            name={`bench_${i+1}`}
-            team={'empty'}
-            points={null}
-            readOnly={readOnly}
-            changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-            locked={false}
-          />
+          `bench_${i + 1}` in currentMonthRoster
+            ? (
+              <Slot
+                key={currentMonthRoster[`bench_${i + 1}`].name}
+                name={`bench_${i + 1}`}
+                team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i + 1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i + 1}`].city} ${currentMonthRoster[`bench_${i + 1}`].name}` : 'empty'}
+                points={currentMonthRoster[`bench_${i + 1}`].roflScore}
+                readOnly={readOnly}
+                changeRoster={readOnly ? null : changeRoster}
+                selectedSlot={readOnly ? null : selectedSlot}
+                locked={readOnly ? null : currentMonthRoster[`bench_${i + 1}`].isLocked}
+              />
+            )
+            : (
+              <Slot
+                key={`empty${i}`}
+                name={`bench_${i + 1}`}
+                team="empty"
+                points={null}
+                readOnly={readOnly}
+                changeRoster={readOnly ? null : changeRoster}
+                selectedSlot={readOnly ? null : selectedSlot}
+                locked={false}
+              />
+            )
         ))}
       </Tbody>
     </Container>
@@ -162,19 +174,19 @@ function RosterComponent({ currentMonthRoster, roflMonth, isActiveTable, changeR
 export default RosterComponent;
 
 // {Array.from(Array(benchSpots)).map((x, i) => (
-  // `bench_${i+1}` in currentMonthRoster 
-  // ? 
-  // <Slot
-  //     key={currentMonthRoster[`bench_${i+1}`].name}
-  //     name={`bench_${i+1}`}
-  //     team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
-  //     points={currentMonthRoster[`bench_${i+1}`].roflScore}
-  //     readOnly={readOnly}
-  //     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
-  //     locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
-  //  /> 
-  // : 
-  // null
+// `bench_${i+1}` in currentMonthRoster
+// ?
+// <Slot
+//     key={currentMonthRoster[`bench_${i+1}`].name}
+//     name={`bench_${i+1}`}
+//     team={roflMonth <= endOfLeagueTable[currentMonthRoster[`bench_${i+1}`].sport_league.id] ? `${currentMonthRoster[`bench_${i+1}`].city} ${currentMonthRoster[`bench_${i+1}`].name}`: 'empty'}
+//     points={currentMonthRoster[`bench_${i+1}`].roflScore}
+//     readOnly={readOnly}
+//     changeRoster={readOnly ? null : changeRoster} selectedSlot={readOnly? null : selectedSlot}
+//     locked={readOnly ? null : currentMonthRoster[`bench_${i+1}`].isLocked}
+//  />
+// :
+// null
 // ))}
 
 // {roflMonth <= endOfLeagueTable['1'] ? (

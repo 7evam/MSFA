@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import useRoster from "./useRoster";
-import { convertMonthToReadable } from "../../utils";
-import { useSelector } from "react-redux";
-import MonthTicker from "../../components/MonthTicker";
-import YearSelector from "../../components/YearSelector";
-import RosterComponent from "../../components/Roster";
-import "@fontsource/open-sans";
-import {Container, Slot, SelectButton, BannerMessage, MonthButton, MonthContainer, YearContainer, ScrollMenu, ScrollMenuContainer, ScrollMenuLink, ScrollMenuButton, SubmitChangesButton, TeamName} from './components'
-import Loading from "../../components/Loading";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import useRoster from './useRoster';
+import { convertMonthToReadable } from '../../utils';
+import MonthTicker from '../../components/MonthTicker';
+import YearSelector from '../../components/YearSelector';
+import RosterComponent from '../../components/Roster';
+import '@fontsource/open-sans';
+import {
+  Container, Slot, SelectButton, BannerMessage, MonthButton, MonthContainer, YearContainer, ScrollMenu, ScrollMenuContainer, ScrollMenuLink, ScrollMenuButton, SubmitChangesButton, TeamName,
+} from './components';
+import Loading from '../../components/Loading';
 
 function Roster(props) {
   const {
@@ -25,16 +27,18 @@ function Roster(props) {
     setSelectedRoflYear,
     updateOneMonth,
     setUpdateOneMonth,
-    name
+    name,
+    loadingRoster,
+    handleYearChange,
   } = useRoster();
 
-let activeYearArray = Object.keys(currentOrganization.activeYears)
+  const activeYearArray = Object.keys(currentOrganization.activeYears);
 
   const isActiveTable = {};
 
-  activeRoflMonths &&
-    selectedRoflYear &&
-    Object.keys(activeRoflMonths[selectedRoflYear]).forEach((month) => {
+  activeRoflMonths
+    && selectedRoflYear
+    && Object.keys(activeRoflMonths[selectedRoflYear]).forEach((month) => {
       isActiveTable[month.leagueId] = month.roflMonth;
     });
 
@@ -61,25 +65,43 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
     }
   }, [scrollRef]);
 
-  console.log('here is active year array')
-  console.log(activeYearArray)
+  console.log('here is active year array');
+  console.log(activeYearArray);
+
+  console.log('here is roster');
+  console.log(roster);
 
   return (
     <Container>
-      {roster && currentOrganization && selectedRoflYear ? (
+      {!loadingRoster && roster && currentOrganization && selectedRoflYear ? (
         <div>
-          <TeamName><p><b>{currentOrganization.team_name}</b> - managed by <b> {name}</b></p></TeamName>
-          
-          <hr/>
+          <TeamName>
+            <p>
+              <b>{currentOrganization.team_name}</b>
+              {' '}
+              - managed by
+              {' '}
+              <b>
+                {' '}
+                {name}
+              </b>
+            </p>
+          </TeamName>
+
+          <hr />
           {activeYearArray.length === 2 ? (
             <YearSelector
               activeYearArray={activeYearArray}
               setSelectedRoflYear={setSelectedRoflYear}
               selectedRoflYear={selectedRoflYear}
+              handleYearChange={handleYearChange}
             />
           ) : (
             <YearContainer>
-              <p>MSFA Year: {selectedRoflYear}</p>
+              <p>
+                MSFA Year:
+                {selectedRoflYear}
+              </p>
             </YearContainer>
           )}
 
@@ -103,7 +125,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
           {areRostersEqual ? null : (
             <BannerMessage>
               <label>
-                <input type="checkbox" value={updateOneMonth} onClick={() => setUpdateOneMonth(!updateOneMonth)}/>
+                <input type="checkbox" value={updateOneMonth} onClick={() => setUpdateOneMonth(!updateOneMonth)} />
                 Update only this month
               </label>
               You have unsaved changes
@@ -114,7 +136,7 @@ let activeYearArray = Object.keys(currentOrganization.activeYears)
           )}
         </div>
       ) : (
-        <Loading/>
+        <Loading />
       )}
     </Container>
   );

@@ -17,9 +17,11 @@ function NewSeason() {
     ...state.authReducer,
   }));
 
-  const existingOrganizationId = organizations.find((org) => org.id === currentOrganization.id);
+  const existingOrganization = organizations.find((org) => org.id === currentOrganization.id);
+  //   const existingOrganizationId = existingOrganization.id
+  //   const exitingOrganizationMembers
   // TODO handle existing organization ID find fail
-  const cnlProps = useCreateNewLeague(existingOrganizationId);
+  const cnlProps = useCreateNewLeague(existingOrganization);
   const renderSwitch = (stage) => {
     switch (stage) {
       case 'initial': return <InitialInfo cnlProps={cnlProps} />;

@@ -39,8 +39,13 @@ function Settings(props) {
       route: `/users/changeOrg/${currentOrganization.user_id}`,
       data: { organizationId },
     });
+    console.log('here is res');
+    console.log(res);
     if (res.statusCode === 200) {
-      const organizations = JSON.parse(res.body);
+      console.log('past if');
+      const organizations = res.body;
+      console.log('here is rogs');
+      console.log(organizations);
       dispatch({
         type: 'SET_NEW_ORGS',
         payload: {

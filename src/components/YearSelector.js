@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import {useSelector} from 'react-redux'
-import { blue } from "../constants/style";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { blue } from '../constants/style';
 
 const Container = styled.div`
 background-color: ${blue};
@@ -15,27 +15,26 @@ const Year = styled.div`
     padding-left: 5px;
     padding-right: 5px;
     display: inline-block;
-    color: ${(props) => (props.selected ? "limegreen" : "white")};
+    color: ${(props) => (props.selected ? 'limegreen' : 'white')};
     text-align: center;
     padding: 15px;
     text-decoration: none;
     cursor: pointer;
     border: 1px solid white;
-`
+`;
 
-
-
-function YearSelector({selectedRoflYear, setSelectedRoflYear, activeYearArray}) {
-
+function YearSelector({
+  selectedRoflYear, setSelectedRoflYear, activeYearArray, handleYearChange,
+}) {
   return (
-          activeYearArray 
-          ?
+    activeYearArray
+      ? (
         <Container>
-            <Year onClick={() => setSelectedRoflYear(activeYearArray[0])} selected={Number(selectedRoflYear)===Number(activeYearArray[0])}>{activeYearArray[0]}</Year>
-            <Year onClick={() => setSelectedRoflYear(activeYearArray[1])} selected={Number(selectedRoflYear)===Number(activeYearArray[1])}>{activeYearArray[1]}</Year>
+          <Year onClick={() => handleYearChange(activeYearArray[0])} selected={Number(selectedRoflYear) === Number(activeYearArray[0])}>{activeYearArray[0]}</Year>
+          <Year onClick={() => handleYearChange(activeYearArray[1])} selected={Number(selectedRoflYear) === Number(activeYearArray[1])}>{activeYearArray[1]}</Year>
         </Container>
-        :
-        <p>loading...</p>
+      )
+      : <p>loading...</p>
   );
 }
 
