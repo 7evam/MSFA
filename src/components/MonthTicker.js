@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import {useSelector} from 'react-redux'
-import { blue, lightBlue, mobileBreakPoint } from "../constants/style";
-import MobileMonthTicker from "./MobileMonthTicker";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { blue, lightBlue, mobileBreakPoint } from '../constants/style';
+import MobileMonthTicker from './MobileMonthTicker';
 
 const Container = styled.div`
 background-color: ${lightBlue};
@@ -25,7 +25,7 @@ const ScrollMenu = styled.div`
 
 const ScrollMenuLink = styled.a`
   display: inline-block;
-  color: ${(props) => (props.selected ? `#308AEB` : "black")};
+  color: ${(props) => (props.selected ? '#308AEB' : 'black')};
   text-align: center;
   padding-top: 15px;
   padding-left: 5px;
@@ -49,9 +49,11 @@ const ScrollMenuButton = styled.a`
 const MonthTextContainer = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
-function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths}) {
+function MonthTicker({
+  roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths,
+}) {
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {
@@ -82,54 +84,58 @@ function MonthTicker({roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDi
   const monthsForScroll = (year) => {
     year = Number(year);
     const allMonths = [
-        { number: 1, month: `April ${year}` },
-        { number: 2, month: `May ${year}` },
-        { number: 3, month: `June ${year}` },
-        { number: 4, month: `July ${year}` },
-        { number: 5, month: `August ${year}` },
-        { number: 6, month: `September ${year}` },
-        { number: 7, month: `October ${year}` },
-        { number: 8, month: `November ${year}` },
-        { number: 9, month: `December ${year}` },
-        { number: 10, month: `January ${year + 1}` },
-        { number: 11, month: `February ${year + 1}` },
-        { number: 12, month: `March ${year + 1}` },
-        { number: 13, month: `April ${year + 1}` },
-        { number: 14, month: `May ${year + 1}` }
-    ]
-    let finalMonth = finalMonthForDisplay ? finalMonthForDisplay : 14;
-    let firstMonth = firstMonthForDisplay ? firstMonthForDisplay : 1
-    
-    let months = []
-    for(let i=firstMonth-1;i<finalMonth;i++){
-        // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
-        if(onlyShownMonths ? onlyShownMonths.includes(allMonths[i].number) : true) months.push(allMonths[i])
+      { number: 1, month: `April ${year}` },
+      { number: 2, month: `May ${year}` },
+      { number: 3, month: `June ${year}` },
+      { number: 4, month: `July ${year}` },
+      { number: 5, month: `August ${year}` },
+      { number: 6, month: `September ${year}` },
+      { number: 7, month: `October ${year}` },
+      { number: 8, month: `November ${year}` },
+      { number: 9, month: `December ${year}` },
+      { number: 10, month: `January ${year + 1}` },
+      { number: 11, month: `February ${year + 1}` },
+      { number: 12, month: `March ${year + 1}` },
+      { number: 13, month: `April ${year + 1}` },
+      { number: 14, month: `May ${year + 1}` },
+    ];
+    const finalMonth = finalMonthForDisplay || 14;
+    const firstMonth = firstMonthForDisplay || 1;
+
+    const months = [];
+    for (let i = firstMonth - 1; i < finalMonth; i++) {
+      // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
+      if (onlyShownMonths ? onlyShownMonths.includes(allMonths[i].number) : true) months.push(allMonths[i]);
     }
-    return months
+    return months;
   };
 
   return (
     <div>
-      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths}/>
-        <Container>
-        <ScrollMenuButton onClick={scrollLeft}><MonthTextContainer><span>{"<"}</span></MonthTextContainer></ScrollMenuButton>
+      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths} />
+      <Container>
+        <ScrollMenuButton onClick={scrollLeft}><MonthTextContainer><span>{'<'}</span></MonthTextContainer></ScrollMenuButton>
         <ScrollMenu ref={scrollRef}>
-            {monthsForScroll(selectedRoflYear).map((item) => (
+          {monthsForScroll(selectedRoflYear).map((item) => (
             <ScrollMenuLink
-                selected={Number(item.number) === Number(roflMonth)}
-                key={item.number}
-                onClick={() => setRoflMonth(item.number)}
+              selected={Number(item.number) === Number(roflMonth)}
+              key={item.number}
+              onClick={() => setRoflMonth(item.number)}
             >
-                <MonthTextContainer>
-                <span>Month {item.number}</span>
-                  <span>{item.month}</span>
-                </MonthTextContainer>
+              <MonthTextContainer>
+                <span>
+                  Month
+                  {' '}
+                  {item.number}
+                </span>
+                <span>{item.month}</span>
+              </MonthTextContainer>
             </ScrollMenuLink>
-            ))}
+          ))}
         </ScrollMenu>
-        <ScrollMenuButton onClick={scrollRight}>{">"}</ScrollMenuButton>
-        </Container>
-        </div>
+        <ScrollMenuButton onClick={scrollRight}>{'>'}</ScrollMenuButton>
+      </Container>
+    </div>
   );
 }
 
