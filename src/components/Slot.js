@@ -37,8 +37,8 @@ const SelectButton = styled.button`
   height: 100%;
   padding: 5px 0px;
   background: ${(props) => (props.selectedSlot && props.selectedSlot === props.name
-    ? '#f5c4c4'
-    : '#cef5c4')};
+    ? '#cef5c4'
+    : lightBlue)};
 `;
 const nameTable = {
   league_1: 'MLB',

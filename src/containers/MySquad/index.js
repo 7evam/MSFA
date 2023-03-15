@@ -65,12 +65,6 @@ function Roster(props) {
     }
   }, [scrollRef]);
 
-  console.log('here is active year array');
-  console.log(activeYearArray);
-
-  console.log('here is roster');
-  console.log(roster);
-
   return (
     <Container>
       {!loadingRoster && roster && currentOrganization && selectedRoflYear ? (
