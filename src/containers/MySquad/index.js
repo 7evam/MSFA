@@ -128,6 +128,7 @@ function Roster(props) {
                 <input type="checkbox" value={updateOneMonth} onClick={() => setUpdateOneMonth(!updateOneMonth)} />
                 Update only this month
               </label>
+              <br />
               You have unsaved changes
               <SubmitChangesButton onClick={handleSubmit}>
                 Submit

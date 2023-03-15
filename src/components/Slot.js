@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import "@fontsource/open-sans";
-import { mobileBreakPoint, blue, mediumBlue, lightBlue } from "../constants/style";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import '@fontsource/open-sans';
+import {
+  mobileBreakPoint, blue, mediumBlue, lightBlue,
+} from '../constants/style';
 
 const widths = {
   slot: 10,
   team: 50,
   action: 20,
-  points: 20
-}
+  points: 20,
+};
 
 const Td = styled.td`
   padding: 12px;
@@ -24,21 +26,25 @@ const Tr = styled.tr`
     background-color: ${lightBlue};
   }
   @media (max-width: ${mobileBreakPoint}){
-    width: ${props => widths[props.column]}vw;
+    width: ${(props) => widths[props.column]}vw;
   }
 `;
 
 const SelectButton = styled.button`
-  background: ${(props) =>
-    props.selectedSlot && props.selectedSlot === props.name
-      ? "darkred"
-      : blue};
+  font-size: 14px;
+  font-weight: 800;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0px;
+  background: ${(props) => (props.selectedSlot && props.selectedSlot === props.name
+    ? '#f5c4c4'
+    : '#cef5c4')};
 `;
 const nameTable = {
-  league_1: "MLB",
-  league_2: "NFL",
-  league_3: "NHL",
-  league_4: "NBA"
+  league_1: 'MLB',
+  league_2: 'NFL',
+  league_3: 'NHL',
+  league_4: 'NBA',
 };
 
 function RosterSlot({
@@ -48,21 +54,21 @@ function RosterSlot({
   locked,
   changeRoster,
   selectedSlot,
-  readOnly
+  readOnly,
 }) {
   return (
     <Tr>
-      <Td column={"slot"}>
-        {nameTable[name] ? nameTable[name] : name.split("_")[0].toUpperCase()}
+      <Td column="slot">
+        {nameTable[name] ? nameTable[name] : name.split('_')[0].toUpperCase()}
       </Td>
-      <Td column={'team'}>{team === "empty" ? "EMPTY" : team}</Td>
+      <Td column="team">{team === 'empty' ? 'EMPTY' : team}</Td>
       {readOnly ? null : (
-        <Td column={'action'}>
+        <Td column="action">
           {locked ? (
-            team === "empty" ? (
-              "--"
+            team === 'empty' ? (
+              '--'
             ) : (
-              "🔒"
+              '🔒'
             )
           ) : (
             <SelectButton
@@ -76,7 +82,7 @@ function RosterSlot({
         </Td>
       )}
 
-      <Td column={"points"}>{points}</Td>
+      <Td column="points">{points}</Td>
     </Tr>
   );
 }
