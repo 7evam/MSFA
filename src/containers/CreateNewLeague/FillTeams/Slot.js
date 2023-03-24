@@ -19,9 +19,9 @@ const Container = styled.div`
 const marginBetweenInputs = '5px';
 
 function Slot({
-  slot, slotHashMap, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue,
+  slot, slotHashMap, currentMember, changeTeamInput, getAutocompleteSuggestions, changeTeamValue, tempId,
 }) {
-  const suggestions = getAutocompleteSuggestions(slot, currentMember.name);
+  const suggestions = getAutocompleteSuggestions(slot, currentMember.tempId);
 
   return (
     <Container key={slot}>
@@ -30,11 +30,10 @@ function Slot({
         <TeamName>
           <Datalist
             slot={slot}
-            currentMemberName={currentMember.name}
             changeTeamInput={changeTeamInput}
             inputValue={currentMember[slot].name}
             suggestions={suggestions}
-
+            tempId={currentMember.tempId}
           />
         </TeamName>
       </SlotContent>

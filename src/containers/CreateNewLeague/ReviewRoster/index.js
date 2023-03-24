@@ -34,6 +34,9 @@ function ReviewRoster({ cnlProps }) {
     setStage,
   } = cnlProps;
 
+  console.log('here is member rosters');
+  console.log(memberRosters);
+
   return (
     <Container>
       <Header>
@@ -53,7 +56,7 @@ function ReviewRoster({ cnlProps }) {
               {' '}
               {roster.cash}
             </p>
-            {Object.keys(roster).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email').map((slot, i) => (
+            {Object.keys(roster).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email' && slot !== 'tempId').map((slot, i) => (
               <Slot key={`${slot}-${i}-reviewRoster`}>
                 <p>
                   {slotHashMap[slot]}

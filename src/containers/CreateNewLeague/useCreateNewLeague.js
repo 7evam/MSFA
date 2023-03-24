@@ -29,7 +29,8 @@ function useCreateNewLeague(existingOrganization) {
 
   const [memberRosterIndex, setMemberRosterIndex] = useState(0);
 
-  const [test, setTest] = useState(true);
+  // ** Set this value to true for test data to be automatically added **
+  const test = false;
 
   useEffect(() => {
     if (existingOrganization) {
@@ -123,11 +124,12 @@ function useCreateNewLeague(existingOrganization) {
       return;
     }
     const res = [];
-    values.members.forEach((member) => {
+    values.members.forEach((member, i) => {
       res.push({
         cash: 200,
         name: member.memberName,
         email: member.memberEmail,
+        tempId: i,
         league1: { name: '', id: null, value: '' },
         league2: { name: '', id: null, value: '' },
         league3: { name: '', id: null, value: '' },
@@ -165,18 +167,54 @@ function useCreateNewLeague(existingOrganization) {
     setStage('fillTeams');
   };
 
-  const getAutocompleteSuggestions = (slot, name) => {
+  const getMemberLeagueTeamCount = () => {
+    const table = {};
+    memberRosters.forEach((member) => {
+      Object.keys(member).filter((key) => key !== 'cash' && key !== 'email' && key !== 'name' && key !== 'tempId').forEach((slot) => {
+        if (member[slot] && member[slot].id) {
+          const leagueId = String(member[slot].id)[0];
+          if (!table[member.tempId]) table[member.tempId] = {};
+          if (!table[member.tempId][leagueId]) {
+            table[member.tempId][leagueId] = 1;
+          } else {
+            table[member.tempId][leagueId] += 1;
+          }
+        }
+      });
+    });
+    return table;
+  };
+
+  const getAutocompleteSuggestions = (slot, tempId) => {
+    const memberLeagueTeamCount = getMemberLeagueTeamCount();
     let leaguesForSlot = [];
     // get all leagues that fit slot
+    if (!memberLeagueTeamCount[tempId]) {
+      memberLeagueTeamCount[tempId] = {
+        1: 0, 2: 0, 3: 0, 4: 0,
+      };
+    }
+
+    const badLeagues = [];
+
+    Object.keys(memberLeagueTeamCount[tempId]).forEach((leagueId) => {
+      if (memberLeagueTeamCount[tempId][leagueId] >= 3) {
+        badLeagues.push(leagueId);
+      }
+    });
+
     if (slot.includes('league')) {
-      const leagueId = slot.split('league')[1];
-      leaguesForSlot = [Number(leagueId)];
+      const slotLeagueId = slot.split('league')[1];
+      leaguesForSlot = [Number(slotLeagueId)];
     } else {
       leaguesForSlot = [...leaguesUsed];
     }
 
-    // TODO
-    // remove leagues if member has 3 teams from that league already
+    badLeagues.forEach((badLeague) => {
+      const badIndex = leaguesForSlot.indexOf(Number(badLeague));
+      if (badIndex >= 0) leaguesForSlot.splice(badIndex, 1);
+    });
+
     const teamsToReturn = [];
 
     const teams = [...sportTeams];
@@ -197,8 +235,6 @@ function useCreateNewLeague(existingOrganization) {
         method: 'get',
         route: `organizations/summary/${organizationId}`,
       });
-      console.log('here is res for fetch users in org');
-      console.log(res.body);
       if (res.body && res.body.members && res.body.members.length) {
         const existingMembers = res.body.members;
         const members = [];
@@ -219,19 +255,22 @@ function useCreateNewLeague(existingOrganization) {
     }
   };
 
-  const changeTeamInput = (e, slot, memberName) => {
+  const changeTeamInput = (e, slot, tempId) => {
     // update text value in member roster
     const newMemberRosters = [...memberRosters];
     newMemberRosters[memberRosterIndex][slot].name = e.target.value;
 
-    // if complete team (as found in sport team array), update whether this value is available for datalist
+    // if complete team (as found in sport team array),
+    // update whether this value is available for datalist
     const newSportTeams = [...sportTeams];
     const found = newSportTeams.find((item) => `${item.city} ${item.name}` === e.target.value);
     if (found) {
+      found.rostered = tempId;
       newMemberRosters[memberRosterIndex][slot].id = found.id;
-      found.rostered = true;
     } else if (newMemberRosters[memberRosterIndex][slot].id) {
-      const unrosteredTeam = newSportTeams.find((item) => item.id == newMemberRosters[memberRosterIndex][slot].id);
+      const unrosteredTeam = newSportTeams.find(
+        (item) => item.id === newMemberRosters[memberRosterIndex][slot].id,
+      );
       unrosteredTeam.rostered = false;
       newMemberRosters[memberRosterIndex][slot].id = null;
     }
@@ -264,6 +303,13 @@ function useCreateNewLeague(existingOrganization) {
   };
 
   const submitFinalRoster = async (e) => {
+    // remove tempId
+
+    memberRosters.forEach((roster) => {
+      delete roster.tempId;
+    });
+    console.log('here is memberRosters');
+    console.log(memberRosters);
     e.preventDefault();
     const dataObject = {
       members: values.members,
@@ -292,12 +338,12 @@ function useCreateNewLeague(existingOrganization) {
           data: dataObject,
         });
 
-      console.log('here iis res');
-      console.log(res);
       if (res.statusCode === 201) history.push('/squad');
       return JSON.parse(res.body);
     } catch (e) {
-      // toast.error('there was a problem creating your season');
+      console.log('in error');
+      console.log(e);
+      toast.error('there was a problem creating your season');
       console.log('problem');
       console.error(e);
       return e;

@@ -20,13 +20,13 @@ const AutocompleteContainer = styled.datalist`
     `;
 
 function Datalist({
-  suggestions, slot, currentMemberName, changeTeamInput, inputValue,
+  suggestions, slot, currentMemberEmail, changeTeamInput, inputValue, tempId,
 }) {
   return (
     <>
-      <Input placeholder="Team Name" type="text" list={`${currentMemberName}-${slot}-data`} onChange={(e) => changeTeamInput(e, slot, currentMemberName)} value={inputValue} />
+      <Input placeholder="Team Name" type="text" list={`${tempId}-${slot}-data`} onChange={(e) => changeTeamInput(e, slot, tempId)} value={inputValue} />
 
-      <AutocompleteContainer id={`${currentMemberName}-${slot}-data`}>
+      <AutocompleteContainer id={`${tempId}-${slot}-data`}>
         {suggestions.map((item, key) => (
           <option key={`${item.text}-${key}-datalist`} value={item.text} />
         ))}

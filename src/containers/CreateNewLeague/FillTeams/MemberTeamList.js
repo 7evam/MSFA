@@ -26,7 +26,7 @@ function MemberTeamList({
         {currentMember.cash}
       </p>
       {
-          Object.keys(currentMember).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email').map((slot, i) => (
+          Object.keys(currentMember).filter((slot) => slot !== 'name' && slot !== 'cash' && slot !== 'email' && slot !== 'tempId').map((slot, i) => (
             <Slot key={`${slot}-${i}-memberTeamList`} slot={slot} changeTeamValue={changeTeamValue} currentMember={currentMember} changeTeamInput={changeTeamInput} slotHashMap={slotHashMap} getAutocompleteSuggestions={getAutocompleteSuggestions} />
           ))
         }
