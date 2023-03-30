@@ -52,7 +52,7 @@ const MonthTextContainer = styled.div`
 `;
 
 function MonthTicker({
-  roflMonth, setRoflMonth, selectedRoflYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths,
+  roflMonth, setRoflMonth, selectedYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths,
 }) {
   const [appliedScroll, setAppliedScroll] = useState(false);
 
@@ -112,11 +112,11 @@ function MonthTicker({
 
   return (
     <div>
-      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedRoflYear={selectedRoflYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths} />
+      <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedYear={selectedYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths} />
       <Container>
         <ScrollMenuButton onClick={scrollLeft}><MonthTextContainer><span>{'<'}</span></MonthTextContainer></ScrollMenuButton>
         <ScrollMenu ref={scrollRef}>
-          {monthsForScroll(selectedRoflYear).map((item) => (
+          {monthsForScroll(selectedYear).map((item) => (
             <ScrollMenuLink
               selected={Number(item.number) === Number(roflMonth)}
               key={item.number}

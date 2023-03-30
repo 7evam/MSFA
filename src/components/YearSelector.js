@@ -24,14 +24,14 @@ const Year = styled.div`
 `;
 
 function YearSelector({
-  selectedRoflYear, setSelectedRoflYear, activeYearArray, handleYearChange,
+  selectedYear, activeYearArray, handleYearChange,
 }) {
   return (
     activeYearArray
       ? (
         <Container>
-          <Year onClick={() => handleYearChange(activeYearArray[0])} selected={Number(selectedRoflYear) === Number(activeYearArray[0])}>{activeYearArray[0]}</Year>
-          <Year onClick={() => handleYearChange(activeYearArray[1])} selected={Number(selectedRoflYear) === Number(activeYearArray[1])}>{activeYearArray[1]}</Year>
+          <Year onClick={() => handleYearChange(activeYearArray[0])} selected={Number(selectedYear) === Number(activeYearArray[0])}>{activeYearArray[0]}</Year>
+          <Year onClick={() => handleYearChange(activeYearArray[1])} selected={Number(selectedYear) === Number(activeYearArray[1])}>{activeYearArray[1]}</Year>
         </Container>
       )
       : <p>loading...</p>

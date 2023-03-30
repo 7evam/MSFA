@@ -36,7 +36,7 @@ cursor: ${(props) => (props.rendered ? 'pointer' : 'default')};
 function MobileMonthTicker({
   roflMonth,
   setRoflMonth,
-  selectedRoflYear,
+  selectedYear,
   firstMonthForDisplay,
   finalMonthForDisplay,
   onlyShownMonths,
@@ -105,7 +105,7 @@ function MobileMonthTicker({
         value={roflMonth}
         onChange={handleChange}
       >
-        {monthsForScroll(selectedRoflYear).map((item) => (
+        {monthsForScroll(selectedYear).map((item) => (
           <Option
             value={item.number}
             key={item.number}

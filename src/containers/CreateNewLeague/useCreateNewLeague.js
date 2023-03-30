@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../hooks/useApi';
 import { TEST_ROSTER } from './testRoster';
@@ -8,9 +8,16 @@ import { TEST_ROSTER } from './testRoster';
 function useCreateNewLeague(existingOrganization) {
   const history = useHistory();
   const { makeRequest, isLoading } = useApi();
+
+  const dispatch = useDispatch();
+
+  const { currentOrganization } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
   const { email } = useSelector((state) => ({
     ...state.authReducer,
   }));
+
   //   const history = useHistory();
   //   const dispatch = useDispatch();
   const emptyMember = { memberName: '', memberEmail: '' };
@@ -30,7 +37,7 @@ function useCreateNewLeague(existingOrganization) {
   const [memberRosterIndex, setMemberRosterIndex] = useState(0);
 
   // ** Set this value to true for test data to be automatically added **
-  const test = false;
+  const test = true;
 
   useEffect(() => {
     if (existingOrganization) {
@@ -302,6 +309,30 @@ function useCreateNewLeague(existingOrganization) {
     setMemberRosters(newMemberRosters);
   };
 
+  const setNewCurrentOrg = async (organizationId) => {
+    // setIsLoading(true);
+    const res = await makeRequest({
+      method: 'patch',
+      route: `/users/changeOrg/${currentOrganization.user_id}`,
+      data: { organizationId },
+    });
+    // console.log('here is res');
+    // console.log(res);
+    if (res.statusCode === 200) {
+      // console.log('past if');
+      const organizations = res.body;
+      // console.log('here is rogs');
+      // console.log(organizations);
+      dispatch({
+        type: 'SET_NEW_ORGS',
+        payload: {
+          organizations,
+        },
+      });
+    }
+    // setIsLoading(false);
+  };
+
   const submitFinalRoster = async (e) => {
     // remove tempId
 
@@ -338,12 +369,14 @@ function useCreateNewLeague(existingOrganization) {
           data: dataObject,
         });
 
-      if (res.statusCode === 201) history.push('/squad');
+      if (res.statusCode === 201) {
+        if (existingOrganization) await setNewCurrentOrg(existingOrganization.id);
+        history.push('/squad');
+      }
       return JSON.parse(res.body);
     } catch (e) {
       console.log('in error');
       console.log(e);
-      toast.error('there was a problem creating your season');
       console.log('problem');
       console.error(e);
       return e;

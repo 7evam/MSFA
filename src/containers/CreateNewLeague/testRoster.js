@@ -60,7 +60,7 @@ module.exports = {
       bench2: { name: 'Seattle Mariners', id: '125', value: 11 },
       bench3: { name: 'Winnipeg Jets', id: '332', value: 11 },
       cash: 112,
-      email: 'haydenemail@gmail.com',
+      email: 'hayden.freedman@gmail.com',
       flex1: { name: 'Cincinnati Bengals', id: '207', value: 11 },
       league1: { name: 'Boston Red Sox', id: '104', value: 11 },
       league2: { name: 'Cleveland Browns', id: '208', value: 11 },

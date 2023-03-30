@@ -14,7 +14,7 @@ import Loading from '../../components/Loading';
 
 function Roster(props) {
   const {
-    selectedRoflYear,
+    selectedYear,
     roflMonth,
     roster,
     currentOrganization,
@@ -24,29 +24,36 @@ function Roster(props) {
     setRoflMonth,
     handleSubmit,
     activeRoflMonths,
-    setSelectedRoflYear,
     updateOneMonth,
     setUpdateOneMonth,
     name,
     loadingRoster,
-    handleYearChange,
   } = useRoster();
-
-  const activeYearArray = Object.keys(currentOrganization.activeYears);
 
   const isActiveTable = {};
 
   activeRoflMonths
-    && selectedRoflYear
-    && Object.keys(activeRoflMonths[selectedRoflYear]).forEach((month) => {
+    && selectedYear
+    && Object.keys(activeRoflMonths[selectedYear]).forEach((month) => {
       isActiveTable[month.leagueId] = month.roflMonth;
     });
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
+  // console.log('params');
+  // console.log(roster);
+  // console.log(selectedYear);
+
   const currentMonthRoster = roster
-    ? roster[`${roflMonth}-${selectedRoflYear}`]
+    ? roster[`${roflMonth}-${selectedYear}`]
     : null;
+
+  console.log('cmr');
+  console.log(roster);
+  console.log(roflMonth);
+  console.log(selectedYear);
+  console.log(currentMonthRoster);
+  console.log('---');
 
   // const scrollLeft = () => {
   //   scrollRef.current.scrollLeft -= 400;
@@ -67,7 +74,7 @@ function Roster(props) {
 
   return (
     <Container>
-      {!loadingRoster && roster && currentOrganization && selectedRoflYear ? (
+      {!loadingRoster && roster && currentOrganization && currentMonthRoster && selectedYear ? (
         <div>
           <TeamName>
             <p>
@@ -83,7 +90,7 @@ function Roster(props) {
           </TeamName>
 
           <hr />
-          {activeYearArray.length === 2 ? (
+          {/* {activeYearArray.length === 2 ? (
             <YearSelector
               activeYearArray={activeYearArray}
               setSelectedRoflYear={setSelectedRoflYear}
@@ -97,18 +104,18 @@ function Roster(props) {
                 {selectedRoflYear}
               </p>
             </YearContainer>
-          )}
+          )} */}
 
           <MonthTicker
             roflMonth={roflMonth}
             setRoflMonth={setRoflMonth}
-            selectedRoflYear={selectedRoflYear}
+            selectedYear={selectedYear}
           />
           {/* <MonthContainer>
             <p>RoFL Month: {roflMonth}</p>
           </MonthContainer> */}
           <RosterComponent
-            selectedRoflYear={selectedRoflYear}
+            selectedYear={selectedYear}
             currentMonthRoster={currentMonthRoster}
             roflMonth={roflMonth}
             isActiveTable={isActiveTable}

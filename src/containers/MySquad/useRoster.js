@@ -14,7 +14,7 @@ function useRoster() {
     ...state.authReducer,
   }));
 
-  const { activeYears } = useSelector((state) => ({
+  const { activeYears, selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
@@ -22,7 +22,7 @@ function useRoster() {
 
   const [roster, setRoster] = useState(null);
   const [originalRoster, setOriginalRoster] = useState(null);
-  const [selectedRoflYear, setSelectedRoflYear] = useState(null);
+  // const [selectedRoflYear, setSelectedRoflYear] = useState(null);
   const [roflMonth, setRoflMonth] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [areRostersEqual, setAreRostersEqual] = useState(true);
@@ -33,16 +33,15 @@ function useRoster() {
   const [loadingRoster, setLoadingRoster] = useState(false);
   // const [currentTeams, setCurrentTeams] = useState(null)
 
-  const fetchRoster = async (selectedRoflYear) => {
+  const fetchRoster = async (selectedYear) => {
     try {
       setLoadingRoster(true);
-
       const res = await makeRequest({
         method: 'get',
-        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`,
+        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}`,
       });
       const fetchedRoster = res.body;
-      console.log(`here is roster from fetch roster year ${selectedRoflYear}`);
+      console.log(`here is roster from fetch roster year ${selectedYear}`);
       console.log(roster);
       if (roster) {
         console.log('roster exiists, adding roster');
@@ -61,7 +60,7 @@ function useRoster() {
       console.log('problem');
       console.log('here is params');
       console.log(currentOrganization.id);
-      console.log(selectedRoflYear);
+      console.log(selectedYear);
       console.error(e);
     }
   };
@@ -83,10 +82,7 @@ function useRoster() {
   //   }
   // }
 
-  const initiateAndReturnRoflMonthAndYear = () => {
-    // initiate year as earlliest active year for current org
-    const initialYear = activeYearArray[0];
-
+  const initiateAndReturnRoflMonth = () => {
     // initiate active rofl months for all active years within org
     let activeRoflMonths = {};
     Object.keys(activeYears).forEach((roflYear) => {
@@ -100,11 +96,11 @@ function useRoster() {
 
     // show the latest current rofl month
     let roflMonthToShow = 1;
-    Object.keys(activeRoflMonths[initialYear]).forEach((activeLeague) => {
+    Object.keys(activeRoflMonths[selectedYear]).forEach((activeLeague) => {
       // console.log('here is an active league')
       // console.log(activeRoflMonths[initialYear][activeLeague].roflMonth)
-      if (activeRoflMonths[initialYear][activeLeague].roflMonth > roflMonthToShow) {
-        roflMonthToShow = activeRoflMonths[initialYear][activeLeague].roflMonth;
+      if (activeRoflMonths[selectedYear][activeLeague].roflMonth > roflMonthToShow) {
+        roflMonthToShow = activeRoflMonths[selectedYear][activeLeague].roflMonth;
       }
     });
 
@@ -112,16 +108,21 @@ function useRoster() {
     setActiveRoflMonths(activeRoflMonths);
     setActiveRoflYears(activeYearArray);
     setRoflMonth(roflMonthToShow);
-    setSelectedRoflYear(initialYear);
-    return initialYear;
   };
 
+  // useEffect(() => {
+  //   if (activeYears) {
+  //     const initialYear = initiateAndReturnRoflMonthAndYear();
+  //     fetchRoster(initialYear);
+  //   }
+  // }, [activeYears]);
+
   useEffect(() => {
-    if (activeYears) {
-      const initialYear = initiateAndReturnRoflMonthAndYear();
-      fetchRoster(initialYear);
+    if (activeYears && selectedYear) {
+      initiateAndReturnRoflMonth();
+      fetchRoster(selectedYear);
     }
-  }, [activeYears]);
+  }, [activeYears, selectedYear]);
 
   // const addYearToRoster = async (newYear) => {
   //   const oldRoster = roster
@@ -161,18 +162,18 @@ function useRoster() {
 
   const changeRoster = (slot) => {
     if (selectedSlot) {
-      const team1 = { ...roster[`${roflMonth}-${selectedRoflYear}`][slot] };
+      const team1 = { ...roster[`${roflMonth}-${selectedYear}`][slot] };
       const team2 = {
-        ...roster[`${roflMonth}-${selectedRoflYear}`][selectedSlot],
+        ...roster[`${roflMonth}-${selectedYear}`][selectedSlot],
       };
       if (checkIfSwapable(team1, team2, slot, selectedSlot)) {
         const newRoster = { ...roster };
-        newRoster[`${roflMonth}-${selectedRoflYear}`][slot] = team2;
-        newRoster[`${roflMonth}-${selectedRoflYear}`][selectedSlot] = team1;
+        newRoster[`${roflMonth}-${selectedYear}`][slot] = team2;
+        newRoster[`${roflMonth}-${selectedYear}`][selectedSlot] = team1;
         setAreRostersEqual(
           checkIfRostersAreEqual(
-            originalRoster[`${roflMonth}-${selectedRoflYear}`],
-            newRoster[`${roflMonth}-${selectedRoflYear}`],
+            originalRoster[`${roflMonth}-${selectedYear}`],
+            newRoster[`${roflMonth}-${selectedYear}`],
           ),
         );
       } else {
@@ -187,23 +188,23 @@ function useRoster() {
   const handleSubmit = async () => {
     const updatedRoster = {};
     // consruct updated roster object by only getting slots with league flex or bench in them and adding them to object
-    Object.keys(roster[`${roflMonth}-${selectedRoflYear}`])
+    Object.keys(roster[`${roflMonth}-${selectedYear}`])
       .filter(
         (key) => key.includes('league')
           || key.includes('flex')
           || key.includes('bench'),
       )
       .forEach((slot) => {
-        if (roster[`${roflMonth}-${selectedRoflYear}`][slot]) {
+        if (roster[`${roflMonth}-${selectedYear}`][slot]) {
           updatedRoster[slot] = Number(
-            roster[`${roflMonth}-${selectedRoflYear}`][slot].id,
+            roster[`${roflMonth}-${selectedYear}`][slot].id,
           );
         }
       });
     try {
       const res = await makeRequest({
         method: 'patch',
-        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}/${roflMonth}`,
+        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}/${roflMonth}`,
         data: {
           updateOneMonth,
           roster: updatedRoster,
@@ -232,7 +233,6 @@ function useRoster() {
   };
 
   // useEffect(() => {
-  //   console.log('useEffect started');
   //   if (
   //     activeRoflYears
   //     && activeRoflYears.length === 2
@@ -242,16 +242,8 @@ function useRoster() {
   //   }
   // }, [selectedRoflYear]);
 
-  const handleYearChange = async (newRoflYear) => {
-    console.log(`new year is ${newRoflYear}`);
-    setLoadingRoster(true);
-    setSelectedRoflYear(newRoflYear);
-    await fetchRoster(newRoflYear);
-    setLoadingRoster(false);
-  };
-
   return {
-    selectedRoflYear,
+    selectedYear,
     roflMonth,
     roster,
     currentOrganization,
@@ -261,12 +253,10 @@ function useRoster() {
     setRoflMonth,
     handleSubmit,
     activeRoflMonths,
-    setSelectedRoflYear,
     updateOneMonth,
     setUpdateOneMonth,
     name,
     loadingRoster,
-    handleYearChange,
   };
 }
 

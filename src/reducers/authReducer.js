@@ -22,8 +22,6 @@ function authReducer(state = INITIAL_STATE, action) {
         currentOrganization: currentOrganizationLogin,
       };
     case 'SET_NEW_ORGS':
-      console.log('here is action payload');
-      console.log(action.payload);
       const currentOrganizationSet = action.payload.organizations.find((org) => org.current === 1);
       return {
         ...state,

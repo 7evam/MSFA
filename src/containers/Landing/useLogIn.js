@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import useApi from "../../hooks/useApi";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useApi from '../../hooks/useApi';
 
 function useLogIn() {
   const { makeRequest, isLoading } = useApi();
@@ -10,53 +10,53 @@ function useLogIn() {
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   });
 
   const [registerValues, setRegisterValues] = useState({
-    email: "",
-    password: "",
-    confirmPassword: ""
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
-  const [entryModeLogIn, setEntryModeLogIn] = useState(true)
+  const [entryModeLogIn, setEntryModeLogIn] = useState(true);
 
   const handleLogIn = async () => {
-    if(values.email.length < 6){
-      toast.error('Please input a valid email')
-      return
+    if (values.email.length < 6) {
+      toast.error('Please input a valid email');
+      return;
     }
-    if(values.password.length < 8){
-      toast.error('Please create a password with at least 8 characters')
-      return
+    if (values.password.length < 8) {
+      toast.error('Please create a password with at least 8 characters');
+      return;
     }
     try {
-      var res = await makeRequest({
-        method: "post",
-        route: "/users/login",
+      const res = await makeRequest({
+        method: 'post',
+        route: '/users/login',
         data: {
           email: values.email,
-          password: values.password
-        }
+          password: values.password,
+        },
       });
       if (res.statusCode === 200) {
         const userInfo = res.body;
         dispatch({
-          type: "LOGIN",
+          type: 'LOGIN',
           payload: {
             name: userInfo.name,
             email: userInfo.email,
             organizations: userInfo.organizations,
-            userToken: userInfo.userToken
-          }
+            userToken: userInfo.userToken,
+          },
         });
-        history.push("/");
+        history.push('/');
       } else if (res.message) {
         throw res.message;
       } else {
         console.error(res);
-        throw "Malformed response";
+        throw 'Malformed response';
       }
     } catch (e) {
       console.error(e);
@@ -64,28 +64,28 @@ function useLogIn() {
   };
 
   const handleRegister = async () => {
-    if(registerValues.email.length < 6){
-      toast.error('Please input a valid email')
+    if (registerValues.email.length < 6) {
+      toast.error('Please input a valid email');
     }
-    if(registerValues.password.length < 8){
-      toast.error('Please create a password with at least 8 characters')
+    if (registerValues.password.length < 8) {
+      toast.error('Please create a password with at least 8 characters');
     }
-    if(registerValues.password !== registerValues.confirmPassword){
-      toast.error('Passwords do not match')
+    if (registerValues.password !== registerValues.confirmPassword) {
+      toast.error('Passwords do not match');
     }
     try {
-      var res = await makeRequest({
-        method: "post",
-        route: "/users",
+      const res = await makeRequest({
+        method: 'post',
+        route: '/users',
         data: {
           email: registerValues.email,
-          password: registerValues.password
-        }
+          password: registerValues.password,
+        },
       });
       if (res.statusCode === 200) {
-        console.log('here is res')
-        console.log(res)
-        toast.success("Your password has been created, you may now log in")
+        console.log('here is res');
+        console.log(res);
+        toast.success('Your password has been created, you may now log in');
         // const userInfo = JSON.parse(res.body);
         // dispatch({
         //   type: "LOGIN",
@@ -98,41 +98,41 @@ function useLogIn() {
         // });
         // history.push("/");
       } else if (res.message) {
-        toast.error(res.message)
+        toast.error(res.message);
         throw res.message;
       } else {
         console.error(res);
-        throw "Malformed response";
+        throw 'Malformed response';
       }
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const handleChange = (e, type) => {
     setValues({
       ...values,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleRegisterChange = (e, type) => {
     setRegisterValues({
       ...registerValues,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   return {
     handleLogIn,
-      handleChange,
-      values,
-      registerValues,
-      handleRegisterChange,
-      handleRegister,
-      isLoading,
-      entryModeLogIn,
-      setEntryModeLogIn
+    handleChange,
+    values,
+    registerValues,
+    handleRegisterChange,
+    handleRegister,
+    isLoading,
+    entryModeLogIn,
+    setEntryModeLogIn,
   };
 }
 

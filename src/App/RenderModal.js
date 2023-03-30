@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitBid from '../components/Modals/SubmitBid';
 import AddTeam from '../components/Modals/AddTeam';
 import ProposeTrade from '../components/Modals/ProposeTrade';
-import BidDetails from '../components/Modals/BidDetails'
+import BidDetails from '../components/Modals/BidDetails';
 import { lightBlue, mobileBreakPoint } from '../constants/style';
 
 // const ModalContainer = styled.div`
@@ -36,41 +36,39 @@ const ModalContainer = styled.div`
         height: 100%;
         z-index: 10;
       }
-`
+`;
 
 function RenderModal() {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+  const { modalContent } = useSelector((state) => ({
+    ...state.modalReducer,
+  }));
 
-    const { modalContent } = useSelector(state => ({
-        ...state.modalReducer
-      }));
-
-      const getContent = () => {
-        switch(modalContent){
-            case "SUBMIT_BID":
-                return <SubmitBid/>
-            case "ADD_TEAM":
-                return <AddTeam/>
-            case "PROPOSE_TRADE":
-                return <ProposeTrade/>
-            case "BID_DETAILS":
-                return <BidDetails/>
-            default:
-                return <p>Modal not found</p>
-        }
+  const getContent = () => {
+    switch (modalContent) {
+      case 'SUBMIT_BID':
+        return <SubmitBid />;
+      case 'ADD_TEAM':
+        return <AddTeam />;
+      case 'PROPOSE_TRADE':
+        return <ProposeTrade />;
+      case 'BID_DETAILS':
+        return <BidDetails />;
+      default:
+        return <p>Modal not found</p>;
     }
+  };
 
-
-
-    return(
-     modalContent ?   
-    <ModalContainer>
-        {getContent()}
-    </ModalContainer>
-    : null
-    )
+  return (
+    modalContent
+      ? (
+        <ModalContainer>
+          {getContent()}
+        </ModalContainer>
+      )
+      : null
+  );
 }
 
-
-export default RenderModal
+export default RenderModal;

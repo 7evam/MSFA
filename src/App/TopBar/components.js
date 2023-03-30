@@ -120,3 +120,22 @@ export const AppRoutes = styled.div`
     justify-content: space-evenly;
   }
 `;
+
+export const Year = styled.option` 
+
+`;
+
+export const YearSelector = styled.select`
+  width: 100%;
+  height: 20px;
+  margin-top: 80px;
+  @media (max-width: ${mobileBreakPoint}){
+    margin-top: 110px;
+  }
+`;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  
+`;
