@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import useRoster from './useRoster';
-import { convertMonthToReadable } from '../../utils';
 import MonthTicker from '../../components/MonthTicker';
-import YearSelector from '../../components/YearSelector';
 import RosterComponent from '../../components/Roster';
 import '@fontsource/open-sans';
 import {
@@ -12,7 +8,7 @@ import {
 } from './components';
 import Loading from '../../components/Loading';
 
-function Roster(props) {
+function Roster() {
   const {
     selectedYear,
     roflMonth,
@@ -48,12 +44,12 @@ function Roster(props) {
     ? roster[`${roflMonth}-${selectedYear}`]
     : null;
 
-  console.log('cmr');
-  console.log(roster);
-  console.log(roflMonth);
-  console.log(selectedYear);
-  console.log(currentMonthRoster);
-  console.log('---');
+  // console.log('cmr');
+  // console.log(roster);
+  // console.log(roflMonth);
+  // console.log(selectedYear);
+  // console.log(currentMonthRoster);
+  // console.log('---');
 
   // const scrollLeft = () => {
   //   scrollRef.current.scrollLeft -= 400;

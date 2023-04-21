@@ -1,6 +1,5 @@
-import React from "react";
-import styled from "styled-components";
-import { lightBlue, mobileBreakPoint } from "../../constants/style";
+import styled from 'styled-components';
+import { lightBlue, mobileBreakPoint } from '../../constants/style';
 
 export const Container = styled.div`
 margin-top: 20px;
@@ -42,7 +41,7 @@ export const ScItem = styled.p`
     text-decoration: underline;
     cursor: pointer;
   }
-  font-weight: ${(props) => (props.selected ? "700" : "400")};
+  font-weight: ${(props) => (props.selected ? '700' : '400')};
 `;
 
 export const League = styled.p`
@@ -52,6 +51,5 @@ export const League = styled.p`
     text-decoration: underline;
     cursor: pointer;
   }
-  font-weight: ${(props) => (props.selected ? "700" : "400")};
+  font-weight: ${(props) => (props.selected ? '700' : '400')};
 `;
-

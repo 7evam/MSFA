@@ -28,9 +28,21 @@ function sportReducer(state = INITIAL_STATE, action) {
             3: 7,
             4: 7,
           },
+          2023: {
+            1: 1,
+            2: 6,
+            3: 7,
+            4: 7,
+          },
         },
         playoffMonths: {
           2022: {
+            1: 7,
+            2: 10,
+            3: 14,
+            4: 14,
+          },
+          2023: {
             1: 7,
             2: 10,
             3: 14,

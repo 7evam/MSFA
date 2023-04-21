@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import useStandings from "./useStandings";
-import { convertMonthToReadable } from "../../../utils";
-import { useSelector } from "react-redux";
-import MonthTicker from "../../../components/MonthTicker";
-import Loading from "../../../components/Loading";
-import {StandingsContainer, Heading, Container, Td, Th, SlotRow, YearContainer, TitleRow} from './components'
-import {shortenName} from '../../../utils'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import useStandings from './useStandings';
+import { convertMonthToReadable, shortenName } from '../../../utils';
+import MonthTicker from '../../../components/MonthTicker';
+import Loading from '../../../components/Loading';
+import {
+  StandingsContainer, Heading, Container, Td, Th, SlotRow, YearContainer, TitleRow,
+} from './components';
 
 function Standings(props) {
   const {
@@ -15,7 +16,8 @@ function Standings(props) {
     roflMonth,
     setRoflMonth,
     finalMonthForDisplay,
-    goToSquad
+    goToSquad,
+    selectedYear,
   } = useStandings();
 
   const [appliedScroll, setAppliedScroll] = useState(false);
@@ -40,46 +42,49 @@ function Standings(props) {
   return (
     <Container>
       <Heading>League Standings</Heading>
-      {standings ? (
+      {standings && standings[`${roflMonth}-${selectedYear}`] ? (
         <StandingsContainer>
           <YearContainer>
-          <p>MSFA Year: {selectedRoflYear}</p>
+            <p>
+              MSFA Year:
+              {selectedYear}
+            </p>
           </YearContainer>
           <MonthTicker
             finalMonthForDisplay={finalMonthForDisplay}
             roflMonth={roflMonth}
             setRoflMonth={setRoflMonth}
-            selectedRoflYear={selectedRoflYear}
+            selectedYear={selectedYear}
           />
           <TitleRow>
-            <Th column={"rank"}>
+            <Th column="rank">
               <strong>Rank</strong>
             </Th>
-            <Th column={"personName"}>
+            <Th column="personName">
               <strong>Person Name</strong>
             </Th>
-            <Th column={"teamName"}>
+            <Th column="teamName">
               <strong>Team Name</strong>
             </Th>
-            <Th column={"monthPoints"}>
+            <Th column="monthPoints">
               <strong>Monthly Points</strong>
             </Th>
-            <Th column={"totalPoints"}>
+            <Th column="totalPoints">
               <strong>Total points</strong>
             </Th>
           </TitleRow>
 
-          {standings[`${roflMonth}-${selectedRoflYear}`].map((val, index) => (
+          {standings[`${roflMonth}-${selectedYear}`].map((val, index) => (
             <SlotRow key={val.userId}>
-              <Td column={"rank"}>{index + 1}</Td>
-              <Td column={"personName"}>{val.personName}</Td>
-              <Td column={"teamName"}><a onClick={() => goToSquad(val.userId)}>{shortenName(val.teamName)}</a></Td>
-              <Td column={"monthPoints"}>{val.monthlyPoints}</Td>
-              <Td column={"totalPoints"}>{val.cumulativePoints}</Td>
+              <Td column="rank">{index + 1}</Td>
+              <Td column="personName">{val.personName}</Td>
+              <Td column="teamName"><a onClick={() => goToSquad(val.userId)}>{shortenName(val.teamName)}</a></Td>
+              <Td column="monthPoints">{val.monthlyPoints}</Td>
+              <Td column="totalPoints">{val.cumulativePoints}</Td>
             </SlotRow>
           ))}
-          </StandingsContainer>
-        
+        </StandingsContainer>
+
       ) : (
         <Loading />
       )}

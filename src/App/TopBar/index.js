@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  Container, YearSelector, Year, AppRoutes, AppActions, NavGroup, Topbar, Nav, CustomNavLink, Logo, LogoContainer, MobileSettings, MobileLogOut,
+  Container, YearSelector, Year, AppRoutes,
+  AppActions, NavGroup, Topbar, Nav, CustomNavLink,
+  Logo, LogoContainer, MobileSettings, MobileLogOut,
 } from './components';
 import SettingsIcon from '../../icons/settings';
 import LogOutIcon from '../../icons/logOut';
@@ -42,7 +44,7 @@ function TopBar() {
         <Nav className="grid-container">
           <NavGroup>
             <AppRoutes>
-              <CustomNavLink to="/squad" selected={history.location.pathname == '/squad'}>
+              <CustomNavLink to="/squad" selected={history.location.pathname === '/squad'}>
                 Squad
               </CustomNavLink>
 
@@ -54,20 +56,20 @@ function TopBar() {
             <span>Rosters</span>
           </CustomNavLink> */}
 
-              <CustomNavLink to="/rofleague" selected={history.location.pathname == '/rofleague'}>
+              <CustomNavLink to="/rofleague" selected={history.location.pathname === '/rofleague'}>
                 League
               </CustomNavLink>
 
-              <CustomNavLink to="/scoring" selected={history.location.pathname == '/scoring'}>
+              <CustomNavLink to="/scoring" selected={history.location.pathname === '/scoring'}>
                 Scoring
               </CustomNavLink>
 
-              <CustomNavLink to="/add-team" selected={history.location.pathname == '/add-team'}>
+              <CustomNavLink to="/add-team" selected={history.location.pathname === '/add-team'}>
                 Transactions
               </CustomNavLink>
             </AppRoutes>
             <AppActions>
-              <CustomNavLink to="/settings" selected={history.location.pathname == '/settings'}>
+              <CustomNavLink to="/settings" selected={history.location.pathname === '/settings'}>
                 Settings
               </CustomNavLink>
               <CustomNavLink to="/">
@@ -78,7 +80,7 @@ function TopBar() {
         </Nav>
       </Topbar>
       {
-        Object.keys(activeYears).length > 1
+        activeYears && Object.keys(activeYears).length > 1
           ? (
             <YearSelector value={selectedYear} onChange={(e) => handleYearChange(e.target.value)} name="selectedYear">
               {Object.keys(activeYears).map((year) => (
