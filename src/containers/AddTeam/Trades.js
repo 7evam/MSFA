@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import "@fontsource/open-sans";
-import TradeCard from "./TradeCard";
-import MonthTicker from "../../components/MonthTicker";
-import YearSelector from "../../components/YearSelector";
-import {red} from '../../constants/style'
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import '@fontsource/open-sans';
+import TradeCard from './TradeCard';
+import MonthTicker from '../../components/MonthTicker';
+import YearSelector from '../../components/YearSelector';
+import { red } from '../../constants/style';
 
 const Container = styled.div`
   width: 100%;
@@ -29,72 +29,67 @@ const YearContainer = styled.div`
   font-size: 18px;
 `;
 
-const tradeStates = ["received", "proposed", "accepted", "declined"];
+const tradeStates = ['received', 'proposed', 'accepted', 'declined'];
 
 function Trades({ trades, reFetchTrades }) {
   const { currentOrganization } = useSelector((state) => ({
-    ...state.authReducer
+    ...state.authReducer,
   }));
 
-  const [selectedRoflYear, setSelectedRoflYear] = useState(2022);
+  const { selectedYear } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   const [roflMonth, setRoflMonth] = useState(
-    trades ? Math.max(...Object.keys(trades)) : null
+    trades ? Math.max(...Object.keys(trades)) : null,
   );
 
-  let activeYearArray = Object.keys(currentOrganization.activeYears);
+  const activeYearArray = Object.keys(currentOrganization.activeYears);
 
   return (
-    trades && trades.length ?
-    <Container>
-      {roflMonth ? (
+    trades && trades.length
+      ? (
         <Container>
-          {activeYearArray.length === 2 ? (
-            <YearSelector
-              activeYearArray={activeYearArray}
-              setSelectedRoflYear={setSelectedRoflYear}
-              selectedRoflYear={selectedRoflYear}
-            />
+          {roflMonth ? (
+            <Container>
+              <MonthTicker
+                roflMonth={roflMonth}
+                setRoflMonth={setRoflMonth}
+                onlyShownMonths={Object.keys(trades).map((n) => Number(n))}
+              />
+              <MonthContainer>
+                <p>
+                  MSFA Month:
+                  {roflMonth}
+                </p>
+              </MonthContainer>
+              {tradeStates.map((state) => {
+                const hasLength = !!(trades[roflMonth] && trades[roflMonth][state]?.length);
+                if (hasLength) {
+                  return (
+                    <>
+                      <h2>
+                        {state.charAt(0).toUpperCase() + state.slice(1)}
+                        {' '}
+                        trades
+                      </h2>
+                      {trades[roflMonth][state].map((trade) => (
+                        <TradeCard
+                          reFetchTrades={reFetchTrades}
+                          state={state}
+                          trade={trade}
+                        />
+                      ))}
+                    </>
+                  );
+                }
+              })}
+            </Container>
           ) : (
-            <YearContainer>
-              <p>MSFA Year: {selectedRoflYear}</p>
-            </YearContainer>
+            <div>You have no trades</div>
           )}
-
-          <MonthTicker
-            roflMonth={roflMonth}
-            setRoflMonth={setRoflMonth}
-            selectedRoflYear={selectedRoflYear}
-            onlyShownMonths={Object.keys(trades).map((n) => Number(n))}
-          />
-          <MonthContainer>
-            <p>MSFA Month: {roflMonth}</p>
-          </MonthContainer>
-          {tradeStates.map((state) => {
-            const hasLength =
-              trades[roflMonth] && trades[roflMonth][state]?.length
-                ? true
-                : false;
-            if (hasLength)
-              return (
-                <>
-                  <h2>
-                    {state.charAt(0).toUpperCase() + state.slice(1)} trades
-                  </h2>
-                  {trades[roflMonth][state].map((trade) => (
-                    <TradeCard
-                      reFetchTrades={reFetchTrades}
-                      state={state}
-                      trade={trade}
-                    />
-                  ))}
-                </>
-              );
-          })}
         </Container>
-      ) : (
-        <div>You have no trades</div>
-      )}
-    </Container> : <Container><p>You have no trades yet. To create a trade, use the rosters tab and explore someone else's roster. Click the trade button next to a team you'd like to trade for</p></Container>
+      ) : <Container><p>You have no trades yet. To create a trade, use the rosters tab and explore someone else's roster. Click the trade button next to a team you'd like to trade for</p></Container>
   );
 }
 
