@@ -32,6 +32,16 @@ function Settings(props) {
     history.push('/new-season');
   };
 
+  const setSelectedYear = (org) => {
+    const lowestYear = Math.min(...Object.keys(org.activeYears).map((year) => Number(year)));
+    dispatch({
+      type: 'SET_SELECTED_YEAR',
+      payload: {
+        selectedYear: lowestYear,
+      },
+    });
+  };
+
   const setNewCurrentOrg = async (organizationId) => {
     setIsLoading(true);
     const res = await makeRequest({
@@ -39,19 +49,16 @@ function Settings(props) {
       route: `/users/changeOrg/${currentOrganization.user_id}`,
       data: { organizationId },
     });
-    console.log('here is res');
-    console.log(res);
+    // await getAndSetActiveMonths();
     if (res.statusCode === 200) {
-      console.log('past if');
       const organizations = res.body;
-      console.log('here is rogs');
-      console.log(organizations);
       dispatch({
         type: 'SET_NEW_ORGS',
         payload: {
           organizations,
         },
       });
+      setSelectedYear(organizations.find((org) => org.id === organizationId));
     }
     setIsLoading(false);
   };

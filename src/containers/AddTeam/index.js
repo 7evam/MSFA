@@ -25,7 +25,7 @@ function AddTeam(props) {
   const getContent = (tab) => {
     switch (tab) {
       case 'rosters':
-        return <CurrentRosters dropTeam={dropTeam} handleTrade={handleTrade} selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster} />;
+        return <CurrentRosters isArchived={isArchived} dropTeam={dropTeam} handleTrade={handleTrade} selectedMember={selectedMember} handleChange={handleChange} currentRoster={currentRoster} />;
       case 'unownedTeams':
         if (isArchived) {
           return <ArchivedMessage />;

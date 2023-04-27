@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
-import CurrencyInput from "react-currency-input-field";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect, useMemo } from 'react';
+import CurrencyInput from 'react-currency-input-field';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ErrorContainer,
   BottomBar,
@@ -19,9 +19,9 @@ import {
   RowContainer,
   BoxText,
   SelectBox,
-  currencyInputStyle
-} from "./components";
-import useTeamSelect from "./useTeamSelect";
+  currencyInputStyle,
+} from './components';
+import useTeamSelect from './useTeamSelect';
 
 /*
 This function provides a template for selecting teams for a trade or to drop.
@@ -43,7 +43,7 @@ function TeamSelect({
   cashValue,
   handleCashValueChange,
   maxBid,
-  initialTeamCountByLeague
+  initialTeamCountByLeague,
 }) {
   const {
     modalTitle,
@@ -57,7 +57,7 @@ function TeamSelect({
     handleSubmit,
     goBack,
     sportTeams,
-    calculateIfDisabled
+    calculateIfDisabled,
   } = useTeamSelect({
     errorMessage,
     mode,
@@ -68,13 +68,19 @@ function TeamSelect({
     cashValue,
     handleCashValueChange,
     maxBid,
-    initialTeamCountByLeague
+    initialTeamCountByLeague,
   });
+
+  const {
+    selectedYear,
+  } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
 
   return (
     <Container>
       <TopBar>
-        <div></div>
+        <div />
         <Title>{modalTitle[mode]}</Title>
         <CloseContainer>
           <CloseButton onClick={closeModal}>X</CloseButton>
@@ -84,7 +90,7 @@ function TeamSelect({
         {topText[mode]}
         <RowContainer>
           {Object.keys(checkedTeams)
-            .filter((key) => key !== "cash")
+            .filter((key) => key !== 'cash')
             .map((teamId) => {
               const teamValue = checkedTeams[teamId].val;
               const leagueId = Number(String(teamId)[0]);
@@ -92,52 +98,52 @@ function TeamSelect({
 
               // only return team if they are droppable (active league not in playoffs)
               if (
-                (activeYears[2022][leagueId] &&
-                  activeYears[2022][leagueId].playoffs === 1) ||
-                activeYears[2022][leagueId].roflMonth !==
-                  activeYears[2022][leagueId].roflMonth
+                (activeYears[selectedYear][leagueId]
+                  && activeYears[selectedYear][leagueId].playoffs === 1)
+                // || activeYears[selectedYear][leagueId].roflMonth
+                //   !== activeYears[selectedYear][leagueId].roflMonth
               ) {
                 return null;
-              } else {
-                return (
-                  <TeamRow>
-                    <TeamText>
-                      {teamName}{" "}
-                      {playoffMonths[2022][leagueId] - 1 ===
-                      activeYears[2022][leagueId].roflMonth
-                        ? null
-                        : `($${teamValue})`}
-                    </TeamText>
-                    <SelectContainer>
-                      <SelectBox
-                        id={`checkbox-${teamId}`}
-                        value={`checkbox-${teamId}`}
-                        name={`checkbox-${teamId}`}
-                        type="checkbox"
-                        checked={checkedTeams[teamId].checked}
-                        onChange={() => handleTeamClick(teamId)}
-                        disabled={calculateIfDisabled(leagueId)}
-                      />
-                      <BoxText
-                        checked={checkedTeams[teamId].checked}
-                        htmlFor={`checkbox-${teamId}`}
-                      >
-                        Select
-                      </BoxText>
-                    </SelectContainer>
-                  </TeamRow>
-                );
               }
+              return (
+                <TeamRow>
+                  <TeamText>
+                    {teamName}
+                    {' '}
+                    {playoffMonths[selectedYear][leagueId] - 1
+                      === activeYears[selectedYear][leagueId]?.roflMonth
+                      ? null
+                      : `($${teamValue})`}
+                  </TeamText>
+                  <SelectContainer>
+                    <SelectBox
+                      id={`checkbox-${teamId}`}
+                      value={`checkbox-${teamId}`}
+                      name={`checkbox-${teamId}`}
+                      type="checkbox"
+                      checked={checkedTeams[teamId].checked}
+                      onChange={() => handleTeamClick(teamId)}
+                      disabled={calculateIfDisabled(leagueId)}
+                    />
+                    <BoxText
+                      checked={checkedTeams[teamId].checked}
+                      htmlFor={`checkbox-${teamId}`}
+                    >
+                      Select
+                    </BoxText>
+                  </SelectContainer>
+                </TeamRow>
+              );
             })}
         </RowContainer>
-        {mode == "addTeam" ? null : (
+        {mode === 'addTeam' ? null : (
           <>
             <TeamText>{maxCashAllowed[mode]}</TeamText>
             <TeamRow>
               <TeamText>{aboveCashValue[mode]}</TeamText>
               <SelectContainer>
                 <CurrencyInput
-                  prefix={"$"}
+                  prefix="$"
                   placeholder="Cash"
                   value={cashValue}
                   onValueChange={(value) => handleCashValueChange(value)}
@@ -154,12 +160,12 @@ function TeamSelect({
         </ErrorContainer>
       </MainContent>
       <BottomBar>
-        {mode === "tradeAway" ? (
-          <BottomButton position={"left"} onClick={goBack}>
+        {mode === 'tradeAway' ? (
+          <BottomButton position="left" onClick={goBack}>
             Go Back
           </BottomButton>
         ) : null}
-        <div></div>
+        <div />
         <BottomButton disabled={errorMessage} onClick={() => handleSubmit()}>
           {submitText[mode]}
         </BottomButton>

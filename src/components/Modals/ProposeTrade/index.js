@@ -64,11 +64,11 @@ function ProposeTrade() {
   const getContent = (stage) => {
     switch (stage) {
       case 'tradeFor':
-        return <TeamSelect mode="tradeFor" roflYear={roflYear} handleCashValueChange={handleCashValueChange} cashValue={cash.tradeFor} handleTeamClick={handleTeamClick} setStage={setStage} checkedTeams={teamsForTrade.tradeFor} />;
+        return <TeamSelect mode="tradeFor" handleCashValueChange={handleCashValueChange} cashValue={cash.tradeFor} handleTeamClick={handleTeamClick} setStage={setStage} checkedTeams={teamsForTrade.tradeFor} />;
       case 'tradeAway':
-        return <TeamSelect mode="tradeAway" roflYear={roflYear} handleCashValueChange={handleCashValueChange} cashValue={cash.tradeAway} handleTeamClick={handleTeamClick} setStage={setStage} checkedTeams={teamsForTrade.tradeAway} />;
+        return <TeamSelect mode="tradeAway" handleCashValueChange={handleCashValueChange} cashValue={cash.tradeAway} handleTeamClick={handleTeamClick} setStage={setStage} checkedTeams={teamsForTrade.tradeAway} />;
       case 'reviewTrade':
-        return <ReviewTrade roflYear={roflYear} setStage={setStage} teamsForTrade={teamsForTrade} cash={cash} />;
+        return <ReviewTrade setStage={setStage} teamsForTrade={teamsForTrade} cash={cash} />;
     }
   };
 

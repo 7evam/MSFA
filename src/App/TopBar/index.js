@@ -24,6 +24,10 @@ function TopBar() {
     ...state.sportReducer,
   }));
 
+  const { currentOrganization } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
+
   const handleYearChange = (newYear) => {
     dispatch({
       type: 'SET_SELECTED_YEAR',
@@ -80,10 +84,10 @@ function TopBar() {
         </Nav>
       </Topbar>
       {
-        activeYears && Object.keys(activeYears).length > 1
+        currentOrganization.activeYears && Object.keys(currentOrganization.activeYears).length > 1
           ? (
             <YearSelector value={selectedYear} onChange={(e) => handleYearChange(e.target.value)} name="selectedYear">
-              {Object.keys(activeYears).map((year) => (
+              {Object.keys(currentOrganization.activeYears).map((year) => (
                 <Year key={year} value={year}>{year}</Year>
               ))}
             </YearSelector>

@@ -14,7 +14,7 @@ import useAddTeam from './useAddTeam';
 import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
 
 function CurrentRosters({
-  selectedMember, handleChange, handleTrade, currentRoster, dropTeam,
+  selectedMember, handleChange, handleTrade, currentRoster, dropTeam, isArchived,
 }) {
   const { sportTeams, orgMembers } = useSelector((state) => ({
     ...state.sportReducer,
@@ -55,9 +55,12 @@ function CurrentRosters({
         <Th style={{ width: '70px' }}>
           Value
         </Th>
-        <Th style={{ width: '70px' }}>
-          Action
-        </Th>
+        {!isArchived
+          ? (
+            <Th style={{ width: '70px' }}>
+              Action
+            </Th>
+          ) : null}
       </TitleRow>
       {
             Object.keys(currentRoster).filter((el) => el !== 'cash').map((el) => {
@@ -76,10 +79,12 @@ function CurrentRosters({
                       $
                       {currentRoster[el].val}
                     </Td>
-                    <Td style={{ width: '70px' }}>
-                      {getMemberActionButton(currentRoster[el].teamId)}
-                    </Td>
-                    {/* <button>{selectedMember === currentOrganization.user_id ? "Trade" : "Drop"}</button> */}
+                    {!isArchived
+                      ? (
+                        <Td style={{ width: '70px' }}>
+                          {getMemberActionButton(currentRoster[el].teamId)}
+                        </Td>
+                      ) : null}
                   </SlotRow>
                 );
               }

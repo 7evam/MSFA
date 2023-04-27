@@ -106,9 +106,7 @@ function useScoring() {
       setReadyToRender(false);
       const abortController = new AbortController();
       try {
-        console.log('before refetch scores');
         await fetchScores(abortController);
-        console.log('after refetch scorees');
         const activeLeagueArray = Object.keys(activeYears[selectedYear]);
         const startingActiveLeague = Math.min(...activeLeagueArray);
         setLeague(startingActiveLeague);

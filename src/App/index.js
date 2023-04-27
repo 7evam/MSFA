@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useApi from '../hooks/useApi';
 
 import SideBar from './Sidebar';
@@ -28,6 +28,10 @@ function App(props) {
 
   const { makeRequest, isLoading } = useApi();
 
+  const { currentOrganization } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
+
   const getActiveMonths = async () => {
     const res = await makeRequest({
       method: 'get',
@@ -36,11 +40,19 @@ function App(props) {
 
     const parsedRes = res.body;
 
+    console.log('hereee is currenet org');
+    console.log(currentOrganization);
+
+    console.log('here is active years');
+    console.log(parsedRes.activeYears);
+
     dispatch({
       type: 'SET_ACTIVE_YEARS_AND_MONTHS',
       payload: {
-        activeYears: parsedRes.activeYears,
+        activeYears: currentOrganization.activeYears,
+        // activeYears: parsedRes.activeYears,
         currentDate: parsedRes.currentDate,
+
       },
     });
   };
