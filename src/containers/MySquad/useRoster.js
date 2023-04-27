@@ -14,7 +14,7 @@ function useRoster() {
     ...state.authReducer,
   }));
 
-  const { activeYears, selectedYear } = useSelector((state) => ({
+  const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
@@ -85,14 +85,19 @@ function useRoster() {
   const initiateAndReturnRoflMonth = () => {
     // initiate active rofl months for all active years within org
     let activeRoflMonths = {};
-    Object.keys(activeYears).forEach((roflYear) => {
+    Object.keys(currentOrganization.activeYears).forEach((roflYear) => {
       if (activeYearArray.includes(roflYear)) {
         activeRoflMonths = {
           ...activeRoflMonths,
-          ...activeYears,
+          ...currentOrganization.activeYears,
         };
       }
     });
+    console.log('step 1');
+
+    console.log('here is active rofl months');
+    console.log(activeRoflMonths);
+    console.log(selectedYear);
 
     // show the latest current rofl month
     let roflMonthToShow = 1;
@@ -103,6 +108,8 @@ function useRoster() {
         roflMonthToShow = activeRoflMonths[selectedYear][activeLeague].roflMonth;
       }
     });
+
+    console.log('step 2');
 
     // set rofl month/year valules and return year
     setActiveRoflMonths(activeRoflMonths);
@@ -118,11 +125,11 @@ function useRoster() {
   // }, [activeYears]);
 
   useEffect(() => {
-    if (activeYears && selectedYear) {
+    if (currentOrganization.activeYears && selectedYear) {
       initiateAndReturnRoflMonth();
       fetchRoster(selectedYear);
     }
-  }, [activeYears, selectedYear]);
+  }, [currentOrganization.activeYears, selectedYear]);
 
   // const addYearToRoster = async (newYear) => {
   //   const oldRoster = roster
