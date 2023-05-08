@@ -139,3 +139,8 @@ export const Container = styled.div`
   flex-direction: column;
   
 `;
+
+export const DummyYearSelector = styled.div`
+  height: 20px;
+  margin-top: 80px;
+`;

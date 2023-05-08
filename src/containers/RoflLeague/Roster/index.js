@@ -76,7 +76,7 @@ function Roster() {
         continueLoading: true,
         abort,
       });
-      if (res.statusCode == 200) {
+      if (res.statusCode === 200) {
         const { body } = res;
         const member = body.members.find((mem) => mem.user_id === Number(userId));
         setMemberInfo(member);
@@ -124,12 +124,12 @@ function Roster() {
                   <MonthTicker
                     roflMonth={selectedRoflMonth}
                     setRoflMonth={setSelectedRoflMonth}
-                    selectedRoflYear={roflYear}
+                    selectedYear={roflYear}
                   />
                   <RosterComponent
-                    selectedRoflYear={roflYear}
+                    selectedYear={roflYear}
                     currentMonthRoster={fullRoster[`${selectedRoflMonth}-${roflYear}`]}
-                    roflMonth={selectedMonth}
+                    roflMonth={selectedRoflMonth}
                     readOnly
                   />
                 </div>

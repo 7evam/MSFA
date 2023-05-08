@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import {
   Container, YearSelector, Year, AppRoutes,
   AppActions, NavGroup, Topbar, Nav, CustomNavLink,
-  Logo, LogoContainer, MobileSettings, MobileLogOut,
+  Logo, LogoContainer, MobileSettings, MobileLogOut, DummyYearSelector,
 } from './components';
 import SettingsIcon from '../../icons/settings';
 import LogOutIcon from '../../icons/logOut';
@@ -20,7 +20,7 @@ function TopBar() {
     // history.push('/')
   };
 
-  const { selectedYear, activeYears } = useSelector((state) => ({
+  const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
@@ -92,7 +92,7 @@ function TopBar() {
               ))}
             </YearSelector>
           )
-          : null
+          : <DummyYearSelector />
       }
 
     </Container>

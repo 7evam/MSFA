@@ -54,10 +54,6 @@ function RosterComponent({
   currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedYear, readOnly,
 }) {
   const endOfLeagueTable = PLAYOFF_MONTHS[selectedYear];
-  console.log('end of league table');
-  console.log(endOfLeagueTable);
-  console.log('current moonth roster');
-  console.log(currentMonthRoster);
 
   const benchSpots = (Object.values(endOfLeagueTable)).filter((val) => val >= roflMonth).length - 1;
 
