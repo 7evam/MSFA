@@ -32,6 +32,9 @@ function Scoring() {
     setDisplay,
     readyToRender,
     setLeague,
+    filteredPoints,
+    filteredRecords,
+    finalLeagueToShow,
   } = useScoring();
 
   const renderSwitch = (componentToRender) => {
@@ -54,6 +57,7 @@ function Scoring() {
               scores={scores}
               roflYear={selectedYear}
               sportTeams={sportTeams}
+              filteredPoints={filteredPoints}
             />
           </>
         ) : (
@@ -66,7 +70,7 @@ function Scoring() {
             <MonthTicker
               roflMonth={roflMonth}
               setRoflMonth={setRoflMonth}
-              selectedRoflYear={selectedYear}
+              selectedYear={selectedYear}
               finalMonthForDisplay={finalMonthForDisplay}
               firstMonthForDisplay={firstMonthForDisplay}
             />
@@ -77,6 +81,7 @@ function Scoring() {
               roflYear={selectedYear}
               sportTeams={sportTeams}
               playoffs={playoffMonths[selectedYear][league] === roflMonth}
+              filteredRecords={filteredRecords}
             />
           </>
         ) : (
@@ -88,6 +93,9 @@ function Scoring() {
     }
   };
 
+  console.log('here is final league to show');
+  console.log(finalLeagueToShow);
+
   return (
     <Container>
       {!readyToRender && <Loading />}
@@ -97,15 +105,28 @@ function Scoring() {
             <League selected={league === 1} onClick={() => setLeague(1)}>
               MLB
             </League>
-            <League selected={league === 2} onClick={() => setLeague(2)}>
-              NFL
-            </League>
-            <League selected={league === 3} onClick={() => setLeague(3)}>
-              NHL
-            </League>
-            <League selected={league === 4} onClick={() => setLeague(4)}>
-              NBA
-            </League>
+            {
+              finalLeagueToShow >= 2 ? (
+                <League selected={league === 2} onClick={() => setLeague(2)}>
+                  NFL
+                </League>
+              ) : null
+            }
+            {
+              finalLeagueToShow >= 3 ? (
+                <League selected={league === 3} onClick={() => setLeague(3)}>
+                  NHL
+                </League>
+              ) : null
+            }
+            {
+              finalLeagueToShow >= 4 ? (
+                <League selected={league === 4} onClick={() => setLeague(4)}>
+                  NBA
+                </League>
+              ) : null
+            }
+
           </LeagueSelector>
           <DisplaySelector>
             <ScItem

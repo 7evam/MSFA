@@ -54,6 +54,9 @@ const MonthTextContainer = styled.div`
 function MonthTicker({
   roflMonth, setRoflMonth, selectedYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths,
 }) {
+  console.log('in month ticker, here is rofl month');
+  console.log(roflMonth);
+
   const [appliedScroll, setAppliedScroll] = useState(false);
 
   const scrollLeft = () => {

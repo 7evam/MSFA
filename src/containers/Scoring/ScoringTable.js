@@ -39,40 +39,33 @@ const Th = styled.th`
 `;
 
 function ScoringTable({
-  roflMonth, scores, sportTeams, league,
+  filteredPoints,
 }) {
-  const [data, setData] = useState(null);
-
-  const {
-    selectedYear,
-  } = useSelector((state) => ({
-    ...state.sportReducer,
-  }));
-
-  useEffect(() => {
-    const result = [];
-
-    Object.keys(scores.points[league][`${roflMonth}-${selectedYear}`]).forEach((teamId) => {
-      result.push({
-        id: teamId,
-        teamName: `${sportTeams[league][teamId].city} ${sportTeams[league][teamId].name}`,
-        points: scores.points[league][`${roflMonth}-${selectedYear}`][teamId],
-      });
-    });
-    setData(result);
-  }, []);
+  // useEffect(() => {
+  //   if (scores.points[league][`${roflMonth}-${selectedYear}`]) {
+  //     const result = [];
+  //     Object.keys(scores.points[league][`${roflMonth}-${selectedYear}`]).forEach((teamId) => {
+  //       result.push({
+  //         id: teamId,
+  //         teamName: `${sportTeams[league][teamId].city} ${sportTeams[league][teamId].name}`,
+  //         points: scores.points[league][`${roflMonth}-${selectedYear}`][teamId],
+  //       });
+  //     });
+  //     setData(result);
+  //   }
+  // }, []);
 
   // useEffect(() => {
-  //     // change format
-  //     if(league === 1){
-  //         playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg)
-  //     } else if(league === 2){
-  //         playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg)
-  //     } else if(league === 3){
-  //         playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg)
-  //     } else if(league ===4){
-  //         playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg)
-  //     }
+  //   // change format
+  //   if (league === 1) {
+  //     playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg);
+  //   } else if (league === 2) {
+  //     playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg);
+  //   } else if (league === 3) {
+  //     playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg);
+  //   } else if (league === 4) {
+  //     playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg);
+  //   }
   // }, [league, playoffs]);
 
   const [sorting, setSorting] = useState([]);
@@ -88,7 +81,7 @@ function ScoringTable({
   ]);
 
   const table = useReactTable({
-    data,
+    data: filteredPoints,
     columns,
     state: {
       sorting,
@@ -99,12 +92,8 @@ function ScoringTable({
     debugTable: false,
   });
 
-  console.log('here is data and league');
-  console.log(data);
-  console.log(league);
-
   return (
-    data
+    filteredPoints
       ? (
         <div>
           <Table>

@@ -40,17 +40,10 @@ function App(props) {
 
     const parsedRes = res.body;
 
-    console.log('hereee is currenet org');
-    console.log(currentOrganization);
-
-    console.log('here is active years');
-    console.log(parsedRes.activeYears);
-
     dispatch({
       type: 'SET_ACTIVE_YEARS_AND_MONTHS',
       payload: {
-        activeYears: currentOrganization.activeYears,
-        // activeYears: parsedRes.activeYears,
+        activeYears: parsedRes.activeYears,
         currentDate: parsedRes.currentDate,
 
       },

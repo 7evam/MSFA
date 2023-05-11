@@ -50,12 +50,19 @@ const Tbody = styled.tbody`
 
 `;
 
+const calcualteBenchSpots = (roflMonth, selectedYear, endOfLeagueTable) => {
+  const number = Object.values(endOfLeagueTable).filter((val) => val >= roflMonth).length - 1;
+  if (number > 0) {
+    return number;
+  }
+  return 1;
+};
+
 function RosterComponent({
-  currentMonthRoster, roflMonth, isActiveTable, changeRoster, selectedSlot, selectedYear, readOnly,
+  currentMonthRoster, roflMonth, isActiveTable, selectedYear, changeRoster, selectedSlot, readOnly,
 }) {
   const endOfLeagueTable = PLAYOFF_MONTHS[selectedYear];
-
-  const benchSpots = (Object.values(endOfLeagueTable)).filter((val) => val >= roflMonth).length - 1;
+  const benchSpots = calcualteBenchSpots(roflMonth, selectedYear, endOfLeagueTable);
 
   const leagues = ['league_1', 'league_2', 'league_3', 'league_4'];
 

@@ -122,6 +122,7 @@ export default function useHydration() {
   };
 
   const hydrateActiveYears = async (abortController) => {
+    console.log('hyradting active years');
     setIsHydrating(true);
     try {
       const res = await makeRequest({
