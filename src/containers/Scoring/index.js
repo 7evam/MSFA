@@ -93,9 +93,6 @@ function Scoring() {
     }
   };
 
-  console.log('here is final league to show');
-  console.log(finalLeagueToShow);
-
   return (
     <Container>
       {!readyToRender && <Loading />}

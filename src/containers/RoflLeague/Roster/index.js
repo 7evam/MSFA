@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RosterComponent from '../../../components/Roster';
 import useApi from '../../../hooks/useApi';
 import MonthTicker from '../../../components/MonthTicker';
 import MonthlyPoints from '../../../components/MonthlyPoints';
 import IconLeft from '../../../icons/iconLeft';
+import Loading from '../../../components/Loading';
 
 const Container = styled.div`
     margin-top: 50px;
@@ -37,7 +38,15 @@ function Roster() {
     ...state.authReducer,
   }));
 
+  const {
+    selectedYear,
+  } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const { makeRequest, isLoading } = useApi();
 
@@ -47,24 +56,7 @@ function Roster() {
   const [selectedRoflMonth, setSelectedRoflMonth] = useState(roflMonth);
   const [memberInfo, setMemberInfo] = useState(null);
   const [viewToRender, setViewToRender] = useState('single');
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    fetchOrgInfo(abortController);
-    fetchRoster(abortController);
-    return () => abortController.abort();
-  }, []);
-
-  const fetchInfo = () => {
-    fetchOrgInfo();
-    fetchRoster();
-  };
-
-  useEffect(() => {
-    if (selectedRoflMonth) {
-      history.push(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`);
-    }
-  }, [selectedRoflMonth]);
+  const [readyToRender, setReadyToRender] = useState(false);
 
   const fetchOrgInfo = async (abort) => {
     // TODO optimize this
@@ -88,17 +80,86 @@ function Roster() {
     }
   };
 
-  const fetchRoster = async (abort) => {
+  const fetchRoster = async (abort, year) => {
     try {
       const res = await makeRequest({
         method: 'get',
-        route: `/users/roster/${userId}/${currentOrganization.id}/${roflYear}`,
+        route: `/users/roster/${userId}/${currentOrganization.id}/${year}`,
         abort,
       });
       const roster = res.body;
       setFullRoster(roster);
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedYear !== roflYear) {
+        dispatch({
+          type: 'SET_SELECTED_YEAR',
+          payload: {
+            selectedYear: roflYear,
+          },
+        });
+      }
+      const abortController = new AbortController();
+      await fetchOrgInfo(abortController);
+      await fetchRoster(abortController, roflYear);
+      setReadyToRender(true);
+      return () => abortController.abort();
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const refetchData = async () => {
+      const abortController = new AbortController();
+      await fetchOrgInfo(abortController);
+      await fetchRoster(abortController, selectedYear);
+      setReadyToRender(true);
+      return () => abortController.abort();
+    };
+    if (readyToRender) {
+      setReadyToRender(false);
+      history.push(`/rofleague/${userId}/${selectedYear}/${selectedRoflMonth}`);
+      refetchData();
+    }
+  }, [selectedYear]);
+
+  useEffect(() => {
+    if (selectedRoflMonth) {
+      history.push(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`);
+    }
+  }, [selectedRoflMonth]);
+
+  const renderSwitch = (view) => {
+    switch (view) {
+      case 'overview':
+        return (
+          <div>
+            <MonthlyPoints userId={userId} roflYear={roflYear} />
+          </div>
+        );
+      case 'single':
+        return (
+          <div>
+            <MonthTicker
+              roflMonth={selectedRoflMonth}
+              setRoflMonth={setSelectedRoflMonth}
+              selectedYear={roflYear}
+            />
+            <RosterComponent
+              selectedYear={roflYear}
+              currentMonthRoster={fullRoster[`${selectedRoflMonth}-${roflYear}`]}
+              roflMonth={selectedRoflMonth}
+              readOnly
+            />
+          </div>
+        );
+      default:
+        return <div>error</div>;
     }
   };
 
@@ -111,47 +172,25 @@ function Roster() {
           {' '}
           Back to Standings
         </a>
-        <Selector onClick={() => setViewToRender('single')}>Monthly</Selector>
-        <Selector onClick={() => setViewToRender('overview')}>Overview</Selector>
+        <Selector selected={viewToRender === 'single'} onClick={() => setViewToRender('single')}>Monthly</Selector>
+        <Selector selected={viewToRender === 'overview'} onClick={() => setViewToRender('overview')}>Overview</Selector>
       </TopMenu>
+      <div>
+        <p>
+          Roster for
+          {' '}
+          {memberInfo?.team_name}
+          {' '}
+          managed by
+          {' '}
+          {memberInfo?.name}
+        </p>
+      </div>
       {
-        isLoading
-          ? <p>loading...</p>
-          : fullRoster && memberInfo && fullRoster[`${selectedRoflMonth}-${roflYear}`]
-            ? viewToRender === 'single'
-              ? (
-                <div>
-                  <MonthTicker
-                    roflMonth={selectedRoflMonth}
-                    setRoflMonth={setSelectedRoflMonth}
-                    selectedYear={roflYear}
-                  />
-                  <RosterComponent
-                    selectedYear={roflYear}
-                    currentMonthRoster={fullRoster[`${selectedRoflMonth}-${roflYear}`]}
-                    roflMonth={selectedRoflMonth}
-                    readOnly
-                  />
-                </div>
-              )
-              : (
-                <div>
-                  <div>
-                    <p>
-                      Roster for
-                      {memberInfo?.team_name}
-                      {' '}
-                      managed by
-                      {memberInfo.name}
-                    </p>
-                  </div>
-                  <MonthlyPoints userId={userId} roflYear={roflYear} />
-                </div>
-              )
-
-            : <p>Loading..</p>
-        }
-
+        readyToRender
+          ? renderSwitch(viewToRender)
+          : <Loading />
+      }
     </Container>
 
   );

@@ -35,13 +35,7 @@ function useScoring() {
   const [finalLeagueToShow, setFinalLeagueToShow] = useState(null);
 
   const formatPoints = (pointsData, league, roflMonth, year) => {
-    console.log('in format here are args');
-    console.log(pointsData);
-    console.log(league);
-    console.log(roflMonth);
-    console.log(year);
     if (pointsData[league][`${roflMonth}-${year}`]) {
-      console.log('in if');
       const result = [];
       Object.keys(pointsData[league][`${roflMonth}-${year}`]).forEach((teamId) => {
         result.push({
