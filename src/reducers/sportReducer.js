@@ -55,7 +55,7 @@ function sportReducer(state = INITIAL_STATE, action) {
           3: 'NHL',
           4: 'NBA',
         },
-        selectedYear: Math.min(...Object.keys(action.payload.activeYears)),
+        // selectedYear: Math.min(...Object.keys(action.payload.activeYears)),
       };
     case 'HYDRATE_SPORT_TEAMS':
       return {

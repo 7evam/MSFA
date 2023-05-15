@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 function authReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case 'LOGIN':
-      const currentOrg = action.payload.organizations.find((org) => org.current === 1);
+      const { currentOrg } = action.payload;
       const currentOrganizationLogin = currentOrg || action.payload.organizations[0];
       return {
         ...state,

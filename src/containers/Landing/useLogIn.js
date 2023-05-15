@@ -42,13 +42,21 @@ function useLogIn() {
       });
       if (res.statusCode === 200) {
         const userInfo = res.body;
+        const currentOrg = userInfo.organizations.find((org) => org.current === 1);
         dispatch({
           type: 'LOGIN',
           payload: {
+            currentOrg,
             name: userInfo.name,
             email: userInfo.email,
             organizations: userInfo.organizations,
             userToken: userInfo.userToken,
+          },
+        });
+        dispatch({
+          type: 'SET_SELECTED_YEAR',
+          payload: {
+            selectedYear: Math.min(...Object.keys(currentOrg.activeYears)),
           },
         });
         history.push('/');
@@ -83,8 +91,6 @@ function useLogIn() {
         },
       });
       if (res.statusCode === 200) {
-        console.log('here is res');
-        console.log(res);
         toast.success('Your password has been created, you may now log in');
         // const userInfo = JSON.parse(res.body);
         // dispatch({

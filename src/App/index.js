@@ -28,7 +28,7 @@ function App(props) {
 
   const { makeRequest, isLoading } = useApi();
 
-  const { currentOrganization } = useSelector((state) => ({
+  const { currentOrganization, userToken } = useSelector((state) => ({
     ...state.authReducer,
   }));
 
@@ -45,7 +45,6 @@ function App(props) {
       payload: {
         activeYears: parsedRes.activeYears,
         currentDate: parsedRes.currentDate,
-
       },
     });
   };

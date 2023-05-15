@@ -27,7 +27,9 @@ function useRoster() {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [areRostersEqual, setAreRostersEqual] = useState(true);
   const [activeRoflYears, setActiveRoflYears] = useState(null);
-  // this is an object like {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]} to help know which slots are locked
+  // this is an object like
+  // {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]}
+  // to help know which slots are locked
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
   const [updateOneMonth, setUpdateOneMonth] = useState(false);
   const [loadingRoster, setLoadingRoster] = useState(false);
@@ -36,10 +38,12 @@ function useRoster() {
   const fetchRoster = async (selectedYear) => {
     try {
       setLoadingRoster(true);
-      const res = await makeRequest({
+      var res = await makeRequest({
         method: 'get',
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}`,
       });
+      console.log('here is rees');
+      console.log(res);
       const fetchedRoster = res.body;
       console.log(`here is roster from fetch roster year ${selectedYear}`);
       console.log(roster);
@@ -58,9 +62,10 @@ function useRoster() {
     } catch (e) {
       setLoadingRoster(false);
       console.log('problem');
-      console.log('here is params');
+      console.log('here is params then res');
       console.log(currentOrganization.id);
       console.log(selectedYear);
+      console.log(res);
       console.error(e);
     }
   };
@@ -93,23 +98,14 @@ function useRoster() {
         };
       }
     });
-    console.log('step 1');
-
-    console.log('here is active rofl months');
-    console.log(activeRoflMonths);
-    console.log(selectedYear);
 
     // show the latest current rofl month
-    let roflMonthToShow = 1;
-    Object.keys(activeRoflMonths[selectedYear]).forEach((activeLeague) => {
-      // console.log('here is an active league')
-      // console.log(activeRoflMonths[initialYear][activeLeague].roflMonth)
-      if (activeRoflMonths[selectedYear][activeLeague].roflMonth > roflMonthToShow) {
-        roflMonthToShow = activeRoflMonths[selectedYear][activeLeague].roflMonth;
-      }
-    });
-
-    console.log('step 2');
+    const roflMonthToShow = 1;
+    // Object.keys(activeRoflMonths[selectedYear]).forEach((activeLeague) => {
+    //   if (activeRoflMonths[selectedYear][activeLeague].roflMonth > roflMonthToShow) {
+    //     roflMonthToShow = activeRoflMonths[selectedYear][activeLeague].roflMonth;
+    //   }
+    // });
 
     // set rofl month/year valules and return year
     setActiveRoflMonths(activeRoflMonths);

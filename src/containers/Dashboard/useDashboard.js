@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import useApi from "../../hooks/useApi";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { checkIfRostersAreEqual } from "../../utils";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { checkIfRostersAreEqual } from '../../utils';
+import useApi from '../../hooks/useApi';
 
 function useDashboard() {
   const { makeRequest, isLoading } = useApi();
@@ -12,15 +11,15 @@ function useDashboard() {
   const dispatch = useDispatch();
 
   const { currentOrganization } = useSelector((state) => ({
-    ...state.authReducer
+    ...state.authReducer,
   }));
 
   const { activeYears, currentDate } = useSelector((state) => ({
-    ...state.sportReducer
+    ...state.sportReducer,
   }));
 
   const getAndSetActiveRoflYearsAndReturnSelectedYear = () => {
-    let populatedActiveYears = [];
+    const populatedActiveYears = [];
 
     Object.keys(activeYears).forEach((year) => {
       populatedActiveYears.push(year);
@@ -38,13 +37,13 @@ function useDashboard() {
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
 
   const getAndSetActiveRoflMonths = () => {
-    let result = {};
-    Object.keys(activeYears).forEach(roflYear => {
+    const result = {};
+    Object.keys(activeYears).forEach((roflYear) => {
       result[roflYear] = [];
       Object.keys(activeYears[year]).forEach((leagueId) => {
         result[roflYear].push({
           leagueId,
-          roflMonth: activeYears[roflYear][leagueId].roflMonth
+          roflMonth: activeYears[roflYear][leagueId].roflMonth,
         });
       });
     });
@@ -52,7 +51,7 @@ function useDashboard() {
     if (!roster) {
       const lowestMonth = getLowestRoflMonthOfYear(
         Object.keys(activeYears)[0],
-        result
+        result,
       );
       setRoflMonth(lowestMonth);
     }
@@ -64,7 +63,7 @@ function useDashboard() {
       if (league.roflMonth < lowestMonth) lowestMonth = league.roflMonth;
     });
     if (lowestMonth > 50) {
-      console.error("mistake getting lowest rofl month");
+      console.error('mistake getting lowest rofl month');
     } else {
       return lowestMonth;
     }
@@ -72,14 +71,15 @@ function useDashboard() {
 
   const fetchRoster = async (selectedRoflYear) => {
     try {
-      var res = await makeRequest({
-        method: "get",
-        route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`
+      console.log('in route hardcoaded with user 2');
+      const res = await makeRequest({
+        method: 'get',
+        route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`,
       });
 
       setRoster(JSON.parse(res.body));
     } catch (e) {
-      console.log("problem");
+      console.log('problem');
       console.error(e);
     }
   };
@@ -94,9 +94,9 @@ function useDashboard() {
 
   useEffect(() => {
     if (
-      activeRoflYears &&
-      activeRoflYears.length === 2 &&
-      selectedRoflYear === activeRoflYears[1]
+      activeRoflYears
+      && activeRoflYears.length === 2
+      && selectedRoflYear === activeRoflYears[1]
     ) {
     }
   }, [selectedRoflYear]);
@@ -116,7 +116,7 @@ function useDashboard() {
     currentOrganization,
     activeYears,
     setSelectedRoflYear,
-    changeSelectedYear
+    changeSelectedYear,
   };
 }
 
