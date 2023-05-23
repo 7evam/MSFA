@@ -8,6 +8,7 @@ import {
   Redirect, BrowserRouter, Route, Switch, withRouter,
 } from 'react-router-dom';
 import Landing from './containers/Landing';
+import About from './containers/About';
 // import CreateNewLeague from './containers/CreateNewLeague'
 
 import Loading from './components/Loading';
@@ -35,6 +36,7 @@ function Router() {
         <Suspense fallback={<Loading />}>
           {/* <Route exact path='/create-account' render={(props)=><CreateAccount {...props} emailFromInvitation={emailFromInvitation} />}/> */}
           <Route exact path="/login" render={(props) => <Landing {...props} />} />
+          <Route exact path="/about" render={(props) => <About {...props} />} />
           {
             userToken
               ? (

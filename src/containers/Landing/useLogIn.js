@@ -129,6 +129,10 @@ function useLogIn() {
     });
   };
 
+  const goToAbout = () => {
+    history.push('/about');
+  };
+
   return {
     handleLogIn,
     handleChange,
@@ -139,6 +143,7 @@ function useLogIn() {
     isLoading,
     entryModeLogIn,
     setEntryModeLogIn,
+    goToAbout,
   };
 }
 
