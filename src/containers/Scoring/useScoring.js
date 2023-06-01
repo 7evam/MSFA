@@ -134,7 +134,7 @@ function useScoring() {
       setFilteredRecords(scores.records[league][`${roflMonth}-${selectedYear}`]);
       setReadyToRender(true);
     }
-    if (readyToRender) reCalculate();
+    if (readyToRender && league <= finalLeagueToShow) reCalculate();
   }, [league, roflMonth]);
 
   //  change data on year change
@@ -163,6 +163,11 @@ function useScoring() {
     if (readyToRender) refetchData();
   }, [selectedYear]);
 
+  const changeLeague = (newLeague) => {
+    if (newLeague > finalLeagueToShow) setDisplay('scheme');
+    setLeague(newLeague);
+  };
+
   return {
     playoffMonths,
     selectedYear,
@@ -176,7 +181,7 @@ function useScoring() {
     display,
     setDisplay,
     readyToRender,
-    setLeague,
+    changeLeague,
     filteredPoints,
     filteredRecords,
     finalLeagueToShow,
