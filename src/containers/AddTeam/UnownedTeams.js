@@ -64,6 +64,14 @@ function UnownedTeams({
     ...state.sportReducer,
   }));
 
+  const [readyToRender, setReadyToRender] = useState(false);
+
+  useEffect(() => {
+    if (unownedTeams && league && firstLeagueToShow && firstActiveMonthForClaim) {
+      setReadyToRender(true);
+    }
+  }, [unownedTeams, league, firstLeagueToShow, firstActiveMonthForClaim]);
+
   const calculateDeadline = (year, league) => {
     // PROBLEM there is no deadline for month 14 (nfl and nba playoff month) so this errors
     // create archive view. isArchived should be calculated in useAddTeam hook
@@ -76,12 +84,10 @@ function UnownedTeams({
     return deadlines[year][league][roflMonth].deadline;
   };
 
-  // const [deadline, setDeadline] = useState(calculateDeadline(selectedYear, league));
+  const deadline = calculateDeadline(selectedYear, league);
 
   const today = new Date();
   const waiverPeriodEnded = new Date(deadline) < today;
-
-  const deadline = calculateDeadline(selectedYear, league);
 
   // const deadline = activeYears[selectedYear][league]
   //   ? deadlines[selectedYear][league][activeYears[selectedYear][league].roflMonth].deadline
@@ -107,51 +113,50 @@ function UnownedTeams({
     return add;
   };
 
-  console.log('here is deadline');
-  console.log(deadline);
-
   return (
-    <Container>
-      <LeagueSelector>
-        {firstLeagueToShow === 1 ? (
-          <League selected={league === 1} onClick={() => setLeague(1)}>
-            MLB
-          </League>
-        ) : null}
-        {firstLeagueToShow <= 2 ? (
-          <League selected={league === 2} onClick={() => setLeague(2)}>
-            NFL
-          </League>
-        ) : null}
+    readyToRender
+      ? (
+        <Container>
+          <LeagueSelector>
+            {firstLeagueToShow === 1 ? (
+              <League selected={league === 1} onClick={() => setLeague(1)}>
+                MLB
+              </League>
+            ) : null}
+            {firstLeagueToShow <= 2 ? (
+              <League selected={league === 2} onClick={() => setLeague(2)}>
+                NFL
+              </League>
+            ) : null}
 
-        <League selected={league === 3} onClick={() => setLeague(3)}>
-          NHL
-        </League>
-        <League selected={league === 4} onClick={() => setLeague(4)}>
-          NBA
-        </League>
-      </LeagueSelector>
-      <p>
-        Waiver period
-        {' '}
-        { waiverPeriodEnded ? 'ended' : 'ends'}
-        {' '}
-        {convertDateObjToReadable(deadline)}
-        {' '}
-        at 4 am EST
-      </p>
-      <TopText>
-        {waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it '
-          : 'Placing a bid on a team from this league will queue it for processing on the waiver deadline and, if you win, the team '}
-        will be available starting MSFA month
-        {' '}
-        {firstActiveMonthForClaim}
-      </TopText>
-      <TitleRow>
-        <Th style={{ width: '200px' }}>Team</Th>
-        <Th style={{ width: '70px' }}>Action</Th>
-      </TitleRow>
-      {
+            <League selected={league === 3} onClick={() => setLeague(3)}>
+              NHL
+            </League>
+            <League selected={league === 4} onClick={() => setLeague(4)}>
+              NBA
+            </League>
+          </LeagueSelector>
+          <p>
+            Waiver period
+            {' '}
+            { waiverPeriodEnded ? 'ended' : 'ends'}
+            {' '}
+            {convertDateObjToReadable(deadline)}
+            {' '}
+            at 4 am EST
+          </p>
+          <TopText>
+            {waiverPeriodEnded ? 'Adding a team from this league will immediately add it to your current roster and it '
+              : 'Placing a bid on a team from this league will queue it for processing on the waiver deadline and, if you win, the team '}
+            will be available starting MSFA month
+            {' '}
+            {firstActiveMonthForClaim}
+          </TopText>
+          <TitleRow>
+            <Th style={{ width: '200px' }}>Team</Th>
+            <Th style={{ width: '70px' }}>Action</Th>
+          </TitleRow>
+          {
 
       unownedTeams[league].map((team) => (
         <SlotRow key={team}>
@@ -164,7 +169,8 @@ function UnownedTeams({
         </SlotRow>
       ))
 }
-    </Container>
+        </Container>
+      ) : <Loading />
   );
 }
 

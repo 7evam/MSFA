@@ -363,12 +363,8 @@ function useAddTeam() {
     let archived = true;
     // if all active leagues are in playoffs then we must be in archive mode
     Object.keys(activeYears[selectedYear]).forEach((key) => {
-      console.log('here is key');
-      console.log(key);
       if (activeYears[selectedYear][key].playoffs === 0) archived = false;
     });
-    console.log('is it archived?');
-    console.log(archived);
     setIsArchived(archived);
   };
 
