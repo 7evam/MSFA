@@ -34,9 +34,6 @@ function ReviewRoster({ cnlProps }) {
     setStage,
   } = cnlProps;
 
-  console.log('here is member rosters');
-  console.log(memberRosters);
-
   return (
     <Container>
       <Header>

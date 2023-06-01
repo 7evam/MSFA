@@ -37,7 +37,7 @@ function useCreateNewLeague(existingOrganization) {
   const [memberRosterIndex, setMemberRosterIndex] = useState(0);
 
   // ** Set this value to true for test data to be automatically added **
-  const test = true;
+  const test = false;
 
   useEffect(() => {
     if (existingOrganization) {
