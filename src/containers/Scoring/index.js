@@ -95,8 +95,7 @@ function Scoring() {
 
   return (
     <Container>
-      {!readyToRender && <Loading />}
-      { readyToRender && (
+      { readyToRender ? (
         <div>
           <LeagueSelector>
             <League selected={league === 1} onClick={() => setLeague(1)}>
@@ -147,7 +146,7 @@ function Scoring() {
           </DisplaySelector>
           {renderSwitch(display)}
         </div>
-      )}
+      ) : <Loading />}
     </Container>
   );
 }

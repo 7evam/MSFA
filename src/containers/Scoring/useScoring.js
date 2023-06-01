@@ -34,18 +34,20 @@ function useScoring() {
   const [filteredRecords, setFilteredRecords] = useState(null);
   const [finalLeagueToShow, setFinalLeagueToShow] = useState(null);
 
-  const formatPoints = (pointsData, league, roflMonth, year) => {
+  const formatPoints = (pointsData, league, roflMonth, year, fetchedSportTeams) => {
+    const teamTable = sportTeams || fetchedSportTeams;
     if (pointsData[league][`${roflMonth}-${year}`]) {
       const result = [];
       Object.keys(pointsData[league][`${roflMonth}-${year}`]).forEach((teamId) => {
         result.push({
           id: teamId,
-          teamName: `${sportTeams[league][teamId].city} ${sportTeams[league][teamId].name}`,
+          teamName: `${teamTable[league][teamId].city} ${teamTable[league][teamId].name}`,
           points: pointsData[league][`${roflMonth}-${year}`][teamId],
         });
       });
       return result;
     }
+
     setError('points data formatted wrong');
     throw new Error('points data ormatted wrong');
   };
@@ -99,7 +101,11 @@ function useScoring() {
       const abortController = new AbortController();
       try {
         const fetchedData = await fetchScores(abortController);
-        if (!sportTeams) await hydrateSportTeams(abortController);
+
+        let fetchedSportTeams;
+        if (!sportTeams) {
+          fetchedSportTeams = await hydrateSportTeams(abortController);
+        }
         if (!activeYears) await hydrateActiveYears(abortController);
         const activeLeagues = Object.keys(activeYears[selectedYear]);
         setFinalLeagueToShow(Math.max(...activeLeagues));
@@ -107,7 +113,7 @@ function useScoring() {
         setLeague(startingActiveLeague);
         const initialRoflMonth = setDisplayMonthRange(startingActiveLeague, true);
         setFilteredPoints(
-          formatPoints(fetchedData.points, startingActiveLeague, initialRoflMonth, selectedYear),
+          formatPoints(fetchedData.points, startingActiveLeague, initialRoflMonth, selectedYear, fetchedSportTeams),
         );
         setFilteredRecords(fetchedData.records[startingActiveLeague][`${initialRoflMonth}-${selectedYear}`]);
         setReadyToRender(true);

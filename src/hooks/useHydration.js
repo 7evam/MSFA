@@ -65,6 +65,7 @@ export default function useHydration() {
       },
     });
     setIsHydrating(false);
+    return sportTeams;
   };
 
   const getTeams = async (abortController) => {
