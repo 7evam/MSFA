@@ -71,6 +71,9 @@ function TeamSelect({
     initialTeamCountByLeague,
   });
 
+  console.log('here is checcked teams');
+  console.log(checkedTeams);
+
   const {
     selectedYear,
   } = useSelector((state) => ({

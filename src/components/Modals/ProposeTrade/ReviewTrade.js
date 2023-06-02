@@ -136,35 +136,6 @@ function ReviewTrade({
     });
   };
 
-  //    <MainContent>
-  //    {topText[mode]}
-  //    <RowContainer>
-  //      {Object.keys(checkedTeams)
-  //        .filter((key) => key !== "cash")
-  //        .map((teamId) => {
-  //          const teamValue = checkedTeams[teamId].val;
-  //          const leagueId = Number(String(teamId)[0]);
-  //          const teamName = `${sportTeams[leagueId][teamId].city} ${sportTeams[leagueId][teamId].name}`;
-
-  //          // only return team if they are droppable (active league not in playoffs)
-  //          if (
-  //            (activeYears[2022][leagueId] &&
-  //              activeYears[2022][leagueId].playoffs === 1) ||
-  //            activeYears[2022][leagueId].roflMonth !==
-  //              activeYears[2022][leagueId].roflMonth
-  //          ) {
-  //            return null;
-  //          } else {
-  //            return (
-  //              <TeamRow>
-  //                <TeamText>
-  //                  {teamName}{" "}
-  //                  {playoffMonths[2022][leagueId] - 1 ===
-  //                  activeYears[2022][leagueId].roflMonth
-  //                    ? null
-  //                    : `($${teamValue})`}
-  //                </TeamText>
-
   return (
     <Container>
       <TopBar>
@@ -186,7 +157,7 @@ function ReviewTrade({
               <p>
                 {team.name}
                 {' '}
-                {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.value})`}
+                {playoffMonths[selectedYear][team.leagueId] - 1 === props.currentRoflMonths[team.leagueId] ? null : `($${team.value})`}
               </p>
             ))}
             {cash.tradeFor > 0 ? (
@@ -204,7 +175,7 @@ function ReviewTrade({
               <p>
                 {team.name}
                 {' '}
-                {playoffMonths[2022][team.leagueId] - 1 === activeYears[2022][team.leagueId].roflMonth ? null : `($${team.value})`}
+                {playoffMonths[selectedYear][team.leagueId] - 1 === props.currentRoflMonths[team.leagueId] ? null : `($${team.value})`}
               </p>
             ))}
             {cash.tradeAway > 0 ? (
