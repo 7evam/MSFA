@@ -67,6 +67,10 @@ function CurrentBids({
 }) {
   const { makeRequest, isLoading } = useApi();
 
+  const { selectedYear } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   const dispatch = useDispatch();
 
   // const [selectedRoflYear, setSelectedRoflYear] = useState(2022);
@@ -236,6 +240,7 @@ function CurrentBids({
                     roflMonth={roflMonth}
                     setRoflMonth={setRoflMonth}
                     onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+                    selectedYear={selectedYear}
                   />
                   <MonthContainer>
                     <p>

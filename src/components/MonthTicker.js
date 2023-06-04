@@ -110,6 +110,9 @@ function MonthTicker({
     return months;
   };
 
+  console.log('here is year');
+  console.log(selectedYear);
+
   return (
     <div>
       <MobileMonthTicker roflMonth={roflMonth} setRoflMonth={setRoflMonth} firstMonthForDisplay={firstMonthForDisplay} selectedYear={selectedYear} finalMonthForDisplay={finalMonthForDisplay} onlyShownMonths={onlyShownMonths} />
