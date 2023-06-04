@@ -53,10 +53,12 @@ function useLogIn() {
             userToken: userInfo.userToken,
           },
         });
+        // TODO this ccurrently sets default year on logiin to lastest year, it should
+        // be most recently used year which is saved in database
         dispatch({
           type: 'SET_SELECTED_YEAR',
           payload: {
-            selectedYear: Math.min(...Object.keys(currentOrg.activeYears)),
+            selectedYear: Math.max(...Object.keys(currentOrg.activeYears)),
           },
         });
         history.push('/');
