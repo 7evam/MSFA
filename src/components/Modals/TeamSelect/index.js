@@ -29,7 +29,7 @@ This function provides a template for selecting teams for a trade or to drop.
 logic thats common for trades and drops is in the useTeamSelect hook
 
 logic thats unique for trades or drops is
- in its respective modal component, which rendered this template
+in its respective modal component, which rendered this template
 
 */
 
@@ -70,9 +70,6 @@ function TeamSelect({
     maxBid,
     initialTeamCountByLeague,
   });
-
-  console.log('here is checcked teams');
-  console.log(checkedTeams);
 
   const {
     selectedYear,

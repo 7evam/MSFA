@@ -126,7 +126,7 @@ function AddTeam() {
     const newCheckedTeams = { ...checkedTeams };
     newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
     if (
-      Object.values(newCheckedTeams).filter((val) => val === true).length > 3
+      Object.values(newCheckedTeams).filter((team) => team.checked === true).length > 3
     ) {
       // must explicitly set team as unchecked or else it shows up as checked again
       newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;

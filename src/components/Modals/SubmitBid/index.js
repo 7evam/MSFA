@@ -1,22 +1,21 @@
-import React, { useState, useEffect, useMemo } from "react";
-import styled from "styled-components";
-import CurrencyInput from "react-currency-input-field";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import useApi from "../../../hooks/useApi";
-import { useDispatch } from "react-redux";
-import TeamSelect from "../TeamSelect";
+import React, { useState, useEffect, useMemo } from 'react';
+import styled from 'styled-components';
+import CurrencyInput from 'react-currency-input-field';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import useApi from '../../../hooks/useApi';
+import TeamSelect from '../TeamSelect';
 // import useApi from '../../hooks/useApi'
 
 function SubmitBid() {
   const dispatch = useDispatch();
 
   const { props } = useSelector((state) => ({
-    ...state.modalReducer
+    ...state.modalReducer,
   }));
 
   const { currentOrganization } = useSelector((state) => ({
-    ...state.authReducer
+    ...state.authReducer,
   }));
 
   const {
@@ -24,25 +23,25 @@ function SubmitBid() {
     roflYear,
     activeYears,
     playoffMonths,
-    leagueTable
+    leagueTable,
+    selectedYear,
   } = useSelector((state) => ({
-    ...state.sportReducer
+    ...state.sportReducer,
   }));
 
   const { makeRequest, isLoading } = useApi();
 
   const transformToCheckable = (roster) => {
-      
-    let checkableRoster = {};
+    const checkableRoster = {};
     checkableRoster.cash = roster.cash;
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
       // don't show a team if it wont be active next month
-      if (team.teamId && props.currentRoflMonths[team.leagueId] +1 >= props.firstActiveMonthForClaim) {
+      if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
         checkableRoster[team.teamId] = {
-          checked: props.selectedTeam === team.teamId ? true : false,
+          checked: props.selectedTeam === team.teamId,
           val: team.val,
-          leagueId: team.leagueId
+          leagueId: team.leagueId,
         };
       }
     });
@@ -50,43 +49,41 @@ function SubmitBid() {
   };
 
   const calculateInitialTeamCount = () => {
-    let teamCountByLeague = {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0
-      };
-      Object.keys(props.currentUserRoster)
-        .filter((key) => key !== "cash")
-        .forEach((team) => {
-          let leagueId = props.currentUserRoster[team].leagueId;
-          if (leagueId) teamCountByLeague[leagueId]++;
-        });
-        return teamCountByLeague
-  }
-  
+    const teamCountByLeague = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+    };
+    Object.keys(props.currentUserRoster)
+      .filter((key) => key !== 'cash')
+      .forEach((team) => {
+        const { leagueId } = props.currentUserRoster[team];
+        if (leagueId) teamCountByLeague[leagueId]++;
+      });
+    return teamCountByLeague;
+  };
 
   const [bidValue, setBidValue] = useState(null);
   const [maxBid, setMaxBid] = useState(props.currentUserRoster.cash);
   const [checkedTeams, setCheckedTeams] = useState(
-    transformToCheckable(props.currentUserRoster)
+    transformToCheckable(props.currentUserRoster),
   );
   const [errorMessage, setErrorMessage] = useState(null);
-  const initialTeamCountByLeague = useMemo(() => { return calculateInitialTeamCount()}, [])
+  const initialTeamCountByLeague = useMemo(() => calculateInitialTeamCount(), []);
 
   // this function sets errors in state and returns
   // true if there is an error and false if there is NO error
   const checkForBidError = (bid, maxBid) => {
-    let newError
+    let newError;
     if (bid > maxBid) {
-      newError = "Your bid is too high";
+      newError = 'Your bid is too high';
     }
     setErrorMessage(newError);
     if (bid > maxBid) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   const handleBidChange = (value) => {
@@ -99,25 +96,28 @@ function SubmitBid() {
     const newCheckedTeams = { ...checkedTeams };
     newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
     if (
-      Object.values(newCheckedTeams).filter((val) => val === true).length > 3
+      Object.values(newCheckedTeams).filter((team) => team.checked === true).length > 3
     ) {
       // must explicitly set team as unchecked or else it shows up as checked again
       newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
-      setCheckedTeams(newCheckedTeams)
-      toast.error("You can conditionally drop a maximum of 3 teams");
-      return;
+      setCheckedTeams(newCheckedTeams);
+      toast.error('You can conditionally drop a maximum of 3 teams');
     } else {
       let newMaxBid = maxBid;
       const leagueId = Number(String(team)[0]);
       // if team is league with active playoff month it cannot be dropped for cash
+
+      // if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
       if (
-        playoffMonths[2022][team.leagueId] - 1 !==
-        activeYears[2022][team.leagueId].roflMonth
+        playoffMonths[selectedYear][team.leagueId]
+        > props.currentRoflMonths[team.leagueId]
       ) {
         newCheckedTeams[teamId].checked === true
           ? (newMaxBid += team.val)
           : (newMaxBid -= team.val);
         setMaxBid(newMaxBid);
+      } else {
+        toast.error('You can only select teams in their regular season');
       }
       setCheckedTeams(newCheckedTeams);
       checkForBidError(bidValue, newMaxBid);
@@ -135,13 +135,13 @@ function SubmitBid() {
     }
 
     if (bidValue <= 0) {
-      toast.error("Bid Value must be at least $1");
+      toast.error('Bid Value must be at least $1');
       return;
     }
 
     const res = await makeRequest({
-      method: "post",
-      route: `/users/bids`,
+      method: 'post',
+      route: '/users/bids',
       data: {
         organizationId: currentOrganization.id,
         userId: currentOrganization.user_id,
@@ -152,50 +152,53 @@ function SubmitBid() {
           .filter((team) => checkedTeams[team].checked === true)
           .map((team) => Number(team)),
         roflMonth:
-          activeYears[2022][Number(String(props.selectedTeam)[0])].roflMonth + 1
+          activeYears[selectedYear][Number(String(props.selectedTeam)[0])].roflMonth + 1,
         // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
-      }
+      },
     });
     if (res.statusCode === 201) {
-      toast.success("Request submitted successfully");
+      toast.success('Request submitted successfully');
       dispatch({
-        type: "CLOSE_MODAL"
+        type: 'CLOSE_MODAL',
       });
     } else {
-      toast.error("There was an error submitting your request");
+      toast.error('There was an error submitting your request');
     }
   };
 
   // this function sends a toast error if there is an error and returns
   // true if there is an error and false if there is NO error
   const checkForLeagueCountError = () => {
-    const teamCountByLeague = {...initialTeamCountByLeague}
+    const teamCountByLeague = { ...initialTeamCountByLeague };
     teamCountByLeague[Number(String(props.selectedTeam)[0])]++;
     Object.keys(checkedTeams).forEach((team) => {
       if (checkedTeams[team].checked) {
         teamCountByLeague[Number(String(team)[0])]--;
       }
     });
-    for (let league in teamCountByLeague) {
+    Object.keys(teamCountByLeague).forEach((league) => {
       if (
-        teamCountByLeague[league] < 1 &&
-        Object.keys(activeYears[2022]).includes(league)
+        teamCountByLeague[league] < 1
+        && Object.keys(activeYears[selectedYear]).includes(league)
       ) {
         toast.error(
-          `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`
+          `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`,
         );
         return false;
-      } else if (teamCountByLeague[league] > 3) {
+      } if (teamCountByLeague[league] > 3) {
         toast.error(
-          `This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`
+          `This bid would result in you having too many ${leagueTable[league]} teams, you may have a maximum of 3`,
         );
         return false;
       }
-    }
+    });
+    // for (const league in teamCountByLeague) {
+
+    // }
     return true;
   };
   // const checkForLeagueCountError = () => {
-    
+
   //   initialTeamCountByLeague[Number(String(props.selectedTeam)[0])]++;
   //   Object.keys(checkedTeams).forEach((team) => {
   //     if (checkedTeams[team].checked) {
