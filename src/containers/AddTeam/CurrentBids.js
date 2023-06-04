@@ -79,10 +79,10 @@ function CurrentBids({
   const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false);
   const [selectedBid, setSelectedBid] = useState(null);
 
-  useEffect(() => {
-    console.log('selected bid changed');
-    console.log(selectedBid);
-  }, [selectedBid]);
+  // useEffect(() => {
+  //   console.log('selected bid changed');
+  //   console.log(selectedBid);
+  // }, [selectedBid]);
 
   useEffect(() => {
     if (roflMonth && allBids && allBids[roflMonth]) {
@@ -219,11 +219,9 @@ function CurrentBids({
             allBids && allBids[roflMonth] && allBids[roflMonth].length
               ? (
                 <div>
-                  {activeYearArray.length === 2 ? (
+                  {/* {activeYearArray.length === 2 ? (
                     <YearSelector
                       activeYearArray={activeYearArray}
-                      setSelectedRoflYear={setSelectedRoflYear}
-                      selectedRoflYear={selectedRoflYear}
                     />
                   ) : (
                     <YearContainer>
@@ -232,12 +230,11 @@ function CurrentBids({
                         {selectedRoflYear}
                       </p>
                     </YearContainer>
-                  )}
+                  )} */}
 
                   <MonthTicker
                     roflMonth={roflMonth}
                     setRoflMonth={setRoflMonth}
-                    selectedRoflYear={selectedRoflYear}
                     onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
                   />
                   <MonthContainer>
