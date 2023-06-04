@@ -10,7 +10,9 @@ function AddTeam() {
     ...state.modalReducer,
   }));
 
-  const { roflYear, activeYears, leagueTable } = useSelector((state) => ({
+  const {
+    roflYear, activeYears, leagueTable, selectedYear,
+  } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
@@ -23,8 +25,6 @@ function AddTeam() {
   const dispatch = useDispatch();
 
   const transformToCheckable = (roster) => {
-    console.log('here is roster before transformation');
-    console.log(roster);
     const checkableRoster = {};
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
@@ -101,7 +101,7 @@ function AddTeam() {
         organizationId: Number(currentOrganization.id),
         userId: currentOrganization.user_id,
         teamId: Number(props.selectedTeam),
-        roflYear,
+        roflYear: selectedYear,
         droppedTeams: Object.keys(checkedTeams)
           .filter((team) => checkedTeams[team].checked === true)
           .map((team) => Number(team)),

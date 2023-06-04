@@ -146,7 +146,7 @@ function SubmitBid() {
         organizationId: currentOrganization.id,
         userId: currentOrganization.user_id,
         teamId: props.selectedTeam,
-        roflYear,
+        roflYear: selectedYear,
         bidValue,
         droppedTeams: Object.keys(checkedTeams)
           .filter((team) => checkedTeams[team].checked === true)
