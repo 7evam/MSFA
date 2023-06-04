@@ -14,7 +14,7 @@ import {
   Label,
   Headline,
   ActionButton,
-  Container,
+
   League,
   LeagueSelector,
   slotData,
@@ -55,6 +55,14 @@ const Table = styled.table`
 `;
 
 const Test = styled.div`
+`;
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 `;
 
 function CurrentBids({
@@ -218,7 +226,7 @@ function CurrentBids({
   };
 
   return (
-    <Test>
+    <Container>
       {
             allBids && allBids[roflMonth] && allBids[roflMonth].length
               ? (
@@ -289,7 +297,7 @@ function CurrentBids({
               )
               : <p>There are no bids to show</p>
         }
-    </Test>
+    </Container>
   );
 }
 
