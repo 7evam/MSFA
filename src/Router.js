@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import Landing from './containers/Landing';
 import About from './containers/About';
+import ResetPassword from './containers/ResetPassword';
 // import CreateNewLeague from './containers/CreateNewLeague'
 
 import Loading from './components/Loading';
@@ -34,19 +35,21 @@ function Router() {
     <BrowserRouter>
       <Switch>
         <Suspense fallback={<Loading />}>
-          {/* <Route exact path='/create-account' render={(props)=><CreateAccount {...props} emailFromInvitation={emailFromInvitation} />}/> */}
           <Route exact path="/login" render={(props) => <Landing {...props} />} />
           <Route exact path="/about" render={(props) => <About {...props} />} />
+          {/* <Route path="/resetPassword/:resetCode" render={(props) => <ResetPassword {...props} />} /> */}
           {
-            userToken
-              ? (
-                <Switch>
-                  <Route exact path="/create-new-league" component={CreateNewLeague} />
-                  <Route exact path="/new-season" component={NewSeason} />
-                  <Route path="/" component={App} />
-                </Switch>
-              )
-              : <Redirect to="/login" />
+            // userToken
+              // ? (
+            <Switch>
+              <Route path="/resetPassword/:resetCode" render={(props) => <ResetPassword {...props} />} />
+
+              <Route exact path="/create-new-league" component={CreateNewLeague} />
+              <Route exact path="/new-season" component={NewSeason} />
+              <Route path="/" component={App} />
+            </Switch>
+              // )
+              // : <Redirect to="/login" />
           }
         </Suspense>
       </Switch>

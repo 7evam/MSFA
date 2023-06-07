@@ -12,15 +12,17 @@ function useLogIn() {
   const [values, setValues] = useState({
     email: '',
     password: '',
+    resetEmail: '',
   });
 
   const [registerValues, setRegisterValues] = useState({
     email: '',
     password: '',
     confirmPassword: '',
+    resetEmail: '',
   });
 
-  const [entryModeLogIn, setEntryModeLogIn] = useState(true);
+  const [display, setDisplay] = useState('login');
 
   const handleLogIn = async () => {
     if (values.email.length < 6) {
@@ -133,6 +135,31 @@ function useLogIn() {
     history.push('/about');
   };
 
+  const handleReset = async () => {
+    try {
+      const res = await makeRequest({
+        method: 'post',
+        route: '/users/reset',
+        data: {
+          email: values.resetEmail,
+        },
+      });
+      console.log('here is res');
+      console.log(res);
+      if (res.statusCode === 200) {
+        toast.success('A reset link has been sent to your email');
+      } else if (res.message) {
+        toast.error(res.message);
+        throw res.message;
+      } else {
+        console.error(res);
+        throw 'Malformed response';
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return {
     handleLogIn,
     handleChange,
@@ -141,9 +168,10 @@ function useLogIn() {
     handleRegisterChange,
     handleRegister,
     isLoading,
-    entryModeLogIn,
-    setEntryModeLogIn,
+    display,
+    setDisplay,
     goToAbout,
+    handleReset,
   };
 }
 

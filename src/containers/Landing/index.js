@@ -73,67 +73,87 @@ function Landing(props) {
     handleRegister,
     isLoading,
     entryModeLogIn,
-    setEntryModeLogIn,
+    setDisplay,
+    display,
     goToAbout,
+    handleReset,
   } = useLogIn();
+
+  const displaySwitch = (display) => {
+    switch (display) {
+      case 'login': return (
+        <>
+          <Input
+            name="email"
+            placeholder="Email"
+            type="text"
+            value={values.email}
+            onChange={handleChange}
+          />
+          <Input
+            name="password"
+            placeholder="Password"
+            type="password"
+            value={values.password}
+            onChange={handleChange}
+          />
+          <LogInButton type="button" disabled={isLoading} onClick={handleLogIn}>{isLoading ? 'Loading...' : 'Log In'}</LogInButton>
+        </>
+      );
+      case 'create': return (
+        <>
+          <Input
+            name="email"
+            placeholder="Email"
+            type="text"
+            value={registerValues.email}
+            onChange={handleRegisterChange}
+          />
+          <Input
+            name="password"
+            placeholder="Password"
+            type="password"
+            value={registerValues.password}
+            onChange={handleRegisterChange}
+          />
+          <Input
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            type="password"
+            value={registerValues.confirmPassword}
+            onChange={handleRegisterChange}
+          />
+          <LogInButton type="button" disabled={isLoading} onClick={handleRegister}>{isLoading ? 'Loading...' : 'Register'}</LogInButton>
+        </>
+      );
+      case 'forgot': return (
+        <>
+          <Input
+            name="resetEmail"
+            placeholder="Email"
+            type="text"
+            value={values.resetEmail}
+            onChange={handleChange}
+          />
+          <LogInButton type="button" disabled={isLoading} onClick={handleReset}>{isLoading ? 'Loading...' : 'Send Reset Link'}</LogInButton>
+        </>
+      );
+      default: return (
+        <div>error</div>
+      );
+    }
+  };
 
   return (
     <Container>
       <Headline>Welcome to MSFA - Multi-Sport Fantasy Association</Headline>
       <Logo onClick={goToAbout} style={{ marginLeft: '140px', cursor: 'pointer' }} src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="roflLogo" />
       <EntryModes>
-        <SelectEntryMode selected={entryModeLogIn} onClick={() => setEntryModeLogIn(!entryModeLogIn)}>Log In</SelectEntryMode>
-        <SelectEntryMode selected={!entryModeLogIn} onClick={() => setEntryModeLogIn(!entryModeLogIn)}>Create Account</SelectEntryMode>
+        <SelectEntryMode selected={display === 'login'} onClick={() => setDisplay('login')}>Log In</SelectEntryMode>
+        <SelectEntryMode selected={display === 'create'} onClick={() => setDisplay('create')}>Create Account</SelectEntryMode>
+        <SelectEntryMode selected={display === 'forgot'} onClick={() => setDisplay('forgot')}>Forgot Password</SelectEntryMode>
       </EntryModes>
-      {
-          entryModeLogIn
-            ? (
-              <>
-                <Input
-                  name="email"
-                  placeholder="Email"
-                  type="text"
-                  value={values.email}
-                  onChange={handleChange}
-                />
-                <Input
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                  value={values.password}
-                  onChange={handleChange}
-                />
-                <LogInButton type="button" disabled={isLoading} onClick={handleLogIn}>{isLoading ? 'Loading...' : 'Log In'}</LogInButton>
-              </>
-            )
-            : (
-              <>
-                <Input
-                  name="email"
-                  placeholder="Email"
-                  type="text"
-                  value={registerValues.email}
-                  onChange={handleRegisterChange}
-                />
-                <Input
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                  value={registerValues.password}
-                  onChange={handleRegisterChange}
-                />
-                <Input
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  type="password"
-                  value={registerValues.confirmPassword}
-                  onChange={handleRegisterChange}
-                />
-                <LogInButton type="button" disabled={isLoading} onClick={handleRegister}>{isLoading ? 'Loading...' : 'Register'}</LogInButton>
-              </>
-            )
-        }
-
+      {displaySwitch(display)}
     </Container>
   );
 }
