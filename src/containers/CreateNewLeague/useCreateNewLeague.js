@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../hooks/useApi';
 import { TEST_ROSTER } from './testRoster';
 
 function useCreateNewLeague(existingOrganization) {
-  const history = useHistory();
+  const history = useNavigate();
   const { makeRequest, isLoading } = useApi();
 
   const dispatch = useDispatch();

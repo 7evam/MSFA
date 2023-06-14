@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { checkIfRostersAreEqual } from '../../utils';
@@ -7,7 +7,7 @@ import useApi from '../../hooks/useApi';
 
 function useRoster() {
   const { makeRequest, isLoading } = useApi();
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
 
   const { name, currentOrganization } = useSelector((state) => ({

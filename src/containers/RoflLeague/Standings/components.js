@@ -1,24 +1,28 @@
-import React from "react";
-import styled from "styled-components";
-import {red, blue, mediumBlue, lightBlue, mobileBreakPoint} from '../../../constants/style'
+import React from 'react';
+import styled from 'styled-components';
+import {
+  red, blue, mediumBlue, lightBlue, mobileBreakPoint,
+} from '../../../constants/style';
 
 const widths = {
   rank: 10,
   personName: 20,
   teamName: 40,
   monthPoints: 15,
-  totalPoints: 15
-}
+  totalPoints: 15,
+};
 
 const widthsFixed = {
   rank: 60,
   personName: 140,
   teamName: 180,
   monthPoints: 100,
-  totalPoints: 100
-}
+  totalPoints: 100,
+};
 
 export const Container = styled.div`
+display: flex;
+    justify-content: center;
 @media (max-width: ${mobileBreakPoint}){
   width: 100vw;
 }
@@ -28,18 +32,18 @@ export const Heading = styled.p`
 font-size: 18px;
 display: flex;
 justify-content: center;
-`
+`;
 
 export const Td = styled.td`
   padding: 12px;
-  width: ${props => widthsFixed[props.column]}px;
+  width: ${(props) => widthsFixed[props.column]}px;
   &:hover {
     font-weight: 700;
     text-decoration: underline;
     cursor: pointer;
   };
   @media (max-width: ${mobileBreakPoint}){
-    width: ${props => widths[props.column]}vw;
+    width: ${(props) => widths[props.column]}vw;
   }
 `;
 
@@ -71,10 +75,10 @@ border-bottom: 1px solid gray;
 font-size: 14px;
 border-left: 1px solid gray;
 @media (max-width: ${mobileBreakPoint}){
-  width: ${props => widths[props.column]}vw;
+  width: ${(props) => widths[props.column]}vw;
 }
 
-`
+`;
 
 export const SlotRow = styled.tr`
   background-color: ${mediumBlue};
@@ -87,4 +91,4 @@ export const StandingsContainer = styled.div`
   @media (max-width: ${mobileBreakPoint}){
   width: 100vw;
   }
-`
+`;

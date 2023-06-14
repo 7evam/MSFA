@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 // import useLogIn from './useLogIn';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { blue } from '../../constants/style';
 import { Logo } from '../../App/Sidebar/components';
 import IconLeft from '../../icons/iconLeft';
@@ -56,8 +56,10 @@ const P = styled.p`
 `;
 
 function About(props) {
-  const history = useHistory();
+  const history = useNavigate();
   const [entryModeGuide, setEntryModeGuide] = useState(true);
+
+  console.log('in about');
 
   return (
     <>

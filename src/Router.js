@@ -1,22 +1,30 @@
-import React, { lazy, Suspense } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// import App from './App'
 import {
-  Redirect, BrowserRouter, Route, Switch, withRouter,
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
 } from 'react-router-dom';
+
 import Landing from './containers/Landing';
 import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
-// import CreateNewLeague from './containers/CreateNewLeague'
+import MySquad from './containers/MySquad';
+import AddTeam from './containers/AddTeam';
+// import RoflLeague from './containers/RoflLeague';
+import Scoring from './containers/Scoring';
+import Settings from './containers/Settings';
+import CreateNewLeague from './containers/CreateNewLeague';
+import NewSeason from './containers/NewSeason';
+import Roster from './containers/RoflLeague/Roster';
+import Standings from './containers/RoflLeague/Standings';
 
-import Loading from './components/Loading';
-
-const App = lazy(() => import('./App'));
-const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
-const NewSeason = lazy(() => import('./containers/NewSeason'));
+import App from './App';
+// const App = lazy(() => import('./App'));
+// const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
+// const NewSeason = lazy(() => import('./containers/NewSeason'));
 
 // configuration for toaster messages
 // https://www.npmjs.com/package/react-toastify
@@ -26,36 +34,29 @@ toast.configure({
   hideProgressBar: true,
 });
 
-function Router() {
-  const { userToken } = useSelector((state) => ({
-    ...state.authReducer,
-  }));
-
+function NewRouter() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Suspense fallback={<Loading />}>
-          <Route exact path="/login" render={(props) => <Landing {...props} />} />
-          <Route exact path="/about" render={(props) => <About {...props} />} />
-          {/* <Route path="/resetPassword/:resetCode" render={(props) => <ResetPassword {...props} />} /> */}
-          {
-            // userToken
-              // ? (
-            <Switch>
-              <Route path="/resetPassword/:resetCode" render={(props) => <ResetPassword {...props} />} />
-
-              <Route exact path="/create-new-league" component={CreateNewLeague} />
-              <Route exact path="/new-season" component={NewSeason} />
-              <Route path="/" component={App} />
-            </Switch>
-              // )
-              // : <Redirect to="/login" />
-          }
-        </Suspense>
-      </Switch>
+      <Routes>
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Landing />} />
+        <Route path="/create-new-league" element={<CreateNewLeague />} />
+        <Route path="/resetPassword/:resetCode" element={<ResetPassword />} />
+        <Route path="/" element={<App />}>
+          <Route path="/squad" element={<MySquad />} />
+          <Route path="/rofleague">
+            <Route index element={<Standings />} />
+            <Route path="/rofleague/:userId/:roflYear/:roflMonth" element={<Roster />} />
+          </Route>
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/scoring" element={<Scoring />} />
+          <Route path="/add-team" element={<AddTeam />} />
+          <Route path="/new-season" element={<NewSeason />} />
+          <Route path="/" element={<Navigate to="/squad" replace />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
-
   );
 }
 
-export default Router;
+export default NewRouter;

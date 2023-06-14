@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import useApi from '../../hooks/useApi';
-import MonthTicker from '../../components/MonthTicker';
 import { mediumBlue, lightBlue } from '../../constants/style';
 
 const Container = styled.div`

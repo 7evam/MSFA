@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   red, blue, mediumBlue, lightBlue, mobileBreakPoint,
@@ -49,7 +49,7 @@ export const Nav = styled.nav`
   }
 `;
 
-export const CustomNavLink = styled(NavLink)`
+export const CustomNavLink = styled(Link)`
   text-decoration: none;
   color: black
   display: flex;

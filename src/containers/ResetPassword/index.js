@@ -77,9 +77,6 @@ function ResetPassword(props) {
     handleChange,
   } = useResetPassword(props);
 
-  console.log('in reset password');
-  console.log(values);
-
   return (
     readyToRender
       ? resetCode ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import RosterComponent from '../../../components/Roster';
 import useApi from '../../../hooks/useApi';
@@ -10,6 +10,10 @@ import IconLeft from '../../../icons/iconLeft';
 import Loading from '../../../components/Loading';
 
 const Container = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
     margin-top: 50px;
 `;
 
@@ -44,7 +48,7 @@ function Roster() {
     ...state.sportReducer,
   }));
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -123,14 +127,14 @@ function Roster() {
     };
     if (readyToRender) {
       setReadyToRender(false);
-      history.push(`/rofleague/${userId}/${selectedYear}/${selectedRoflMonth}`);
+      navigate(`/rofleague/${userId}/${selectedYear}/${selectedRoflMonth}`);
       refetchData();
     }
   }, [selectedYear]);
 
   useEffect(() => {
     if (selectedRoflMonth) {
-      history.push(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`);
+      navigate(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`);
     }
   }, [selectedRoflMonth]);
 
@@ -166,12 +170,12 @@ function Roster() {
   return (
     <Container>
       <TopMenu>
-        <a onClick={() => history.push('/rofleague')}>
+        <Link to="/rofleague">
           {' '}
           <span>{IconLeft}</span>
           {' '}
           Back to Standings
-        </a>
+        </Link>
         <Selector selected={viewToRender === 'single'} onClick={() => setViewToRender('single')}>Monthly</Selector>
         <Selector selected={viewToRender === 'overview'} onClick={() => setViewToRender('overview')}>Overview</Selector>
       </TopMenu>

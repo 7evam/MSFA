@@ -3,6 +3,10 @@ import { lightBlue, mobileBreakPoint } from '../../constants/style';
 
 export const Container = styled.div`
 margin-top: 20px;
+display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 @media (max-width: ${mobileBreakPoint}){
     width: 100vw;
   }

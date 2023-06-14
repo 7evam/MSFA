@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../hooks/useApi';
 
 function useLogIn() {
   const { makeRequest, isLoading } = useApi();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
@@ -61,7 +61,7 @@ function useLogIn() {
             selectedYear: Math.min(...Object.keys(currentOrg.activeYears)),
           },
         });
-        history.push('/');
+        navigate('/');
       } else if (res.message) {
         throw res.message;
       } else {
@@ -132,7 +132,7 @@ function useLogIn() {
   };
 
   const goToAbout = () => {
-    history.push('/about');
+    navigate('/about');
   };
 
   const handleReset = async () => {

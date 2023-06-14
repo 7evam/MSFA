@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import useApi from '../../hooks/useApi';
 
 const Container = styled.div`
     margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const ChooseOrgButton = styled.button`
@@ -13,7 +17,7 @@ const ChooseOrgButton = styled.button`
 `;
 
 function Settings(props) {
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
 
   const { organizations, currentOrganization } = useSelector((state) => ({
@@ -69,8 +73,8 @@ function Settings(props) {
       : (
         <Container>
           <p>Settings</p>
-          <button onClick={linkToCreateNewLeague}>Create New League</button>
-          <button onClick={createNewSeason}>Start New Season in Current League</button>
+          <button type="button" onClick={linkToCreateNewLeague}>Create New League</button>
+          <button type="button" onClick={createNewSeason}>Start New Season in Current League</button>
           <p>Set league:</p>
           {organizations.map((org) => (
             <ChooseOrgButton disabled={org.current === 1} onClick={() => setNewCurrentOrg(org.id)}>

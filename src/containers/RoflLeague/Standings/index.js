@@ -41,7 +41,7 @@ function Standings(props) {
 
   return (
     <Container>
-      <Heading>League Standings</Heading>
+      {/* <Heading>League Standings</Heading> */}
       {standings && standings[`${roflMonth}-${selectedYear}`] ? (
         <StandingsContainer>
           <YearContainer>

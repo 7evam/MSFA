@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { checkIfRostersAreEqual } from '../../../utils';
@@ -14,7 +14,7 @@ function useStandings() {
     ...state.authReducer,
   }));
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { makeRequest, isLoading } = useApi();
 
@@ -64,7 +64,7 @@ function useStandings() {
   // }
 
   const goToSquad = (userId) => {
-    history.push(`/rofleague/${userId}/${selectedYear}/${roflMonth}`);
+    navigate(`/rofleague/${userId}/${selectedYear}/${roflMonth}`);
   };
 
   return {

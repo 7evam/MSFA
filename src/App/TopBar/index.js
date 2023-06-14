@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Container, YearSelector, Year, AppRoutes,
   AppActions, NavGroup, Topbar, Nav, CustomNavLink,
@@ -11,7 +11,7 @@ import LogOutIcon from '../../icons/logOut';
 
 function TopBar() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const location = useLocation();
 
   const logOut = () => {
     dispatch({
@@ -48,7 +48,7 @@ function TopBar() {
         <Nav className="grid-container">
           <NavGroup>
             <AppRoutes>
-              <CustomNavLink to="/squad" selected={history.location.pathname === '/squad'}>
+              <CustomNavLink to="/squad" selected={location.pathname.includes('squad')}>
                 Squad
               </CustomNavLink>
 
@@ -60,20 +60,20 @@ function TopBar() {
             <span>Rosters</span>
           </CustomNavLink> */}
 
-              <CustomNavLink to="/rofleague" selected={history.location.pathname === '/rofleague'}>
+              <CustomNavLink to="/rofleague" selected={location.pathname.includes('rofleague')}>
                 League
               </CustomNavLink>
 
-              <CustomNavLink to="/scoring" selected={history.location.pathname === '/scoring'}>
+              <CustomNavLink to="/scoring" selected={location.pathname.includes('scoring')}>
                 Scoring
               </CustomNavLink>
 
-              <CustomNavLink to="/add-team" selected={history.location.pathname === '/add-team'}>
+              <CustomNavLink to="/add-team" selected={location.pathname.includes('add-team')}>
                 Transactions
               </CustomNavLink>
             </AppRoutes>
             <AppActions>
-              <CustomNavLink to="/settings" selected={history.location.pathname === '/settings'}>
+              <CustomNavLink to="/settings" selected={location.pathname.includes('settings')}>
                 Settings
               </CustomNavLink>
               <CustomNavLink to="/">

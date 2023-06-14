@@ -1,20 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import {mobileBreakPoint, lightBlue} from '../../constants/style'
+import React from 'react';
+import styled from 'styled-components';
+import { mobileBreakPoint, lightBlue } from '../../constants/style';
 
 export const Container = styled.div`
-@media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
+  display: flex;
+  justify-content: center;
+  @media (max-width: ${mobileBreakPoint}){
+      width: 100vw;
   }
 `;
 export const Slot = styled.div`
   margin-top: 25px;
 `;
 export const SelectButton = styled.button`
-  background: ${(props) =>
-    props.selectedSlot && props.selectedSlot === props.name
-      ? "darkred"
-      : "limegreen"};
+  background: ${(props) => (props.selectedSlot && props.selectedSlot === props.name
+    ? 'darkred'
+    : 'limegreen')};
 `;
 
 export const BannerMessage = styled.div`
@@ -41,7 +42,7 @@ export const YearContainer = styled.div`
 `;
 
 export const MonthButton = styled.button`
-  background: ${(props) => (props.selectedMonth ? "limegreen" : "white")};
+  background: ${(props) => (props.selectedMonth ? 'limegreen' : 'white')};
 `;
 
 export const ScrollMenuContainer = styled.div`
@@ -60,7 +61,7 @@ export const ScrollMenu = styled.div`
 
 export const ScrollMenuLink = styled.a`
   display: inline-block;
-  color: ${(props) => (props.selected ? "limegreen" : "white")};
+  color: ${(props) => (props.selected ? 'limegreen' : 'white')};
   text-align: center;
   padding: 14px;
   text-decoration: none;
@@ -95,4 +96,4 @@ export const TeamName = styled.p`
     font-size: 18px;
     display: flex;
     justify-content: center;
-`
+`;
