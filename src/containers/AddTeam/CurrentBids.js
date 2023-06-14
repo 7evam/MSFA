@@ -14,7 +14,7 @@ import {
   Label,
   Headline,
   ActionButton,
-  Container,
+
   League,
   LeagueSelector,
   slotData,
@@ -57,6 +57,14 @@ const Table = styled.table`
 const Test = styled.div`
 `;
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+`;
+
 function CurrentBids({
   allBids,
   setAllBids,
@@ -66,6 +74,10 @@ function CurrentBids({
   originalBids,
 }) {
   const { makeRequest, isLoading } = useApi();
+
+  const { selectedYear } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
 
   const dispatch = useDispatch();
 
@@ -79,10 +91,10 @@ function CurrentBids({
   const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false);
   const [selectedBid, setSelectedBid] = useState(null);
 
-  useEffect(() => {
-    console.log('selected bid changed');
-    console.log(selectedBid);
-  }, [selectedBid]);
+  // useEffect(() => {
+  //   console.log('selected bid changed');
+  //   console.log(selectedBid);
+  // }, [selectedBid]);
 
   useEffect(() => {
     if (roflMonth && allBids && allBids[roflMonth]) {
@@ -214,16 +226,14 @@ function CurrentBids({
   };
 
   return (
-    <Test>
+    <Container>
       {
             allBids && allBids[roflMonth] && allBids[roflMonth].length
               ? (
                 <div>
-                  {activeYearArray.length === 2 ? (
+                  {/* {activeYearArray.length === 2 ? (
                     <YearSelector
                       activeYearArray={activeYearArray}
-                      setSelectedRoflYear={setSelectedRoflYear}
-                      selectedRoflYear={selectedRoflYear}
                     />
                   ) : (
                     <YearContainer>
@@ -232,13 +242,13 @@ function CurrentBids({
                         {selectedRoflYear}
                       </p>
                     </YearContainer>
-                  )}
+                  )} */}
 
                   <MonthTicker
                     roflMonth={roflMonth}
                     setRoflMonth={setRoflMonth}
-                    selectedRoflYear={selectedRoflYear}
                     onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+                    selectedYear={selectedYear}
                   />
                   <MonthContainer>
                     <p>
@@ -287,7 +297,7 @@ function CurrentBids({
               )
               : <p>There are no bids to show</p>
         }
-    </Test>
+    </Container>
   );
 }
 

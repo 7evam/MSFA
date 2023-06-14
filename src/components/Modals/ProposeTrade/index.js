@@ -11,13 +11,23 @@ function ProposeTrade() {
     ...state.modalReducer,
   }));
 
+  console.log('here is current rofl months');
+  console.log(props.currentRoflMonths);
+
+  const { selectedYear, playoffMonths } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   const transformToCheckable = (roster) => {
+    console.log('here is roster before transformation');
+    console.log(roster);
     const checkableRoster = {};
     checkableRoster.cash = roster.cash;
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
       // don't show a team if it wont be active next month
-      if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
+      // rofl month of league is less than playoff month
+      if (team.teamId && props.currentRoflMonths[team.leagueId] < playoffMonths[selectedYear][team.leagueId]) {
         checkableRoster[team.teamId] = {
           checked: props.selectedTeam === team.teamId,
           val: team.val,
@@ -25,6 +35,8 @@ function ProposeTrade() {
         };
       }
     });
+    console.log('here is checkable roster');
+    console.log(checkableRoster);
     return checkableRoster;
   };
 

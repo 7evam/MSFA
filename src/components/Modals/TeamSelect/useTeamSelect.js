@@ -34,6 +34,7 @@ function useTeamSelect({
     playoffMonths,
     leagueTable,
     orgMembers,
+    selectedYear,
   } = useSelector((state) => ({
     ...state.sportReducer,
   }));
@@ -49,7 +50,7 @@ function useTeamSelect({
     // adding together the number of active teams for each league
     let activeTeamsNextMonth = 0;
     Object.keys(initialTeamCountByLeague).forEach((league) => {
-      if (props.firstActiveMonthForClaim <= playoffMonths[2022][league]) {
+      if (props.firstActiveMonthForClaim <= playoffMonths[selectedYear][league]) {
         activeTeamsNextMonth += initialTeamCountByLeague[league];
       }
     });

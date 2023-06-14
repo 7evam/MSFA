@@ -8,6 +8,7 @@ import RosterComponent from '../../components/Roster';
 import Loading from '../../components/Loading';
 import useHydration from '../../hooks/useHydration';
 import { Container, League, LeagueSelector } from './components';
+import { convertRealToRofl } from '../../utils';
 
 function useAddTeam() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function useAddTeam() {
     sportTeams,
     orgMembers,
     deadlines,
+    playoffMonths,
   } = useSelector((state) => ({
     ...state.sportReducer,
   }));
@@ -155,7 +157,28 @@ function useAddTeam() {
       4: null,
     };
     Object.keys(currentRoflMonths).forEach((leagueId) => {
-      if (activeYears[selectedYear] && activeYears[selectedYear][leagueId]?.roflMonth) currentRoflMonths[leagueId] = activeYears[selectedYear][leagueId].roflMonth;
+      if (activeYears[selectedYear] && activeYears[selectedYear][leagueId]?.roflMonth) {
+        currentRoflMonths[leagueId] = activeYears[selectedYear][leagueId].roflMonth;
+      } else {
+        // calculate rofl month for league that hasn't started
+        // TODO: test and modularize this function
+        const today = new Date();
+        const month = today.getMonth();
+        // if mlb is active, month is current month minus 2
+        // if mlb is inactive and month is between and 9 and 11, month is current month minus 2
+        // if mlb is inactive and month is betweeen 0 and 5, month is current month plus 10
+        let roflMonth;
+        if (activeYears[selectedYear][1]) {
+          roflMonth = month - 2;
+        } else if (month > 9) {
+          roflMonth = month - 2;
+        } else {
+          roflMonth = month + 10;
+        }
+        if (playoffMonths[selectedYear][leagueId] > roflMonth) {
+          currentRoflMonths[leagueId] = roflMonth;
+        }
+      }
     });
     return currentRoflMonths;
   };

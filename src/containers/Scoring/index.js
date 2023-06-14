@@ -31,7 +31,7 @@ function Scoring() {
     display,
     setDisplay,
     readyToRender,
-    setLeague,
+    changeLeague,
     filteredPoints,
     filteredRecords,
     finalLeagueToShow,
@@ -95,49 +95,44 @@ function Scoring() {
 
   return (
     <Container>
-      {!readyToRender && <Loading />}
-      { readyToRender && (
+      { readyToRender ? (
         <div>
           <LeagueSelector>
-            <League selected={league === 1} onClick={() => setLeague(1)}>
+            <League selected={league === 1} onClick={() => changeLeague(1)}>
               MLB
             </League>
-            {
-              finalLeagueToShow >= 2 ? (
-                <League selected={league === 2} onClick={() => setLeague(2)}>
-                  NFL
-                </League>
-              ) : null
-            }
-            {
-              finalLeagueToShow >= 3 ? (
-                <League selected={league === 3} onClick={() => setLeague(3)}>
-                  NHL
-                </League>
-              ) : null
-            }
-            {
-              finalLeagueToShow >= 4 ? (
-                <League selected={league === 4} onClick={() => setLeague(4)}>
-                  NBA
-                </League>
-              ) : null
-            }
+            <League selected={league === 2} onClick={() => changeLeague(2)}>
+              NFL
+            </League>
+            <League selected={league === 3} onClick={() => changeLeague(3)}>
+              NHL
+            </League>
+            <League selected={league === 4} onClick={() => changeLeague(4)}>
+              NBA
+            </League>
 
           </LeagueSelector>
           <DisplaySelector>
-            <ScItem
-              selected={display === 'score'}
-              onClick={() => setDisplay('score')}
-            >
-              Score
-            </ScItem>
-            <ScItem
-              selected={display === 'records'}
-              onClick={() => setDisplay('records')}
-            >
-              Records
-            </ScItem>
+            {
+              finalLeagueToShow >= league ? (
+                <ScItem
+                  selected={display === 'score'}
+                  onClick={() => setDisplay('score')}
+                >
+                  Score
+                </ScItem>
+              ) : null
+            }
+            {
+              finalLeagueToShow >= league ? (
+                <ScItem
+                  selected={display === 'records'}
+                  onClick={() => setDisplay('records')}
+                >
+                  Records
+                </ScItem>
+              ) : null
+            }
             <ScItem
               selected={display === 'scheme'}
               onClick={() => setDisplay('scheme')}
@@ -147,7 +142,7 @@ function Scoring() {
           </DisplaySelector>
           {renderSwitch(display)}
         </div>
-      )}
+      ) : <Loading />}
     </Container>
   );
 }

@@ -46,8 +46,11 @@ function Trades({ trades, reFetchTrades }) {
 
   const activeYearArray = Object.keys(currentOrganization.activeYears);
 
+  console.log('here are trades');
+  console.log(trades);
+
   return (
-    trades && trades.length
+    trades && Object.keys(trades).length
       ? (
         <Container>
           {roflMonth ? (
@@ -56,6 +59,7 @@ function Trades({ trades, reFetchTrades }) {
                 roflMonth={roflMonth}
                 setRoflMonth={setRoflMonth}
                 onlyShownMonths={Object.keys(trades).map((n) => Number(n))}
+                selectedYear={selectedYear}
               />
               <MonthContainer>
                 <p>
