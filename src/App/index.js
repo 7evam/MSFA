@@ -7,7 +7,7 @@ import useApi from '../hooks/useApi';
 import TopBar from './TopBar';
 import { Container, ContentContainer } from './components';
 
-function NewApp(props) {
+function App(props) {
   const dispatch = useDispatch();
 
   const { makeRequest } = useApi();
@@ -37,6 +37,8 @@ function NewApp(props) {
     getActiveMonths();
   }, []);
 
+  console.log('in app');
+
   return (
     userToken
       ? (
@@ -51,4 +53,4 @@ function NewApp(props) {
   );
 }
 
-export default NewApp;
+export default App;

@@ -68,6 +68,8 @@ function Roster() {
     }
   }, [scrollRef]);
 
+  console.log('in my squad');
+
   return (
     <Container>
       {!loadingRoster && roster && currentOrganization && currentMonthRoster && selectedYear ? (

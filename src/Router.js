@@ -34,7 +34,9 @@ toast.configure({
   hideProgressBar: true,
 });
 
-function NewRouter() {
+console.log('in router');
+
+function Router() {
   return (
     <BrowserRouter>
       <Routes>
@@ -59,4 +61,4 @@ function NewRouter() {
   );
 }
 
-export default NewRouter;
+export default Router;

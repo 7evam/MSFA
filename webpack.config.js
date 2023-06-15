@@ -3,34 +3,33 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
-const { DuplicatesPlugin } = require("inspectpack/plugin");
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { DuplicatesPlugin } = require('inspectpack/plugin');
 // const { env } = require('process');
 
 module.exports = (webpackServe, options) => {
+  let ENV_CONFIG;
 
-  var ENV_CONFIG
-
-  if(options.mode === 'development'){
+  if (options.mode === 'development') {
     ENV_CONFIG = new Dotenv({
-      path: './.env.dev'
-    })
+      path: './.env.dev',
+    });
   }
 
-  if(options.mode === 'production'){
-    if(options.env && options.env.environment === 'staging'){
-      ENV_CONFIG = new Dotenv({path: './.env.staging', systemvars: true})
+  if (options.mode === 'production') {
+    if (options.env && options.env.environment === 'staging') {
+      ENV_CONFIG = new Dotenv({ path: './.env.staging', systemvars: true });
     } else {
-      ENV_CONFIG = new Dotenv({path: './.env', systemvars: true})
+      ENV_CONFIG = new Dotenv({ path: './.env', systemvars: true });
     }
   }
 
   const plugins = [
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: '[name].css',
     }),
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
@@ -38,11 +37,11 @@ module.exports = (webpackServe, options) => {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
-    ENV_CONFIG
-  ]
+    ENV_CONFIG,
+  ];
 
-// These tools are very helpful but they can be very annoying if they pop up every build
-// periodically run webpack with these uncommented to check your bundle size
+  // These tools are very helpful but they can be very annoying if they pop up every build
+  // periodically run webpack with these uncommented to check your bundle size
 
   // if(options.mode !== 'production') plugins.push(
   //   new BundleAnalyzerPlugin({
@@ -63,18 +62,18 @@ module.exports = (webpackServe, options) => {
     //   app: "./src/App/index.js",
     //   createNewLeague: "./src/containers/CreateNewLeague/index.js"
     // },
-    entry: "./src/index.js",
+    entry: './src/index.js',
     output: {
       // path: path.join(__dirname, '/dist'),
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
-      publicPath: '/'
+      publicPath: '/',
     },
     module: {
       rules: [
         {
           test: /\.jsx?$/,
-          use:  [{
+          use: [{
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-react'],
@@ -83,7 +82,7 @@ module.exports = (webpackServe, options) => {
               //   {libraryName: 'antd', style: true},
               //   'antd',
               // ]
-            }
+            },
           }],
           // exclude: /node_modules/
         },
@@ -94,66 +93,66 @@ module.exports = (webpackServe, options) => {
               loader: MiniCssExtractPlugin.loader,
             },
             'css-loader',
-          ]
+          ],
         },
         {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader'
-          }
+            loader: 'babel-loader',
+          },
         },
         {
           test: /\.(jpe?g|png|gif)$/i,
           use: {
-            loader: 'file-loader'
+            loader: 'file-loader',
           },
         },
         {
           test: /\.(png|woff|woff2|eot|ttf|svg)$/,
           use: {
-            loader: 'url-loader'
-          }
-        }
-      ]
+            loader: 'url-loader',
+          },
+        },
+      ],
     },
     // webpack 5 no longer supports native node modules
     resolve: {
       fallback: {
-        "os": false,
-        "https": require.resolve("https-browserify"),
-        "http": require.resolve("stream-http"),
-        "crypto": require.resolve("crypto-browserify"),
-        "vm": false,
-        "assert": require.resolve("assert/"),
-        "stream": require.resolve("stream-browserify")
-      }
+        os: false,
+        https: require.resolve('https-browserify'),
+        http: require.resolve('stream-http'),
+        crypto: require.resolve('crypto-browserify'),
+        vm: false,
+        assert: require.resolve('assert/'),
+        stream: require.resolve('stream-browserify'),
+      },
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-          },
-    //   contentBase: path.join(__dirname, 'dist'),
+      static: {
+        directory: path.join(__dirname, 'dist'),
+      },
+      //   contentBase: path.join(__dirname, 'dist'),
       port: 3000,
-    //   inline: true,
+      //   inline: true,
       hot: true,
       historyApiFallback: {
-        index: '/'
+        index: '/',
       },
     },
     optimization: {
       splitChunks: {
-        chunks: "all",
+        chunks: 'all',
         cacheGroups: {
           vendor: {
-            name: "vendor",
-            chunks: "initial",
-            minChunks: 2
-          }
-        }
+            name: 'vendor',
+            chunks: 'initial',
+            minChunks: 2,
+          },
+        },
       },
-      usedExports: true
+      usedExports: true,
     },
-    plugins
-  }
+    plugins,
+  };
 };

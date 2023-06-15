@@ -76,8 +76,6 @@ function useResetPassword(props) {
           password: values.password,
         },
       });
-      console.log('here is res');
-      console.log(res);
       if (res.statusCode === 200) {
         toast.success('Your password has been reset, you may now log in with your new password');
         navigate('/');
