@@ -12,7 +12,7 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
       <Logo src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="MSFA Logo" />
       <Nav className="grid-container">
         <NavGroup>
-          <CustomNavLink to="/squad">
+          <CustomNavLink reloadDocument to="/squad">
             <span>My Squad</span>
           </CustomNavLink>
 
@@ -24,15 +24,15 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
             <span>Rosters</span>
           </CustomNavLink> */}
 
-          <CustomNavLink to="/rofleague">
+          <CustomNavLink reloadDocument to="/rofleague">
             <span>My MSFA League</span>
           </CustomNavLink>
 
-          <CustomNavLink to="/scoring">
+          <CustomNavLink reloadDocument to="/scoring">
             <span>Scoring</span>
           </CustomNavLink>
 
-          <CustomNavLink to="/add-team">
+          <CustomNavLink reloadDocument to="/add-team">
             <span>Add Team</span>
           </CustomNavLink>
         </NavGroup>

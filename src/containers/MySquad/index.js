@@ -36,28 +36,9 @@ function Roster() {
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
-  // console.log('params');
-  // console.log(roster);
-  // console.log(selectedYear);
-
   const currentMonthRoster = roster
     ? roster[`${roflMonth}-${selectedYear}`]
     : null;
-
-  // console.log('cmr');
-  // console.log(roster);
-  // console.log(roflMonth);
-  // console.log(selectedYear);
-  // console.log(currentMonthRoster);
-  // console.log('---');
-
-  // const scrollLeft = () => {
-  //   scrollRef.current.scrollLeft -= 400;
-  // };
-
-  // const scrollRight = () => {
-  //   scrollRef.current.scrollLeft += 400;
-  // };
 
   const scrollRef = React.createRef();
 

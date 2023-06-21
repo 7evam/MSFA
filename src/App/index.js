@@ -40,16 +40,12 @@ function App(props) {
   console.log('in app');
 
   return (
-    userToken
-      ? (
-        <Container>
-          <ContentContainer>
-            <TopBar />
-            <Outlet />
-          </ContentContainer>
-        </Container>
-      )
-      : <Navigate to="/login" replace />
+    <Container>
+      <ContentContainer>
+        <TopBar />
+        <Outlet />
+      </ContentContainer>
+    </Container>
   );
 }
 

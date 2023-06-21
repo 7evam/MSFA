@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import useLogIn from './useLogIn';
 import { Logo } from '../../App/Sidebar/components';
 import { blue } from '../../constants/style';
@@ -63,21 +64,30 @@ const SelectEntryMode = styled.p`
 
 `;
 
-function Landing(props) {
+function Landing({ testLogIn, setTestLogin }) {
   const {
     handleLogIn,
     handleChange,
     values,
     registerValues,
     handleRegisterChange,
-    handleRegister,
     isLoading,
+    handleRegister,
     entryModeLogIn,
     setDisplay,
     display,
     goToAbout,
     handleReset,
+    setValues,
   } = useLogIn();
+
+  const navigate = useNavigate();
+
+  // const logInTest = async () => {
+  //   setTestLogin(true);
+  //   navigate('/new-squad');
+  //   navigate(0);
+  // };
 
   const displaySwitch = (display) => {
     switch (display) {
@@ -97,6 +107,7 @@ function Landing(props) {
             value={values.password}
             onChange={handleChange}
           />
+          {/* <button type="button" onClick={logInTest}>Log In TEST</button> */}
           <LogInButton type="button" disabled={isLoading} onClick={handleLogIn}>{isLoading ? 'Loading...' : 'Log In'}</LogInButton>
         </>
       );

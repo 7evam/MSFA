@@ -69,6 +69,9 @@ module.exports = (webpackServe, options) => {
       filename: '[name].bundle.js',
       publicPath: '/',
     },
+    performance: {
+      hints: false,
+    },
     module: {
       rules: [
         {
@@ -140,19 +143,19 @@ module.exports = (webpackServe, options) => {
         index: '/',
       },
     },
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            name: 'vendor',
-            chunks: 'initial',
-            minChunks: 2,
-          },
-        },
-      },
-      usedExports: true,
-    },
+    // optimization: {
+    //   splitChunks: {
+    //     chunks: 'all',
+    //     cacheGroups: {
+    //       vendor: {
+    //         name: 'vendor',
+    //         chunks: 'initial',
+    //         minChunks: 2,
+    //       },
+    //     },
+    //   },
+    //   usedExports: true,
+    // },
     plugins,
   };
 };

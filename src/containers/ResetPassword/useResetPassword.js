@@ -79,6 +79,7 @@ function useResetPassword(props) {
       if (res.statusCode === 200) {
         toast.success('Your password has been reset, you may now log in with your new password');
         navigate('/');
+        navigate(0);
       } else if (res.message) {
         toast.error(res.message);
         throw res.message;
@@ -93,6 +94,7 @@ function useResetPassword(props) {
 
   const goToAbout = () => {
     navigate('/about');
+    navigate(0);
   };
 
   return {

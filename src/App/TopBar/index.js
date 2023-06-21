@@ -12,12 +12,14 @@ import LogOutIcon from '../../icons/logOut';
 function TopBar() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const logOut = () => {
     dispatch({
       type: 'LOGOUT',
     });
-    // history.push('/')
+    navigate('/');
+    navigate(0);
   };
 
   const { selectedYear } = useSelector((state) => ({

@@ -55,6 +55,7 @@ function useLogIn() {
             userToken: userInfo.userToken,
           },
         });
+
         // TODO this ccurrently sets default year on logiin to lastest year, it should
         // be most recently used year which is saved in database
         dispatch({
@@ -63,7 +64,9 @@ function useLogIn() {
             selectedYear: Math.max(...Object.keys(currentOrg.activeYears)),
           },
         });
-        navigate('/');
+
+        navigate('/squad');
+        navigate(0);
       } else if (res.message) {
         throw res.message;
       } else {
@@ -135,6 +138,7 @@ function useLogIn() {
 
   const goToAbout = () => {
     navigate('/about');
+    navigate(0);
   };
 
   const handleReset = async () => {
@@ -146,8 +150,6 @@ function useLogIn() {
           email: values.resetEmail,
         },
       });
-      console.log('here is res');
-      console.log(res);
       if (res.statusCode === 200) {
         toast.success('A reset link has been sent to your email');
       } else if (res.message) {
@@ -169,11 +171,12 @@ function useLogIn() {
     registerValues,
     handleRegisterChange,
     handleRegister,
-    isLoading,
     display,
     setDisplay,
     goToAbout,
     handleReset,
+    setValues,
+    isLoading,
   };
 }
 

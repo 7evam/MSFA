@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -6,7 +6,10 @@ import {
   Route,
   Routes,
   Navigate,
+  useLocation,
 } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
 
 import Landing from './containers/Landing';
 import About from './containers/About';
@@ -34,30 +37,30 @@ toast.configure({
   hideProgressBar: true,
 });
 
-console.log('in router');
-
 function Router() {
+  const { userToken } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Landing />} />
-        <Route path="/create-new-league" element={<CreateNewLeague />} />
-        <Route path="/resetPassword/:resetCode" element={<ResetPassword />} />
-        <Route path="/" element={<App />}>
-          <Route path="/squad" element={<MySquad />} />
-          <Route path="/rofleague">
-            <Route index element={<Standings />} />
-            <Route path="/rofleague/:userId/:roflYear/:roflMonth" element={<Roster />} />
-          </Route>
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/scoring" element={<Scoring />} />
-          <Route path="/add-team" element={<AddTeam />} />
-          <Route path="/new-season" element={<NewSeason />} />
-          <Route path="/" element={<Navigate to="/squad" replace />} />
+    <Routes>
+      <Route path="/about" element={<About />} />
+      <Route path="/login" element={<Landing />} />
+      <Route path="/create-new-league" element={<CreateNewLeague />} />
+      <Route path="/resetPassword/:resetCode" element={<ResetPassword />} />
+      <Route element={<App />}>
+        <Route path="/squad" element={<MySquad />} />
+        <Route path="/rofleague">
+          <Route index element={<Standings />} />
+          <Route path="/rofleague/:userId/:roflYear/:roflMonth" element={<Roster />} />
         </Route>
-      </Routes>
-    </BrowserRouter>
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/scoring" element={<Scoring />} />
+        <Route path="/add-team" element={<AddTeam />} />
+        <Route path="/new-season" element={<NewSeason />} />
+      </Route>
+      <Route path="/" element={userToken ? <Navigate to="/squad" replace /> : <Navigate to="/login" replace />} />
+    </Routes>
   );
 }
 
