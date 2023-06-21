@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   red, blue, mediumBlue, lightBlue, mobileBreakPoint,
@@ -34,7 +34,7 @@ export const Nav = styled.nav`
   background-color: ${mediumBlue};
   width: 100vw;
   margin: 0;
-  height: 75px;
+  height:80px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -42,6 +42,8 @@ export const Nav = styled.nav`
   color: black;
   margin-left: -220px;
   z-index: 10;
+  margin-bottom: 5px;
+  
   @media (max-width: ${mobileBreakPoint}){
     height: 40px;
     margin: 0;
@@ -49,7 +51,7 @@ export const Nav = styled.nav`
   }
 `;
 
-export const CustomNavLink = styled(Link)`
+export const CustomNavLink = styled(NavLink)`
   text-decoration: none;
   color: black
   display: flex;
@@ -58,6 +60,10 @@ export const CustomNavLink = styled(Link)`
   &:hover{
     font-weight: 800;
   }
+  &:visited { 
+    text-decoration: none; 
+    color: black; 
+   }
   @media (max-width: ${mobileBreakPoint}){
     margin-right: 0px;
   }
@@ -67,7 +73,7 @@ export const CustomNavLink = styled(Link)`
 export const Logo = styled.img`
   width: 220px;
   z-index: 15;
-  height: 80px;
+  height: 82px;
   @media (max-width: ${mobileBreakPoint}){
     width: 170px;
     height: auto;
@@ -137,7 +143,7 @@ export const YearSelector = styled.select`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  
+  margin-left: -8px;
 `;
 
 export const DummyYearSelector = styled.div`

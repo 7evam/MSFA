@@ -74,16 +74,8 @@ function MobileMonthTicker({
   };
 
   const handlePointerClick = (adjustment) => {
-    console.log('adjusting');
-
     if ((roflMonth <= 1 && adjustment < 0) || (roflMonth >= 14 && adjustment > 0)) {
-      console.log('iit failed');
-      console.log(roflMonth);
-      console.log(adjustment);
     } else {
-      console.log('old then new rofl month');
-      console.log(roflMonth);
-      console.log(roflMonth + adjustment);
       setRoflMonth(roflMonth + adjustment);
     }
   };
