@@ -38,7 +38,14 @@ function MonthlyPoints({ roflYear, userId }) {
       route: `/organizations/memberStandings/${currentOrganization.id}/${roflYear}`,
     });
     const { body } = res;
-    setStandings(body);
+    const ordered = Object.keys(body).sort().reduce(
+      (obj, key) => {
+        obj[key] = body[key];
+        return obj;
+      },
+      {},
+    );
+    setStandings(ordered);
   };
 
   return (
