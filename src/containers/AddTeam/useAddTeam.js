@@ -328,6 +328,7 @@ function useAddTeam() {
   };
 
   const handleAdd = (team) => {
+    console.log('hadnling add');
     const leagueId = Number(String(team)[0]);
     dispatch({
       type: 'SHOW_MODAL',
@@ -344,6 +345,7 @@ function useAddTeam() {
   };
 
   const handleClaim = (team) => {
+    console.log('hadnling claim');
     const leagueId = Number(String(team)[0]);
     dispatch({
       type: 'SHOW_MODAL',

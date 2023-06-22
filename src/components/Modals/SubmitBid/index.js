@@ -19,6 +19,12 @@ function SubmitBid() {
   }));
 
   const {
+    currentDate,
+  } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
+  const {
     sportTeams,
     roflYear,
     activeYears,
@@ -92,6 +98,8 @@ function SubmitBid() {
   };
 
   const handleTeamClick = (teamId) => {
+    console.log('clicked on team');
+    console.log(teamId);
     const team = checkedTeams[teamId];
     const newCheckedTeams = { ...checkedTeams };
     newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;
@@ -125,6 +133,7 @@ function SubmitBid() {
   };
 
   const handleSubmit = async () => {
+    const leagueId = Number(String(props.selectedTeam)[0]);
     const leagueCountPassed = checkForLeagueCountError();
     if (!leagueCountPassed) return;
 
@@ -139,6 +148,13 @@ function SubmitBid() {
       return;
     }
 
+    console.log('here are parrams');
+    console.log(activeYears);
+    console.log(selectedYear);
+    console.log(Number(String(props.selectedTeam)[0]));
+
+    const roflMonth = activeYears[selectedYear][leagueId]?.roflMonth ? activeYears[selectedYear][leagueId].roflMonth : currentDate.realMonth - 3;
+
     const res = await makeRequest({
       method: 'post',
       route: '/users/bids',
@@ -151,8 +167,7 @@ function SubmitBid() {
         droppedTeams: Object.keys(checkedTeams)
           .filter((team) => checkedTeams[team].checked === true)
           .map((team) => Number(team)),
-        roflMonth:
-          activeYears[selectedYear][Number(String(props.selectedTeam)[0])].roflMonth + 1,
+        roflMonth: roflMonth + 1,
         // roflMonth: activeYears[roflYear][Number(String(props.selectedTeam)[0])].roflMonth
       },
     });

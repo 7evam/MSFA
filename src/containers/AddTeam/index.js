@@ -1,25 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import React from 'react';
 import '@fontsource/open-sans';
-import useApi from '../../hooks/useApi';
-import RosterComponent from '../../components/Roster';
+
 import Loading from '../../components/Loading';
-import useHydration from '../../hooks/useHydration';
 import {
-  Tab, TabSelector, Section, Select, Label, Headline, ActionButton, Container, League, LeagueSelector, slotData, SlotRow, Th, TitleRow, Td, Table, CashContainer,
+  Tab, TabSelector, Container,
 } from './components';
 import useAddTeam from './useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
 import UnownedTeams from './UnownedTeams';
 import CurrentRosters from './CurrentRosters';
 import CurrentBids from './CurrentBids';
 import Trades from './Trades';
 import ArchivedMessage from './ArchivedMessage';
 
-function AddTeam(props) {
+function AddTeam() {
   const {
-    isArchived, firstActiveMonthForClaim, reFetchTrades, trades, handleTrade, handleAdd, setAllBids, originalBids, reFetchBids, firstLeagueToShow, tab, setTab, allBids, handleClaim, currentDate, activeYears, deadlines, dropTeam, handleAction, readyToRender, orgMembers, selectedMember, handleChange, currentRoster, sportTeams, league, setLeague, unownedTeams, currentOrganization,
+    isArchived,
+    firstActiveMonthForClaim,
+    reFetchTrades,
+    trades,
+    handleTrade,
+    handleAdd, setAllBids,
+    originalBids, reFetchBids,
+    firstLeagueToShow, tab, setTab,
+    allBids, handleClaim,
+    activeYears, dropTeam,
+    handleAction, readyToRender,
+    selectedMember, handleChange, currentRoster,
+    sportTeams, league, setLeague,
+    unownedTeams, currentOrganization,
   } = useAddTeam();
 
   const getContent = (tab) => {
