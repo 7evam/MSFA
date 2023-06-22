@@ -12,4 +12,7 @@ export const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  filter: ${(props) => (props.modal ? 'blur(2px)' : null)}; 
+  overflow-y: ${(props) => (props.modal ? 'hidden' : 'scroll')}; 
+
 `;

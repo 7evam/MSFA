@@ -22,12 +22,15 @@ import { lightBlue, mobileBreakPoint } from '../constants/style';
 
 const ModalContainer = styled.div`
     position: fixed;
-    top: 100px;
+    top: 10px;
     left: 10%;
     right: 10%;
     background-color: ${lightBlue};
     z-index: 4;
     border: 1px solid black;
+    z-index: 100;
+    max-height: 90vh;
+    overflow-y: auto;
     @media (max-width: ${mobileBreakPoint}){
         top: 10px;
         left: 10px;
@@ -39,8 +42,6 @@ const ModalContainer = styled.div`
 `;
 
 function RenderModal() {
-  const dispatch = useDispatch();
-
   const { modalContent } = useSelector((state) => ({
     ...state.modalReducer,
   }));

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useApi from '../hooks/useApi';
 import TopBar from './TopBar';
 import { Container, ContentContainer } from './components';
+import RenderModal from './RenderModal';
 
 function App(props) {
   const dispatch = useDispatch();
@@ -14,6 +15,10 @@ function App(props) {
 
   const { userToken } = useSelector((state) => ({
     ...state.authReducer,
+  }));
+
+  const { modalContent } = useSelector((state) => ({
+    ...state.modalReducer,
   }));
 
   const getActiveMonths = async () => {
@@ -41,10 +46,11 @@ function App(props) {
 
   return (
     <Container>
-      <ContentContainer>
+      <ContentContainer modal={!!modalContent}>
         <TopBar />
         <Outlet />
       </ContentContainer>
+      <RenderModal />
     </Container>
   );
 }
