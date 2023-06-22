@@ -83,12 +83,6 @@ function Landing({ testLogIn, setTestLogin }) {
 
   const navigate = useNavigate();
 
-  // const logInTest = async () => {
-  //   setTestLogin(true);
-  //   navigate('/new-squad');
-  //   navigate(0);
-  // };
-
   const displaySwitch = (display) => {
     switch (display) {
       case 'login': return (

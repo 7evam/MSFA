@@ -7,7 +7,6 @@ html {
 
 body {
     margin: 0;
-    overflow-y: hidden;
 }
 a:visited {
     color: inherit;
