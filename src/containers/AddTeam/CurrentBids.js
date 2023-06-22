@@ -58,11 +58,12 @@ const Test = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+    margin-top: 50px;
 `;
 
 function CurrentBids({
@@ -230,7 +231,7 @@ function CurrentBids({
       {
             allBids && allBids[roflMonth] && allBids[roflMonth].length
               ? (
-                <div>
+                <>
                   {/* {activeYearArray.length === 2 ? (
                     <YearSelector
                       activeYearArray={activeYearArray}
@@ -293,7 +294,7 @@ function CurrentBids({
                       <button onClick={saveRoster}>Save</button>
                     </div>
                   ) : null}
-                </div>
+                </>
               )
               : <p>There are no bids to show</p>
         }

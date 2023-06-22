@@ -8,11 +8,12 @@ import YearSelector from '../../components/YearSelector';
 import { red } from '../../constants/style';
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+    margin-top: 50px;
 `;
 
 const MonthContainer = styled.div`

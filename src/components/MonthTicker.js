@@ -6,7 +6,7 @@ import MobileMonthTicker from './MobileMonthTicker';
 
 const Container = styled.div`
 background-color: ${lightBlue};
-width: 700px;
+max-width: 700px;
 display: flex;
 flex-direction: row;
 height: 70px;

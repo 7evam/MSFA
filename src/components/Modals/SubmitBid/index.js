@@ -148,11 +148,6 @@ function SubmitBid() {
       return;
     }
 
-    console.log('here are parrams');
-    console.log(activeYears);
-    console.log(selectedYear);
-    console.log(Number(String(props.selectedTeam)[0]));
-
     const roflMonth = activeYears[selectedYear][leagueId]?.roflMonth ? activeYears[selectedYear][leagueId].roflMonth : currentDate.realMonth - 3;
 
     const res = await makeRequest({
