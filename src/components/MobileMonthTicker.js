@@ -81,7 +81,6 @@ function MobileMonthTicker({
   };
 
   const handleChange = (e) => {
-    console.log('handling change');
     setRoflMonth(Number(e.target.value));
   };
 

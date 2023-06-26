@@ -98,8 +98,6 @@ function SubmitBid() {
   };
 
   const handleTeamClick = (teamId) => {
-    console.log('clicked on team');
-    console.log(teamId);
     const team = checkedTeams[teamId];
     const newCheckedTeams = { ...checkedTeams };
     newCheckedTeams[teamId].checked = !newCheckedTeams[teamId].checked;

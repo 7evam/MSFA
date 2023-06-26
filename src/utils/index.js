@@ -9,7 +9,11 @@ export const checkIfRostersAreEqual = (roster1, roster2) => {
   return value;
 };
 
-export const convertDateObjToReadable = (date) => `${new Date(date).toDateString()}`;
+// export const convertDateObjToReadable = (date) => `${new Date(date).toDateString()}`;
+export const convertDateObjToReadable = (date) => {
+  const parts = new Date(date).toUTCString().split(' ');
+  return `${parts[0]} ${parts[2]} ${parts[1]} `;
+};
 
 export const convertMonthToReadable = (month, year) => {
   year = Number(year);

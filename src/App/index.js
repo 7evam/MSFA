@@ -42,8 +42,6 @@ function App(props) {
     getActiveMonths();
   }, []);
 
-  console.log('in app');
-
   return (
     <Container>
       <ContentContainer modal={!!modalContent}>

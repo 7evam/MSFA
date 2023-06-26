@@ -339,8 +339,6 @@ function useCreateNewLeague(existingOrganization) {
     memberRosters.forEach((roster) => {
       delete roster.tempId;
     });
-    console.log('here is memberRosters');
-    console.log(memberRosters);
     e.preventDefault();
     const dataObject = {
       members: values.members,
@@ -356,7 +354,6 @@ function useCreateNewLeague(existingOrganization) {
       rosters: memberRosters,
     };
     try {
-      console.log(existingOrganization);
       const res = existingOrganization
         ? await makeRequest({
           method: 'post',

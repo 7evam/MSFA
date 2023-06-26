@@ -42,13 +42,10 @@ function useRoster() {
         method: 'get',
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}`,
       });
-      console.log('here is rees');
-      console.log(res);
+
       const fetchedRoster = res.body;
-      console.log(`here is roster from fetch roster year ${selectedYear}`);
-      console.log(roster);
+
       if (roster) {
-        console.log('roster exiists, adding roster');
         setRoster({
           ...roster,
           ...fetchedRoster,

@@ -71,7 +71,6 @@ function useDashboard() {
 
   const fetchRoster = async (selectedRoflYear) => {
     try {
-      console.log('in route hardcoaded with user 2');
       const res = await makeRequest({
         method: 'get',
         route: `/users/roster/2/${currentOrganization.id}/${selectedRoflYear}`,
