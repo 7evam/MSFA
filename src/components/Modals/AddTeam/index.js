@@ -29,13 +29,13 @@ function AddTeam() {
     Object.keys(roster).forEach((teamNum) => {
       const team = roster[teamNum];
       // don't show a team if it wont be active next month
-      // if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
-      checkableRoster[team.teamId] = {
-        checked: props.selectedTeam === team.teamId,
-        val: team.val,
-        leagueId: team.leagueId,
-      };
-      // }
+      if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
+        checkableRoster[team.teamId] = {
+          checked: props.selectedTeam === team.teamId,
+          val: team.val,
+          leagueId: team.leagueId,
+        };
+      }
     });
     return checkableRoster;
   };

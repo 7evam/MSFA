@@ -65,9 +65,6 @@ function UnownedTeams({
     ...state.sportReducer,
   }));
 
-  console.log('here is deadlines');
-  console.log(deadlines);
-
   const [readyToRender, setReadyToRender] = useState(false);
 
   useEffect(() => {
@@ -89,9 +86,6 @@ function UnownedTeams({
   };
 
   const deadline = calculateDeadline(selectedYear, league);
-  console.log('here is deadline');
-  console.log(deadline);
-
   const today = new Date();
   const waiverPeriodEnded = new Date(deadline) < today;
 
@@ -100,11 +94,6 @@ function UnownedTeams({
   //   : deadlines[selectedYear][league][currentDate.realMonth - 4].deadline;
 
   const getUnownedActionButton = (leagueId, team) => {
-    console.log('hre eis waiver exceeptions');
-    console.log(waiverExceptions);
-    console.log('here is team');
-    console.log(team);
-
     // return claim if 3 days before end of real month or season start, add otherwise
     const claim = (
       <ActionButton onClick={() => handleClaim(team)}>Claim</ActionButton>
