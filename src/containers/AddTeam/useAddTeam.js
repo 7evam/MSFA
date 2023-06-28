@@ -84,6 +84,7 @@ function useAddTeam() {
   const [firstActiveMonthForClaim, setFirstActiveMonthForClaim] = useState(null);
   const [error, setError] = useState(null);
   const [isArchived, setIsArchived] = useState(null);
+  const [waiverExceptions, setWaiverExceptions] = useState(null);
 
   //   useEffect(() => {
   //     async function fetchData() {
@@ -232,6 +233,29 @@ function useAddTeam() {
       // })
       // setAllBids(bidTable);
       // setOriginalBids(JSON.stringify(bidTable))
+    } catch (e) {
+      console.log('problem');
+      console.error(e);
+    }
+  };
+
+  const fetchWaiverExceptions = async (selectedRoflYear, abortController) => {
+    try {
+      const res = await makeRequest({
+        method: 'get',
+        route: `users/waiverExceptions/${currentOrganization.id}/${selectedRoflYear}`,
+        abort: abortController,
+      });
+      console.log('here is res');
+      console.log(res);
+      const { body } = res;
+      console.log('here is body');
+      console.log(body);
+      const teamIds = [];
+      body.forEach((item) => {
+        teamIds.push(item.team_id);
+      });
+      setWaiverExceptions(teamIds);
     } catch (e) {
       console.log('problem');
       console.error(e);
@@ -407,6 +431,7 @@ function useAddTeam() {
           fetchRoster(selectedYear, abortController),
           fetchAllBids(selectedYear, abortController),
           fetchTrades(selectedYear, abortController),
+          fetchWaiverExceptions(selectedYear, abortController),
         ]);
         const fullRoster = res[0];
         calculateAndSetIsArchived();
@@ -519,6 +544,7 @@ function useAddTeam() {
     reFetchTrades,
     firstActiveMonthForClaim,
     isArchived,
+    waiverExceptions,
   };
 }
 

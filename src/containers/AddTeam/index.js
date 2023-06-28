@@ -27,7 +27,7 @@ function AddTeam() {
     handleAction, readyToRender,
     selectedMember, handleChange, currentRoster,
     sportTeams, league, setLeague,
-    unownedTeams, currentOrganization,
+    unownedTeams, currentOrganization, waiverExceptions,
   } = useAddTeam();
 
   const getContent = (tab) => {
@@ -38,7 +38,7 @@ function AddTeam() {
         if (isArchived) {
           return <ArchivedMessage />;
         }
-        return <UnownedTeams isArchived={isArchived} firstActiveMonthForClaim={firstActiveMonthForClaim} handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams} />;
+        return <UnownedTeams waiverExceptions={waiverExceptions} isArchived={isArchived} firstActiveMonthForClaim={firstActiveMonthForClaim} handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams} />;
 
       case 'bids':
         if (isArchived) {

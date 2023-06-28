@@ -57,6 +57,7 @@ function UnownedTeams({
   firstLeagueToShow,
   firstActiveMonthForClaim,
   isArchived,
+  waiverExceptions,
 }) {
   const {
     activeYears, currentDate, sportTeams, deadlines, selectedYear,
@@ -99,6 +100,11 @@ function UnownedTeams({
   //   : deadlines[selectedYear][league][currentDate.realMonth - 4].deadline;
 
   const getUnownedActionButton = (leagueId, team) => {
+    console.log('hre eis waiver exceeptions');
+    console.log(waiverExceptions);
+    console.log('here is team');
+    console.log(team);
+
     // return claim if 3 days before end of real month or season start, add otherwise
     const claim = (
       <ActionButton onClick={() => handleClaim(team)}>Claim</ActionButton>
@@ -108,6 +114,7 @@ function UnownedTeams({
       <ActionButton onClick={() => handleAdd(team)}>Add</ActionButton>
     );
 
+    if (waiverExceptions.includes(Number(team))) return claim;
     if (!activeYears[selectedYear][leagueId]) return claim;
     const currentRoflMonth = activeYears[selectedYear][leagueId].roflMonth;
     if (
@@ -156,6 +163,13 @@ function UnownedTeams({
             will be available starting MSFA month
             {' '}
             {firstActiveMonthForClaim}
+          </TopText>
+          <TopText>
+            {
+            waiverExceptions && waiverExceptions.length
+              ? 'Any teams that were dropped during the recently ended wavier period are now available to claim on waivers. You may press "claim" to place a bid for these teams'
+              : null
+            }
           </TopText>
           <TitleRow>
             <Th style={{ width: '200px' }}>Team</Th>
