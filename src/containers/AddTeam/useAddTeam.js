@@ -8,7 +8,7 @@ import RosterComponent from '../../components/Roster';
 import Loading from '../../components/Loading';
 import useHydration from '../../hooks/useHydration';
 import { Container, League, LeagueSelector } from './components';
-import { convertRealToRofl } from '../../utils';
+import { convertRealToRofl, getTeamName, convertDateObjToReadable } from '../../utils';
 
 function useAddTeam() {
   const dispatch = useDispatch();
@@ -85,6 +85,7 @@ function useAddTeam() {
   const [error, setError] = useState(null);
   const [isArchived, setIsArchived] = useState(null);
   const [waiverExceptions, setWaiverExceptions] = useState(null);
+  const [transactions, setTransactions] = useState(null);
 
   //   useEffect(() => {
   //     async function fetchData() {
@@ -286,6 +287,36 @@ function useAddTeam() {
     }
   };
 
+  const fetchAllTransactions = async (selectedRoflYear, abortController) => {
+    try {
+      const res = await makeRequest({
+        method: 'get',
+        route: `users/transactions/${currentOrganization.id}/${selectedRoflYear}`,
+        abort: abortController,
+      });
+      const { body } = res;
+      console.log('here iis transactions');
+      const trxTable = {};
+      body.forEach((trx) => {
+        trx.team_added = getTeamName(trx.team_added, sportTeams);
+        trx.team_dropped = getTeamName(trx.team_dropped, sportTeams);
+        trx.user_id = orgMembers[trx.user_id].team_name;
+        trx.transaction_type = trx.transaction_type.charAt(0).toUpperCase() + trx.transaction_type.slice(1);
+        if (!trxTable[trx.rofl_month]) trxTable[trx.rofl_month] = [];
+        trxTable[trx.rofl_month].push(trx);
+      });
+      const maxMonth = Math.max(...Object.keys(trxTable));
+      for (let i = 1; i < maxMonth; i++) {
+        if (!trxTable[i]) trxTable[i] = [];
+      }
+      console.log(trxTable);
+      setTransactions(trxTable);
+    } catch (e) {
+      console.log('problem');
+      console.error(e);
+    }
+  };
+
   // fetch current teams
   // returns full rosteer
   const fetchRoster = async (selectedRoflYear, abortController) => {
@@ -432,6 +463,7 @@ function useAddTeam() {
           fetchAllBids(selectedYear, abortController),
           fetchTrades(selectedYear, abortController),
           fetchWaiverExceptions(selectedYear, abortController),
+          fetchAllTransactions(selectedYear, abortController),
         ]);
         const fullRoster = res[0];
         calculateAndSetIsArchived();
@@ -545,6 +577,7 @@ function useAddTeam() {
     firstActiveMonthForClaim,
     isArchived,
     waiverExceptions,
+    transactions,
   };
 }
 

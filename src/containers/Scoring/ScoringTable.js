@@ -41,33 +41,6 @@ const Th = styled.th`
 function ScoringTable({
   filteredPoints,
 }) {
-  // useEffect(() => {
-  //   if (scores.points[league][`${roflMonth}-${selectedYear}`]) {
-  //     const result = [];
-  //     Object.keys(scores.points[league][`${roflMonth}-${selectedYear}`]).forEach((teamId) => {
-  //       result.push({
-  //         id: teamId,
-  //         teamName: `${sportTeams[league][teamId].city} ${sportTeams[league][teamId].name}`,
-  //         points: scores.points[league][`${roflMonth}-${selectedYear}`][teamId],
-  //       });
-  //     });
-  //     setData(result);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   // change format
-  //   if (league === 1) {
-  //     playoffs ? setColumns(mlbPlayoffs) : setColumns(mlbReg);
-  //   } else if (league === 2) {
-  //     playoffs ? setColumns(nflPlayoffs) : setColumns(nflReg);
-  //   } else if (league === 3) {
-  //     playoffs ? setColumns(nhlPlayoffs) : setColumns(nhlReg);
-  //   } else if (league === 4) {
-  //     playoffs ? setColumns(nbaPlayoffs) : setColumns(nbaReg);
-  //   }
-  // }, [league, playoffs]);
-
   const [sorting, setSorting] = useState([]);
   const [columns, setColumns] = useState([
     {

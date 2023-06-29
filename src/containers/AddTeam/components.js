@@ -43,6 +43,7 @@ export const TabSelector = styled.div`
   background-color: ${mediumBlue};
   @media (max-width: ${mobileBreakPoint}){
     width: 100vw;
+    font-size: 10px;
   }
 `;
 

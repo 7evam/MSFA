@@ -15,6 +15,8 @@ export const convertDateObjToReadable = (date) => {
   return `${parts[0]} ${parts[2]} ${parts[1]} `;
 };
 
+export const getTeamName = (teamId, sportTeams) => `${sportTeams[Number(String(teamId)[0])][teamId].city} ${sportTeams[Number(String(teamId)[0])][teamId].name}`;
+
 export const convertMonthToReadable = (month, year) => {
   year = Number(year);
   const months = {

@@ -11,6 +11,7 @@ import CurrentRosters from './CurrentRosters';
 import CurrentBids from './CurrentBids';
 import Trades from './Trades';
 import ArchivedMessage from './ArchivedMessage';
+import PastTransactions from './PastTransactions';
 
 function AddTeam() {
   const {
@@ -27,7 +28,7 @@ function AddTeam() {
     handleAction, readyToRender,
     selectedMember, handleChange, currentRoster,
     sportTeams, league, setLeague,
-    unownedTeams, currentOrganization, waiverExceptions,
+    unownedTeams, currentOrganization, waiverExceptions, transactions,
   } = useAddTeam();
 
   const getContent = (tab) => {
@@ -50,6 +51,8 @@ function AddTeam() {
           return <ArchivedMessage />;
         }
         return <Trades reFetchTrades={reFetchTrades} trades={trades} />;
+      case 'transactions':
+        return <PastTransactions transactions={transactions} />;
       default:
         return <div>Tab not found</div>;
     }
@@ -71,6 +74,9 @@ function AddTeam() {
             </Tab>
             <Tab selected={tab === 'trades'} onClick={() => setTab('trades')}>
               Trades
+            </Tab>
+            <Tab selected={tab === 'transactions'} onClick={() => setTab('transactions')}>
+              Past Transactions
             </Tab>
           </TabSelector>
           {
