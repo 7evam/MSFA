@@ -42,9 +42,9 @@ export default function useHydration() {
             orgMembers: hash,
           },
         });
-      } else {
-        throw ('Unable to fetch org members');
+        return hash;
       }
+      throw ('Unable to fetch org members');
     } catch (e) {
       console.log('problem');
       console.log('here is params');

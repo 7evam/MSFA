@@ -185,7 +185,8 @@ function useAddTeam() {
     return currentRoflMonths;
   };
 
-  const calculateAndSetUnownedTeams = (fullRoster) => {
+  const calculateAndSetUnownedTeams = (fullRoster, fetchedSportTeams) => {
+    const sportTeams = sportTeams || fetchedSportTeams;
     if (fullRoster && sportTeams && Object.keys(sportTeams).length) {
       // get owned teams
       const ownedTeams = [];
@@ -224,16 +225,6 @@ function useAddTeam() {
       });
       const { body } = res;
       setTrades(body);
-      // const bidTable = {}
-      // body.forEach(bid => {
-      //   if(bidTable[bid.rofl_month]){
-      //       bidTable[bid.rofl_month].push(bid)
-      //   } else {
-      //       bidTable[bid.rofl_month] = [bid]
-      //   }
-      // })
-      // setAllBids(bidTable);
-      // setOriginalBids(JSON.stringify(bidTable))
     } catch (e) {
       console.log('problem');
       console.error(e);
@@ -247,11 +238,7 @@ function useAddTeam() {
         route: `users/waiverExceptions/${currentOrganization.id}/${selectedRoflYear}`,
         abort: abortController,
       });
-      console.log('here is res');
-      console.log(res);
       const { body } = res;
-      console.log('here is body');
-      console.log(body);
       const teamIds = [];
       body.forEach((item) => {
         teamIds.push(item.team_id);
@@ -287,7 +274,7 @@ function useAddTeam() {
     }
   };
 
-  const fetchAllTransactions = async (selectedRoflYear, abortController) => {
+  const fetchAllTransactions = async (selectedRoflYear, abortController, sportTeams = sportTeams, orgMembers = orgMembers) => {
     try {
       const res = await makeRequest({
         method: 'get',
@@ -295,7 +282,6 @@ function useAddTeam() {
         abort: abortController,
       });
       const { body } = res;
-      console.log('here iis transactions');
       const trxTable = {};
       body.forEach((trx) => {
         trx.team_added = getTeamName(trx.team_added, sportTeams);
@@ -309,7 +295,6 @@ function useAddTeam() {
       for (let i = 1; i < maxMonth; i++) {
         if (!trxTable[i]) trxTable[i] = [];
       }
-      console.log(trxTable);
       setTransactions(trxTable);
     } catch (e) {
       console.log('problem');
@@ -383,7 +368,6 @@ function useAddTeam() {
   };
 
   const handleAdd = (team) => {
-    console.log('hadnling add');
     const leagueId = Number(String(team)[0]);
     dispatch({
       type: 'SHOW_MODAL',
@@ -400,7 +384,6 @@ function useAddTeam() {
   };
 
   const handleClaim = (team) => {
-    console.log('hadnling claim');
     const leagueId = Number(String(team)[0]);
     dispatch({
       type: 'SHOW_MODAL',
@@ -456,19 +439,19 @@ function useAddTeam() {
     async function fetchData() {
       try {
         if (!deadlines) await hydrateDeadlines(abortController, selectedYear);
-        if (!orgMembers) await hydrateOrgMembers(abortController);
-        if (!sportTeams) await hydrateSportTeams(abortController);
+        const fetchedOrgMembers = orgMembers || await hydrateOrgMembers(abortController);
+        const fetchedSportTeams = sportTeams || await hydrateSportTeams(abortController);
         const res = await Promise.all([
           fetchRoster(selectedYear, abortController),
           fetchAllBids(selectedYear, abortController),
           fetchTrades(selectedYear, abortController),
           fetchWaiverExceptions(selectedYear, abortController),
-          fetchAllTransactions(selectedYear, abortController),
+          fetchAllTransactions(selectedYear, abortController, fetchedSportTeams, fetchedOrgMembers),
         ]);
         const fullRoster = res[0];
         calculateAndSetIsArchived();
         calculateAndSetFirstLeague();
-        calculateAndSetUnownedTeams(fullRoster);
+        calculateAndSetUnownedTeams(fullRoster, fetchedSportTeams);
         setReadyToRender(true);
       } catch (e) {
         console.error(e);
