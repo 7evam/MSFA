@@ -43,13 +43,17 @@ function App(props) {
   }, []);
 
   return (
-    <Container>
-      <ContentContainer modal={!!modalContent}>
-        <TopBar />
-        <Outlet />
-      </ContentContainer>
-      <RenderModal />
-    </Container>
+    userToken
+      ? (
+        <Container>
+          <ContentContainer modal={!!modalContent}>
+            <TopBar />
+            <Outlet />
+          </ContentContainer>
+          <RenderModal />
+        </Container>
+      )
+      : <Navigate to="/login" />
   );
 }
 

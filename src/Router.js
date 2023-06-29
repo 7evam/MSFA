@@ -23,7 +23,6 @@ import CreateNewLeague from './containers/CreateNewLeague';
 import NewSeason from './containers/NewSeason';
 import Roster from './containers/RoflLeague/Roster';
 import Standings from './containers/RoflLeague/Standings';
-
 import App from './App';
 // const App = lazy(() => import('./App'));
 // const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
