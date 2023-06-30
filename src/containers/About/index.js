@@ -16,6 +16,8 @@ const Container = styled.div`
 const Headline = styled.h1`
   font-family: "helvetica neue", Helvetica, arial, sans-serif; 
   font-size: 20px;
+  padding-top: 40px;
+  text-align: center;
 `;
 
 const EntryModes = styled.div`
@@ -66,6 +68,7 @@ const TextContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 `;
 
 function About() {

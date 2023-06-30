@@ -26,6 +26,8 @@ const TitleText = styled.span`
   `;
 
 const Text = styled.p`
+  padding-left: 15px;
+  padding-right: 15px;
   transition: 0.2s ease-out;
   max-height: ${(props) => (props.active ? null : '0')};
   overflow: hidden;
