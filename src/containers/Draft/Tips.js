@@ -27,7 +27,10 @@ function Tips(props) {
     <Container>
       <Title>MSFA Draft Tips</Title>
       <Text>
-        The MSFA draft is the most important part of the season.
+        The MSFA draft is the most important part of the season. The draft is always
+        an auction draft where each participant starts with $200. Participants take turns nominating
+        teams to start the bidding so that every participant gets a chance to bid on every team.
+        <br />
         Although successful teams from each league score approximately the same amount of points,
         the number of games in each league’s regular season and the length of each league’s
         season adds some interesting twists. For example, the best teams in the NFL play

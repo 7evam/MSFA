@@ -77,9 +77,11 @@ function ValueTool(props) {
     <Container>
       <Text>
         Use this value tool to help prepare for your draft.
+        Remember, the draft is an auction draft where each participant
+        starts with $200.
         You can set your own values for each of the draftable teams.
-        Default values based on the advice from the
-        commish and Vegas betting odds has been included by default.
+        Default values based on an 8 team league and the reccomendations from the
+        commish have been included by default.
         Your values will save to your browser and re-load
         even if you close your browser
       </Text>
