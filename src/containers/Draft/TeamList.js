@@ -11,7 +11,7 @@ const Select = styled.div`
     overflow-y: scroll;
     background-color: ${lightBlue};
     @media (max-width: ${mobileBreakPoint}){
-      width: 100vw;
+      width: 90vw;
   }
 `;
 
@@ -25,7 +25,7 @@ const Option = styled.div`
     background-color: ${(props) => (props.isSelected ? mediumBlue : null)}; 
     text-decoration: ${(props) => (props.removed ? 'line-through' : null)}; 
     @media (max-width: ${mobileBreakPoint}){
-      width: 100vw;
+      width: 90vw;
   }
 `;
 
