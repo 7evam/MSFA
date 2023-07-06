@@ -63,10 +63,43 @@ function useScoring() {
 
   // calculate and set the first and last rofl month for display
   // if set current is set to true, function will also calcualte set and return the current rofl month
-  const setDisplayMonthRange = (selectedLeague, setCurrent) => {
-    const newFinalMonth = activeYears[selectedYear][selectedLeague]
-      ? activeYears[selectedYear][selectedLeague].roflMonth
+  const setDisplayMonthRange = (selectedLeague, setCurrent, fetchedActiveYears) => {
+    const startingMonths = {
+      2022: {
+        1: 1,
+        2: 6,
+        3: 7,
+        4: 7,
+      },
+      2023: {
+        1: 1,
+        2: 6,
+        3: 7,
+        4: 7,
+      },
+    };
+
+    const playoffMonths = {
+      2022: {
+        1: 7,
+        2: 10,
+        3: 13,
+        4: 13,
+      },
+      2023: {
+        1: 7,
+        2: 10,
+        3: 13,
+        4: 13,
+      },
+    };
+
+    const existingActiveYears = fetchedActiveYears || activeYears;
+
+    const newFinalMonth = existingActiveYears[selectedYear][selectedLeague]
+      ? existingActiveYears[selectedYear][selectedLeague].roflMonth
       : playoffMonths[selectedYear][selectedLeague];
+
     const newStartingMonth = startingMonths[selectedYear][selectedLeague];
     setFinalMonthForDisplay(newFinalMonth);
     setFirstMonthForDisplay(newStartingMonth);
@@ -80,6 +113,20 @@ function useScoring() {
   };
 
   const calculateMonthsToDisplay = (records) => {
+    const startingMonths = {
+      2022: {
+        1: 1,
+        2: 6,
+        3: 7,
+        4: 7,
+      },
+      2023: {
+        1: 1,
+        2: 6,
+        3: 7,
+        4: 7,
+      },
+    };
     const allMonths = [];
     Object.keys(records).forEach((leagueId) => {
       Object.keys(records[leagueId]).forEach((monthKey) => {
@@ -91,24 +138,22 @@ function useScoring() {
   };
 
   const fetchScores = async (abortController) => {
-    console.log('in fetch scores');
-    console.log(makeRequest);
-    console.log(currentOrganization);
     const res = await makeRequest({
       method: 'get',
       route: `/sports/scores/${currentOrganization.id}/${selectedYear}`,
       abort: abortController,
     });
-    console.log('here is scores res');
-    console.log(res);
     if (res.statusCode === 200) {
       const scores = res.body;
-      console.log('here is scores');
-      console.log(scores);
       calculateMonthsToDisplay(scores.records);
       setScores(scores);
       return scores;
     }
+  };
+
+  const calculateActiveLeagues = (fetchedActiveYears) => {
+    const existingActiveYears = activeYears || fetchedActiveYears;
+    return Object.keys(existingActiveYears[selectedYear]);
   };
 
   // this function runs on page load and makes all api requests
@@ -117,20 +162,20 @@ function useScoring() {
       const abortController = new AbortController();
       try {
         const fetchedData = await fetchScores(abortController);
-        console.log('fetched data');
         let fetchedSportTeams;
         if (!sportTeams) {
           fetchedSportTeams = await hydrateSportTeams(abortController);
         }
-        console.log('fetched sport teams');
-        if (!activeYears) await hydrateActiveYears(abortController);
-        console.log('got active years');
-        const activeLeagues = Object.keys(activeYears[selectedYear]);
-        console.log('got active leagues');
+        let fetchedActiveYears;
+        if (!activeYears) {
+          fetchedActiveYears = await hydrateActiveYears(abortController);
+          fetchedActiveYears = fetchedActiveYears.activeYears;
+        }
+        const activeLeagues = calculateActiveLeagues(fetchedActiveYears);
         setFinalLeagueToShow(Math.max(...activeLeagues));
         const startingActiveLeague = Math.min(...activeLeagues);
         setLeague(startingActiveLeague);
-        const initialRoflMonth = setDisplayMonthRange(startingActiveLeague, true);
+        const initialRoflMonth = setDisplayMonthRange(startingActiveLeague, true, fetchedActiveYears);
         setFilteredPoints(
           formatPoints(fetchedData.points, startingActiveLeague, initialRoflMonth, selectedYear, fetchedSportTeams),
         );

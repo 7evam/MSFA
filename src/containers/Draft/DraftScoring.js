@@ -7,11 +7,17 @@ import Scoring from '../Scoring';
 import Loading from '../../components/Loading';
 
 const Container = styled.div`
-    display: flex;
-    justify-content: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-family: "helvetica neue", Helvetica, arial, sans-serif; 
     @media (max-width: ${mobileBreakPoint}){
         width: 100vw;
     }
+  `;
+const Text = styled.p`
+    width: 65vw;
   `;
 const placeholderCurrentOrg = {
   id: '35',
@@ -116,6 +122,7 @@ function DraftScoring() {
 
   return (
     <Container>
+      <Text>This page features a breakdown of how each team scored during the 2022-23 MSFA season. You can view each league's scoring scheme and each team's score and record.</Text>
       {selectedYear ? <Scoring /> : <Loading />}
     </Container>
   );
