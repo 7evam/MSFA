@@ -18,7 +18,7 @@ const Container = styled.div`
     }
   `;
 const Text = styled.p`
-  width: 30vw;
+  width: 65vw;
 `;
 function ValueTool(props) {
   const sortTeams = (teams) => {

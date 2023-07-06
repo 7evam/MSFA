@@ -15,7 +15,9 @@ const Container = styled.div`
     }
   `;
 const Title = styled.h1``;
-const Tip = styled.h2``;
+const Tip = styled.h2`
+width: 70vw;
+`;
 const Text = styled.p`
     width: 65vw;
   `;

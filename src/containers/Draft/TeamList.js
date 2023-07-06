@@ -10,6 +10,9 @@ const Select = styled.div`
     height: 400px;
     overflow-y: scroll;
     background-color: ${lightBlue};
+    @media (max-width: ${mobileBreakPoint}){
+      width: 100vw;
+  }
 `;
 
 const Option = styled.div`
@@ -21,6 +24,9 @@ const Option = styled.div`
     width: 100%;
     background-color: ${(props) => (props.isSelected ? mediumBlue : null)}; 
     text-decoration: ${(props) => (props.removed ? 'line-through' : null)}; 
+    @media (max-width: ${mobileBreakPoint}){
+      width: 100vw;
+  }
 `;
 
 function TeamList({ teams, setSelectedTeam, selectedTeam }) {
