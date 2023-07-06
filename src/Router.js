@@ -24,6 +24,10 @@ import NewSeason from './containers/NewSeason';
 import Roster from './containers/RoflLeague/Roster';
 import Standings from './containers/RoflLeague/Standings';
 import App from './App';
+import Draft from './containers/Draft';
+import ValueTool from './containers/Draft/ValueTool';
+import DraftScoring from './containers/Draft/DraftScoring';
+import Tips from './containers/Draft/Tips';
 // const App = lazy(() => import('./App'));
 // const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
 // const NewSeason = lazy(() => import('./containers/NewSeason'));
@@ -47,6 +51,11 @@ function Router() {
       <Route path="/login" element={<Landing />} />
       <Route path="/create-new-league" element={<CreateNewLeague />} />
       <Route path="/resetPassword/:resetCode" element={<ResetPassword />} />
+      <Route path="/draft" element={<Draft />}>
+        <Route index path="tips" element={<Tips />} />
+        <Route path="value-tool" element={<ValueTool />} />
+        <Route path="scoring" element={<DraftScoring />} />
+      </Route>
       <Route element={<App />}>
         <Route path="/squad" element={<MySquad />} />
         <Route path="/rofleague">

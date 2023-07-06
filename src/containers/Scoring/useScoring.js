@@ -47,9 +47,18 @@ function useScoring() {
       });
       return result;
     }
+    if (league === 1) {
+      setRoflMonth(1);
+    }
+    if (league === 2) {
+      setRoflMonth(6);
+    }
+    if (league === 3 || league === 4) {
+      setRoflMonth(7);
+    }
 
-    setError('points data formatted wrong');
-    throw new Error('points data ormatted wrong');
+    // setError('points data formatted wrong');
+    // throw new Error('points data ormatted wrong');
   };
 
   // calculate and set the first and last rofl month for display
@@ -82,13 +91,20 @@ function useScoring() {
   };
 
   const fetchScores = async (abortController) => {
+    console.log('in fetch scores');
+    console.log(makeRequest);
+    console.log(currentOrganization);
     const res = await makeRequest({
       method: 'get',
       route: `/sports/scores/${currentOrganization.id}/${selectedYear}`,
       abort: abortController,
     });
+    console.log('here is scores res');
+    console.log(res);
     if (res.statusCode === 200) {
       const scores = res.body;
+      console.log('here is scores');
+      console.log(scores);
       calculateMonthsToDisplay(scores.records);
       setScores(scores);
       return scores;
@@ -101,13 +117,16 @@ function useScoring() {
       const abortController = new AbortController();
       try {
         const fetchedData = await fetchScores(abortController);
-
+        console.log('fetched data');
         let fetchedSportTeams;
         if (!sportTeams) {
           fetchedSportTeams = await hydrateSportTeams(abortController);
         }
+        console.log('fetched sport teams');
         if (!activeYears) await hydrateActiveYears(abortController);
+        console.log('got active years');
         const activeLeagues = Object.keys(activeYears[selectedYear]);
+        console.log('got active leagues');
         setFinalLeagueToShow(Math.max(...activeLeagues));
         const startingActiveLeague = Math.min(...activeLeagues);
         setLeague(startingActiveLeague);
@@ -168,6 +187,21 @@ function useScoring() {
     setLeague(newLeague);
   };
 
+  const changeDisplay = (newDisplay) => {
+    if (roflMonth === 'total') {
+      if (league === 1) {
+        setRoflMonth(1);
+      }
+      if (league === 2) {
+        setRoflMonth(6);
+      }
+      if (league === 3 || league === 4) {
+        setRoflMonth(7);
+      }
+    }
+    setDisplay(newDisplay);
+  };
+
   return {
     playoffMonths,
     selectedYear,
@@ -185,6 +219,7 @@ function useScoring() {
     filteredPoints,
     filteredRecords,
     finalLeagueToShow,
+    changeDisplay,
   };
 }
 

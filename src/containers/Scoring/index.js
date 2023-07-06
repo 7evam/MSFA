@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import useApi from '../../hooks/useApi';
 import MonthTicker from '../../components/MonthTicker';
 import ScoringTable from './ScoringTable';
@@ -7,6 +8,7 @@ import RecordsTable from './RecordsTable';
 import Scheme from './Scheme';
 import useHydration from '../../hooks/useHydration';
 import Loading from '../../components/Loading';
+import { lightBlue, mobileBreakPoint } from '../../constants/style';
 
 import {
   Container,
@@ -16,6 +18,28 @@ import {
   League,
 } from './components';
 import useScoring from './useScoring';
+
+const Total = styled.p`
+display: flex;
+margin:0;
+margin-top: 5px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: ${lightBlue};
+  height: 30px;
+  align-items: center;
+  width: 700px;
+  font-weight: ${(props) => (props.totalSelected ? '800' : '400')}; 
+  &:hover {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+  }
+
+`;
 
 function Scoring() {
   const {
@@ -29,12 +53,12 @@ function Scoring() {
     finalMonthForDisplay,
     setRoflMonth,
     display,
-    setDisplay,
     readyToRender,
     changeLeague,
     filteredPoints,
     filteredRecords,
     finalLeagueToShow,
+    changeDisplay,
   } = useScoring();
 
   const renderSwitch = (componentToRender) => {
@@ -44,6 +68,12 @@ function Scoring() {
       case 'score': return (
         scores.records[league] ? (
           <>
+            <Total
+              onClick={() => setRoflMonth('total')}
+              totalSelected={roflMonth === 'total'}
+            >
+              Full Season Score
+            </Total>
             <MonthTicker
               roflMonth={roflMonth}
               setRoflMonth={setRoflMonth}
@@ -110,14 +140,13 @@ function Scoring() {
             <League selected={league === 4} onClick={() => changeLeague(4)}>
               NBA
             </League>
-
           </LeagueSelector>
           <DisplaySelector>
             {
               finalLeagueToShow >= league ? (
                 <ScItem
                   selected={display === 'score'}
-                  onClick={() => setDisplay('score')}
+                  onClick={() => changeDisplay('score')}
                 >
                   Score
                 </ScItem>
@@ -127,7 +156,7 @@ function Scoring() {
               finalLeagueToShow >= league ? (
                 <ScItem
                   selected={display === 'records'}
-                  onClick={() => setDisplay('records')}
+                  onClick={() => changeDisplay('records')}
                 >
                   Records
                 </ScItem>
@@ -135,7 +164,7 @@ function Scoring() {
             }
             <ScItem
               selected={display === 'scheme'}
-              onClick={() => setDisplay('scheme')}
+              onClick={() => changeDisplay('scheme')}
             >
               Scheme
             </ScItem>

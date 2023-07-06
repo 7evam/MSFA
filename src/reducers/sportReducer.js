@@ -39,14 +39,14 @@ function sportReducer(state = INITIAL_STATE, action) {
           2022: {
             1: 7,
             2: 10,
-            3: 14,
-            4: 14,
+            3: 13,
+            4: 13,
           },
           2023: {
             1: 7,
             2: 10,
-            3: 14,
-            4: 14,
+            3: 13,
+            4: 13,
           },
         },
         leagueTable: {
