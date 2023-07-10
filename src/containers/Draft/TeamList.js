@@ -24,6 +24,10 @@ const Option = styled.div`
     width: 100%;
     background-color: ${(props) => (props.isSelected ? mediumBlue : null)}; 
     text-decoration: ${(props) => (props.removed ? 'line-through' : null)}; 
+    &:hover {
+      font-weight: 700;
+      cursor: pointer;
+    }
     @media (max-width: ${mobileBreakPoint}){
       width: 90vw;
   }

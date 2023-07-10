@@ -6,7 +6,7 @@ import useApi from '../../hooks/useApi';
 import { TEST_ROSTER } from './testRoster';
 
 function useCreateNewLeague(existingOrganization) {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { makeRequest, isLoading } = useApi();
 
   const dispatch = useDispatch();
@@ -368,7 +368,7 @@ function useCreateNewLeague(existingOrganization) {
 
       if (res.statusCode === 201) {
         if (existingOrganization) await setNewCurrentOrg(existingOrganization.id);
-        history.push('/squad');
+        navigate('/squad');
       }
       return JSON.parse(res.body);
     } catch (e) {

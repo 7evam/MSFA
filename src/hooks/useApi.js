@@ -24,7 +24,7 @@ export default function useApi() {
   }
 
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const makeRequest = async ({
     method, route, data = null, continueLoading = false, suppressIsLoading = false, abort = null,
@@ -53,7 +53,7 @@ export default function useApi() {
             dispatch({
               type: 'LOGOUT',
             });
-            history.push('/login');
+            navigate('/login');
           } else {
             toast.error(errorMessage);
           }

@@ -23,7 +23,6 @@ const Text = styled.p`
 function ValueTool(props) {
   const sortTeams = (teams) => {
     function compare(a, b) {
-      if (b.removed) return -2;
       if (a.value < b.value) {
         return 1;
       }

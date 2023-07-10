@@ -17,7 +17,7 @@ const ChooseOrgButton = styled.button`
 `;
 
 function Settings(props) {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { organizations, currentOrganization } = useSelector((state) => ({
@@ -29,11 +29,11 @@ function Settings(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const linkToCreateNewLeague = () => {
-    history.push('/create-new-league');
+    navigate('/create-new-league');
   };
 
   const createNewSeason = () => {
-    history.push('/new-season');
+    navigate('/new-season');
   };
 
   const setSelectedYear = (org) => {
