@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Navigate, Outlet,
 } from 'react-router-dom';
@@ -7,6 +7,7 @@ import useApi from '../hooks/useApi';
 import TopBar from './TopBar';
 import { Container, ContentContainer } from './components';
 import RenderModal from './RenderModal';
+import Loading from '../components/Loading';
 
 function App(props) {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ function App(props) {
   const { modalContent } = useSelector((state) => ({
     ...state.modalReducer,
   }));
+
+  const [readyToRender, setReadyToRender] = useState(false);
 
   const getActiveMonths = async () => {
     const res = await makeRequest({
@@ -36,15 +39,17 @@ function App(props) {
         currentDate: parsedRes.currentDate,
       },
     });
+    setReadyToRender(true);
   };
 
   useEffect(() => {
+    console.log('in app use effect');
     getActiveMonths();
   }, []);
 
   return (
     userToken
-      ? (
+      ? readyToRender ? (
         <Container>
           <ContentContainer modal={!!modalContent}>
             <TopBar />
@@ -52,7 +57,7 @@ function App(props) {
           </ContentContainer>
           <RenderModal />
         </Container>
-      )
+      ) : <Loading />
       : <Navigate to="/login" />
   );
 }

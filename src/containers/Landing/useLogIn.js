@@ -98,18 +98,33 @@ function useLogIn() {
         },
       });
       if (res.statusCode === 200) {
-        toast.success('Your password has been created, you may now log in');
-        // const userInfo = JSON.parse(res.body);
-        // dispatch({
-        //   type: "LOGIN",
-        //   payload: {
-        //     name: userInfo.name,
-        //     email: userInfo.email,
-        //     organizations: userInfo.organizations,
-        //     userToken: userInfo.userToken
-        //   }
-        // });
-        // history.push("/");
+        toast.success('Your account has been successfully created');
+        const userInfo = JSON.parse(res.body);
+        const currentOrg = userInfo.organizations[0];
+        console.log('info from register');
+        console.log(userInfo);
+        // console.log(currentOrg);
+        dispatch({
+          type: 'LOGIN',
+          payload: {
+            currentOrg: userInfo.organizations[0],
+            name: userInfo.name,
+            email: userInfo.email,
+            organizations: userInfo.organizations,
+            userToken: userInfo.userToken,
+          },
+        });
+        // TODO this ccurrently sets default year on logiin to lastest year, it should
+        // be most recently used year which is saved in database
+        dispatch({
+          type: 'SET_SELECTED_YEAR',
+          payload: {
+            selectedYear: Math.max(...Object.keys(currentOrg.activeYears)),
+          },
+        });
+
+        navigate('/squad');
+        navigate(0);
       } else if (res.message) {
         toast.error(res.message);
         throw res.message;
