@@ -17,12 +17,21 @@ align-items: center;
     margin-top: 50px;
 `;
 
+const CustomLink = styled(Link)`
+  display: flex;
+`;
+
 const LeftIcon = styled.span`
     transform: scale(-1, 1);
 `;
 
+const Selectors = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const Selector = styled.p`
-  margin-right: 10px;
+  margin: 10px;
   &:hover {
     font-weight: 700;
     text-decoration: underline;
@@ -33,6 +42,7 @@ const Selector = styled.p`
 
 const TopMenu = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 `;
@@ -170,14 +180,16 @@ function Roster() {
   return (
     <Container>
       <TopMenu>
-        <Link to="/rofleague">
+        <CustomLink to="/rofleague">
           {' '}
           <span>{IconLeft}</span>
           {' '}
           Back to Standings
-        </Link>
-        <Selector selected={viewToRender === 'single'} onClick={() => setViewToRender('single')}>Monthly</Selector>
-        <Selector selected={viewToRender === 'overview'} onClick={() => setViewToRender('overview')}>Overview</Selector>
+        </CustomLink>
+        <Selectors>
+          <Selector selected={viewToRender === 'single'} onClick={() => setViewToRender('single')}>Monthly</Selector>
+          <Selector selected={viewToRender === 'overview'} onClick={() => setViewToRender('overview')}>Overview</Selector>
+        </Selectors>
       </TopMenu>
       <div>
         <p>

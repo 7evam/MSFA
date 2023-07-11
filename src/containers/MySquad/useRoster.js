@@ -14,7 +14,7 @@ function useRoster() {
     ...state.authReducer,
   }));
 
-  const { selectedYear } = useSelector((state) => ({
+  const { selectedYear, activeYears } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
@@ -97,12 +97,11 @@ function useRoster() {
     });
 
     // show the latest current rofl month
-    const roflMonthToShow = 1;
-    // Object.keys(activeRoflMonths[selectedYear]).forEach((activeLeague) => {
-    //   if (activeRoflMonths[selectedYear][activeLeague].roflMonth > roflMonthToShow) {
-    //     roflMonthToShow = activeRoflMonths[selectedYear][activeLeague].roflMonth;
-    //   }
-    // });
+    let roflMonthToShow = 1;
+    const activeRoflLeagueObjects = Object.values(activeYears[selectedYear]);
+    activeRoflLeagueObjects.forEach((item) => {
+      if (item.roflMonth > roflMonthToShow) roflMonthToShow = item.roflMonth;
+    });
 
     // set rofl month/year valules and return year
     setActiveRoflMonths(activeRoflMonths);

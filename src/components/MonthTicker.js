@@ -68,7 +68,7 @@ function MonthTicker({
 
   useEffect(() => {
     if (scrollRef && scrollRef.current && !appliedScroll) {
-      scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
+      scrollRef.current.scrollLeft += (roflMonth - 2) * 114;
       setAppliedScroll(true);
     }
   }, [scrollRef, roflMonth]);

@@ -101,24 +101,28 @@ function PastTransactions({ transactions }) {
     transactions
       ? (
         <Container>
-          <MonthTicker
-            roflMonth={roflMonth}
-            setRoflMonth={setRoflMonth}
-            onlyShownMonths={Object.keys(transactions).map((n) => Number(n))}
-            selectedYear={selectedYear}
-          />
-          <MonthContainer>
-            <p>
-              MSFA Month:
-              {roflMonth}
-            </p>
-          </MonthContainer>
+
           {
-            transactions[roflMonth].length
+            transactions[roflMonth]?.length
               ? (
-                <TransactionTable
-                  filteredTransactions={transactions[roflMonth]}
-                />
+                <>
+                  <MonthTicker
+                    roflMonth={roflMonth}
+                    setRoflMonth={setRoflMonth}
+                    onlyShownMonths={Object.keys(transactions).map((n) => Number(n))}
+                    selectedYear={selectedYear}
+                  />
+                  <MonthContainer>
+                    <p>
+                      MSFA Month:
+                      {roflMonth}
+                    </p>
+                    <TransactionTable
+                      filteredTransactions={transactions[roflMonth]}
+                    />
+                  </MonthContainer>
+                </>
+
               )
               : <p>No transactions for this month</p>
           }
