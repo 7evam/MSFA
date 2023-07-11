@@ -101,11 +101,6 @@ function useLogIn() {
         toast.success('Your account has been successfully created');
         const userInfo = JSON.parse(res.body);
         const currentOrg = userInfo.organizations[0];
-        console.log('info from register');
-        console.log(userInfo);
-        const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        await sleep(900);
-        // console.log(currentOrg);
         dispatch({
           type: 'LOGIN',
           payload: {
