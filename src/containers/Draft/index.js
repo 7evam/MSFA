@@ -5,15 +5,15 @@ import { Outlet } from 'react-router-dom';
 import { mobileBreakPoint } from '../../constants/style';
 import DraftTopBar from './DraftTopBar';
 
-function Draft(props) {
-  const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    @media (max-width: ${mobileBreakPoint}){
-        width: 100vw;
-    }
+const Container = styled.div`
+display: flex;
+justify-content: center;
+@media (max-width: ${mobileBreakPoint}){
+    width: 100vw;
+}
+`;
 
-  `;
+function Draft(props) {
   return (
     <>
       <DraftTopBar />
