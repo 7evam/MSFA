@@ -131,14 +131,6 @@ function Landing({ testLogIn, setTestLogin }) {
       );
       case 'forgot': return (
         <>
-          <p>
-            IMPORTANT: The reset password feature is in an early stage.
-            If you haven't reset your password before, please send an email to
-            {' '}
-            <a href="mailto:roflcommish@gmail.com?subject=Allow my Email&body=Hi Commish, I would like to reset my password. Can you please allow the email address I am sending this message from? Thank you">roflcommish@gmail.com</a>
-            {' '}
-            to add your email to the allow list
-          </p>
           <Input
             name="resetEmail"
             placeholder="Email"
