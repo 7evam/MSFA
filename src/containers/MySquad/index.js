@@ -34,20 +34,9 @@ function Roster() {
       isActiveTable[month.leagueId] = month.roflMonth;
     });
 
-  const [appliedScroll, setAppliedScroll] = useState(false);
-
   const currentMonthRoster = roster
     ? roster[`${roflMonth}-${selectedYear}`]
     : null;
-
-  const scrollRef = React.createRef();
-
-  useEffect(() => {
-    if (scrollRef && scrollRef.current && !appliedScroll) {
-      scrollRef.current.scrollLeft += (roflMonth - 1) * 107;
-      setAppliedScroll(true);
-    }
-  }, [scrollRef]);
 
   return (
     <Container>

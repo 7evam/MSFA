@@ -68,18 +68,10 @@ function MonthTicker({
 
   useEffect(() => {
     if (scrollRef && scrollRef.current && !appliedScroll) {
-      scrollRef.current.scrollLeft += (roflMonth - 2) * 114;
+      scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
       setAppliedScroll(true);
     }
   }, [scrollRef, roflMonth]);
-
-  // useEffect(() => {
-  //   if (scrollRef && scrollRef.current && !appliedScroll) {
-  //     console.log("in rofl month if")
-  //     scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
-  //     setAppliedScroll(true);
-  //   }
-  // }, [roflMonth]);
 
   const monthsForScroll = (year) => {
     year = Number(year);

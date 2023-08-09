@@ -12,8 +12,6 @@ const Container = styled.div`
   margin-left: 20px;
 `;
 
-const InputLabel = styled.label``;
-
 const Headline = styled.h1`
   font-family: "helvetica neue", Helvetica, arial, sans-serif; 
   font-size: 20px;
@@ -61,10 +59,10 @@ const SelectEntryMode = styled.p`
     text-decoration: underline;
     cursor: pointer;
   }
-
 `;
 
 function Landing({ testLogIn, setTestLogin }) {
+  const logInValues = useLogIn();
   const {
     handleLogIn,
     handleChange,
