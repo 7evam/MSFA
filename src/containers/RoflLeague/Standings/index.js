@@ -22,19 +22,11 @@ function Standings(props) {
 
   const [appliedScroll, setAppliedScroll] = useState(false);
 
-  const scrollLeft = () => {
-    scrollRef.current.scrollLeft -= 400;
-  };
-
-  const scrollRight = () => {
-    scrollRef.current.scrollLeft += 400;
-  };
-
   const scrollRef = React.createRef();
 
   useEffect(() => {
     if (scrollRef && scrollRef.current && !appliedScroll) {
-      scrollRef.current.scrollLeft += (roflMonth - 1) * 107;
+      scrollRef.current.scrollLeft += (roflMonth - 2) * 228;
       setAppliedScroll(true);
     }
   }, [scrollRef]);

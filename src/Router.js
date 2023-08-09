@@ -12,19 +12,34 @@ import Landing from './containers/Landing';
 import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
 
-const MySquad = lazy(() => import('./containers/MySquad'));
-const AddTeam = lazy(() => import('./containers/AddTeam'));
-const Scoring = lazy(() => import('./containers/Scoring'));
-const Settings = lazy(() => import('./containers/Settings'));
-const Standings = lazy(() => import('./containers/RoflLeague/Standings'));
-const Roster = lazy(() => import('./containers/RoflLeague/Roster'));
-const ValueTool = lazy(() => import('./containers/Draft/ValueTool'));
-const DraftScoring = lazy(() => import('./containers/Draft/DraftScoring'));
-const Tips = lazy(() => import('./containers/Draft/Tips'));
-const App = lazy(() => import('./App'));
-const Draft = lazy(() => import('./containers/Draft'));
-const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
-const NewSeason = lazy(() => import('./containers/NewSeason'));
+import MySquad from './containers/MySquad';
+import AddTeam from './containers/AddTeam';
+// import RoflLeague from './containers/RoflLeague';
+import Scoring from './containers/Scoring';
+import Settings from './containers/Settings';
+import CreateNewLeague from './containers/CreateNewLeague';
+import NewSeason from './containers/NewSeason';
+import Roster from './containers/RoflLeague/Roster';
+import Standings from './containers/RoflLeague/Standings';
+import App from './App';
+import Draft from './containers/Draft';
+import ValueTool from './containers/Draft/ValueTool';
+import DraftScoring from './containers/Draft/DraftScoring';
+import Tips from './containers/Draft/Tips';
+
+// const MySquad = lazy(() => import('./containers/MySquad'));
+// const AddTeam = lazy(() => import('./containers/AddTeam'));
+// const Scoring = lazy(() => import('./containers/Scoring'));
+// const Settings = lazy(() => import('./containers/Settings'));
+// const Standings = lazy(() => import('./containers/RoflLeague/Standings'));
+// const Roster = lazy(() => import('./containers/RoflLeague/Roster'));
+// const ValueTool = lazy(() => import('./containers/Draft/ValueTool'));
+// const DraftScoring = lazy(() => import('./containers/Draft/DraftScoring'));
+// const Tips = lazy(() => import('./containers/Draft/Tips'));
+// const App = lazy(() => import('./App'));
+// const Draft = lazy(() => import('./containers/Draft'));
+// const CreateNewLeague = lazy(() => import('./containers/CreateNewLeague'));
+// const NewSeason = lazy(() => import('./containers/NewSeason'));
 
 // configuration for toaster messages
 // https://www.npmjs.com/package/react-toastify
