@@ -21,6 +21,7 @@ function useStandings() {
   const [standings, setStandings] = useState(null);
   const [roflMonth, setRoflMonth] = useState(null);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
+  const [readyToRender, setReadyToRender] = useState(false);
 
   const getInitialMonth = (roster) => {
     const arrayOfMonths = [];
@@ -41,6 +42,7 @@ function useStandings() {
     const { body } = res;
     getInitialMonth(body);
     setStandings(body);
+    setReadyToRender(true);
     // const fullStandings = fillStandings(JSON.parse(res.body), selectedRoflYear)
     // setStandings(fullStandings)
   };
@@ -74,6 +76,7 @@ function useStandings() {
     finalMonthForDisplay,
     goToSquad,
     selectedYear,
+    readyToRender,
   };
 }
 

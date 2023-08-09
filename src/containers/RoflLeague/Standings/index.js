@@ -18,6 +18,7 @@ function Standings(props) {
     finalMonthForDisplay,
     goToSquad,
     selectedYear,
+    readyToRender,
   } = useStandings();
 
   const [appliedScroll, setAppliedScroll] = useState(false);
@@ -34,7 +35,7 @@ function Standings(props) {
   return (
     <Container>
       {/* <Heading>League Standings</Heading> */}
-      {standings && standings[`${roflMonth}-${selectedYear}`] ? (
+      {readyToRender ? (
         <StandingsContainer>
           <YearContainer>
             <p>

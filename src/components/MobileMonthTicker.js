@@ -106,10 +106,10 @@ function MobileMonthTicker({
         ))}
       </Select>
       <IconContainer
-        rendered={roflMonth <= (finalMonthForDisplay || 13)}
+        rendered={roflMonth < (finalMonthForDisplay || 13)}
         onClick={() => handlePointerClick(1)}
       >
-        {roflMonth <= (finalMonthForDisplay || 13) ? IconRight : null}
+        {roflMonth < (finalMonthForDisplay || 13) ? IconRight : null}
       </IconContainer>
     </Container>
   );
