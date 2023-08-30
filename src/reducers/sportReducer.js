@@ -62,6 +62,11 @@ function sportReducer(state = INITIAL_STATE, action) {
         ...state,
         sportTeams: action.payload.sportTeams,
       };
+    case 'SET_NEW_ORGS':
+      return {
+        ...state,
+        orgMembers: null
+      }
     case 'HYDRATE_ORG_MEMBERS':
       return {
         ...state,

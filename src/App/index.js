@@ -43,7 +43,6 @@ function App(props) {
   };
 
   useEffect(() => {
-    console.log('in app use effect');
     getActiveMonths();
   }, []);
 

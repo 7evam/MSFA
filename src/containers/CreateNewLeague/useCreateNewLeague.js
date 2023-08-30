@@ -316,17 +316,12 @@ function useCreateNewLeague(existingOrganization) {
       route: `/users/changeOrg/${currentOrganization.user_id}`,
       data: { organizationId },
     });
-    // console.log('here is res');
-    // console.log(res);
     if (res.statusCode === 200) {
-      // console.log('past if');
       const organizations = res.body;
-      // console.log('here is rogs');
-      // console.log(organizations);
       dispatch({
         type: 'SET_NEW_ORGS',
         payload: {
-          organizations,
+          organizations
         },
       });
     }

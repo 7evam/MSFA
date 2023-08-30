@@ -56,12 +56,10 @@ function Settings(props) {
     // await getAndSetActiveMonths();
     if (res.statusCode === 200) {
       const organizations = res.body;
-      console.log('here is organiations');
-      console.log(organizations);
       dispatch({
         type: 'SET_NEW_ORGS',
         payload: {
-          organizations,
+          organizations
         },
       });
       setSelectedYear(organizations.find((org) => org.id === organizationId));
