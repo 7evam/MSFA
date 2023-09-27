@@ -76,6 +76,7 @@ function SubmitBid() {
     transformToCheckable(props.currentUserRoster),
   );
   const [errorMessage, setErrorMessage] = useState(null);
+  const [regSeasonErrorAlreadyShown, setRegSeasonErrorAlreadyShown] = useState(false)
   const initialTeamCountByLeague = useMemo(() => calculateInitialTeamCount(), []);
 
   // this function sets errors in state and returns
@@ -115,7 +116,7 @@ function SubmitBid() {
 
       // if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
       if (
-        playoffMonths[selectedYear][team.leagueId]
+        playoffMonths[selectedYear][team.leagueId] -1
         > props.currentRoflMonths[team.leagueId]
       ) {
         newCheckedTeams[teamId].checked === true
@@ -123,12 +124,20 @@ function SubmitBid() {
           : (newMaxBid -= team.val);
         setMaxBid(newMaxBid);
       } else {
-        toast.error('You can only select teams in their regular season');
+        if(!regSeasonErrorAlreadyShown){
+          setRegSeasonErrorAlreadyShown(true)
+          toast.error('You can only drop a team for cash if their next month is the regular season');
+        }
       }
       setCheckedTeams(newCheckedTeams);
       checkForBidError(bidValue, newMaxBid);
     }
   };
+
+  // {playoffMonths[selectedYear][leagueId] - 1
+  //   === activeYears[selectedYear][leagueId]?.roflMonth
+  //   ? null
+  //   : `($${teamValue})`}
 
   const handleSubmit = async () => {
     const leagueId = Number(String(props.selectedTeam)[0]);

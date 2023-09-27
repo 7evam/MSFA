@@ -77,6 +77,8 @@ function TeamSelect({
     ...state.sportReducer,
   }));
 
+  
+
   return (
     <Container>
       <TopBar>
