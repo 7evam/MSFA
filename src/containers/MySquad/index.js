@@ -34,6 +34,8 @@ function Roster() {
       isActiveTable[month.leagueId] = month.roflMonth;
     });
 
+  const endOfSeasonDrop = (roflMonth === 8) ? true : false
+
   const currentMonthRoster = roster
     ? roster[`${roflMonth}-${selectedYear}`]
     : null;
@@ -88,6 +90,7 @@ function Roster() {
             changeRoster={changeRoster}
             selectedSlot={selectedSlot}
             readOnly={false}
+            endOfSeasonDrop={endOfSeasonDrop}
           />
           {areRostersEqual ? null : (
             <BannerMessage>

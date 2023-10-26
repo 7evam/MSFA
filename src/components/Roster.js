@@ -59,7 +59,7 @@ const calcualteBenchSpots = (roflMonth, selectedYear, endOfLeagueTable) => {
 };
 
 function RosterComponent({
-  currentMonthRoster, roflMonth, isActiveTable, selectedYear, changeRoster, selectedSlot, readOnly,
+  currentMonthRoster, roflMonth, isActiveTable, selectedYear, changeRoster, selectedSlot, readOnly, endOfSeasonDrop
 }) {
   const endOfLeagueTable = PLAYOFF_MONTHS[selectedYear];
   const benchSpots = calcualteBenchSpots(roflMonth, selectedYear, endOfLeagueTable);
@@ -171,7 +171,22 @@ function RosterComponent({
               />
             )
         ))}
+        
       </Tbody>
+      {
+          endOfSeasonDrop ?
+          <Slot
+                key={`endOfSeason`}
+                name={`end_of_season_drop`}
+                team="empty"
+                points={null}
+                readOnly={readOnly}
+                changeRoster={readOnly ? null : changeRoster}
+                selectedSlot={readOnly ? null : selectedSlot}
+                locked={false}
+          />
+          : null
+        }
     </Container>
   );
 }
