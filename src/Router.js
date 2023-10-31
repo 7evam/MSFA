@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Loading from './components/Loading';
-import Landing from './containers/Landing';
+import Landing from './containers/Landing2';
 import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
 
