@@ -32,7 +32,7 @@ function sportReducer(state = INITIAL_STATE, action) {
             1: 1,
             2: 6,
             3: 7,
-            4: 7,
+            4: 8,
           },
         },
         playoffMonths: {
