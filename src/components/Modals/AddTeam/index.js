@@ -74,7 +74,7 @@ function AddTeam() {
     for (const league in teamCountByLeague) {
       if (
         teamCountByLeague[league] < 1
-        && Object.keys(activeYears[roflYear]).includes(league)
+        && Object.keys(activeYears[selectedYear]).includes(league)  
       ) {
         toast.error(
           `This bid would result in you having not enough ${leagueTable[league]} teams, you need at least 1`,
