@@ -173,7 +173,7 @@ function RosterComponent({
         ))}
         
       </Tbody>
-      {
+      {/* {
           endOfSeasonDrop ?
           <Slot
                 key={`endOfSeason`}
@@ -186,7 +186,7 @@ function RosterComponent({
                 locked={false}
           />
           : null
-        }
+        } */}
     </Container>
   );
 }
