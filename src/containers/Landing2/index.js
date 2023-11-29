@@ -1,50 +1,46 @@
 import React, { lazy, Suspense } from 'react';
-import styled from 'styled-components';
-import Logo from '../../icons/msfaLogo.js'
-import mobileBkg from './homepageMobileBkg.png'
+import { useNavigate } from 'react-router-dom';
+import Logo from '../../icons/msfaLogo.js';
+import SecondLogo from '../../icons/secondLogo.js';
+import Auth from './Auth';
+import * as components from './components.js';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  margin-left: 20px;
-`;
-
-const Headline = styled.h1`
-  font-family: "helvetica neue", Helvetica, arial, sans-serif; 
-  font-size: 20px;
-`;
-
-const SubHeadline = styled.h2`
-  font-family: "helvetica neue", Helvetica, arial, sans-serif; 
-  font-size: 16px;
-
-`;
-
-const LandingContainer = styled.div`
-    background-image: url(mobileBkg);
-    background-size: cover;
-`
-
-const LogoContainer = styled.div`
-    height: 200px;
-`
-
+const {
+  IndexContainer, LandingContainer, Headline, SubHeadline, Footer, Link,
+} = components;
 
 function Landing() {
-    return (
-      <Container>
-        <LandingContainer>
+  const navigate = useNavigate();
+  const goToAbout = () => {
+    navigate('/about');
+    navigate(0);
+  };
+  return (
+    <IndexContainer>
+      <LandingContainer>
         <Logo
-            width={152}
-            height={141}
+          width={152}
+          height={141}
         />
-                <Headline>Welcome to the Multi-Sport Fantasy Association</Headline>
-                <SubHeadline>Embrace team spirit in fantasy sports by drafting teams instead of players</SubHeadline>
-        </LandingContainer>
-      </Container>
-    );
-  }
-  
-  export default Landing;
-  
+        <Headline>Welcome to the Multi-Sport Fantasy Association</Headline>
+        <SubHeadline>
+          Embrace team spirit in fantasy sports by drafting teams from the four major sports instead of players. If your teams win, you win!
+          Want to learn more about how it all works?
+          {' '}
+          {' '}
+          <Link onClick={goToAbout}>Click here!</Link>
+        </SubHeadline>
+      </LandingContainer>
+      <Auth />
+      <Footer>
+        <SecondLogo
+          height={32}
+          width={32}
+        />
+        <p>© 2023 MSFA</p>
+      </Footer>
+    </IndexContainer>
+  );
+}
+
+export default Landing;

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { blue } from '../../constants/style';
-import { Logo } from '../../App/Sidebar/components';
+// import { Logo } from '../../App/Sidebar/components';
+import Logo from '../../icons/msfaLogo.js';
 import IconLeft from '../../icons/iconLeft';
 import Collapsable from '../../components/Collapsable';
 import { FAQCollapsables, GuideCollapsables } from './collapsablleText';
@@ -82,7 +83,11 @@ function About() {
       <Container>
 
         <Headline>About MSFA - Multi-Sport Fantasy Association</Headline>
-        <Logo src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="roflLogo" />
+        <Logo
+          width={152}
+          height={141}
+        />
+        {/* <Logo src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="roflLogo" /> */}
 
         <EntryModes>
           <SelectEntryMode

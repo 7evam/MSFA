@@ -114,7 +114,7 @@ module.exports = (webpackServe, options) => {
         {
           test: /\.(png|woff|woff2|eot|ttf|svg)$/,
           use: {
-            loader: 'url-loader',
+            loader: 'url-loader'
           },
         },
       ],
