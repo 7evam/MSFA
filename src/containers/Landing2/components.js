@@ -61,6 +61,14 @@ export const AuthContainer = styled.div`
   padding: 50px 20px 50px 20px;
   font-family: Arial;
   background-color: white;
+  align-items: center;
+`;
+
+export const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
 `;
 
 export const Input = styled.input`
@@ -87,6 +95,8 @@ export const Button = styled.button`
   height: 38px;
   border-style: solid;
   font-size: 16px;
+  width: 90%;
+  max-width: 500px;
 `;
 export const BottomText = styled.div`
     text-align: center;

@@ -3,7 +3,7 @@ import Mail from '../../../../icons/mail.js';
 import * as components from '../../components.js';
 
 const {
-  IconWrapper, Label, Input, Button, BottomText, P, Link,
+  InputContainer, IconWrapper, Label, Input, Button, BottomText, P, Link,
 } = components;
 
 function ForgotPassword({ authProps }) {
@@ -24,19 +24,20 @@ function ForgotPassword({ authProps }) {
   } = authProps;
   return (
     <>
-      <IconWrapper>
-        <Mail width={20} height={20} />
-      </IconWrapper>
-      <Label>Email</Label>
-      <Input
-        name="resetEmail"
-        placeholder="example@msfa.com"
-        type="text"
-        mail
-        value={values.resetEmail}
-        onChange={handleChange}
-      />
-
+      <InputContainer>
+        <IconWrapper>
+          <Mail width={20} height={20} />
+        </IconWrapper>
+        <Label>Email</Label>
+        <Input
+          name="resetEmail"
+          placeholder="example@msfa.com"
+          type="text"
+          mail
+          value={values.resetEmail}
+          onChange={handleChange}
+        />
+      </InputContainer>
       <Button type="button" disabled={isLoading} onClick={handleReset}>{isLoading ? 'Loading...' : 'Send Reset Link'}</Button>
       <BottomText>
         <P>
