@@ -7,3 +7,10 @@ yarn-debug.log*
 .env
 .env.dev
 .env.stage
+
+.vscode
+**/dist
+.gitignore
+.editorconfig
+.eslintrc.js
+yarn.lock
