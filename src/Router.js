@@ -12,6 +12,7 @@ import Landing from './containers/Landing2';
 import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
 
+import Squad2 from './containers/Squad2';
 import MySquad from './containers/MySquad';
 import AddTeam from './containers/AddTeam';
 // import RoflLeague from './containers/RoflLeague';
@@ -66,7 +67,7 @@ function Router() {
           <Route path="scoring" element={<DraftScoring />} />
         </Route>
         <Route element={<App />}>
-          <Route path="/squad" element={<MySquad />} />
+          <Route path="/squad" element={<Squad2 />} />
           <Route path="/rofleague">
             <Route index element={<Standings />} />
             <Route path="/rofleague/:userId/:roflYear/:roflMonth" element={<Roster />} />
