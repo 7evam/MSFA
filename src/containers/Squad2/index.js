@@ -6,11 +6,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Container, TeamNameContainer, TeamName, TeamOwner, Bold,
 } from './components';
+
+import Roster from './Roster';
 // import Loading from '../../components/Loading';
 
 import MonthSelector from './MonthSelector';
 
-function Roster() {
+function Squad() {
   return (
     <Container>
       <TeamNameContainer>
@@ -23,8 +25,12 @@ function Roster() {
       </TeamNameContainer>
 
       <MonthSelector />
+
+      <Roster>
+        <p>hi</p>
+      </Roster>
     </Container>
   );
 }
 
-export default Roster;
+export default Squad;
