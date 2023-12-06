@@ -26,9 +26,7 @@ function Squad() {
 
       <MonthSelector />
 
-      <Roster>
-        <p>hi</p>
-      </Roster>
+      <Roster />
     </Container>
   );
 }

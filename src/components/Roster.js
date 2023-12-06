@@ -59,7 +59,7 @@ const calcualteBenchSpots = (roflMonth, selectedYear, endOfLeagueTable) => {
 };
 
 function RosterComponent({
-  currentMonthRoster, roflMonth, isActiveTable, selectedYear, changeRoster, selectedSlot, readOnly, endOfSeasonDrop
+  currentMonthRoster, roflMonth, isActiveTable, selectedYear, changeRoster, selectedSlot, readOnly, endOfSeasonDrop,
 }) {
   const endOfLeagueTable = PLAYOFF_MONTHS[selectedYear];
   const benchSpots = calcualteBenchSpots(roflMonth, selectedYear, endOfLeagueTable);
@@ -171,7 +171,7 @@ function RosterComponent({
               />
             )
         ))}
-        
+
       </Tbody>
       {/* {
           endOfSeasonDrop ?

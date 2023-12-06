@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Slot from './Slot';
+import useRoster from './useRoster';
+import Loading from '../../../components/Loading';
 
 const Container = styled.div`
     margin-top: 15px;
@@ -12,44 +14,83 @@ const Container = styled.div`
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     width: 90%;
+    & div:nth-child(8n+9){
+        background-color: #F7FBFF;
+    }
+    & div:nth-child(8n+10){
+        background-color: #F7FBFF;
+    }
+    & div:nth-child(8n+11){
+        background-color: #F7FBFF;
+    }
+    & div:nth-child(8n+12){
+        background-color: #F7FBFF;
+        z-index: -1;
+    }
 `;
 
-const Item = styled.div`
+const HeaderLabel = styled.div`
     padding: 16px 0px 8px 16px;
     text-align:center;
     background-color: #EAEEF480;
     font-weight: 800;
 `;
 
-// & div:nth-of-type(${(4 * 5) + 1}){
-//     grid-column: 1 / span 3;
-//     width: 98%;
-// }
-// & div:nth-of-type(${(4 * 5) + 2}){
-//     grid-column: 4 / span 1;
-// }
-
-// in math above, 4 is static while 5 represetns active slots
-
 function Roster() {
-  return (
-    <Container>
-      <Item>Slot</Item>
-      <Item>Team</Item>
-      <Item>Action</Item>
-      <Item>Points</Item>
-      <Slot />
-      <Slot />
-      <Slot />
-      <Slot />
-      <Slot />
-      <Slot isTotalPoints />
-      <Slot />
-      <Slot />
-      <Slot />
-      <Slot />
-    </Container>
+  const {
+    selectedYear,
+    roflMonth,
+    roster,
+    currentOrganization,
+    selectedSlot,
+    areRostersEqual,
+    setRoflMonth,
+    handleSubmit,
+    activeRoflMonths,
+    changeRoster,
+  } = useRoster();
 
+  const currentRoster = (roster && roflMonth) ? roster[`${roflMonth}-${selectedYear}`] : null;
+
+  const leagueIdSlotNameTable = {
+    1: 'MLB',
+    2: 'NFL',
+    3: 'NHL',
+    4: 'NBA',
+  };
+
+  const calculateTotalScore = () => {
+    const totalScore = Object.entries(currentRoster)
+      .filter(([key]) => !key.includes('bench'))
+      .map(([, subObject]) => subObject.roflScore)
+      .reduce((accumulator, roflScore) => accumulator + roflScore, 0);
+    return totalScore;
+  };
+
+  return (
+    !currentRoster
+      ? <Loading />
+      : (
+        <Container>
+          <HeaderLabel>Slot</HeaderLabel>
+          <HeaderLabel>Team</HeaderLabel>
+          <HeaderLabel>Action</HeaderLabel>
+          <HeaderLabel>Points</HeaderLabel>
+          {
+            // renders league slots then flex slots then total points then bench slots
+            ['league', 'flex', 'total', 'bench'].map((slotType) => (
+              slotType === 'total'
+                ? <Slot totalScore={calculateTotalScore()} isTotalPoints />
+                : Object.keys(currentRoster).filter(
+                  (key) => key.includes(slotType),
+                ).map((league) => {
+                  const team = currentRoster[league];
+                  return <Slot key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
+                })
+            ))
+        }
+        </Container>
+      )
   );
 }
 

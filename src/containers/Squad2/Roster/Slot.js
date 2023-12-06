@@ -27,9 +27,51 @@ const PointsItem = styled.div`
     font-weight: 800;
 `;
 
+const ActionButton = styled.button`
+    height: 120%;
+    width: 100%;
+    z-index: 100;
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0 16px;
+    border-radius: 4px;
+    color: white;
+    background: ${(props) => (props.selectedSlot && props.selectedSlot === props.leagueKey
+    ? '#4E871F'
+    : '#17288F')};
+    line-height: 1.15;
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    text-align: center;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    :hover {
+        background: #4E871F;
+        box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+    }
+    
+
+`;
+
 function Slot({
-  league, teamName, locked, points, isLastInList, isTotalPoints,
+  slotName,
+  teamName,
+  isLocked,
+  points,
+  isLastInList,
+  isTotalPoints,
+  changeRoster,
+  leagueKey,
+  selectedSlot,
+  totalScore,
 }) {
+  console.log('total score');
+  console.log(totalScore);
   return (
     isTotalPoints
       ? (
@@ -37,15 +79,18 @@ function Slot({
           <PointsItem />
           <PointsItem />
           <PointsItem>Total Points</PointsItem>
-          <Item><b>99</b></Item>
+          <Item><b>{totalScore}</b></Item>
         </>
       )
       : (
         <>
-          <FirstItem isLastInList={isLastInList}>MLB</FirstItem>
-          <Item isLastInList={isLastInList}>Oklahoma City Trail Blazers</Item>
-          <Item isLastInList={isLastInList}>{lock}</Item>
-          <Item isLastInList={isLastInList}>99</Item>
+          <FirstItem stylisLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
+          <Item isLastInList={isLastInList}>{teamName}</Item>
+          <Item isLastInList={isLastInList}>
+            {isLocked ? lock : <ActionButton leagueKey={leagueKey} selectedSlot={selectedSlot} onClick={() => changeRoster(leagueKey)}>Move</ActionButton>}
+            {' '}
+          </Item>
+          <Item isLastInList={isLastInList}>{points}</Item>
         </>
       )
   );
