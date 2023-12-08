@@ -10,8 +10,6 @@ import {
 import Roster from './Roster';
 // import Loading from '../../components/Loading';
 
-import MonthSelector from './MonthSelector';
-
 function Squad() {
   return (
     <Container>
@@ -23,9 +21,6 @@ function Squad() {
           <Bold>Evan</Bold>
         </TeamOwner>
       </TeamNameContainer>
-
-      <MonthSelector />
-
       <Roster />
     </Container>
   );

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import lock from '../../../icons/lock';
 
-const FirstItem = styled.div`
+export const FirstItem = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
 `;
 
-const Item = styled.div`
+export const Item = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
     &:before{
@@ -21,13 +20,13 @@ const Item = styled.div`
     }
 `;
 
-const PointsItem = styled.div`
+export const PointsItem = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
     font-weight: 800;
 `;
 
-const ActionButton = styled.button`
+export const ActionButton = styled.button`
     height: 120%;
     width: 100%;
     z-index: 100;
@@ -54,46 +53,4 @@ const ActionButton = styled.button`
         background: #4E871F;
         box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
     }
-    
-
 `;
-
-function Slot({
-  slotName,
-  teamName,
-  isLocked,
-  points,
-  isLastInList,
-  isTotalPoints,
-  changeRoster,
-  leagueKey,
-  selectedSlot,
-  totalScore,
-}) {
-  console.log('total score');
-  console.log(totalScore);
-  return (
-    isTotalPoints
-      ? (
-        <>
-          <PointsItem />
-          <PointsItem />
-          <PointsItem>Total Points</PointsItem>
-          <Item><b>{totalScore}</b></Item>
-        </>
-      )
-      : (
-        <>
-          <FirstItem stylisLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
-          <Item isLastInList={isLastInList}>{teamName}</Item>
-          <Item isLastInList={isLastInList}>
-            {isLocked ? lock : <ActionButton leagueKey={leagueKey} selectedSlot={selectedSlot} onClick={() => changeRoster(leagueKey)}>Move</ActionButton>}
-            {' '}
-          </Item>
-          <Item isLastInList={isLastInList}>{points}</Item>
-        </>
-      )
-  );
-}
-
-export default Slot;

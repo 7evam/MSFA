@@ -22,23 +22,21 @@ function useRoster() {
 
   const [roster, setRoster] = useState(null);
   const [originalRoster, setOriginalRoster] = useState(null);
-  // const [selectedRoflYear, setSelectedRoflYear] = useState(null);
-  const [roflMonth, setRoflMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [areRostersEqual, setAreRostersEqual] = useState(true);
-  const [activeRoflYears, setActiveRoflYears] = useState(null);
-  // this is an object like
+
+  // activeRoflMonths is an object like
   // {2021: [{league_id: 3, rofl_month: 10}, {league_id: 4, rofl_month: 10}]}
   // to help know which slots are locked
   const [activeRoflMonths, setActiveRoflMonths] = useState(null);
   const [updateOneMonth, setUpdateOneMonth] = useState(false);
   const [loadingRoster, setLoadingRoster] = useState(false);
-  // const [currentTeams, setCurrentTeams] = useState(null)
 
   const fetchRoster = async (selectedYear) => {
     try {
       setLoadingRoster(true);
-      var res = await makeRequest({
+      const res = await makeRequest({
         method: 'get',
         route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}`,
       });
@@ -58,31 +56,10 @@ function useRoster() {
       }
     } catch (e) {
       setLoadingRoster(false);
-      console.log('problem');
-      console.log('here is params then res');
-      console.log(currentOrganization.id);
-      console.log(selectedYear);
-      console.log(res);
-      console.error(e);
+      console.error('Problem fetching roster:', e);
+      console.error('Params used:', currentOrganization.id, selectedYear);
     }
   };
-
-  // const fetchCurrentTeams = async (selectedRoflYear) => {
-  //   try {
-  //     var res = await makeRequest({
-  //       method: "get",
-  //       route: `/users/currentTeams/${currentOrganization.user_id}/${currentOrganization.id}/${selectedRoflYear}`
-  //     });
-  //     const currentTeams = JSON.parse(res.body);
-  //     setCurrentTeams(currentTeams);
-  //   } catch (e) {
-  //     console.log("problem");
-  //     console.log("here is params");
-  //     console.log(currentOrganization.id);
-  //     console.log(selectedRoflYear);
-  //     console.error(e);
-  //   }
-  // }
 
   const initiateAndReturnRoflMonth = () => {
     // initiate active rofl months for all active years within org
@@ -105,16 +82,9 @@ function useRoster() {
 
     // set rofl month/year valules and return year
     setActiveRoflMonths(activeRoflMonths);
-    setActiveRoflYears(activeYearArray);
-    setRoflMonth(roflMonthToShow);
+    // setActiveRoflYears(activeYearArray);
+    setSelectedMonth(roflMonthToShow);
   };
-
-  // useEffect(() => {
-  //   if (activeYears) {
-  //     const initialYear = initiateAndReturnRoflMonthAndYear();
-  //     fetchRoster(initialYear);
-  //   }
-  // }, [activeYears]);
 
   useEffect(() => {
     if (currentOrganization.activeYears && selectedYear) {
@@ -122,12 +92,6 @@ function useRoster() {
       fetchRoster(selectedYear);
     }
   }, [currentOrganization.activeYears, selectedYear]);
-
-  // const addYearToRoster = async (newYear) => {
-  //   const oldRoster = roster
-  //   setRoster(null)
-  //   const newRoster = await
-  // }
 
   const checkIfSwapable = (team1, team2, slot1, slot2) => {
     // if both slots are league slots, return false. this assumes only slot team per league
@@ -159,51 +123,26 @@ function useRoster() {
     return true;
   };
 
-  const changeRoster = (slot) => {
-    if (selectedSlot) {
-      const team1 = { ...roster[`${roflMonth}-${selectedYear}`][slot] };
-      const team2 = {
-        ...roster[`${roflMonth}-${selectedYear}`][selectedSlot],
-      };
-      if (checkIfSwapable(team1, team2, slot, selectedSlot)) {
-        const newRoster = { ...roster };
-        newRoster[`${roflMonth}-${selectedYear}`][slot] = team2;
-        newRoster[`${roflMonth}-${selectedYear}`][selectedSlot] = team1;
-        setAreRostersEqual(
-          checkIfRostersAreEqual(
-            originalRoster[`${roflMonth}-${selectedYear}`],
-            newRoster[`${roflMonth}-${selectedYear}`],
-          ),
-        );
-      } else {
-        toast.error('Teams not swapable');
-      }
-      setSelectedSlot(null);
-    } else {
-      setSelectedSlot(slot);
-    }
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (newRoster) => {
     const updatedRoster = {};
     // consruct updated roster object by only getting slots with league flex or bench in them and adding them to object
-    Object.keys(roster[`${roflMonth}-${selectedYear}`])
+    Object.keys(newRoster[`${selectedMonth}-${selectedYear}`])
       .filter(
         (key) => key.includes('league')
           || key.includes('flex')
           || key.includes('bench'),
       )
       .forEach((slot) => {
-        if (roster[`${roflMonth}-${selectedYear}`][slot]) {
+        if (newRoster[`${selectedMonth}-${selectedYear}`][slot]) {
           updatedRoster[slot] = Number(
-            roster[`${roflMonth}-${selectedYear}`][slot].id,
+            newRoster[`${selectedMonth}-${selectedYear}`][slot].id,
           );
         }
       });
     try {
       const res = await makeRequest({
         method: 'patch',
-        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}/${roflMonth}`,
+        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}/${selectedMonth}`,
         data: {
           updateOneMonth,
           roster: updatedRoster,
@@ -226,20 +165,49 @@ function useRoster() {
         console.error(res.message);
       }
     } catch (e) {
-      console.log('problem');
+      toast.error('Your request to change your roster could not be completed');
+      setRoster({ ...originalRoster });
       console.error(e);
+    }
+  };
+
+  const changeRoster = async (slot) => {
+    if (selectedSlot) {
+      const team1 = { ...roster[`${selectedMonth}-${selectedYear}`][slot] };
+      const team2 = {
+        ...roster[`${selectedMonth}-${selectedYear}`][selectedSlot],
+      };
+      if (checkIfSwapable(team1, team2, slot, selectedSlot)) {
+        const newRoster = { ...roster };
+        newRoster[`${selectedMonth}-${selectedYear}`][slot] = team2;
+        newRoster[`${selectedMonth}-${selectedYear}`][selectedSlot] = team1;
+        setRoster(newRoster);
+        setSelectedSlot(null);
+        await handleSubmit(newRoster);
+        // setAreRostersEqual(
+        //   checkIfRostersAreEqual(
+        //     originalRoster[`${selectedMonth}-${selectedYear}`],
+        //     newRoster[`${selectedMonth}-${selectedYear}`],
+        //   ),
+        // );
+      } else {
+        toast.error('Teams not swapable');
+      }
+      setSelectedSlot(null);
+    } else {
+      setSelectedSlot(slot);
     }
   };
 
   return {
     selectedYear,
-    roflMonth,
+    selectedMonth,
     roster,
     currentOrganization,
     changeRoster,
     selectedSlot,
     areRostersEqual,
-    setRoflMonth,
+    setSelectedMonth,
     handleSubmit,
     activeRoflMonths,
     updateOneMonth,

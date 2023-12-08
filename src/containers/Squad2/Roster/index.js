@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Slot from './Slot';
 import useRoster from './useRoster';
 import Loading from '../../../components/Loading';
+import MonthSelector from '../MonthSelector';
 
 const Container = styled.div`
     margin-top: 15px;
@@ -39,18 +40,14 @@ const HeaderLabel = styled.div`
 function Roster() {
   const {
     selectedYear,
-    roflMonth,
+    selectedMonth,
     roster,
-    currentOrganization,
     selectedSlot,
-    areRostersEqual,
-    setRoflMonth,
-    handleSubmit,
-    activeRoflMonths,
+    setSelectedMonth,
     changeRoster,
   } = useRoster();
 
-  const currentRoster = (roster && roflMonth) ? roster[`${roflMonth}-${selectedYear}`] : null;
+  const currentRoster = (roster && selectedMonth) ? roster[`${selectedMonth}-${selectedYear}`] : null;
 
   const leagueIdSlotNameTable = {
     1: 'MLB',
@@ -71,12 +68,14 @@ function Roster() {
     !currentRoster
       ? <Loading />
       : (
-        <Container>
-          <HeaderLabel>Slot</HeaderLabel>
-          <HeaderLabel>Team</HeaderLabel>
-          <HeaderLabel>Action</HeaderLabel>
-          <HeaderLabel>Points</HeaderLabel>
-          {
+        <>
+          <MonthSelector selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} />
+          <Container>
+            <HeaderLabel>Slot</HeaderLabel>
+            <HeaderLabel>Team</HeaderLabel>
+            <HeaderLabel>Action</HeaderLabel>
+            <HeaderLabel>Points</HeaderLabel>
+            {
             // renders league slots then flex slots then total points then bench slots
             ['league', 'flex', 'total', 'bench'].map((slotType) => (
               slotType === 'total'
@@ -85,11 +84,12 @@ function Roster() {
                   (key) => key.includes(slotType),
                 ).map((league) => {
                   const team = currentRoster[league];
-                  return <Slot key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
+                  return <Slot isLocked={team.isLocked} key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
                 })
             ))
         }
-        </Container>
+          </Container>
+        </>
       )
   );
 }
