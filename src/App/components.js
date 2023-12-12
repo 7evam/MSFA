@@ -9,10 +9,14 @@ export const Container = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  
   filter: ${(props) => (props.modal ? 'blur(2px)' : null)}; 
   overflow-y: ${(props) => (props.modal ? 'hidden' : 'scroll')}; 
-
+  @media (min-width: ${mobileBreakPoint}){
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 90px 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+      }
 `;

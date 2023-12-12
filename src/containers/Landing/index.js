@@ -30,7 +30,6 @@ const LogInButton = styled.button`
 
 const Input = styled.input`
 font-family: "helvetica neue", Helvetica, arial, sans-serif; 
-
   height: 50px;
   width: 100%;
   border: 0;

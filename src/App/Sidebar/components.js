@@ -1,7 +1,10 @@
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import {red, blue, mediumBlue, lightBlue} from '../../constants/style'
+import {
+  red, blue, mediumBlue, lightBlue,
+  mobileBreakPoint,
+} from '../../constants/style';
 
 export const NavGroup = styled.div`
   display: flex;
@@ -11,8 +14,37 @@ export const NavGroup = styled.div`
 `;
 
 export const SideBar = styled.div`
+display: none;
+@media (min-width: ${mobileBreakPoint}){
   z-index: 100;
   height: 100vh;
+  float: left;
+  width: 200px;
+  background-color: blue;
+  margin-top: -16px;
+  background-color: #010626;
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  
+`;
+
+export const SidebarItem = styled(NavLink)`
+text-decoration: none;
+  font-size: 18px;
+  margin-top: -54px;
+  margin-bottom: 76px;
+  cursor: pointer;
+  font-weight: 500;
+  color: ${(props) => (props.selected ? '#F25C05' : 'white')}; 
+  &:hover{
+    color: #F25C05;
+  }
+  &:nth-of-type(1){
+    cursor: default;
+  }
 `;
 
 export const Nav = styled.nav`
@@ -26,7 +58,7 @@ export const Nav = styled.nav`
 
 export const Logo = styled.img`
   width: 220px;
-`
+`;
 
 export const CustomNavLink = styled(NavLink)`
   text-decoration: none;

@@ -7,7 +7,6 @@ const backgroundImg = 'https://rofl-public-assets.s3.us-east-2.amazonaws.com/260
 export const Container = styled.div`
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   @media (max-width: ${mobileBreakPoint}){

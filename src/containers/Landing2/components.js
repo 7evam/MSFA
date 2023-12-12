@@ -58,16 +58,17 @@ export const Footer = styled.div`
 export const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 50px 20px 50px 20px;
+  padding: 50px 40px 50px 40px;
   font-family: Arial;
   background-color: white;
   align-items: center;
+  justify-content: center;
 `;
 
 export const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
 `;
 
@@ -82,6 +83,7 @@ export const Input = styled.input`
   border-radius: 9px;
   outline: 1px solid #72696B;
   font-size: 16px;
+  max-width: 500px;
 `;
 
 export const Label = styled.label`
@@ -95,7 +97,7 @@ export const Button = styled.button`
   height: 38px;
   border-style: solid;
   font-size: 16px;
-  width: 90%;
+  width: 105%;
   max-width: 500px;
 `;
 export const BottomText = styled.div`

@@ -20,14 +20,10 @@ const Loader = styled.div`
     border: 16px solid #f3f3f3;
     border-top: 16px solid ${blue}; 
     border-radius: 50%;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     animation: ${spinner} 2s linear infinite;
     position: fixed;
-    @media (max-width: ${mobileBreakPoint}){
-        height: 200px;
-        width: 200px;
-      }
 `;
 
 function Loading() {
@@ -35,8 +31,8 @@ function Loading() {
     <Container>
       <Loader />
       <Logo
-        width={262}
-        height={231}
+        width={150}
+        height={150}
       />
     </Container>
   );

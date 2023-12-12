@@ -137,14 +137,14 @@ function Roster() {
     };
     if (readyToRender) {
       setReadyToRender(false);
-      navigate(`/rofleague/${userId}/${selectedYear}/${selectedRoflMonth}`);
+      navigate(`/league/${userId}/${selectedYear}/${selectedRoflMonth}`);
       refetchData();
     }
   }, [selectedYear]);
 
   useEffect(() => {
     if (selectedRoflMonth) {
-      navigate(`/rofleague/${userId}/${roflYear}/${selectedRoflMonth}`);
+      navigate(`/league/${userId}/${roflYear}/${selectedRoflMonth}`);
     }
   }, [selectedRoflMonth]);
 
@@ -180,7 +180,7 @@ function Roster() {
   return (
     <Container>
       <TopMenu>
-        <CustomLink to="/rofleague">
+        <CustomLink to="/league">
           {' '}
           <span>{IconLeft}</span>
           {' '}

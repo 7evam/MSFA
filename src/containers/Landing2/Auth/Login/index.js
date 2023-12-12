@@ -25,8 +25,8 @@ function Login({ authProps }) {
 
   return (
     <>
-      <InputContainer>
-        <IconWrapper>
+      <InputContainer className="InputContainer">
+        <IconWrapper className="IconWrapper">
           <Mail width={20} height={20} />
         </IconWrapper>
         <Label>Email</Label>
@@ -49,7 +49,9 @@ function Login({ authProps }) {
           onChange={handleChange}
         />
       </InputContainer>
-      <Button type="button" disabled={isLoading} onClick={handleLogIn}>{isLoading ? 'Loading...' : 'Log In'}</Button>
+      <InputContainer>
+        <Button type="button" disabled={isLoading} onClick={handleLogIn}>{isLoading ? 'Loading...' : 'Log In'}</Button>
+      </InputContainer>
       <BottomText>
         <P>
           Don't have an account?

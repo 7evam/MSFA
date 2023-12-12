@@ -68,13 +68,13 @@ function Router() {
         </Route>
         <Route element={<App />}>
           <Route path="/squad" element={<Squad2 />} />
-          <Route path="/rofleague">
+          <Route path="/league">
             <Route index element={<Standings />} />
-            <Route path="/rofleague/:userId/:roflYear/:roflMonth" element={<Roster />} />
+            <Route path="/league/:userId/:roflYear/:roflMonth" element={<Roster />} />
           </Route>
           <Route path="/settings" element={<Settings />} />
           <Route path="/scoring" element={<Scoring />} />
-          <Route path="/add-team" element={<AddTeam />} />
+          <Route path="/transactions" element={<AddTeam />} />
           <Route path="/new-season" element={<NewSeason />} />
         </Route>
         <Route path="/" element={userToken ? <Navigate to="/squad" replace /> : <Navigate to="/login" replace />} />

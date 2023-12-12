@@ -53,16 +53,7 @@ function TopBar() {
               <CustomNavLink to="/squad" selected={location.pathname.includes('squad')}>
                 Squad
               </CustomNavLink>
-
-              {/* <CustomNavLink to="/dashboard">
-            <span>Dashboard</span>
-          </CustomNavLink> */}
-
-              {/* <CustomNavLink to="/rosters">
-            <span>Rosters</span>
-          </CustomNavLink> */}
-
-              <CustomNavLink to="/rofleague" selected={location.pathname.includes('rofleague')}>
+              <CustomNavLink to="/rofleague" selected={location.pathname.includes('league')}>
                 League
               </CustomNavLink>
 
@@ -70,7 +61,7 @@ function TopBar() {
                 Scoring
               </CustomNavLink>
 
-              <CustomNavLink to="/add-team" selected={location.pathname.includes('add-team')}>
+              <CustomNavLink to="/transactions" selected={location.pathname.includes('transactions')}>
                 Transactions
               </CustomNavLink>
             </AppRoutes>

@@ -66,7 +66,7 @@ function useStandings() {
   // }
 
   const goToSquad = (userId) => {
-    navigate(`/rofleague/${userId}/${selectedYear}/${roflMonth}`);
+    navigate(`/league/${userId}/${selectedYear}/${roflMonth}`);
   };
 
   return {
