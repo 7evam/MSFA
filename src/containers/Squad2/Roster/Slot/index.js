@@ -28,7 +28,7 @@ function Slot({
       )
       : (
         <>
-          <FirstItem stylisLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
+          <FirstItem isLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
           <Item isLastInList={isLastInList}>{teamName}</Item>
           <Item isLastInList={isLastInList}>
             {isLocked

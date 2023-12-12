@@ -4,6 +4,7 @@ import Slot from './Slot';
 import useRoster from './useRoster';
 import Loading from '../../../components/Loading';
 import MonthSelector from '../MonthSelector';
+import { mobileBreakPoint } from '../../../constants/style';
 
 const Container = styled.div`
     margin-top: 15px;
@@ -35,6 +36,10 @@ const HeaderLabel = styled.div`
     text-align:center;
     background-color: #EAEEF480;
     font-weight: 800;
+    @media (max-width: ${mobileBreakPoint}){
+      font-size: 14px;
+      padding-right: 16px;
+     }
 `;
 
 function Roster() {
