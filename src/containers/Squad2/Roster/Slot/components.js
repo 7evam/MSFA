@@ -10,6 +10,7 @@ export const FirstItem = styled.div`
 export const Item = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
+
     @media (min-width: ${mobileBreakPoint}){
         &:before{
             content: "";

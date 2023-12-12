@@ -30,7 +30,7 @@ function Slot({
         <>
           <FirstItem isLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
           <Item isLastInList={isLastInList}>{teamName}</Item>
-          <Item isLastInList={isLastInList}>
+          <Item isLastInList={isLastInList} action>
             {isLocked
               ? lock
               : (
