@@ -6,20 +6,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useApi from '../hooks/useApi';
-import TopBar2 from './TopBar2';
-import { Container, ContentContainer } from './components';
+import TopBar from './TopBar';
+import { Container, ContentContainer, OutletContainer } from './components';
 import RenderModal from './RenderModal';
 import Loading from '../components/Loading';
 import Sidebar from './Sidebar';
 import { mobileBreakPoint } from '../constants/style';
-
-const OutletContainer = styled.div`
-  display: ${(props) => (props.isMenuOpen ? 'none' : null)};
-  @media (min-width: ${mobileBreakPoint}){
-    grid-area: 2 / 2 / 3 / 3;
-  }
-  
-`;
 
 function App(props) {
   const dispatch = useDispatch();
@@ -64,7 +56,7 @@ function App(props) {
       ? readyToRender ? (
         <Container>
           <ContentContainer modal={!!modalContent}>
-            <TopBar2 isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            <TopBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Sidebar />
             <OutletContainer isMenuOpen={isMenuOpen} className="outletContainer">
               <Outlet />

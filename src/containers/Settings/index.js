@@ -67,12 +67,21 @@ function Settings(props) {
     setIsLoading(false);
   };
 
+  const logOut = () => {
+    dispatch({
+      type: 'LOGOUT',
+    });
+    navigate('/');
+    navigate(0);
+  };
+
   return (
     isLoading
       ? <p>Loading...</p>
       : (
         <Container>
           <p>Settings</p>
+          <button type="button" onClick={logOut}>Log Out</button>
           <button type="button" onClick={linkToCreateNewLeague}>Create New League</button>
           <button type="button" onClick={createNewSeason}>Start New Season in Current League</button>
         </Container>

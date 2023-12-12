@@ -20,3 +20,10 @@ export const ContentContainer = styled.div`
     grid-row-gap: 0px;
       }
 `;
+
+export const OutletContainer = styled.div`
+display: ${(props) => (props.isMenuOpen ? 'none' : null)};
+@media (min-width: ${mobileBreakPoint}){
+  grid-area: 2 / 2 / 3 / 3;
+}
+`;

@@ -13,7 +13,7 @@ export const NavGroup = styled.div`
   width: 220px;
 `;
 
-export const SideBar = styled.div`
+export const SidebarContainer = styled.div`
 display: none;
 @media (min-width: ${mobileBreakPoint}){
   z-index: 100;

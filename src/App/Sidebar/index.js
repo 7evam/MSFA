@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import RoflLogo from './RoflLogo.png';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import {
-  NavGroup, SideBar, Nav, CustomNavLink, SidebarItem,
+  SidebarContainer, SidebarItem,
 } from './components';
 import Logo from '../../icons/msfaLogo';
 
-function Sidebar({ setSidebarSelection, sidebarSelection }) {
+function Sidebar() {
   const location = useLocation();
   return (
-    <SideBar>
+    <SidebarContainer>
       <SidebarItem>
         <Logo
           width={84}
@@ -29,7 +27,7 @@ function Sidebar({ setSidebarSelection, sidebarSelection }) {
       <SidebarItem to="/transactions" selected={location.pathname.includes('transactions')}>
         Transactions
       </SidebarItem>
-    </SideBar>
+    </SidebarContainer>
   );
 }
 

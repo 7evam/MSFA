@@ -1,94 +1,66 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import Logo from '../../icons/msfaLogo';
+import Menu from '../../icons/menu';
+import Settings from '../../icons/settings';
+import chevron from '../../icons/chevron';
 import {
-  Container, YearSelector, Year, AppRoutes,
-  AppActions, NavGroup, Topbar, Nav, CustomNavLink,
-  Logo, LogoContainer, MobileSettings, MobileLogOut, DummyYearSelector,
+  TopBarContainer,
+  MenuContainer,
+  MenuContent,
+  MenuItem,
+  LogoContainer,
+  LeagueContainer,
+  SettingsContainer,
+  RightSideContainer,
 } from './components';
-import SettingsIcon from '../../icons/settings';
-import LogOutIcon from '../../icons/logOut';
 
-function TopBar() {
-  const dispatch = useDispatch();
+function TopBar({ isMenuOpen, setIsMenuOpen }) {
   const location = useLocation();
-  const navigate = useNavigate();
 
-  const logOut = () => {
-    dispatch({
-      type: 'LOGOUT',
-    });
-    navigate('/');
-    navigate(0);
-  };
-
-  const { selectedYear } = useSelector((state) => ({
-    ...state.sportReducer,
-  }));
-
-  const { currentOrganization } = useSelector((state) => ({
-    ...state.authReducer,
-  }));
-
-  const handleYearChange = (newYear) => {
-    dispatch({
-      type: 'SET_SELECTED_YEAR',
-      payload: {
-        selectedYear: newYear,
-      },
-    });
-  };
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   return (
-    <Container>
-      <Topbar>
+    <>
+      <TopBarContainer menuOpen={isMenuOpen}>
         <LogoContainer>
-          <MobileSettings><CustomNavLink to="/settings">{SettingsIcon}</CustomNavLink></MobileSettings>
-          <Logo src="https://rofl-public-assets.s3.us-east-2.amazonaws.com/MSFALogoRectangle.png" alt="msfaLogo" />
-          <MobileLogOut onClick={logOut}>{LogOutIcon}</MobileLogOut>
+          <Logo
+            width={38}
+            height={38}
+          />
         </LogoContainer>
-        <Nav className="grid-container">
-          <NavGroup>
-            <AppRoutes>
-              <CustomNavLink to="/squad" selected={location.pathname.includes('squad')}>
-                Squad
-              </CustomNavLink>
-              <CustomNavLink to="/rofleague" selected={location.pathname.includes('league')}>
-                League
-              </CustomNavLink>
-
-              <CustomNavLink to="/scoring" selected={location.pathname.includes('scoring')}>
-                Scoring
-              </CustomNavLink>
-
-              <CustomNavLink to="/transactions" selected={location.pathname.includes('transactions')}>
-                Transactions
-              </CustomNavLink>
-            </AppRoutes>
-            <AppActions>
-              <CustomNavLink to="/settings" selected={location.pathname.includes('settings')}>
-                Settings
-              </CustomNavLink>
-              <CustomNavLink to="/">
-                <span onClick={logOut}>Log Out</span>
-              </CustomNavLink>
-            </AppActions>
-          </NavGroup>
-        </Nav>
-      </Topbar>
+        <span />
+        <RightSideContainer>
+          <LeagueContainer to="/set-league-year">
+            KHA 2022-23
+            {chevron}
+          </LeagueContainer>
+          <MenuContainer selected={isMenuOpen} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Menu color={isMenuOpen ? '#F25C05' : 'white'} />
+          </MenuContainer>
+          <SettingsContainer to="/settings">
+            <Settings color={location.pathname.includes('settings') ? '#F25C05' : 'white'} />
+          </SettingsContainer>
+        </RightSideContainer>
+      </TopBarContainer>
       {
-        currentOrganization.activeYears && Object.keys(currentOrganization.activeYears).length > 1
+        isMenuOpen
           ? (
-            <YearSelector value={selectedYear} onChange={(e) => handleYearChange(e.target.value)} name="selectedYear">
-              {Object.keys(currentOrganization.activeYears).map((year) => (
-                <Year key={year} value={year}>{year}</Year>
-              ))}
-            </YearSelector>
+            <MenuContent>
+              <MenuItem to="/squad" selected={location.pathname.includes('squad')}>Squad</MenuItem>
+              <MenuItem to="/league" selected={location.pathname.includes('league')}>League</MenuItem>
+              <MenuItem to="/scoring" selected={location.pathname.includes('scoring')}>Scoring</MenuItem>
+              <MenuItem to="/league" selected={location.pathname.includes('transactions')}>Transactions</MenuItem>
+              <MenuItem to="/settings" selected={location.pathname.includes('settings')} bottomItem>Settings</MenuItem>
+            </MenuContent>
           )
-          : <DummyYearSelector />
+          : null
+
       }
 
-    </Container>
+    </>
   );
 }
 

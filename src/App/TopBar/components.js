@@ -1,155 +1,89 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import {
-  red, blue, mediumBlue, lightBlue, mobileBreakPoint,
-} from '../../constants/style';
+import { NavLink } from 'react-router-dom';
+import { mobileBreakPoint } from '../../constants/style';
 
-export const Topbar = styled.div`
+export const TopBarContainer = styled.div`
+  font-family: "Ariel", sans-serif;
+  height: 70px;
+  background-color: #010626;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    position: absolute;
-    z-index: 10;
-    width: 100vw;
-    @media (max-width: ${mobileBreakPoint}){
-      flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 16px 0px 16px;
+    margin-bottom: ${(props) => (props.menuOpen ? null : '16px;')};
+    @media (min-width: ${mobileBreakPoint}){
+      grid-area: 1 / 1 / 2 / 3;
+    }
+    
+`;
+
+export const MenuContainer = styled.div`
+margin-left: 25px;
+    &:hover{
+        cursor: pointer;
+    }
+    @media (min-width: ${mobileBreakPoint}){
+      display: none;
     }
 `;
 
-export const NavGroup = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-height: 50px;
-width: 100vw;
-justify-content: space-between;
-margin-left: 240px;
-@media (max-width: ${mobileBreakPoint}){
-  margin: 0;
-}
+export const MenuContent = styled.div`
+    height: 100vh;
+    background-color: #010626;
 `;
 
-export const Nav = styled.nav`
-  background-color: ${mediumBlue};
-  width: 100vw;
-  margin: 0;
-  height:80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  color: black;
-  margin-left: -220px;
-  z-index: 10;
-  margin-bottom: 5px;
-  
-  @media (max-width: ${mobileBreakPoint}){
-    height: 40px;
-    margin: 0;
-    width: 100vw;
-  }
-`;
-
-export const CustomNavLink = styled(NavLink)`
-  text-decoration: none;
-  color: black
-  display: flex;
-  margin-right: 20px;
-  font-weight: ${(props) => (props.selected ? '800' : '400')};
-  &:hover{
-    font-weight: 800;
-  }
-  &:visited { 
-    text-decoration: none; 
-    color: black; 
-   }
-  @media (max-width: ${mobileBreakPoint}){
-    margin-right: 0px;
-  }
-  
-`;
-
-export const Logo = styled.img`
-  width: 220px;
-  z-index: 15;
-  height: 82px;
-  @media (max-width: ${mobileBreakPoint}){
-    width: 170px;
-    height: auto;
-    border: 1px solid ${blue};
-    margin-top: 10px;
-  }
+export const MenuItem = styled(NavLink)`
+    text-decoration: none;
+    width: 100%;
+    border: 4px solid white;
+    box-sizing: border-box;
+    border-bottom: ${(props) => (props.bottomItem ? '4px solid white' : 'none')};
+    height: 60px;
+    color: ${(props) => (props.selected ? '#F25C05' : 'white')};
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover{
+        background-color: #F25C05;
+        color: white;
+    }
 `;
 
 export const LogoContainer = styled.div`
-z-index: 15;
-@media (max-width: 768px){
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
-  align-items: center;
-  width: 100vw;
-  background-color: ${mediumBlue};
+  @media (min-width: ${mobileBreakPoint}){
+    display: none;
+  }
+`;
+
+export const LeagueContainer = styled(NavLink)`
+color: white;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+&:hover{
+  cursor: pointer;
+  color: #F25C05;
 }
-
-
-`;
-export const MobileSettings = styled.div`
-  display: none;
-  @media (max-width: ${mobileBreakPoint}){
-    display: block;
-    cursor: pointer;
-  }
 `;
 
-export const MobileLogOut = styled.div`
-  display: none;
-  @media (max-width: ${mobileBreakPoint}){
-    display: block;
-    cursor: pointer;
-  }
-
-`;
-
-export const AppActions = styled.div`
+export const SettingsContainer = styled(NavLink)`
+color: white;
+margin-left: 25px;
+&:hover{
+  color: #F25C05;
+}
+cursor: pointer;
 @media (max-width: ${mobileBreakPoint}){
   display: none;
 }
 `;
 
-export const AppRoutes = styled.div`
-  display: block;
-  @media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
-    display: flex;
-    justify-content: space-evenly;
-  }
-`;
-
-export const Year = styled.option` 
-  width: 100%;
-  height: 25px;
-  text-align: center;
-`;
-
-export const YearSelector = styled.select`
-  width: 100%;
-  height: 25px;
-  margin-top: 80px;
-  text-align: center;
-  font-weight: 800;
-  @media (max-width: ${mobileBreakPoint}){
-    margin-top: 110px;
-  }
-`;
-
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const DummyYearSelector = styled.div`
-  height: 20px;
-  margin-top: 80px;
+export const RightSideContainer = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
 `;
