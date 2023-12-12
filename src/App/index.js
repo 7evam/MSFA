@@ -66,7 +66,7 @@ function App(props) {
           <ContentContainer modal={!!modalContent}>
             <TopBar2 isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Sidebar />
-            <OutletContainer>
+            <OutletContainer isMenuOpen={isMenuOpen} className="outletContainer">
               <Outlet />
             </OutletContainer>
           </ContentContainer>

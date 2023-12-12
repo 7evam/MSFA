@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../../icons/msfaLogo';
 import Menu from '../../icons/menu';
-import settings from '../../icons/settings';
+import Settings from '../../icons/settings';
+import chevron from '../../icons/chevron';
 import { mobileBreakPoint } from '../../constants/style';
 // const CustomNavLink = styled(NavLink)`
 // `;
@@ -24,6 +25,7 @@ const Container = styled.div`
 `;
 
 const MenuContainer = styled.div`
+margin-left: 25px;
     &:hover{
         cursor: pointer;
     }
@@ -62,8 +64,21 @@ const LogoContainer = styled.div`
   }
 `;
 
+const LeagueContainer = styled(NavLink)`
+color: white;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+&:hover{
+  cursor: pointer;
+  color: #F25C05;
+}
+`;
+
 const SettingsContainer = styled(NavLink)`
 color: white;
+margin-left: 25px;
 &:hover{
   color: #F25C05;
 }
@@ -71,6 +86,12 @@ cursor: pointer;
 @media (max-width: ${mobileBreakPoint}){
   display: none;
 }
+`;
+
+const RightSideContainer = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
 `;
 
 function TopBar({ isMenuOpen, setIsMenuOpen }) {
@@ -89,11 +110,19 @@ function TopBar({ isMenuOpen, setIsMenuOpen }) {
             height={38}
           />
         </LogoContainer>
-        <MenuContainer onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <Menu />
-        </MenuContainer>
-        <SettingsContainer />
-        <SettingsContainer to="/settings" selected={location.pathname.includes('settings')}>{settings}</SettingsContainer>
+        <span />
+        <RightSideContainer>
+          <LeagueContainer to="/set-league-year">
+            KHA 2022-23
+            {chevron}
+          </LeagueContainer>
+          <MenuContainer selected={isMenuOpen} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Menu color={isMenuOpen ? '#F25C05' : 'white'} />
+          </MenuContainer>
+          <SettingsContainer to="/settings">
+            <Settings color={location.pathname.includes('settings') ? '#F25C05' : 'white'} />
+          </SettingsContainer>
+        </RightSideContainer>
       </Container>
       {
         isMenuOpen

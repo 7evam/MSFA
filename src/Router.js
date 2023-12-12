@@ -27,6 +27,7 @@ import Draft from './containers/Draft';
 import ValueTool from './containers/Draft/ValueTool';
 import DraftScoring from './containers/Draft/DraftScoring';
 import Tips from './containers/Draft/Tips';
+import SetLeagueYear from './containers/SetLeagueYear';
 
 // const MySquad = lazy(() => import('./containers/MySquad'));
 // const AddTeam = lazy(() => import('./containers/AddTeam'));
@@ -73,6 +74,7 @@ function Router() {
             <Route path="/league/:userId/:roflYear/:roflMonth" element={<Roster />} />
           </Route>
           <Route path="/settings" element={<Settings />} />
+          <Route path="/set-league-year" element={<SetLeagueYear />} />
           <Route path="/scoring" element={<Scoring />} />
           <Route path="/transactions" element={<AddTeam />} />
           <Route path="/new-season" element={<NewSeason />} />
