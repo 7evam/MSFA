@@ -68,12 +68,6 @@ function UnownedTeams({
   const [readyToRender, setReadyToRender] = useState(false);
 
   useEffect(() => {
-    console.log('here they all are');
-    console.log(unownedTeams);
-    console.log(league);
-    console.log(firstLeagueToShow);
-    console.log(firstActiveMonthForClaim);
-    console.log('-----');
     if (unownedTeams && league && firstLeagueToShow && firstActiveMonthForClaim) {
       setReadyToRender(true);
     }

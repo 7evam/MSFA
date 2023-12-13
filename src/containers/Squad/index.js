@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import MonthTicker from '../../components/MonthTicker';
 // import RosterComponent from '../../components/Roster';
 // import '@fontsource/open-sans';
+import { useSelector } from 'react-redux';
 import {
   Container, TeamNameContainer, TeamName, TeamOwner, Bold,
 } from './components';
@@ -11,14 +12,18 @@ import Roster from './Roster';
 // import Loading from '../../components/Loading';
 
 function Squad() {
+  const { currentOrganization, name } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
+
   return (
     <Container>
       <TeamNameContainer>
-        <TeamName>Evan's Team</TeamName>
+        <TeamName>{currentOrganization.team_name}</TeamName>
         <TeamOwner>
           Managed by
           {' '}
-          <Bold>Evan</Bold>
+          <Bold>{name}</Bold>
         </TeamOwner>
       </TeamNameContainer>
       <Roster />

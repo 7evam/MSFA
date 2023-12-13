@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import "@fontsource/open-sans";
-import useApi from "../../hooks/useApi";
-import RosterComponent from "../../components/Roster";
-import Loading from "../../components/Loading";
-import useHydration from "../../hooks/useHydration";
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import '@fontsource/open-sans';
+import { toast } from 'react-toastify';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import useApi from '../../hooks/useApi';
+import RosterComponent from '../../components/Roster';
+import Loading from '../../components/Loading';
+import useHydration from '../../hooks/useHydration';
 import {
   Section,
   Select,
@@ -20,15 +22,13 @@ import {
   Th,
   TitleRow,
   Td,
-  CashContainer
-} from "./components";
-import useAddTeam from "./useAddTeam";
-import { convertRealToRofl, convertDateObjToReadable } from "../../utils";
-import MonthTicker from "../../components/MonthTicker";
-import YearSelector from "../../components/YearSelector";
-import { toast } from "react-toastify";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import BidRow from "./BidRow";
+  CashContainer,
+} from './components';
+import useAddTeam from './useAddTeam';
+import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
+import MonthTicker from '../../components/MonthTicker';
+import YearSelector from '../../components/YearSelector';
+import BidRow from './BidRow';
 
 const MonthContainer = styled.div`
   width: 100%;
@@ -46,10 +46,10 @@ const YearContainer = styled.div`
 
 const Table = styled.table`
   width: 100vw;
-`
+`;
 
 const Test = styled.div`
-`
+`;
 
 function CurrentBids({
   allBids,
@@ -57,7 +57,7 @@ function CurrentBids({
   sportTeams,
   currentOrganization,
   reFetchBids,
-  originalBids
+  originalBids,
 }) {
   const { makeRequest, isLoading } = useApi();
 
@@ -66,10 +66,9 @@ function CurrentBids({
   const [roflMonth, setRoflMonth] = useState(allBids ? Math.max(...Object.keys(allBids)) : null);
   const [
     currentMonthIncludesCurrentBid,
-    setCurrentMonthIncludesCurrentBid
+    setCurrentMonthIncludesCurrentBid,
   ] = useState(false);
-  const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false)
-
+  const [havePrioritiesChanged, setHavePrioritiesChanged] = useState(false);
 
   useEffect(() => {
     if (roflMonth && allBids && allBids[roflMonth]) {
@@ -81,69 +80,64 @@ function CurrentBids({
     }
   }, [roflMonth]);
 
-  let activeYearArray = Object.keys(currentOrganization.activeYears);
+  const activeYearArray = Object.keys(currentOrganization.activeYears);
 
-  const sleep = async (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const saveRoster = async () => {
-    try{
-        var res = await makeRequest({
-            method: "patch",
-            route: `users/bids`,
-            data: {bids: allBids[roflMonth]}
-        })
-        const body = res.body
-        if(body === 'success'){
-            toast.success('Sucessfully changed bids')
-            setHavePrioritiesChanged(false)
-            // sleep is necessary to fetch correct data 
-            // yeah, theres probably a better way
-            await sleep(300)
-            await reFetchBids()
-        }
+    try {
+      const res = await makeRequest({
+        method: 'patch',
+        route: 'users/bids',
+        data: { bids: allBids[roflMonth] },
+      });
+      const { body } = res;
+      if (body === 'success') {
+        toast.success('Sucessfully changed bids');
+        setHavePrioritiesChanged(false);
+        // sleep is necessary to fetch correct data
+        // yeah, theres probably a better way
+        await sleep(300);
+        await reFetchBids();
+      }
     } catch (e) {
-        console.log('problem')
-        console.error(e)
+      console.log('problem');
+      console.error(e);
     }
-  }
-
-  const leagueFromTeamId = (team) => {
-    return Number(String(team)[0]);
   };
+
+  const leagueFromTeamId = (team) => Number(String(team)[0]);
 
   const deleteBid = async (bidId) => {
     try {
-      var res = await makeRequest({
-        method: "delete",
-        route: `users/bids/delete/${bidId}`
+      const res = await makeRequest({
+        method: 'delete',
+        route: `users/bids/delete/${bidId}`,
       });
-      const body = res.body;
+      const { body } = res;
       //   if success show message
-      if (body === "success") {
-        toast.success("Sucessfully deleted bid");
+      if (body === 'success') {
+        toast.success('Sucessfully deleted bid');
       }
       // then refetch bids
       await reFetchBids();
     } catch (e) {
-      console.log("problem");
+      console.log('problem');
       console.error(e);
     }
   };
 
   const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
-    const result = Array.from(list)
-    const [removed] = result.splice(startIndex, 1)
-    result.splice(endIndex, 0, removed)
-
-    for(let i=0;i<result.length;i++){
-        result[i].priority = i+1
+    for (let i = 0; i < result.length; i++) {
+      result[i].priority = i + 1;
     }
 
-    return result
-  }
+    return result;
+  };
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -152,82 +146,94 @@ function CurrentBids({
     }
 
     const newMonthBids = reorder(
-        allBids[roflMonth],
-        result.source.index,
-        result.destination.index
-    )
-    const newBids = allBids
-    newBids[roflMonth] = newMonthBids
-    if(originalBids !== JSON.stringify(newBids)){
-        setHavePrioritiesChanged(true)
-    } else {
-        setHavePrioritiesChanged(false)
-    }
-    setAllBids(newBids)
-}
-
-console.log('here is all bids')
-console.log(allBids)
-
-    return (
-      <Test>
-        {
-            allBids && allBids[roflMonth] && allBids[roflMonth].length
-            ?
-            <div>
-            {activeYearArray.length === 2 ? (
-              <YearSelector
-                activeYearArray={activeYearArray}
-                setSelectedRoflYear={setSelectedRoflYear}
-                selectedRoflYear={selectedRoflYear}
-              />
-            ) : (
-              <YearContainer>
-                <p>MSFA Year: {selectedRoflYear}</p>
-              </YearContainer>
-            )}
-    
-            <MonthTicker
-              roflMonth={roflMonth}
-              setRoflMonth={setRoflMonth}
-              selectedRoflYear={selectedRoflYear}
-              onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
-            />
-            <MonthContainer>
-              <p>MSFA Month: {roflMonth}</p>
-            </MonthContainer>
-              <Table>
-                <tbody>
-            <TitleRow>
-            {currentMonthIncludesCurrentBid ? (
-                <Th width={'col1width'}>Move</Th>
-              ) : null}
-              <Th width={'col2width'}>Team</Th>
-              <Th width={'col3width'}>Priority</Th>
-              <Th width={'col4width'}>Value</Th>
-              <Th width={'col5width'}>Teams Dropped</Th>
-              {currentMonthIncludesCurrentBid ? (
-                <Th width={'col6width'}>Delete</Th>
-              ) : null}
-            </TitleRow>
-                    {allBids[roflMonth].map((bid, index) => (
-                      <BidRow
-                      bid={bid}
-                      index={index}
-                      sportTeams={sportTeams}
-                      currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
-                      deleteBid={deleteBid}
-                      leagueFromTeamId={leagueFromTeamId}
-                      />
-                    ))}
-                    </tbody>
-              </Table>
-              {havePrioritiesChanged ? <div>Your roster priorities have changed <button onClick={saveRoster}>Save</button></div> : null}
-            </div>
-            : <p>There are no bids to show</p>
-        }
-      </Test>
+      allBids[roflMonth],
+      result.source.index,
+      result.destination.index,
     );
+    const newBids = allBids;
+    newBids[roflMonth] = newMonthBids;
+    if (originalBids !== JSON.stringify(newBids)) {
+      setHavePrioritiesChanged(true);
+    } else {
+      setHavePrioritiesChanged(false);
+    }
+    setAllBids(newBids);
   };
+
+  return (
+    <Test>
+      {
+            allBids && allBids[roflMonth] && allBids[roflMonth].length
+              ? (
+                <div>
+                  {activeYearArray.length === 2 ? (
+                    <YearSelector
+                      activeYearArray={activeYearArray}
+                      setSelectedRoflYear={setSelectedRoflYear}
+                      selectedRoflYear={selectedRoflYear}
+                    />
+                  ) : (
+                    <YearContainer>
+                      <p>
+                        MSFA Year:
+                        {' '}
+                        {selectedRoflYear}
+                      </p>
+                    </YearContainer>
+                  )}
+
+                  <MonthTicker
+                    roflMonth={roflMonth}
+                    setRoflMonth={setRoflMonth}
+                    selectedRoflYear={selectedRoflYear}
+                    onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+                  />
+                  <MonthContainer>
+                    <p>
+                      MSFA Month:
+                      {' '}
+                      {roflMonth}
+                    </p>
+                  </MonthContainer>
+                  <Table>
+                    <tbody>
+                      <TitleRow>
+                        {currentMonthIncludesCurrentBid ? (
+                          <Th width="col1width">Move</Th>
+                        ) : null}
+                        <Th width="col2width">Team</Th>
+                        <Th width="col3width">Priority</Th>
+                        <Th width="col4width">Value</Th>
+                        <Th width="col5width">Teams Dropped</Th>
+                        {currentMonthIncludesCurrentBid ? (
+                          <Th width="col6width">Delete</Th>
+                        ) : null}
+                      </TitleRow>
+                      {allBids[roflMonth].map((bid, index) => (
+                        <BidRow
+                          bid={bid}
+                          index={index}
+                          sportTeams={sportTeams}
+                          currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
+                          deleteBid={deleteBid}
+                          leagueFromTeamId={leagueFromTeamId}
+                        />
+                      ))}
+                    </tbody>
+                  </Table>
+                  {havePrioritiesChanged ? (
+                    <div>
+                      Your roster priorities have changed
+                      {' '}
+                      <button onClick={saveRoster}>Save</button>
+                    </div>
+                  ) : null}
+                </div>
+              )
+              : <p>There are no bids to show</p>
+        }
+    </Test>
+  );
+}
 
 export default CurrentBids;

@@ -99,10 +99,6 @@ function BidDetails() {
   };
 
   const bid = transformBid(props.bid);
-
-  console.log('here is bid');
-  console.log(props.bid);
-
   return (
     <Container>
       <TopBar>

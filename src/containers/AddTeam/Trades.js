@@ -47,9 +47,6 @@ function Trades({ trades, reFetchTrades }) {
 
   const activeYearArray = Object.keys(currentOrganization.activeYears);
 
-  console.log('here are trades');
-  console.log(trades);
-
   return (
     trades && Object.keys(trades).length
       ? (

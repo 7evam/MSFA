@@ -11,16 +11,11 @@ function ProposeTrade() {
     ...state.modalReducer,
   }));
 
-  console.log('here is current rofl months');
-  console.log(props.currentRoflMonths);
-
   const { selectedYear, playoffMonths } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
   const transformToCheckable = (roster) => {
-    console.log('here is roster before transformation');
-    console.log(roster);
     const checkableRoster = {};
     checkableRoster.cash = roster.cash;
     Object.keys(roster).forEach((teamNum) => {
@@ -35,8 +30,6 @@ function ProposeTrade() {
         };
       }
     });
-    console.log('here is checkable roster');
-    console.log(checkableRoster);
     return checkableRoster;
   };
 

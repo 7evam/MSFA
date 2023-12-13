@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Logo from '../../icons/msfaLogo';
 import Menu from '../../icons/menu';
 import Settings from '../../icons/settings';
@@ -18,9 +19,19 @@ import {
 function TopBar({ isMenuOpen, setIsMenuOpen }) {
   const location = useLocation();
 
+  const { currentOrganization } = useSelector((state) => ({
+    ...state.authReducer,
+  }));
+
+  const { selectedYear } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
+
+  const multiYearSeasonName = `${selectedYear}-${String(Number(selectedYear) + 1).slice(2, 4)}`;
 
   return (
     <>
@@ -34,7 +45,9 @@ function TopBar({ isMenuOpen, setIsMenuOpen }) {
         <span />
         <RightSideContainer>
           <LeagueContainer to="/set-league-year">
-            KHA 2022-23
+            {currentOrganization.name}
+            {' '}
+            {multiYearSeasonName}
             {chevron}
           </LeagueContainer>
           <MenuContainer selected={isMenuOpen} onClick={() => setIsMenuOpen(!isMenuOpen)}>

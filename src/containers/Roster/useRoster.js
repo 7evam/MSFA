@@ -151,7 +151,6 @@ function useRoster() {
       }
       return false;
     }
-    console.log('edge case uh oh');
 
     return true;
   };
