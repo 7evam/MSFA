@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 // import RosterComponent from '../../components/Roster';
 // import '@fontsource/open-sans';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import arrowUnClickable from '../../../icons/arrowUnClickable';
 import arrowClickable from '../../../icons/arrowClickable';
 
@@ -28,6 +29,10 @@ const ArrowContainer = styled.span`
 `;
 
 function MonthSelector({ selectedMonth, setSelectedMonth }) {
+  const { selectedYear } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
   const monthsForScroll = (year, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths) => {
     year = Number(year);
 
@@ -59,9 +64,10 @@ function MonthSelector({ selectedMonth, setSelectedMonth }) {
     return months;
   };
 
-  const months = monthsForScroll(2023);
+  const months = monthsForScroll(selectedYear);
 
   return (
+
     <Container>
       <MonthText>
         {
