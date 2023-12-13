@@ -20,7 +20,7 @@ import Settings from './containers/Settings';
 import CreateNewLeague from './containers/CreateNewLeague';
 import NewSeason from './containers/NewSeason';
 import Roster from './containers/RoflLeague/Roster';
-import Standings from './containers/RoflLeague/Standings';
+import Standings from './containers/Standings';
 import App from './App';
 import Draft from './containers/Draft';
 import ValueTool from './containers/Draft/ValueTool';

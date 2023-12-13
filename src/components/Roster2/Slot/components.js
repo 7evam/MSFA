@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { mobileBreakPoint } from '../../../../constants/style';
+import { mobileBreakPoint } from '../../../constants/style';
 
 export const FirstItem = styled.div`
     padding: 16px 0px 8px 16px;

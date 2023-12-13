@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Slot from './Slot';
 import useRoster from './useRoster';
-import Loading from '../../../components/Loading';
+import Loading from '../Loading';
 import MonthSelector from '../MonthSelector';
-import { mobileBreakPoint } from '../../../constants/style';
+import { mobileBreakPoint } from '../../constants/style';
 
 const Container = styled.div`
     margin-top: 15px;

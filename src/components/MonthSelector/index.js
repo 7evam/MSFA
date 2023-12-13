@@ -5,11 +5,12 @@ import React, { useState, useEffect } from 'react';
 // import '@fontsource/open-sans';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import arrowUnClickable from '../../../icons/arrowUnClickable';
-import arrowClickable from '../../../icons/arrowClickable';
+import arrowUnClickable from '../../icons/arrowUnClickable';
+import arrowClickable from '../../icons/arrowClickable';
 
 const Container = styled.div`
   width: 86%;
+  height: 65px;
   font-size: 18px;
   border-radius: 10px;
   background: #4E871F;
@@ -17,6 +18,7 @@ const Container = styled.div`
   padding: 0 3%;
   color: white;
   font-family: Inter;
+  
 `;
 
 const MonthText = styled.p`
@@ -28,7 +30,9 @@ const ArrowContainer = styled.span`
   ${(props) => (props.onClick ? '&:hover{cursor: pointer;}' : null)};
 `;
 
-function MonthSelector({ selectedMonth, setSelectedMonth }) {
+function MonthSelector({
+  selectedMonth, setSelectedMonth, finalMonthForDisplay, firstMonthForDisplay,
+}) {
   const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
   }));
@@ -64,7 +68,7 @@ function MonthSelector({ selectedMonth, setSelectedMonth }) {
     return months;
   };
 
-  const months = monthsForScroll(selectedYear);
+  const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay);
 
   return (
 

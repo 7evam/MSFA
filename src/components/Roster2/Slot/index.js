@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   FirstItem, Item, PointsItem, ActionButton,
 } from './components';
-import lock from '../../../../icons/lock';
+import lock from '../../../icons/lock';
 
 function Slot({
   slotName,
   teamName,
   isLocked,
   points,
-  isLastInList,
   isTotalPoints,
   changeRoster,
   leagueKey,
@@ -28,9 +27,9 @@ function Slot({
       )
       : (
         <>
-          <FirstItem isLastInList={isLastInList}>{slotName.toUpperCase()}</FirstItem>
-          <Item isLastInList={isLastInList}>{teamName}</Item>
-          <Item isLastInList={isLastInList} action>
+          <FirstItem>{slotName.toUpperCase()}</FirstItem>
+          <Item>{teamName}</Item>
+          <Item action>
             {isLocked
               ? lock
               : (
@@ -44,7 +43,7 @@ function Slot({
               )}
             {' '}
           </Item>
-          <Item isLastInList={isLastInList}>{points}</Item>
+          <Item>{points}</Item>
         </>
       )
   );

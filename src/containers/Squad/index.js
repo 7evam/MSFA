@@ -8,7 +8,7 @@ import {
   Container, TeamNameContainer, TeamName, TeamOwner, Bold,
 } from './components';
 
-import Roster from './Roster';
+import Roster from '../../components/Roster2';
 // import Loading from '../../components/Loading';
 
 function Squad() {
