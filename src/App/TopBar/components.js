@@ -38,7 +38,7 @@ export const MenuItem = styled(NavLink)`
     width: 100%;
     border: 4px solid white;
     box-sizing: border-box;
-    border-bottom: ${(props) => (props.bottomItem ? '4px solid white' : 'none')};
+    border-bottom: ${(props) => (props.$finalItem ? '4px solid white' : 'none')};
     height: 60px;
     color: ${(props) => (props.selected ? '#F25C05' : 'white')};
     font-size: 24px;

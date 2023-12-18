@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { mobileBreakPoint, lightBlue } from '../../constants/style';
+import { useSelector } from 'react-redux';
 
 const backgroundImg = 'https://rofl-public-assets.s3.us-east-2.amazonaws.com/26057+1.png';
 
-export 
-
-export const TeamNameContainer = styled.div`
+const TeamNameContainer = styled.div`
     color: white;
     height: 90px;
     width: 94%;
@@ -26,18 +24,48 @@ export const TeamNameContainer = styled.div`
     margin-bottom: 20px;
     `;
 
-export const TeamName = styled.p`
+const TeamNameText = styled.p`
   font-size: 24px;
   margin: 0;
   font-weight: 800;
 `;
-export const TeamOwner = styled.p`
+const TeamOwner = styled.p`
   font-size: 12px;
   margin: 0;
   font-weight: 400;
   margin-left: 1px;
 `;
 
-export const Bold = styled.span`
+const Bold = styled.span`
     font-weight: 800;
 `;
+
+function TeamName({ userId }) {
+  console.log('here is user id');
+  console.log(userId);
+
+  const { orgMembers } = useSelector((state) => ({
+    ...state.sportReducer,
+  }));
+
+  console.log('here is org memebers');
+  console.log(orgMembers);
+
+  const user = orgMembers && orgMembers[userId];
+
+  return (
+    user
+      ? (
+        <TeamNameContainer>
+          <TeamNameText>{user.team_name}</TeamNameText>
+          <TeamOwner>
+            Managed by
+            {' '}
+            <Bold>{user.name}</Bold>
+          </TeamOwner>
+        </TeamNameContainer>
+      ) : null
+  );
+}
+
+export default TeamName;

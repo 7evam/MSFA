@@ -35,6 +35,10 @@ const StandingsContainer = styled.div`
       background-color: #F7FBFF;
       z-index: -1;
     }
+    @media (max-width: ${mobileBreakPoint}){
+      grid-template-columns: 1fr 3fr 3fr 2fr 2fr;
+      width: 96%;
+     }
 `;
 
 const HeaderLabel = styled.div`
@@ -44,7 +48,7 @@ const HeaderLabel = styled.div`
     font-weight: 800;
     font-size: 14px;
     @media (max-width: ${mobileBreakPoint}){
-      font-size: 14px;
+      font-size: 10px;
       padding-right: 16px;
      }
 `;
@@ -69,7 +73,11 @@ function Standings() {
     standings && standings[`${selectedMonth}-${selectedYear}`]
       ? (
         <Container>
-          <MonthSelector finalMonthForDisplay={finalMonthForDisplay} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} />
+          <MonthSelector
+            finalMonthForDisplay={finalMonthForDisplay}
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+          />
           <StandingsContainer>
             <HeaderLabel>Rank</HeaderLabel>
             <HeaderLabel>Manager</HeaderLabel>
@@ -79,6 +87,7 @@ function Standings() {
             {
               standings[`${selectedMonth}-${selectedYear}`].map((item, index) => (
                 <StandingsSlot
+                  key={index}
                   selectedMonth={selectedMonth}
                   rank={index + 1}
                   item={item}

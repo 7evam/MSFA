@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FirstItem, Item, PointsItem, ActionButton,
+  FirstItem, Item, PointsItem, ActionButton, TPText,
 } from './components';
 import lock from '../../../icons/lock';
 
@@ -14,14 +14,15 @@ function Slot({
   leagueKey,
   selectedSlot,
   totalScore,
+  readOnly,
 }) {
   return (
     isTotalPoints
       ? (
         <>
           <PointsItem />
-          <PointsItem />
-          <PointsItem>Total Points</PointsItem>
+          {readOnly ? null : <PointsItem />}
+          <PointsItem><TPText>Total Points</TPText></PointsItem>
           <Item><b>{totalScore}</b></Item>
         </>
       )
@@ -29,20 +30,25 @@ function Slot({
         <>
           <FirstItem>{slotName.toUpperCase()}</FirstItem>
           <Item>{teamName}</Item>
-          <Item action>
-            {isLocked
-              ? lock
-              : (
-                <ActionButton
-                  leagueKey={leagueKey}
-                  selectedSlot={selectedSlot}
-                  onClick={() => changeRoster(leagueKey)}
-                >
-                  Move
-                </ActionButton>
-              )}
-            {' '}
-          </Item>
+          {
+            readOnly ? null : (
+              <Item action>
+                {isLocked
+                  ? lock
+                  : (
+                    <ActionButton
+                      leagueKey={leagueKey}
+                      selectedSlot={selectedSlot}
+                      onClick={() => changeRoster(leagueKey)}
+                    >
+                      Move
+                    </ActionButton>
+                  )}
+                {' '}
+              </Item>
+            )
+          }
+
           <Item>{points}</Item>
         </>
       )

@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from 'react';
-// import useRoster from './useRoster';
-// import MonthTicker from '../../components/MonthTicker';
-// import RosterComponent from '../../components/Roster';
-// import '@fontsource/open-sans';
+import React from 'react';
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import {
-  Container, TeamNameContainer, TeamName, TeamOwner, Bold,
-} from './components';
-
+import { mobileBreakPoint } from '../../constants/style';
+import TeamName from '../../components/TeamName';
 import Roster from '../../components/Roster2';
-// import Loading from '../../components/Loading';
+
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @media (max-width: ${mobileBreakPoint}){
+      width: 100vw;
+  }
+`;
 
 function Squad() {
-  const { currentOrganization, name } = useSelector((state) => ({
+  const { currentOrganization } = useSelector((state) => ({
     ...state.authReducer,
   }));
-
   return (
     <Container>
-      <TeamNameContainer>
-        <TeamName>{currentOrganization.team_name}</TeamName>
-        <TeamOwner>
-          Managed by
-          {' '}
-          <Bold>{name}</Bold>
-        </TeamOwner>
-      </TeamNameContainer>
+      <TeamName userId={currentOrganization.user_id} />
       <Roster />
     </Container>
   );

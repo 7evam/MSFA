@@ -11,22 +11,22 @@ const Container = styled.div`
     border: 2px solid #E5EAF4;
     border-radius: 10px;
     display: grid;
-    grid-template-columns: 1fr 3fr repeat(2, 1fr);
+    grid-template-columns: ${(props) => (props.readOnly ? '1fr 2fr 1fr' : '1fr 3fr repeat(2, 1fr);')}; 
     grid-template-rows: repeat(4, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     width: 90%;
-    & div:nth-child(8n+9){
+    & div:nth-child(${(props) => props.number}n+${(props) => props.number + 1}){
         background-color: #F7FBFF;
     }
-    & div:nth-child(8n+10){
+    & div:nth-child(${(props) => props.number}n+${(props) => props.number + 2}){
         background-color: #F7FBFF;
     }
-    & div:nth-child(8n+11){
+    & div:nth-child(${(props) => props.number}n+${(props) => props.number + 3}){
         background-color: #F7FBFF;
     }
-    & div:nth-child(8n+12){
-        background-color: #F7FBFF;
+    & div:nth-child(${(props) => props.number}n+12){
+        background-color: ${(props) => (props.readOnly ? null : '#F7FBFF')};
         z-index: -1;
     }
 `;
@@ -42,7 +42,7 @@ const HeaderLabel = styled.div`
      }
 `;
 
-function Roster() {
+function Roster({ readOnly, userId }) {
   const {
     selectedYear,
     selectedMonth,
@@ -50,7 +50,7 @@ function Roster() {
     selectedSlot,
     setSelectedMonth,
     changeRoster,
-  } = useRoster();
+  } = useRoster(userId);
 
   const currentRoster = (roster && selectedMonth) ? roster[`${selectedMonth}-${selectedYear}`] : null;
 
@@ -75,21 +75,21 @@ function Roster() {
       : (
         <>
           <MonthSelector selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} />
-          <Container>
+          <Container number={readOnly ? 6 : 8} readOnly={readOnly}>
             <HeaderLabel>Slot</HeaderLabel>
             <HeaderLabel>Team</HeaderLabel>
-            <HeaderLabel>Action</HeaderLabel>
+            {readOnly ? null : <HeaderLabel>Action</HeaderLabel>}
             <HeaderLabel>Points</HeaderLabel>
             {
             // renders league slots then flex slots then total points then bench slots
-            ['league', 'flex', 'total', 'bench'].map((slotType) => (
+            ['league', 'flex', 'total', 'bench'].map((slotType, i) => (
               slotType === 'total'
-                ? <Slot totalScore={calculateTotalScore()} isTotalPoints />
+                ? <Slot key={`${slotType}-${i}}`} readOnly={readOnly} totalScore={calculateTotalScore()} isTotalPoints />
                 : Object.keys(currentRoster).filter(
                   (key) => key.includes(slotType),
                 ).map((league) => {
                   const team = currentRoster[league];
-                  return <Slot isLocked={team.isLocked} key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
+                  return <Slot readOnly={readOnly} isLocked={team.isLocked} key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
                 })
             ))
         }

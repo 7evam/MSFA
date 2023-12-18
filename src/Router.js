@@ -27,6 +27,7 @@ import ValueTool from './containers/Draft/ValueTool';
 import DraftScoring from './containers/Draft/DraftScoring';
 import Tips from './containers/Draft/Tips';
 import SetLeagueYear from './containers/SetLeagueYear';
+import ViewRoster from './containers/ViewRoster';
 
 // configuration for toaster messages
 // https://www.npmjs.com/package/react-toastify
@@ -56,7 +57,7 @@ function Router() {
           <Route path="/squad" element={<Squad />} />
           <Route path="/league">
             <Route index element={<Standings />} />
-            <Route path="/league/:userId/:roflYear/:roflMonth" element={<Roster />} />
+            <Route path="/league/:userId/:roflYear/:roflMonth" element={<ViewRoster />} />
           </Route>
           <Route path="/settings" element={<Settings />} />
           <Route path="/set-league-year" element={<SetLeagueYear />} />

@@ -70,3 +70,11 @@ export const ActionButton = styled.button`
         height: 20px;
        }
 `;
+
+export const TPText = styled.p`
+       margin: 0;
+       text-align: right;
+       @media (max-width: ${mobileBreakPoint}){
+        margin-right: 30px;
+       }
+`;
