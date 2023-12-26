@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import useHydration from '../hooks/useHydration';
 
 const backgroundImg = 'https://rofl-public-assets.s3.us-east-2.amazonaws.com/26057+1.png';
 
@@ -41,17 +42,26 @@ const Bold = styled.span`
 `;
 
 function TeamName({ userId }) {
-  console.log('here is user id');
-  console.log(userId);
-
   const { orgMembers } = useSelector((state) => ({
     ...state.sportReducer,
   }));
 
-  console.log('here is org memebers');
-  console.log(orgMembers);
+  const { hydrateOrgMembers } = useHydration();
 
-  const user = orgMembers && orgMembers[userId];
+  const [user, setUser] = useState(null);
+
+  const loadOrgMembers = async () => {
+    const fetchedOrgMembers = await hydrateOrgMembers();
+    setUser(fetchedOrgMembers[userId]);
+  };
+
+  useEffect(() => {
+    if (!orgMembers) {
+      loadOrgMembers();
+    } else {
+      setUser(orgMembers[userId]);
+    }
+  }, []);
 
   return (
     user

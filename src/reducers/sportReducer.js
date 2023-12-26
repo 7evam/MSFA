@@ -65,8 +65,8 @@ function sportReducer(state = INITIAL_STATE, action) {
     case 'SET_NEW_ORGS':
       return {
         ...state,
-        orgMembers: null
-      }
+        orgMembers: null,
+      };
     case 'HYDRATE_ORG_MEMBERS':
       return {
         ...state,
