@@ -77,8 +77,6 @@ function TeamSelect({
     ...state.sportReducer,
   }));
 
-  
-
   return (
     <Container>
       <TopBar>
@@ -112,7 +110,7 @@ function TeamSelect({
                   <TeamText>
                     {teamName}
                     {' '}
-                    {playoffMonths[selectedYear][leagueId] - 1
+                    {playoffMonths[selectedYear][leagueId]
                       === activeYears[selectedYear][leagueId]?.roflMonth
                       ? null
                       : `($${teamValue})`}
