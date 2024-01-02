@@ -76,7 +76,7 @@ function SubmitBid() {
     transformToCheckable(props.currentUserRoster),
   );
   const [errorMessage, setErrorMessage] = useState(null);
-  const [regSeasonErrorAlreadyShown, setRegSeasonErrorAlreadyShown] = useState(false)
+  const [regSeasonErrorAlreadyShown, setRegSeasonErrorAlreadyShown] = useState(false);
   const initialTeamCountByLeague = useMemo(() => calculateInitialTeamCount(), []);
 
   // this function sets errors in state and returns
@@ -113,21 +113,17 @@ function SubmitBid() {
       let newMaxBid = maxBid;
       const leagueId = Number(String(team)[0]);
       // if team is league with active playoff month it cannot be dropped for cash
-
-      // if (team.teamId && props.currentRoflMonths[team.leagueId] + 1 >= props.firstActiveMonthForClaim) {
       if (
-        playoffMonths[selectedYear][team.leagueId] -1
+        playoffMonths[selectedYear][team.leagueId]
         > props.currentRoflMonths[team.leagueId]
       ) {
         newCheckedTeams[teamId].checked === true
           ? (newMaxBid += team.val)
           : (newMaxBid -= team.val);
         setMaxBid(newMaxBid);
-      } else {
-        if(!regSeasonErrorAlreadyShown){
-          setRegSeasonErrorAlreadyShown(true)
-          toast.error('You can only drop a team for cash if their next month is the regular season');
-        }
+      } else if (!regSeasonErrorAlreadyShown) {
+        setRegSeasonErrorAlreadyShown(true);
+        toast.error('You can only drop a team for cash if their next month is the regular season');
       }
       setCheckedTeams(newCheckedTeams);
       checkForBidError(bidValue, newMaxBid);

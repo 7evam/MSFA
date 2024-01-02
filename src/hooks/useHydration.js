@@ -27,7 +27,7 @@ export default function useHydration() {
         route: `organizations/summary/${currentOrganization.id}`,
         abort: abortController,
       });
-      if (res.statusCode == 200) {
+      if (res.statusCode === 200) {
         const { body } = res;
         const { members } = body;
         const hash = {};

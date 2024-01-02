@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useApi from '../../hooks/useApi';
 
-function useRoster() {
+function useRoster(selectedUserId) {
   const { makeRequest, isLoading } = useApi();
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -33,11 +33,12 @@ function useRoster() {
   const [loadingRoster, setLoadingRoster] = useState(false);
 
   const fetchRoster = async (selectedYear) => {
+    const userId = selectedUserId || currentOrganization.user_id;
     try {
       setLoadingRoster(true);
       const res = await makeRequest({
         method: 'get',
-        route: `/users/roster/${currentOrganization.user_id}/${currentOrganization.id}/${selectedYear}`,
+        route: `/users/roster/${userId}/${currentOrganization.id}/${selectedYear}`,
       });
 
       const fetchedRoster = res.body;
