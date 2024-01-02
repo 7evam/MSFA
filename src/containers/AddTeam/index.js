@@ -58,6 +58,7 @@ function AddTeam() {
     }
   };
 
+  console.log('in add team');
   return (
     readyToRender
       ? (

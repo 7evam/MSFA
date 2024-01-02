@@ -65,7 +65,7 @@ function TopBar({ isMenuOpen, setIsMenuOpen }) {
               <MenuItem to="/squad" selected={location.pathname.includes('squad')}>Squad</MenuItem>
               <MenuItem to="/league" selected={location.pathname.includes('league')}>League</MenuItem>
               <MenuItem to="/scoring" selected={location.pathname.includes('scoring')}>Scoring</MenuItem>
-              <MenuItem to="/league" selected={location.pathname.includes('transactions')}>Transactions</MenuItem>
+              <MenuItem to="/transactions" selected={location.pathname.includes('transactions')}>Transactions</MenuItem>
               <MenuItem to="/settings" selected={location.pathname.includes('settings')} $finalItem>Settings</MenuItem>
             </MenuContent>
           )
