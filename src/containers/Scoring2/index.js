@@ -95,6 +95,7 @@ function Scoring() {
           scores={scores}
           sportTeams={sportTeams}
           filteredPoints={filteredPoints}
+          selectedYear={selectedYear}
         />
       );
       case 'records': return <Records league={league} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} finalMonthForDisplay={finalMonthForDisplay} />;
@@ -106,7 +107,7 @@ function Scoring() {
   return (
     <Container>
       <Selectors>
-        Socring
+        Scoring
         <LeagueSelectors>
           <p>League:</p>
           <League selected={league === 1} onClick={() => changeLeague(1)}>MLB</League>
