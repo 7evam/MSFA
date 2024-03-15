@@ -75,7 +75,7 @@ export const InputContainer = styled.div`
 export const Input = styled.input`
   font-family: "helvetica neue", Helvetica, arial, sans-serif; 
   line-height: 40px;
-  width: calc(100% - 2px);
+  width: 100%;
   border: 0;
   font-size: 0.9em;
   text-indent: ${(props) => (props.mail ? '30px' : '20px')}; 
@@ -85,6 +85,7 @@ export const Input = styled.input`
   font-size: 16px;
   max-width: 500px;
   outline-offset: -2px;
+  padding: 0;
 `;
 
 export const Label = styled.label`

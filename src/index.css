@@ -1,14 +1,21 @@
 html {
     min-height: 100%;
     margin: 0;
-    background: rgb(255,255,255);
-    background: linear-gradient(rgba(255,255,255,1), rgb(225, 231, 239));  
+    background: rgb(255, 255, 255);
+    background: linear-gradient(rgba(255, 255, 255, 1), rgb(225, 231, 239));
 }
+
 body {
     margin: 0;
     overflow-x: hidden;
     width: 100%;
 }
+
 a:visited {
     color: inherit;
+}
+
+textarea,
+input {
+    padding: 0;
 }
