@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { mobileBreakPoint } from '../../constants/style';
 
 // index.js
 const backgroundImg = 'https://rofl-public-assets.s3.us-east-2.amazonaws.com/homepageMobileBkg.png';
@@ -75,7 +76,7 @@ export const InputContainer = styled.div`
 export const Input = styled.input`
   font-family: "helvetica neue", Helvetica, arial, sans-serif; 
   line-height: 40px;
-  width: 100%;
+  width: calc(100% - 2px);
   border: 0;
   font-size: 0.9em;
   text-indent: ${(props) => (props.mail ? '30px' : '20px')}; 
@@ -84,6 +85,7 @@ export const Input = styled.input`
   outline: 1px solid #72696B;
   font-size: 16px;
   max-width: 500px;
+  outline-offset: -4px;
 `;
 
 export const Label = styled.label`
@@ -97,8 +99,11 @@ export const Button = styled.button`
   height: 38px;
   border-style: solid;
   font-size: 16px;
-  width: 105%;
+  width: 100%;
   max-width: 500px;
+  @media (min-width: ${mobileBreakPoint}){
+    max-width: 500px;
+  }
 `;
 export const BottomText = styled.div`
     text-align: center;
