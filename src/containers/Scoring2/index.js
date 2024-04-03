@@ -33,16 +33,20 @@ background-color: lightBlue;
 `;
 
 const Selectors = styled.div`
-  
+  padding: 0px 25%;
+  margin-bottom: 10px;
+  font-size: 18px;
 `;
 
 const LeagueSelectors = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 const League = styled.p`
-  margin-left: 10px;
+  margin: 0px 10px;
+  text-decoration: underline;
   font-weight: ${(props) => (props.selected ? '800' : '400')}; 
   &:hover{
     font-weight: 800;
@@ -53,10 +57,12 @@ const League = styled.p`
 const ViewSelectors = styled.div`
 display: flex;
 flex-direction: row;
+align-items: center;
 `;
 
 const View = styled.p`
-margin-left: 10px;
+margin: 0px 10px;
+text-decoration: underline;
 font-weight: ${(props) => (props.selected ? '800' : '400')}; 
 &:hover{
     font-weight: 800;
@@ -96,10 +102,11 @@ function Scoring() {
           sportTeams={sportTeams}
           filteredPoints={filteredPoints}
           selectedYear={selectedYear}
+          firstMonthForDisplay={firstMonthForDisplay}
         />
       );
-      case 'records': return <Records league={league} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} finalMonthForDisplay={finalMonthForDisplay} />;
-      case 'scheme': return <Scheme />;
+      case 'records': return <Records firstMonthForDisplay={firstMonthForDisplay} sportTeams={sportTeams} selectedYear={selectedYear} filteredRecords={filteredRecords} league={league} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} finalMonthForDisplay={finalMonthForDisplay} />;
+      case 'scheme': return <Scheme league={league} scheme={scores.scheme[league]} />;
       default: return <p>error</p>;
     }
   };
@@ -107,18 +114,22 @@ function Scoring() {
   return (
     <Container>
       <Selectors>
-        Scoring
         <LeagueSelectors>
           <p>League:</p>
           <League selected={league === 1} onClick={() => changeLeague(1)}>MLB</League>
+          {' |'}
           <League selected={league === 2} onClick={() => changeLeague(2)}>NFL</League>
+          {' |'}
           <League selected={league === 3} onClick={() => changeLeague(3)}>NHL</League>
+          {' |'}
           <League selected={league === 4} onClick={() => changeLeague(4)}>NBA</League>
         </LeagueSelectors>
         <ViewSelectors>
           <p>View:</p>
           <View selected={display === 'score'} onClick={() => changeDisplay('score')}>Score</View>
+          |
           <View selected={display === 'records'} onClick={() => changeDisplay('records')}>Records</View>
+          |
           <View selected={display === 'scheme'} onClick={() => changeDisplay('scheme')}>Scheme</View>
         </ViewSelectors>
       </Selectors>

@@ -64,9 +64,9 @@ function Scheme({ scheme, league }) {
       r3_lose_game: 'Lose Game in Round 3',
       r3_win_game: 'Win Game in Round 3',
       r3_win_series: 'Win Series for Round 3',
-      r4_lose_game: 'Lose Game in Stanley Cup Finalls',
+      r4_lose_game: 'Lose Game in Stanley Cup Finals',
       r4_win_game: 'Win Game in Stanley Cup Finals',
-      r4_win_series: 'Win Stanlley Cup Finalls',
+      r4_win_series: 'Win Stanlley Cup Finals',
       rs_losses: 'Lose Regular Season Game',
       rs_tie_otl: 'OT Loss',
       rs_wins: 'Win Regular Season Game',
@@ -98,16 +98,16 @@ function Scheme({ scheme, league }) {
     <Container>
       <Table>
         {
-              Object.keys(scheme).filter((item) => displayTable[league][item]).map((item) => (
-                <Tr>
-                  <Td>
-                    <b>{displayTable[league][item]}</b>
-                    :
-                  </Td>
-                  <Td>{scheme[item]}</Td>
-                </Tr>
-              ))
-          }
+          Object.keys(scheme).filter((item) => displayTable[league][item]).map((item) => (
+            <Tr>
+              <Td>
+                <b>{displayTable[league][item]}</b>
+                :
+              </Td>
+              <Td>{scheme[item]}</Td>
+            </Tr>
+          ))
+        }
       </Table>
     </Container>
   );

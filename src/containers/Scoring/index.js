@@ -125,7 +125,7 @@ function Scoring() {
 
   return (
     <Container>
-      { readyToRender ? (
+      {readyToRender ? (
         <div>
           <LeagueSelector>
             <League selected={league === 1} onClick={() => changeLeague(1)}>
@@ -152,6 +152,7 @@ function Scoring() {
                 </ScItem>
               ) : null
             }
+            |
             {
               finalLeagueToShow >= league ? (
                 <ScItem
@@ -162,6 +163,7 @@ function Scoring() {
                 </ScItem>
               ) : null
             }
+            |
             <ScItem
               selected={display === 'scheme'}
               onClick={() => changeDisplay('scheme')}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useApi from '../../hooks/useApi';
 import useHydration from '../../hooks/useHydration';
+import { PLAYOFF_MONTHS, STARTING_MONTHS } from '../../constants';
 
 function useScoring() {
   const { currentOrganization } = useSelector((state) => ({
@@ -64,35 +65,9 @@ function useScoring() {
   // calculate and set the first and last rofl month for display
   // if set current is set to true, function will also calcualte set and return the current rofl month
   const setDisplayMonthRange = (selectedLeague, setCurrent, fetchedActiveYears) => {
-    const startingMonths = {
-      2022: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-      2023: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-    };
+    const startingMonths = STARTING_MONTHS;
 
-    const playoffMonths = {
-      2022: {
-        1: 7,
-        2: 10,
-        3: 13,
-        4: 13,
-      },
-      2023: {
-        1: 7,
-        2: 10,
-        3: 13,
-        4: 13,
-      },
-    };
+    const playoffMonths = PLAYOFF_MONTHS;
 
     const existingActiveYears = fetchedActiveYears || activeYears;
 

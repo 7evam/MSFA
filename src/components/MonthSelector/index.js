@@ -70,6 +70,19 @@ function MonthSelector({
 
   const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay);
 
+  useEffect(() => {
+    const minMonth = Math.min(...Object.keys(months));
+    const maxMonth = Math.max(...Object.keys(months));
+    if (selectedMonth > maxMonth) {
+      console.log('forcing max month');
+      setSelectedMonth(maxMonth);
+    }
+    if (selectedMonth < minMonth) {
+      console.log('forcing min month');
+      setSelectedMonth(minMonth);
+    }
+  }, [selectedMonth]);
+
   return (
 
     <Container>

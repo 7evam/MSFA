@@ -81,18 +81,18 @@ function Roster({ readOnly, userId }) {
             {readOnly ? null : <HeaderLabel>Action</HeaderLabel>}
             <HeaderLabel>Points</HeaderLabel>
             {
-            // renders league slots then flex slots then total points then bench slots
-            ['league', 'flex', 'total', 'bench'].map((slotType, i) => (
-              slotType === 'total'
-                ? <Slot key={`${slotType}-${i}}`} readOnly={readOnly} totalScore={calculateTotalScore()} isTotalPoints />
-                : Object.keys(currentRoster).filter(
-                  (key) => key.includes(slotType),
-                ).map((league) => {
-                  const team = currentRoster[league];
-                  return <Slot readOnly={readOnly} isLocked={team.isLocked} key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
-                })
-            ))
-        }
+              // renders league slots then flex slots then total points then bench slots
+              ['league', 'flex', 'total', 'bench'].map((slotType, i) => (
+                slotType === 'total'
+                  ? <Slot key={`${slotType}-${i}}`} readOnly={readOnly} totalScore={calculateTotalScore()} isTotalPoints />
+                  : Object.keys(currentRoster).filter(
+                    (key) => key.includes(slotType),
+                  ).map((league) => {
+                    const team = currentRoster[league];
+                    return <Slot readOnly={readOnly} isLocked={team.isLocked} key={league} changeRoster={changeRoster} leagueKey={league} selectedSlot={selectedSlot} points={team.roflScore} teamName={`${team.city} ${team.name}`} slotName={slotType === 'league' ? leagueIdSlotNameTable[league.split('_')[1]] : slotType} />;
+                  })
+              ))
+            }
           </Container>
         </>
       )

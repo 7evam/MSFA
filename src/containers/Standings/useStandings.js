@@ -36,7 +36,7 @@ function useStandings() {
   const fetchStandings = async (year) => {
     const res = await makeRequest({
       method: 'get',
-      route: `/organizations/memberStandings/${currentOrganization.id}/${year}}`,
+      route: `/organizations/memberStandings/${currentOrganization.id}/${year}`,
     });
 
     const { body } = res;
