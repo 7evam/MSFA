@@ -16,7 +16,6 @@ function CurrentBids({
   originalBids,
 }) {
   const { makeRequest, isLoading } = useApi();
-
   const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
   }));
@@ -147,7 +146,7 @@ function CurrentBids({
   return (
     <Container>
       {
-        allBids && allBids[roflMonth] && allBids[roflMonth].length
+        allBids && allBids[roflMonth] && allBids[roflMonth].filter(bid => bid.current === 1).length
           ? (
             <>
               {/* {activeYearArray.length === 2 ? (
@@ -180,7 +179,7 @@ function CurrentBids({
                 {currentMonthIncludesCurrentBid ? (
                   <HeaderLabel mobile>Delete</HeaderLabel>
                 ) : null}
-                {allBids[roflMonth].map((bid, index) => (
+                {allBids[roflMonth].filter(bid => bid.current === 1).map((bid, index) => (
                   <BidRow
                     bid={bid}
                     index={index}
@@ -206,7 +205,7 @@ function CurrentBids({
               }
             </>
           )
-          : <p>There are no bids to show</p>
+          : <p>You don't have any current bids</p>
       }
     </Container >
   );

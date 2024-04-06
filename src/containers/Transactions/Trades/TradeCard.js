@@ -163,7 +163,7 @@ function TradeCard({ trade, state, reFetchTrades }) {
                   $
                   {team.value}
                   {' '}
-                  Rofl Cash
+                  MSFA Cash
                 </p>
               )))
             }
@@ -187,7 +187,7 @@ function TradeCard({ trade, state, reFetchTrades }) {
                 $
                 {team.value}
                 {' '}
-                Rofl Cash
+                MSFA Cash
               </p>
             )))}
           </TradeSide>

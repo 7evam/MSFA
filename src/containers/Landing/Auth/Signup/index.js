@@ -63,7 +63,7 @@ function Signup({ authProps }) {
         <P>
           Have an Account?
           {' '}
-          <Link onClick={() => setDisplay('login')}>Log In</Link>
+          <Link content={"login"} onClick={() => setDisplay('login')}>Log In</Link>
         </P>
       </BottomText>
     </>

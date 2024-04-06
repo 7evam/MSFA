@@ -159,11 +159,9 @@ function SetLeagueYear(props) {
           <H1>Set League + Year</H1>
           <Line />
           <p>Set League:</p>
-          {organizations.map((org) => (
+          {organizations.filter(org => !org.name.includes("test")).filter(org => !org.name.includes('default')).map((org) => (
             <ActionButton disabled={org.current === 1} onClick={() => setNewCurrentOrg(org.id)}>
               {org.name}
-              {' '}
-              {org.id}
             </ActionButton>
           ))}
           <Line />

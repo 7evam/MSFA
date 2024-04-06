@@ -165,7 +165,7 @@ function ReviewTrade({
                 $
                 {cash.tradeFor}
                 {' '}
-                Rofl Cash
+                MSFA Cash
               </p>
             ) : null}
           </LeftSide>
@@ -183,7 +183,7 @@ function ReviewTrade({
                 $
                 {cash.tradeAway}
                 {' '}
-                Rofl Cash
+                MSFA Cash
               </p>
             ) : null}
           </RightSide>

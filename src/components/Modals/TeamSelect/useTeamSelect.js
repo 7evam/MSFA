@@ -74,20 +74,19 @@ function useTeamSelect({
   };
 
   const selectedTeamLeague = Number(String(props.selectedTeam)[0]);
-  const selectedTeamName = `${
-    sportTeams[selectedTeamLeague][props.selectedTeam].city
-  } ${sportTeams[selectedTeamLeague][props.selectedTeam].name}`;
+  const selectedTeamName = `${sportTeams[selectedTeamLeague][props.selectedTeam].city
+    } ${sportTeams[selectedTeamLeague][props.selectedTeam].name}`;
 
   const topText = {
     submitBid: (
       <TopText>
-        If successful, this bid will be available for you starting Rofl month
+        If successful, this bid will be available for you starting MSFA month
         {' '}
         {props.firstActiveMonthForClaim}
         <br />
         <br />
         {isDropRequired
-          ? `To submit a bid for the ${selectedTeamName} you must conditionally drop a team. Choose team(s) to drop and receive their value in Rofl cash`
+          ? `To submit a bid for the ${selectedTeamName} you must conditionally drop a team. Choose team(s) to drop and receive their value in MSFA cash`
           : 'You do not need to drop a team for this bid but you may do so here.'}
         {' '}
         <br />
@@ -99,7 +98,7 @@ function useTeamSelect({
     ),
     addTeam: (
       <TopText>
-        This claim will be available for you starting Rofl month
+        This claim will be available for you starting MSFA month
         {' '}
         {props.firstActiveMonthForClaim}
         <br />
@@ -138,8 +137,8 @@ function useTeamSelect({
   const aboveCashValue = {
     submitBid: 'Bid Amount',
     addTeam: 'Bid Amount',
-    tradeFor: 'Rofl Cash (optional)',
-    tradeAway: 'Rofl Cash (optional)',
+    tradeFor: 'MSFA Cash (optional)',
+    tradeAway: 'MSFA Cash (optional)',
   };
 
   const maxCashAllowed = {

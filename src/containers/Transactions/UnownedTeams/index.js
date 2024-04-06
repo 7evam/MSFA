@@ -71,6 +71,8 @@ function UnownedTeams({
       <ActionButton onClick={() => handleAdd(team)}>Add</ActionButton>
     );
 
+    return claim
+
     if (waiverExceptions.includes(Number(team))) return claim;
     if (!activeYears[selectedYear][leagueId]) return claim;
     const currentRoflMonth = activeYears[selectedYear][leagueId].roflMonth;

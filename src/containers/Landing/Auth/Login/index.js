@@ -56,12 +56,12 @@ function Login({ authProps }) {
         <P>
           Don't have an account?
           {' '}
-          <Link onClick={() => setDisplay('signup')}>Create an account</Link>
+          <Link content={"Create an account"} onClick={() => setDisplay('signup')}>Create an account</Link>
         </P>
         <P>
           Forgot your password?
           {' '}
-          <Link onClick={() => setDisplay('forgotPassword')}>Reset it here</Link>
+          <Link content={"Reset it here"} onClick={() => setDisplay('forgotPassword')}>Reset it here</Link>
         </P>
       </BottomText>
     </>

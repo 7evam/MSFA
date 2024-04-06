@@ -27,8 +27,7 @@ function Landing() {
           Embrace team spirit in fantasy sports by drafting teams from the four major sports instead of players. If your teams win, you win!
           Want to learn more about how it all works?
           {' '}
-          {' '}
-          <Link onClick={goToAbout}>Click here!</Link>
+          <Link content={"Click here!"} onClick={goToAbout}>Click here!</Link>
         </SubHeadline>
       </LandingContainer>
       <Auth />

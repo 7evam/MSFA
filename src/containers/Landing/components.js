@@ -31,12 +31,14 @@ export const Headline = styled.h1`
 `;
 
 export const SubHeadline = styled.h2`
+  max-width: 700px;
   font-family: arial;
   font-size: 16px;
   font-weight: 400;
   color: #DBDBDB;
   text-align: center;
   padding: 0 50px 0 50px;
+  display: inline-block;
 `;
 
 export const LogInContainer = styled.div``;
@@ -112,10 +114,19 @@ export const BottomText = styled.div`
 
 export const P = styled.p``;
 
-export const Link = styled.span`
+export const Link = styled.a`
+    display:inline-block;
     text-decoration: underline;
     color: #F25C05;
     cursor: pointer;
+    &:before {
+      display: block;
+      content: "Click here!";
+      font-weight: 600;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
     &:hover{
         font-weight: 600;
     }
