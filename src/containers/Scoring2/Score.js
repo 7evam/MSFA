@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { mobileBreakPoint } from '../../constants/style';
 import MonthSelector from '../../components/MonthSelector';
 import { getTeamName } from '../../utils';
+import Loading from '../../components/Loading';
 
 const ScoringContainer = styled.div`
     display: grid;
@@ -21,11 +22,6 @@ const ScoringContainer = styled.div`
       background-color: #F7FBFF;
     }
     }
-`;
-
-const FirstItem = styled.div`
-    padding: 16px 0px 8px 16px;
-    border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
 `;
 
 const Cell = styled.div`
@@ -57,7 +53,7 @@ const Cell = styled.div`
 const HeaderLabel = styled.div`
     padding: 16px 0px 8px 16px;
     text-align:center;
-    background-color: #EAEEF480;
+    background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
     @media (max-width: ${mobileBreakPoint}){
@@ -69,6 +65,8 @@ const HeaderLabel = styled.div`
 function Score({
   finalMonthForDisplay, firstMonthForDisplay, selectedMonth, setSelectedMonth, scores, league, selectedYear, sportTeams,
 }) {
+  console.log('in score, here is current month');
+  console.log(selectedMonth);
   const [currentScores, setCurrentScores] = useState(null);
   const [sortConfig, setSortConfig] = useState({
     key: null,
@@ -119,17 +117,18 @@ function Score({
           <HeaderLabel onClick={() => sortTable('score')}>Points</HeaderLabel>
           {
             currentScores.map((team) => (
-              <>
+              <Fragment key={team.teamId}>
                 <Cell firstItem>
+
                   {getTeamName(team.teamId, sportTeams)}
                 </Cell>
                 <Cell>{team.score}</Cell>
-              </>
+              </Fragment>
             ))
           }
         </ScoringContainer>
       </>
-    ) : <div>not calculating</div>
+    ) : <Loading />
   );
 }
 

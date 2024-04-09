@@ -11,7 +11,6 @@ function useScoring() {
 
   const {
     activeYears,
-    startingMonths,
     playoffMonths,
     sportTeams,
     selectedYear,
@@ -78,30 +77,25 @@ function useScoring() {
     const newStartingMonth = startingMonths[selectedYear][selectedLeague];
     setFinalMonthForDisplay(newFinalMonth);
     setFirstMonthForDisplay(newStartingMonth);
-    if (setCurrent) {
-      const newCurrentMonth = selectedMonth > newStartingMonth && selectedMonth < newFinalMonth
-        ? selectedMonth
-        : newFinalMonth;
-      setSelectedMonth(newCurrentMonth);
-      return newCurrentMonth;
+    // if (setCurrent) {
+    // const newCurrentMonth = selectedMonth > newStartingMonth && selectedMonth < newFinalMonth
+    //   ? selectedMonth
+    //   : newFinalMonth;
+    let newCurrentMonth;
+    newCurrentMonth = selectedMonth;
+    if (selectedMonth > newFinalMonth) {
+      newCurrentMonth = newFinalMonth;
     }
+    if (selectedMonth < newStartingMonth) {
+      newCurrentMonth = newStartingMonth;
+    }
+    setSelectedMonth(newCurrentMonth);
+    return newCurrentMonth;
+    // }
   };
 
   const calculateMonthsToDisplay = (records) => {
-    const startingMonths = {
-      2022: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-      2023: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-    };
+    const startingMonths = STARTING_MONTHS;
     const allMonths = [];
     Object.keys(records).forEach((leagueId) => {
       Object.keys(records[leagueId]).forEach((monthKey) => {
@@ -168,12 +162,14 @@ function useScoring() {
   useEffect(() => {
     async function reCalculate() {
       setReadyToRender(false);
-      await setDisplayMonthRange(league, false);
+      const newCurrentMonth = await setDisplayMonthRange(league, true);
+      setSelectedMonth(newCurrentMonth);
+      selectedMonth = newCurrentMonth || selectedMonth;
       setFilteredPoints(formatPoints(scores.points, league, selectedMonth, selectedYear));
       setFilteredRecords(scores.records[league][`${selectedMonth}-${selectedYear}`]);
       setReadyToRender(true);
     }
-    if (readyToRender && league <= finalLeagueToShow) reCalculate();
+    reCalculate();
   }, [league, selectedMonth]);
 
   //  change data on year change
@@ -209,15 +205,10 @@ function useScoring() {
 
   const changeDisplay = (newDisplay) => {
     if (selectedMonth === 'total') {
-      if (league === 1) {
-        setSelectedMonth(1);
-      }
-      if (league === 2) {
-        setSelectedMonth(6);
-      }
-      if (league === 3 || league === 4) {
-        setSelectedMonth(7);
-      }
+      if (league === 1) setSelectedMonth(1);
+      if (league === 2) setSelectedMonth(6);
+      if (league === 3) setSelectedMonth(7);
+      if (league === 4) setSelectedMonth(8);
     }
     setDisplay(newDisplay);
   };

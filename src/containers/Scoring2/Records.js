@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { mobileBreakPoint } from '../../constants/style';
@@ -31,11 +31,6 @@ const TeamColumn = styled.div`
   border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
 `;
 
-const FirstItem = styled.div`
-    padding: 16px 0px 8px 16px;
-    border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
-`;
-
 const Cell = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
@@ -63,7 +58,7 @@ const Cell = styled.div`
 const HeaderLabel = styled.div`
     padding: 16px 0px 8px 16px;
     text-align:center;
-    background-color: #EAEEF480;
+    background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
     &:hover{
@@ -293,11 +288,11 @@ function Records(props) {
             {leagueHeadersSwitch(props.league, isPlayoffs)}
             {
               Object.values(props.filteredRecords).map((team) => (
-                <>
+                <Fragment key={team.team_id}>
                   <TeamColumn>{getTeamName(team.team_id, props.sportTeams)}</TeamColumn>
 
                   {dataSwitch(team, props.league, isPlayoffs)}
-                </>
+                </Fragment>
               ))
             }
           </RecordsContainer>

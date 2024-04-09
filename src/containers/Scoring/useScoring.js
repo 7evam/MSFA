@@ -234,15 +234,10 @@ function useScoring() {
 
   const changeDisplay = (newDisplay) => {
     if (roflMonth === 'total') {
-      if (league === 1) {
-        setRoflMonth(1);
-      }
-      if (league === 2) {
-        setRoflMonth(6);
-      }
-      if (league === 3 || league === 4) {
-        setRoflMonth(7);
-      }
+      if (league === 1) setRoflMonth(1);
+      if (league === 2) setRoflMonth(6);
+      if (league === 3) setRoflMonth(7);
+      if (league === 4) setRoflMonth(8);
     }
     setDisplay(newDisplay);
   };

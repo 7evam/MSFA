@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { mobileBreakPoint } from '../../constants/style';
@@ -23,7 +23,7 @@ const SchemeContainer = styled.div`
 const HeaderLabel = styled.div`
     padding: 16px 0px 8px 16px;
     text-align:center;
-    background-color: #EAEEF480;
+    background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
     @media (max-width: ${mobileBreakPoint}){
@@ -130,10 +130,10 @@ function Scheme({ league, scheme }) {
       <HeaderLabel>Points</HeaderLabel>
       {
         Object.keys(scheme).filter((item) => displayTable[league][item]).map((item) => (
-          <>
+          <Fragment key={item}>
             <Cell firstItem><b>{displayTable[league][item]}</b></Cell>
             <Cell>{scheme[item]}</Cell>
-          </>
+          </Fragment>
         ))
       }
     </SchemeContainer>
