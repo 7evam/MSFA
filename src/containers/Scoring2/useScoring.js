@@ -164,9 +164,9 @@ function useScoring() {
       setReadyToRender(false);
       const newCurrentMonth = await setDisplayMonthRange(league, true);
       setSelectedMonth(newCurrentMonth);
-      selectedMonth = newCurrentMonth || selectedMonth;
-      setFilteredPoints(formatPoints(scores.points, league, selectedMonth, selectedYear));
-      setFilteredRecords(scores.records[league][`${selectedMonth}-${selectedYear}`]);
+      const newSelectedMonth = newCurrentMonth || selectedMonth;
+      setFilteredPoints(formatPoints(scores.points, league, newSelectedMonth, selectedYear));
+      setFilteredRecords(scores.records[league][`${newSelectedMonth}-${selectedYear}`]);
       setReadyToRender(true);
     }
     reCalculate();
