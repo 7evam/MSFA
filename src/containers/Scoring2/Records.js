@@ -21,6 +21,7 @@ const RecordsContainer = styled.div`
     border: 2px solid #E5EAF4;
     border-radius: 10px;
     width: 90%;
+    overflow-x: scroll;
     
 `;
 
@@ -29,6 +30,10 @@ const TeamColumn = styled.div`
   min-width: 200px;
   padding: 16px 0px 8px 16px;
   border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: white;
 `;
 
 const Cell = styled.div`
@@ -61,6 +66,8 @@ const HeaderLabel = styled.div`
     background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
+    position: ${(props) => (props.sticky ? "sticky" : null)}; 
+    left: 0;
     &:hover{
         text-decoration: underline;
         cursor: pointer;
@@ -78,7 +85,7 @@ function Records(props) {
         isPlayoffs
           ? (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>WC Game Won</HeaderLabel>
               <HeaderLabel>WC Game Lost</HeaderLabel>
               <HeaderLabel>WC Series Won</HeaderLabel>
@@ -95,7 +102,7 @@ function Records(props) {
           )
           : (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Wins</HeaderLabel>
               <HeaderLabel>Losses</HeaderLabel>
             </>
@@ -104,7 +111,7 @@ function Records(props) {
         isPlayoffs
           ? (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>WC Game Won</HeaderLabel>
               <HeaderLabel>Divisional Game Won</HeaderLabel>
               <HeaderLabel>CC Game Won</HeaderLabel>
@@ -113,7 +120,7 @@ function Records(props) {
           )
           : (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Wins</HeaderLabel>
               <HeaderLabel>Losses</HeaderLabel>
               <HeaderLabel>Ties</HeaderLabel>
@@ -124,7 +131,7 @@ function Records(props) {
         isPlayoffs
           ? (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Round 1 Game Won</HeaderLabel>
               <HeaderLabel>Round 1 Game Lost</HeaderLabel>
               <HeaderLabel>Round 1 Series Won</HeaderLabel>
@@ -141,7 +148,7 @@ function Records(props) {
           )
           : (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Wins</HeaderLabel>
               <HeaderLabel>Losses</HeaderLabel>
               <HeaderLabel>OT Losses</HeaderLabel>
@@ -153,7 +160,7 @@ function Records(props) {
         isPlayoffs
           ? (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Round 1 Game Won</HeaderLabel>
               <HeaderLabel>Round 1 Game Lost</HeaderLabel>
               <HeaderLabel>Round 1 Series Won</HeaderLabel>
@@ -170,7 +177,7 @@ function Records(props) {
           )
           : (
             <>
-              <HeaderLabel>Team</HeaderLabel>
+              <HeaderLabel sticky>Team</HeaderLabel>
               <HeaderLabel>Wins</HeaderLabel>
               <HeaderLabel>Losses</HeaderLabel>
             </>
@@ -289,7 +296,7 @@ function Records(props) {
             {
               Object.values(props.filteredRecords).map((team) => (
                 <Fragment key={team.team_id}>
-                  <TeamColumn>{getTeamName(team.team_id, props.sportTeams)}</TeamColumn>
+                  <TeamColumn sticky>{getTeamName(team.team_id, props.sportTeams)}</TeamColumn>
 
                   {dataSwitch(team, props.league, isPlayoffs)}
                 </Fragment>
