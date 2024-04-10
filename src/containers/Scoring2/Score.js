@@ -75,11 +75,9 @@ function Score({
     direction: 'asc',
   });
 
-  console.log('here is sort config')
-  console.log(sortConfig)
-
   useEffect(() => {
     // Update currentScores when scores prop changes
+    if (!selectedMonth) return
     const newCurrentScores = scores?.points[league][`${selectedMonth}-${selectedYear}`];
     if (newCurrentScores) {
       const scoreArray = Object.entries(newCurrentScores).map(
