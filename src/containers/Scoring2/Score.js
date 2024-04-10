@@ -56,6 +56,10 @@ const HeaderLabel = styled.div`
     background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
+    &:hover{
+      cursor: pointer;
+      text-decoration: underline;
+  }
     @media (max-width: ${mobileBreakPoint}){
       font-size: 10px;
       padding-right: 16px;
@@ -65,13 +69,14 @@ const HeaderLabel = styled.div`
 function Score({
   finalMonthForDisplay, firstMonthForDisplay, selectedMonth, setSelectedMonth, scores, league, selectedYear, sportTeams,
 }) {
-  console.log('in score, here is current month');
-  console.log(selectedMonth);
   const [currentScores, setCurrentScores] = useState(null);
   const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: null,
+    key: 'teamId',
+    direction: 'asc',
   });
+
+  console.log('here is sort config')
+  console.log(sortConfig)
 
   useEffect(() => {
     // Update currentScores when scores prop changes
@@ -87,8 +92,7 @@ function Score({
   }, [scores, league, selectedMonth, selectedYear]);
 
   const sortTable = (key) => {
-    const direction = sortConfig.direction === 'asc' ? 'asc' : 'dsc';
-
+    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
     const sortedScores = [...currentScores].sort((a, b) => {
       if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
       if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
@@ -99,9 +103,16 @@ function Score({
 
     setSortConfig({
       key,
-      direction: sortConfig.direction === 'asc' ? 'dsc' : 'asc',
+      direction,
     });
   };
+
+  const displayArrow = (column) => {
+    if (sortConfig.key === column) {
+      if (column === 'score') return sortConfig.direction === 'asc' ? '↓' : '↑'
+      return sortConfig.direction === 'asc' ? '↑' : '↓'
+    }
+  }
 
   return (
     (currentScores) ? (
@@ -113,8 +124,8 @@ function Score({
           setSelectedMonth={setSelectedMonth}
         />
         <ScoringContainer>
-          <HeaderLabel onClick={() => sortTable('teamId')}>Team</HeaderLabel>
-          <HeaderLabel onClick={() => sortTable('score')}>Points</HeaderLabel>
+          <HeaderLabel onClick={() => sortTable('teamId')}>Team {displayArrow('teamId')}</HeaderLabel>
+          <HeaderLabel onClick={() => sortTable('score')}>Points {displayArrow('score')}</HeaderLabel>
           {
             currentScores.map((team) => (
               <Fragment key={team.teamId}>
