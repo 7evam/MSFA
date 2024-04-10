@@ -29,6 +29,15 @@ const Container = styled.div`
         background-color: ${(props) => (props.readOnly ? null : '#F7FBFF')};
         z-index: -1;
     }
+    @media (max-width: ${mobileBreakPoint}){
+      width: 96%;
+      grid-template-columns: ${(props) => (props.readOnly ? '1fr 2fr 1fr' : '2fr 3fr 1fr 2fr;')}; 
+      grid-template-rows: repeat(4, 1fr);
+      grid-template-rows: auto 1fr 1fr 1fr;
+      & div:nth-child(${(props) => props.number}n+12){
+        z-index: 0;
+    }
+     }
 `;
 
 const HeaderLabel = styled.div`
@@ -37,8 +46,10 @@ const HeaderLabel = styled.div`
     background-color: #EAEEF480;
     font-weight: 800;
     @media (max-width: ${mobileBreakPoint}){
-      font-size: 14px;
-      padding-right: 16px;
+      font-size: 12px;
+      padding: 0px;
+      padding-top: 4px;
+      padding-bottom: 8px;
      }
 `;
 

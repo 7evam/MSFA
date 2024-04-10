@@ -10,7 +10,6 @@ export const FirstItem = styled.div`
 export const Item = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
-
     @media (min-width: ${mobileBreakPoint}){
         &:before{
             content: "";
@@ -25,6 +24,10 @@ export const Item = styled.div`
     
     @media (max-width: ${mobileBreakPoint}){
         font-size: 16px;
+        text-align: ${(props) => (props.action ? 'center' : 'left')}; 
+        display: inline-block;
+        padding: 16px 0px 8px 16px;
+        padding-left: ${(props) => (props.action ? '0px' : '16px')}; 
        }
 `;
 
@@ -50,8 +53,8 @@ export const ActionButton = styled.button`
     border-radius: 4px;
     color: white;
     background: ${(props) => (props.selectedSlot && props.selectedSlot === props.leagueKey
-    ? '#4E871F'
-    : '#17288F')};
+        ? '#4E871F'
+        : '#17288F')};
     line-height: 1.15;
     font-size: 14px;
     letter-spacing: .08em;

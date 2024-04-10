@@ -32,7 +32,7 @@ function Slot({
           <Item>{teamName}</Item>
           {
             readOnly ? null : (
-              <Item action>
+              <Item action lock>
                 {isLocked
                   ? lock
                   : (
