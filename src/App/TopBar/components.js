@@ -4,13 +4,14 @@ import { NavLink } from 'react-router-dom';
 import { mobileBreakPoint } from '../../constants/style';
 
 export const TopBarContainer = styled.div`
+position: fixed;
+width: 100%;
   font-family: "Ariel", sans-serif;
-  height: 70px;
+  height: 75px;
   background-color: #010626;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 16px 0px 16px;
     margin-bottom: ${(props) => (props.menuOpen ? null : '16px;')};
     @media (min-width: ${mobileBreakPoint}){
       grid-area: 1 / 1 / 2 / 3;
@@ -53,6 +54,7 @@ export const MenuItem = styled(NavLink)`
 `;
 
 export const LogoContainer = styled.div`
+padding-left: 16px;
   @media (min-width: ${mobileBreakPoint}){
     display: none;
   }
@@ -86,4 +88,5 @@ export const RightSideContainer = styled.div`
 display: flex;
 flex-direction: row;
 align-items: center;
+padding-right: 16px;
 `;

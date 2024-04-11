@@ -15,6 +15,8 @@ export const NavGroup = styled.div`
 
 export const SidebarContainer = styled.div`
 display: none;
+position: fixed;
+top: 70px;
 @media (min-width: ${mobileBreakPoint}){
   z-index: 100;
   height: 100vh;
