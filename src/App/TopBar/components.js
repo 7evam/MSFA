@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { mobileBreakPoint } from '../../constants/style';
 
 export const TopBarContainer = styled.div`
-position: fixed;
-width: 100%;
+
+  position: fixed;
+  width: 100%;
   font-family: "Ariel", sans-serif;
   height: 75px;
   background-color: #010626;
@@ -32,6 +33,7 @@ margin-left: 25px;
 export const MenuContent = styled.div`
     height: 100vh;
     background-color: #010626;
+    padding-top: 75px;
 `;
 
 export const MenuItem = styled(NavLink)`
