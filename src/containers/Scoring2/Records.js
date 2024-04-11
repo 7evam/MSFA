@@ -16,29 +16,30 @@ const RecordsContainer = styled.div`
     columnWidths[0] = '2fr';
     return columnWidths.join(' ');
   }}; 
+  
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     border: 2px solid #E5EAF4;
     border-radius: 10px;
     width: 90%;
     overflow-x: scroll;
-    
 `;
 
 const TeamColumn = styled.div`
   flex: 0 0 auto;
   min-width: 200px;
   padding: 16px 0px 8px 16px;
+  background-color: ${(props) => (props.colored ? '#F7FBFF' : 'white')};
   border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
   position: sticky;
   left: 0;
   z-index: 1;
-  background-color: white;
 `;
 
 const Cell = styled.div`
     padding: 16px 0px 8px 16px;
     border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
+    background-color: ${(props) => (props.colored && '#F7FBFF')};
     &:hover{
         text-decoration: ${(props) => (props.teamName ? 'underline' : null)}; 
         cursor: ${(props) => (props.teamName ? 'pointer' : null)}; 
@@ -186,7 +187,8 @@ function Records(props) {
     }
   };
 
-  const dataSwitch = (team, league, isPlayoffs) => {
+  const dataSwitch = (team, league, isPlayoffs, colored) => {
+
     const playoffData = [
       'r1_win_game',
       'r1_lose_game',
@@ -208,7 +210,7 @@ function Records(props) {
             <>
               {
                 playoffData.map((game) => (
-                  <Cell key={game.id}>{team[game] === null ? 0 : team[game]}</Cell>
+                  <Cell colored={colored} key={game.id}>{team[game] === null ? 0 : team[game]}</Cell>
                 ))
               }
             </>
@@ -223,17 +225,17 @@ function Records(props) {
         isPlayoffs
           ? (
             <>
-              <Cell>{team.r1_win_series || 0}</Cell>
-              <Cell>{team.r2_win_series || 0}</Cell>
-              <Cell>{team.r3_win_series || 0}</Cell>
-              <Cell>{team.r4_win_series || 0}</Cell>
+              <Cell colored={colored} >{team.r2_win_series || 0}</Cell>
+              <Cell colored={colored} >{team.r3_win_series || 0}</Cell>
+              <Cell colored={colored} >{team.r4_win_series || 0}</Cell>
+              <Cell colored={colored} >{team.r1_win_series || 0}</Cell>
             </>
           )
           : (
             <>
-              <Cell>{team.rs_wins}</Cell>
-              <Cell>{team.rs_losses}</Cell>
-              <Cell>{team.rs_tie_otl}</Cell>
+              <Cell colored={colored} >{team.rs_wins}</Cell>
+              <Cell colored={colored} >{team.rs_losses}</Cell>
+              <Cell colored={colored} >{team.rs_tie_otl}</Cell>
 
             </>
           ));
@@ -243,16 +245,16 @@ function Records(props) {
             <>
               {
                 playoffData.map((game) => (
-                  <Cell key={game.id}>{team[game] === null ? 0 : team[game]}</Cell>
+                  <Cell key={game.id} colored={colored} >{team[game] === null ? 0 : team[game]}</Cell>
                 ))
               }
             </>
           )
           : (
             <>
-              <Cell>{team.rs_wins}</Cell>
-              <Cell>{team.rs_losses}</Cell>
-              <Cell>{team.rs_tie_otl}</Cell>
+              <Cell colored={colored} >{team.rs_wins}</Cell>
+              <Cell colored={colored} >{team.rs_losses}</Cell>
+              <Cell colored={colored} >{team.rs_tie_otl}</Cell>
 
             </>
           ));
@@ -263,15 +265,15 @@ function Records(props) {
             <>
               {
                 playoffData.map((game) => (
-                  <Cell key={game.id}>{team[game] === null ? 0 : team[game]}</Cell>
+                  <Cell key={game.id} colored={colored} >{team[game] === null ? 0 : team[game]}</Cell>
                 ))
               }
             </>
           )
           : (
             <>
-              <Cell>{team.rs_wins}</Cell>
-              <Cell>{team.rs_losses}</Cell>
+              <Cell colored={colored} >{team.rs_wins}</Cell>
+              <Cell colored={colored} >{team.rs_losses}</Cell>
             </>
           ));
       default: return <p>error</p>;
@@ -294,13 +296,16 @@ function Records(props) {
           <RecordsContainer league={props.league} columnCount={columnCount}>
             {leagueHeadersSwitch(props.league, isPlayoffs)}
             {
-              Object.values(props.filteredRecords).map((team) => (
-                <Fragment key={team.team_id}>
-                  <TeamColumn sticky>{getTeamName(team.team_id, props.sportTeams)}</TeamColumn>
+              Object.values(props.filteredRecords).map((team, index) => {
+                const colored = index % 2 === 1 ? true : false
+                return (
+                  <Fragment key={team.team_id}>
+                    <TeamColumn colored={colored} sticky>{getTeamName(team.team_id, props.sportTeams)}</TeamColumn>
 
-                  {dataSwitch(team, props.league, isPlayoffs)}
-                </Fragment>
-              ))
+                    {dataSwitch(team, props.league, isPlayoffs, colored)}
+                  </Fragment>
+                )
+              })
             }
           </RecordsContainer>
         </>
