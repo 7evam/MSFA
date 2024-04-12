@@ -7,7 +7,7 @@ export const ErrorContainer = styled.div`
 `;
 
 export const BottomBar = styled.div`
-  background-color: ${blue};
+  background-color: #4E871F;
   height: 50px;
   bottom: 0;
   display: flex;
@@ -25,7 +25,7 @@ export const Container = styled.div`
 `;
 
 export const TopBar = styled.div`
-  background-color: ${blue};
+  background-color: #4E871F;
   height: 50px;
   font-size: 14px;
   color: white;
@@ -51,7 +51,7 @@ export const BottomButton = styled.button`
   padding: 0px 15px;
   font-size: 16px;
   font-weight: 800;
-  background-color: ${mediumBlue};
+  background-color: #F7FBFF;
   border: 0px;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 6px;
@@ -91,9 +91,9 @@ export const TeamRow = styled.div`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  background-color: ${lightBlue};
+  background-color: ${mediumBlue};
   &:nth-child(odd) {
-    background-color: ${mediumBlue};
+    background-color: #F7FBFF;
   }
 `;
 export const TeamText = styled.p`
@@ -117,11 +117,11 @@ export const Title = styled.h1`
 `;
 
 export const currencyInputStyle = {
-    width: "75px",
-    padding: "12px 12px",
-    margin: "4px 0",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    boxSizing: "border-box"
-  }
+  width: "75px",
+  padding: "12px 12px",
+  margin: "4px 0",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  boxSizing: "border-box"
+}
 
