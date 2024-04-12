@@ -27,8 +27,8 @@ export const LeagueSelector = styled.div`
 
 export const League = styled.p`
   margin-right: 10px;
+  font-weight: 700;
   &:hover {
-    font-weight: 700;
     text-decoration: underline;
     cursor: pointer;
   }
@@ -40,7 +40,8 @@ export const TabSelector = styled.div`
   flex-direction: row;
   justify-content: space-around;
   width: 700px;
-  background-color: ${mediumBlue};
+  color: white;
+  background-color: #4E871F;
   @media (max-width: ${mobileBreakPoint}){
     width: 100vw;
     font-size: 10px;
@@ -50,7 +51,6 @@ export const TabSelector = styled.div`
 export const Tab = styled.p`
   margin-right: 10px;
   &:hover {
-    font-weight: 700;
     text-decoration: underline;
     cursor: pointer;
   }
@@ -218,6 +218,7 @@ export const Select = styled.select`
     background-color: ${lightBlue};
     font-weight: 800;
     padding-left: 10px;
+    
 `;
 export const Section = styled.div`
       margin-right: 100px;

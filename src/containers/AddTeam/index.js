@@ -81,8 +81,8 @@ function AddTeam() {
             </Tab>
           </TabSelector>
           {
-        getContent(tab)
-    }
+            getContent(tab)
+          }
         </Container>
       ) : <Loading />
   );
