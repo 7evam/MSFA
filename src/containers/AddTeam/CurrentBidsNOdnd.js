@@ -8,6 +8,7 @@ import useApi from '../../hooks/useApi';
 import RosterComponent from '../../components/Roster';
 import Loading from '../../components/Loading';
 import useHydration from '../../hooks/useHydration';
+import MonthSelector from '../../components/MonthSelector';
 import {
   Section,
   Select,
@@ -163,75 +164,78 @@ function CurrentBids({
   return (
     <Test>
       {
-            allBids && allBids[roflMonth] && allBids[roflMonth].length
-              ? (
-                <div>
-                  {activeYearArray.length === 2 ? (
-                    <YearSelector
-                      activeYearArray={activeYearArray}
-                      setSelectedRoflYear={setSelectedRoflYear}
-                      selectedRoflYear={selectedRoflYear}
+        allBids && allBids[roflMonth] && allBids[roflMonth].length
+          ? (
+            <div>
+              {activeYearArray.length === 2 ? (
+                <YearSelector
+                  activeYearArray={activeYearArray}
+                  setSelectedRoflYear={setSelectedRoflYear}
+                  selectedRoflYear={selectedRoflYear}
+                />
+              ) : (
+                <YearContainer>
+                  <p>
+                    MSFA Year:
+                    {' '}
+                    {selectedRoflYear}
+                  </p>
+                </YearContainer>
+              )}
+              <MonthSelector
+                selectedMonth={roflMonth}
+                setSelectedMonth={setRoflMonth}
+              />
+              {/* <MonthSelector
+                roflMonth={roflMonth}
+                setRoflMonth={setRoflMonth}
+                selectedRoflYear={selectedRoflYear}
+                onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+              /> */}
+              <MonthContainer>
+                <p>
+                  MSFA Month:
+                  {' '}
+                  {roflMonth}
+                </p>
+              </MonthContainer>
+              <Table>
+                <tbody>
+                  <TitleRow>
+                    {currentMonthIncludesCurrentBid ? (
+                      <Th width="col1width">Move</Th>
+                    ) : null}
+                    <Th width="col2width">Team</Th>
+                    <Th width="col3width">Priority</Th>
+                    <Th width="col4width">Value</Th>
+                    <Th width="col5width">Teams Dropped</Th>
+                    {currentMonthIncludesCurrentBid ? (
+                      <Th width="col6width">Delete</Th>
+                    ) : null}
+                  </TitleRow>
+                  {allBids[roflMonth].map((bid, index) => (
+                    <BidRow
+                      bid={bid}
+                      index={index}
+                      sportTeams={sportTeams}
+                      currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
+                      deleteBid={deleteBid}
+                      leagueFromTeamId={leagueFromTeamId}
                     />
-                  ) : (
-                    <YearContainer>
-                      <p>
-                        MSFA Year:
-                        {' '}
-                        {selectedRoflYear}
-                      </p>
-                    </YearContainer>
-                  )}
-
-                  <MonthTicker
-                    roflMonth={roflMonth}
-                    setRoflMonth={setRoflMonth}
-                    selectedRoflYear={selectedRoflYear}
-                    onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
-                  />
-                  <MonthContainer>
-                    <p>
-                      MSFA Month:
-                      {' '}
-                      {roflMonth}
-                    </p>
-                  </MonthContainer>
-                  <Table>
-                    <tbody>
-                      <TitleRow>
-                        {currentMonthIncludesCurrentBid ? (
-                          <Th width="col1width">Move</Th>
-                        ) : null}
-                        <Th width="col2width">Team</Th>
-                        <Th width="col3width">Priority</Th>
-                        <Th width="col4width">Value</Th>
-                        <Th width="col5width">Teams Dropped</Th>
-                        {currentMonthIncludesCurrentBid ? (
-                          <Th width="col6width">Delete</Th>
-                        ) : null}
-                      </TitleRow>
-                      {allBids[roflMonth].map((bid, index) => (
-                        <BidRow
-                          bid={bid}
-                          index={index}
-                          sportTeams={sportTeams}
-                          currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
-                          deleteBid={deleteBid}
-                          leagueFromTeamId={leagueFromTeamId}
-                        />
-                      ))}
-                    </tbody>
-                  </Table>
-                  {havePrioritiesChanged ? (
-                    <div>
-                      Your roster priorities have changed
-                      {' '}
-                      <button onClick={saveRoster}>Save</button>
-                    </div>
-                  ) : null}
+                  ))}
+                </tbody>
+              </Table>
+              {havePrioritiesChanged ? (
+                <div>
+                  Your roster priorities have changed
+                  {' '}
+                  <button onClick={saveRoster}>Save</button>
                 </div>
-              )
-              : <p>There are no bids to show</p>
-        }
+              ) : null}
+            </div>
+          )
+          : <p>There are no bids to show</p>
+      }
     </Test>
   );
 }

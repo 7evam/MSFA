@@ -13,8 +13,6 @@ import {
   Select,
   Label,
   Headline,
-  ActionButton,
-
   League,
   LeagueSelector,
   slotData,
@@ -32,39 +30,51 @@ import MonthTicker from '../../components/MonthTicker';
 import YearSelector from '../../components/YearSelector';
 import BidRow from './BidRow';
 import { mobileBreakPoint } from '../../constants/style';
-
-const MonthContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-const YearContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-const Table = styled.table`
-@media (max-width: ${mobileBreakPoint}){
-   width: 100%;
-  }
-
-`;
-
-const Test = styled.div`
-`;
+import MonthSelector from '../../components/MonthSelector';
 
 const Container = styled.div`
+width: 100%;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-text-align: center;
     margin-top: 50px;
 `;
+
+const ScoringContainer = styled.div`
+    display: grid;
+    grid-template-columns: ${(props) => (props.currentMonthIncludesCurrentBid ? '1fr 2fr 1fr 1fr 2fr 1fr' : '2fr 1fr 1fr 2fr')};
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin-top: 15px;
+    border: 2px solid #E5EAF4;
+    width: 90%;
+    border-radius: 10px;
+    @media (max-width: ${mobileBreakPoint}){
+      
+      grid-template-columns: ${(props) => (props.currentMonthIncludesCurrentBid ? '1fr 2fr 1fr 1fr' : '1fr 1fr')};
+     }
+`;
+
+const HeaderLabel = styled.div`
+    padding: 16px 0px 8px 16px;
+    text-align:center;
+    background-color: #F7FBFF;
+    font-weight: 800;
+    font-size: 14px;
+    display: ${(props) => (props.onlyMobile && 'none')};
+
+    &:hover{
+      cursor: pointer;
+      text-decoration: underline;
+  }
+    @media (max-width: ${mobileBreakPoint}){
+      display: ${(props) => (props.mobile ? 'inline-block' : 'none')};
+      font-size: 10px;
+      padding-right: 16px;
+     }
+`;
+
 
 function CurrentBids({
   allBids,
@@ -97,6 +107,7 @@ function CurrentBids({
   //   console.log(selectedBid);
   // }, [selectedBid]);
 
+  // uncomment this after redesign
   useEffect(() => {
     if (roflMonth && allBids && allBids[roflMonth]) {
       let newValue = false;
@@ -172,10 +183,8 @@ function CurrentBids({
 
   const mobileSwitch = (bidIndex) => {
     if (selectedBid === null) {
-      console.log('in if');
       setSelectedBid(bidIndex);
     } else {
-      console.log('in else');
       const newMonthBids = reorder(
         allBids[roflMonth],
         selectedBid,
@@ -229,10 +238,10 @@ function CurrentBids({
   return (
     <Container>
       {
-            allBids && allBids[roflMonth] && allBids[roflMonth].length
-              ? (
-                <>
-                  {/* {activeYearArray.length === 2 ? (
+        allBids && allBids[roflMonth] && allBids[roflMonth].length
+          ? (
+            <>
+              {/* {activeYearArray.length === 2 ? (
                     <YearSelector
                       activeYearArray={activeYearArray}
                     />
@@ -245,60 +254,52 @@ function CurrentBids({
                     </YearContainer>
                   )} */}
 
-                  <MonthTicker
-                    roflMonth={roflMonth}
-                    setRoflMonth={setRoflMonth}
-                    onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
-                    selectedYear={selectedYear}
+              <MonthSelector
+                selectedMonth={roflMonth}
+                setSelectedMonth={setRoflMonth}
+                onlyShownMonths={Object.keys(allBids).map((n) => Number(n))}
+              />
+              <ScoringContainer currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}>
+                {currentMonthIncludesCurrentBid ? (
+                  <HeaderLabel mobile>Move</HeaderLabel>
+                ) : null}
+                <HeaderLabel mobile>Team</HeaderLabel>
+                <HeaderLabel>Priority</HeaderLabel>
+                <HeaderLabel>Value</HeaderLabel>
+                <HeaderLabel>Teams Dropped</HeaderLabel>
+                <HeaderLabel mobile onlyMobile>Details</HeaderLabel>
+                {currentMonthIncludesCurrentBid ? (
+                  <HeaderLabel mobile>Delete</HeaderLabel>
+                ) : null}
+                {allBids[roflMonth].map((bid, index) => (
+                  <BidRow
+                    bid={bid}
+                    index={index}
+                    sportTeams={sportTeams}
+                    currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
+                    deleteBid={deleteBid}
+                    leagueFromTeamId={leagueFromTeamId}
+                    mobileSwitch={mobileSwitch}
+                    selectedBid={selectedBid}
+                    setSelectedBid={setSelectedBid}
+                    showBidDetails={showBidDetails}
+                    colored={!!(index % 2 === 1)}
                   />
-                  <MonthContainer>
-                    <p>
-                      MSFA Month:
-                      {roflMonth}
-                    </p>
-                  </MonthContainer>
-                  <Table>
-                    <tbody>
-                      <TitleRow>
-                        {currentMonthIncludesCurrentBid ? (
-                          <Th width="col1width">Move</Th>
-                        ) : null}
-                        <Th width="col2width">Team</Th>
-                        <Th width="col3width">Priority</Th>
-                        <Th width="col4width">Value</Th>
-                        <Th width="col5width">Teams Dropped</Th>
-                        <DetailsHeader>Details</DetailsHeader>
-                        {currentMonthIncludesCurrentBid ? (
-                          <Th width="col6width">Delete</Th>
-                        ) : null}
-                      </TitleRow>
-                      {allBids[roflMonth].map((bid, index) => (
-                        <BidRow
-                          bid={bid}
-                          index={index}
-                          sportTeams={sportTeams}
-                          currentMonthIncludesCurrentBid={currentMonthIncludesCurrentBid}
-                          deleteBid={deleteBid}
-                          leagueFromTeamId={leagueFromTeamId}
-                          mobileSwitch={mobileSwitch}
-                          selectedBid={selectedBid}
-                          setSelectedBid={setSelectedBid}
-                          showBidDetails={showBidDetails}
-                        />
-                      ))}
-                    </tbody>
-                  </Table>
-                  {havePrioritiesChanged ? (
-                    <div>
-                      Your roster priorities have changed
-                      <button onClick={saveRoster}>Save</button>
-                    </div>
-                  ) : null}
-                </>
-              )
-              : <p>There are no bids to show</p>
-        }
-    </Container>
+                ))}
+              </ScoringContainer>
+              {
+                havePrioritiesChanged ? (
+                  <div>
+                    Your roster priorities have changed
+                    <button onClick={saveRoster}>Save</button>
+                  </div>
+                ) : null
+              }
+            </>
+          )
+          : <p>There are no bids to show</p>
+      }
+    </Container >
   );
 }
 

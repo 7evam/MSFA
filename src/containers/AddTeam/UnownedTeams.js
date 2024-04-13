@@ -117,18 +117,24 @@ const Cell = styled.div`
                 top: 0;
                 height: 50%; 
                 border-right: 2px solid #E5EAF4;
-                margin-right: 8px;
+                margin-right: 16px;
             }
         `}
     }
-    
+    ${(props) => props.hasButton && `
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 32px;
+  `}
     @media (max-width: ${mobileBreakPoint}){
         font-size: 14px;
     }
 `;
 
 const HeaderLabel = styled.div`
-    padding: 16px 0px 8px 16px;
+    padding: 16px 0px 8px 38px;
     text-align:center;
     background-color: #F7FBFF;
     font-weight: 800;
@@ -268,7 +274,7 @@ function UnownedTeams({
                     {' '}
                     {sportTeams[league][team].name}
                   </Cell>
-                  <Cell>{getUnownedActionButton(league, team)}</Cell>
+                  <Cell hasButton>{getUnownedActionButton(league, team)}</Cell>
                 </Fragment>
               ))
             }

@@ -31,7 +31,7 @@ const ArrowContainer = styled.span`
 `;
 
 function MonthSelector({
-  selectedMonth, setSelectedMonth, finalMonthForDisplay, firstMonthForDisplay,
+  selectedMonth, setSelectedMonth, finalMonthForDisplay, firstMonthForDisplay, onlyShownMonths
 }) {
   const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
@@ -63,12 +63,12 @@ function MonthSelector({
     const months = {};
     for (let i = firstMonth; i <= finalMonth; i++) {
       // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
-      if (onlyShownMonths ? onlyShownMonths.includes(allMonths[i]) : true) months[i] = allMonths[i];
+      if (!!onlyShownMonths ? onlyShownMonths.includes(i) : true) months[i] = allMonths[i];
     }
     return months;
   };
 
-  const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay);
+  const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths);
 
   useEffect(() => {
     const minMonth = Math.min(...Object.keys(months));
