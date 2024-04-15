@@ -285,8 +285,7 @@ function useAddTeam() {
       const { body } = res;
       const trxTable = {};
       body.forEach((trx) => {
-
-        trx.team_added = getTeamName(trx.team_added, sportTeams);
+        if (trx.team_added) trx.team_added = getTeamName(trx.team_added, sportTeams);
         if (trx.team_dropped) trx.team_dropped = getTeamName(trx.team_dropped, sportTeams);
         trx.team_name = orgMembers[trx.user_id].team_name;
         trx.transaction_type = trx.transaction_type.charAt(0).toUpperCase() + trx.transaction_type.slice(1);
@@ -531,9 +530,6 @@ function useAddTeam() {
       setFirstActiveMonthForClaim(currentRoflMonths[league] + 1);
     }
   }, [league, activeYears]);
-
-  console.log('here is transactions')
-  console.log(transactions)
 
   return {
     tab,

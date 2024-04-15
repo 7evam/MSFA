@@ -58,7 +58,6 @@ const Table = styled.table`
 @media (max-width: ${mobileBreakPoint}){
    width: 100%;
   }
-
 `;
 
 function PastTransactions({ transactions }) {
@@ -68,46 +67,6 @@ function PastTransactions({ transactions }) {
   const [roflMonth, setRoflMonth] = useState(
     transactions ? Math.max(...Object.keys(transactions)) : null,
   );
-  const [sorting, setSorting] = useState([]);
-  const [columns, setColumns] = useState([
-    {
-      header: 'Transaction Type',
-      accessorKey: 'transaction_type',
-    },
-    {
-      header: 'Team Added',
-      accessorKey: 'team_added',
-    },
-    {
-      header: 'Team Added Value',
-      accessorKey: 'team_dropped_value',
-    },
-    {
-      header: 'Team Dropped',
-      accessorKey: 'team_dropped',
-    }, {
-      header: 'Team Dropped Value',
-      acessorKey: 'team_dropped_value',
-    }, {
-      header: 'Transaction Time',
-      acessorKey: 'transaction_time',
-    },
-  ]);
-
-  const table = useReactTable({
-    data: transactions,
-    columns,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    debugTable: false,
-  });
-
-  console.log('here are transactions')
-  console.log(transactions)
 
   return (
     transactions

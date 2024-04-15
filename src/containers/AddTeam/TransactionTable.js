@@ -9,29 +9,6 @@ import MonthTicker from '../../components/MonthTicker';
 import { mobileBreakPoint } from '../../constants/style';
 import { convertDateObjToReadable, shortenName } from '../../utils';
 
-const Container = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-    margin-top: 50px;
-`;
-
-const MonthContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-const YearContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
 const CellContent = styled.p`
 display: inline-block;
 width: 100%;
@@ -105,22 +82,6 @@ const HeaderLabel = styled.div`
      }
 `;
 
-
-const Td = styled.td`
-  padding: 12px;
-`;
-
-const Th = styled.th``;
-
-const Tr = styled.tr``;
-
-const Table = styled.table`
-@media (max-width: ${mobileBreakPoint}){
-   width: 100%;
-  }
-
-`;
-
 function TransactionTable({ filteredTransactions }) {
   const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
@@ -129,52 +90,6 @@ function TransactionTable({ filteredTransactions }) {
   const { orgMembers } = useSelector((state) => ({
     ...state.sportReducer,
   }));
-
-  const [sorting, setSorting] = useState([]);
-  const [columns, setColumns] = useState([
-    {
-      header: 'Transaction Type',
-      accessorKey: 'transaction_type',
-    },
-    {
-      header: 'Transactor',
-      accessorKey: 'user_id',
-    },
-    {
-      header: 'Transaction Time',
-      accessorKey: 'transaction_time',
-      cell: (props) => <>{`${convertDateObjToReadable(new Date(props.getValue()))}`}</>,
-    },
-    {
-      header: 'Team Added',
-      accessorKey: 'team_added',
-    },
-    {
-      header: 'Team Added Value',
-      accessorKey: 'team_added_value',
-      cell: (props) => <>{`$${props.getValue()}`}</>,
-    },
-    {
-      header: 'Team Dropped',
-      accessorKey: 'team_dropped',
-    }, {
-      header: 'Team Dropped Value',
-      accessorKey: 'team_dropped_value',
-      cell: (props) => <>{`$${props.getValue()}`}</>,
-    },
-  ]);
-
-  const table = useReactTable({
-    data: filteredTransactions,
-    columns,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    debugTable: false,
-  });
 
   return (
     <TableContainer>
@@ -195,7 +110,7 @@ function TransactionTable({ filteredTransactions }) {
             <CellContent>{convertDateObjToReadable(new Date(trx.transaction_time))}</CellContent>
           </Cell>
           <Cell>
-            <CellContent>{trx.team_added} (${trx.team_added_value})</CellContent>
+            <CellContent>{trx.team_added ? `${trx.team_added} ($${trx.team_added_value})` : "-"} </CellContent>
           </Cell>
           <Cell>
             {
