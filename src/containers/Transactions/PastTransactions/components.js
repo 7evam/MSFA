@@ -78,7 +78,7 @@ text-align: center;
 
 export const HeaderLabel = styled.div`
     padding: 5px;
-    padding-left: 16px;
+    padding-left: 8px;
     background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;
