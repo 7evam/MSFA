@@ -40,6 +40,8 @@ function useStandings() {
     });
 
     const { body } = res;
+    console.log('here is standings')
+    console.log(body)
     getInitialMonth(body);
     setStandings(body);
     setReadyToRender(true);

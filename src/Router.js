@@ -20,7 +20,7 @@ import Scoring from './containers/Scoring';
 import Settings from './containers/Settings';
 import CreateNewLeague from './containers/CreateNewLeague';
 import NewSeason from './containers/NewSeason';
-import Roster from './containers/RoflLeague/Roster';
+import Roster from './containers/League/Roster';
 import Standings from './containers/Standings';
 import App from './App';
 import Draft from './containers/Draft';
