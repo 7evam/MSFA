@@ -6,14 +6,19 @@ import TradeCard from './TradeCard';
 import MonthTicker from '../../components/MonthTicker';
 import YearSelector from '../../components/YearSelector';
 import { red } from '../../constants/style';
+import { mobileBreakPoint } from '../../constants/style';
 
 const Container = styled.div`
+width: 600px;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
     margin-top: 50px;
+    @media (max-width: ${mobileBreakPoint}){
+      width: 90%;
+     }
 `;
 
 const MonthContainer = styled.div`

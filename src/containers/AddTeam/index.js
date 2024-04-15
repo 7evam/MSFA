@@ -57,8 +57,6 @@ function AddTeam() {
         return <div>Tab not found</div>;
     }
   };
-
-  console.log('in add team');
   return (
     readyToRender
       ? (

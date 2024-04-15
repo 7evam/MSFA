@@ -9,7 +9,7 @@ import arrowUnClickable from '../../icons/arrowUnClickable';
 import arrowClickable from '../../icons/arrowClickable';
 
 const Container = styled.div`
-  width: 86%;
+  width: 84%;
   height: 65px;
   font-size: 18px;
   border-radius: 10px;
@@ -18,7 +18,6 @@ const Container = styled.div`
   padding: 0 3%;
   color: white;
   font-family: Inter;
-  
 `;
 
 const MonthText = styled.p`

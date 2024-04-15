@@ -5,11 +5,14 @@ import {
   useReactTable, getCoreRowModel, getSortedRowModel, flexRender,
 } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
-import MonthTicker from '../../components/MonthTicker';
+import MonthSelector from '../../components/MonthSelector';
 import { mobileBreakPoint } from '../../constants/style';
 import TransactionTable from './TransactionTable';
 
+
 const Container = styled.div`
+width: 100%;
+max-width: 800px;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -17,6 +20,12 @@ align-items: center;
 text-align: center;
     margin-top: 50px;
 `;
+
+const NoTrxContainer = styled.div`
+margin-top: 20px;
+width: 100%;
+max-width: 800px;
+`
 
 const MonthContainer = styled.div`
   width: 100%;
@@ -97,34 +106,27 @@ function PastTransactions({ transactions }) {
     debugTable: false,
   });
 
+  console.log('here are transactions')
+  console.log(transactions)
+
   return (
     transactions
       ? (
         <Container>
-
+          <MonthSelector
+            selectedMonth={roflMonth}
+            setSelectedMonth={setRoflMonth}
+            onlyShownMonths={Object.keys(transactions).map((n) => Number(n))}
+          />
           {
             transactions[roflMonth]?.length
               ? (
-                <>
-                  <MonthTicker
-                    roflMonth={roflMonth}
-                    setRoflMonth={setRoflMonth}
-                    onlyShownMonths={Object.keys(transactions).map((n) => Number(n))}
-                    selectedYear={selectedYear}
-                  />
-                  <MonthContainer>
-                    <p>
-                      MSFA Month:
-                      {roflMonth}
-                    </p>
-                    <TransactionTable
-                      filteredTransactions={transactions[roflMonth]}
-                    />
-                  </MonthContainer>
-                </>
+                <TransactionTable
+                  filteredTransactions={transactions[roflMonth]}
+                />
 
               )
-              : <p>No transactions for this month</p>
+              : <NoTrxContainer>No transactions for this month</NoTrxContainer>
           }
 
         </Container>
