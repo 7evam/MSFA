@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import Slot from '../../components/Roster2/Slot';
+import Slot from '../../components/Roster/Slot';
 import Loading from '../../components/Loading';
 import MonthSelector from '../../components/MonthSelector';
 import { mobileBreakPoint } from '../../constants/style';
