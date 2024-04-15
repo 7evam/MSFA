@@ -10,7 +10,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
 `;
 
 export const NoTrxContainer = styled.div`
@@ -78,6 +78,7 @@ text-align: center;
 
 export const HeaderLabel = styled.div`
     padding: 5px;
+    padding-left: 16px;
     background-color: #F7FBFF;
     font-weight: 800;
     font-size: 14px;

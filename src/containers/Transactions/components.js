@@ -5,7 +5,7 @@ import {
 } from '../../constants/style';
 
 export const Container = styled.div`
-  margin-top: 50px;
+  margin-top: 20px;
   
   margin-bottom: 100px;
   display: flex;

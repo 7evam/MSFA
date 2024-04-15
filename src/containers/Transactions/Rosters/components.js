@@ -72,6 +72,13 @@ export const Cell = styled.div`
         text-decoration: ${(props) => (props.teamName ? 'underline' : null)}; 
         cursor: ${(props) => (props.teamName ? 'pointer' : null)}; 
     }
+    ${(props) => props.button &&
+        `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    `}
+    
     @media (min-width: ${mobileBreakPoint}){
         ${(props) => !props.firstItem && `
             &:before {
@@ -85,14 +92,13 @@ export const Cell = styled.div`
             }
         `}
     }
-    
     @media (max-width: ${mobileBreakPoint}){
         font-size: 14px;
     }
 `;
 
 export const HeaderLabel = styled.div`
-    padding: 16px 0px 8px 16px;
+    padding: 16px 0px 8px 32px;
     text-align:center;
     background-color: #F7FBFF;
     font-weight: 800;
@@ -104,5 +110,6 @@ export const HeaderLabel = styled.div`
     @media (max-width: ${mobileBreakPoint}){
       font-size: 10px;
       padding-right: 16px;
+      padding-left: 38px;
      }
 `;

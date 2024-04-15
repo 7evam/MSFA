@@ -65,7 +65,7 @@ function CurrentRosters({
                   </Cell>
                   {!isArchived
                     ? (
-                      <Cell>
+                      <Cell button>
                         {getMemberActionButton(currentRoster[el].teamId)}
                       </Cell>
                     ) : null}

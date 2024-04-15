@@ -9,7 +9,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
     @media (max-width: ${mobileBreakPoint}){
       width: 90%;
      }
