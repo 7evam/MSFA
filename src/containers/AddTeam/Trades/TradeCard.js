@@ -3,53 +3,11 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import '@fontsource/open-sans';
 import { toast } from 'react-toastify';
-import { red, lightBlue, mediumBlue } from '../../constants/style';
-import useApi from '../../hooks/useApi';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid black;
-  &:nth-child(even) {
-    background-color: ${mediumBlue};
-}
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ButtonContainer = styled.div`
-  text-align: right;
-  padding-right: 20px;
-  padding-bottom: 20px;
-`;
-
-const Button = styled.button`
-  background-color: ${(props) => (props.accept ? '#4CAF50' : red)};
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  font-size: 14px;
-  margin-left: 14px;
-  padding: 8px 14px 8px 14px;
-  cursor: pointer;
-`;
-
-const TradeSidesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-`;
-
-const TradeSideHeader = styled.p`
-  font-weight: 800;
-`;
-
-const TradeSide = styled.div``;
+import { red, lightBlue, mediumBlue } from '../../../constants/style';
+import useApi from '../../../hooks/useApi';
+import {
+  TradeCardContainer, ContentContainer, ButtonContainer, Button, TradeSidesContainer, TradeSideHeader, TradeSide
+} from './components'
 
 function TradeCard({ trade, state, reFetchTrades }) {
   const { sportTeams, orgMembers } = useSelector((state) => ({
@@ -175,7 +133,7 @@ function TradeCard({ trade, state, reFetchTrades }) {
   const receiveTeams = trade.isProposedByUser ? trade.receiverTeams : trade.proposerTeams;
 
   return (
-    <Container>
+    <TradeCardContainer>
       <ContentContainer>
         <p>
           Trade
@@ -192,22 +150,22 @@ function TradeCard({ trade, state, reFetchTrades }) {
               {sendTense[state]}
             </TradeSideHeader>
             {
-            sendTeams.map((team) => (toTeamName(team.id) ? (
-              <p>
-                {toTeamName(team.id)}
-                {' '}
-                ($
-                {team.value}
-                )
-              </p>
-            ) : (
-              <p>
-                $
-                {team.value}
-                {' '}
-                Rofl Cash
-              </p>
-            )))
+              sendTeams.map((team) => (toTeamName(team.id) ? (
+                <p>
+                  {toTeamName(team.id)}
+                  {' '}
+                  ($
+                  {team.value}
+                  )
+                </p>
+              ) : (
+                <p>
+                  $
+                  {team.value}
+                  {' '}
+                  Rofl Cash
+                </p>
+              )))
             }
           </TradeSide>
           <TradeSide>
@@ -238,7 +196,7 @@ function TradeCard({ trade, state, reFetchTrades }) {
       {state === 'received' || state === 'proposed' ? (
         <ButtonContainer>{getButtons(state)}</ButtonContainer>
       ) : null}
-    </Container>
+    </TradeCardContainer>
   );
 }
 

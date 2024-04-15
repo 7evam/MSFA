@@ -1,28 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { mediumBlue, lightBlue } from '../../constants/style';
+import { mobileBreakPoint } from '../../constants/style';
 
-const Container = styled.div`
-    margin-top: 40px;
-`;
-
-const Td = styled.td`
-    width: 33%;
-    height: 20px;
-`;
-
-const Tr = styled.tr`
-background-color: ${mediumBlue};
-    &:nth-child(odd) {
-    background-color: ${lightBlue};
+const SchemeContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 90%;
+    border: 2px solid #E5EAF4;
+    border-radius: 10px;
+    & div:nth-child(4n + 6){
+      background-color: #F7FBFF;
+    }
+    & div:nth-child(4n + 5){
+      background-color: #F7FBFF;
+    }
     }
 `;
 
-const Table = styled.table`
-    width: 100%;
+const HeaderLabel = styled.div`
+    padding: 16px 0px 8px 16px;
+    text-align:center;
+    background-color: #F7FBFF;
+    font-weight: 800;
+    font-size: 14px;
+    @media (max-width: ${mobileBreakPoint}){
+      font-size: 10px;
+      padding-right: 16px;
+     }
 `;
 
-function Scheme({ scheme, league }) {
+const Cell = styled.div`
+    padding: 16px 0px 8px 16px;
+    border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
+    @media (min-width: ${mobileBreakPoint}){
+        ${(props) => !props.firstItem && `
+            &:before {
+                content: "";
+                right: 0;
+                z-index: 100;
+                top: 0;
+                height: 50%; 
+                border-right: 2px solid #E5EAF4;
+                margin-right: 8px;
+            }
+        `}
+    }
+    
+    @media (max-width: ${mobileBreakPoint}){
+        font-size: 14px;
+    }
+`;
+
+function Scheme({ league, scheme }) {
   const displayTable = {
     1: {
       playoff_bonus: 'Clinch Playoffs',
@@ -91,25 +123,20 @@ function Scheme({ scheme, league }) {
       rs_losses: 'Lose Regular Season Game',
       rs_wins: 'Win Regular Season Game',
     },
-
   };
-
   return (
-    <Container>
-      <Table>
-        {
-          Object.keys(scheme).filter((item) => displayTable[league][item]).map((item) => (
-            <Tr>
-              <Td>
-                <b>{displayTable[league][item]}</b>
-                :
-              </Td>
-              <Td>{scheme[item]}</Td>
-            </Tr>
-          ))
-        }
-      </Table>
-    </Container>
+    <SchemeContainer>
+      <HeaderLabel>Achievement</HeaderLabel>
+      <HeaderLabel>Points</HeaderLabel>
+      {
+        Object.keys(scheme).filter((item) => displayTable[league][item]).map((item) => (
+          <Fragment key={item}>
+            <Cell firstItem><b>{displayTable[league][item]}</b></Cell>
+            <Cell>{scheme[item]}</Cell>
+          </Fragment>
+        ))
+      }
+    </SchemeContainer>
   );
 }
 

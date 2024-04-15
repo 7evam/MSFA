@@ -29,7 +29,7 @@ import useAddTeam from './useAddTeam';
 import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
 import MonthTicker from '../../components/MonthTicker';
 import YearSelector from '../../components/YearSelector';
-import BidRow from './BidRow';
+import BidRow from './CurrentBids/BidRow';
 
 const MonthContainer = styled.div`
   width: 100%;

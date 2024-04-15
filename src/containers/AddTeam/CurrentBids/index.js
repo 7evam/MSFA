@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import '@fontsource/open-sans';
 import { toast } from 'react-toastify';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import useApi from '../../hooks/useApi';
-import RosterComponent from '../../components/Roster';
-import Loading from '../../components/Loading';
-import useHydration from '../../hooks/useHydration';
+import useApi from '../../../hooks/useApi';
+import { HeaderLabel, ScoringContainer, Container } from "./components";
+import RosterComponent from '../../../components/Roster';
+import Loading from '../../../components/Loading';
+import useHydration from '../../../hooks/useHydration';
 import {
   Section,
   Select,
@@ -23,58 +24,14 @@ import {
   Details,
   DetailsHeader,
   CashContainer,
-} from './components';
-import useAddTeam from './useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
-import MonthTicker from '../../components/MonthTicker';
-import YearSelector from '../../components/YearSelector';
+} from '../components';
+import useAddTeam from '../useAddTeam';
+import { convertRealToRofl, convertDateObjToReadable } from '../../../utils';
+import MonthTicker from '../../../components/MonthTicker';
+import YearSelector from '../../../components/YearSelector';
 import BidRow from './BidRow';
-import { mobileBreakPoint } from '../../constants/style';
-import MonthSelector from '../../components/MonthSelector';
-
-const Container = styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-    margin-top: 50px;
-`;
-
-const ScoringContainer = styled.div`
-    display: grid;
-    grid-template-columns: ${(props) => (props.currentMonthIncludesCurrentBid ? '1fr 2fr 1fr 1fr 2fr 1fr' : '2fr 1fr 1fr 2fr')};
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    margin-top: 15px;
-    border: 2px solid #E5EAF4;
-    width: 90%;
-    border-radius: 10px;
-    @media (max-width: ${mobileBreakPoint}){
-      
-      grid-template-columns: ${(props) => (props.currentMonthIncludesCurrentBid ? '1fr 2fr 1fr 1fr' : '1fr 1fr')};
-     }
-`;
-
-const HeaderLabel = styled.div`
-    padding: 16px 0px 8px 16px;
-    text-align:center;
-    background-color: #F7FBFF;
-    font-weight: 800;
-    font-size: 14px;
-    display: ${(props) => (props.onlyMobile && 'none')};
-
-    &:hover{
-      cursor: pointer;
-      text-decoration: underline;
-  }
-    @media (max-width: ${mobileBreakPoint}){
-      display: ${(props) => (props.mobile ? 'inline-block' : 'none')};
-      font-size: 10px;
-      padding-right: 16px;
-     }
-`;
-
+import { mobileBreakPoint } from '../../../constants/style';
+import MonthSelector from '../../../components/MonthSelector';
 
 function CurrentBids({
   allBids,
@@ -107,7 +64,6 @@ function CurrentBids({
   //   console.log(selectedBid);
   // }, [selectedBid]);
 
-  // uncomment this after redesign
   useEffect(() => {
     if (roflMonth && allBids && allBids[roflMonth]) {
       let newValue = false;
@@ -212,27 +168,6 @@ function CurrentBids({
         },
       },
     });
-  };
-
-  const onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    const newMonthBids = reorder(
-      allBids[roflMonth],
-      result.source.index,
-      result.destination.index,
-    );
-    const newBids = allBids;
-    newBids[roflMonth] = newMonthBids;
-    if (originalBids !== JSON.stringify(newBids)) {
-      setHavePrioritiesChanged(true);
-    } else {
-      setHavePrioritiesChanged(false);
-    }
-    setAllBids(newBids);
   };
 
   return (

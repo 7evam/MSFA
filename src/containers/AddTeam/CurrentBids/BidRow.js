@@ -4,9 +4,9 @@ import {
   Td,
   Details,
   MoveSign,
-} from "./components";
+} from "../components";
 import styled from "styled-components";
-import { mobileBreakPoint } from "../../constants/style";
+import { mobileBreakPoint } from "../../../constants/style";
 import { Draggable } from "react-beautiful-dnd";
 
 const SwitchButton = styled.button`

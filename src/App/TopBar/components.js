@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { mobileBreakPoint } from '../../constants/style';
 
 export const TopBarContainer = styled.div`
-
+  z-index: 1000;
   position: fixed;
   width: 100%;
   font-family: "Ariel", sans-serif;

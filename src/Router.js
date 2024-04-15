@@ -16,7 +16,7 @@ import Squad from './containers/Squad';
 import AddTeam from './containers/AddTeam';
 // import RoflLeague from './containers/RoflLeague';
 // import Scoring from './containers/Scoring';
-import Scoring from './containers/Scoring2';
+import Scoring from './containers/Scoring';
 import Settings from './containers/Settings';
 import CreateNewLeague from './containers/CreateNewLeague';
 import NewSeason from './containers/NewSeason';

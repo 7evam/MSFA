@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useApi from '../../hooks/useApi';
 import useHydration from '../../hooks/useHydration';
+import { PLAYOFF_MONTHS, STARTING_MONTHS } from '../../constants';
 
 function useScoring() {
   const { currentOrganization } = useSelector((state) => ({
@@ -10,7 +11,6 @@ function useScoring() {
 
   const {
     activeYears,
-    startingMonths,
     playoffMonths,
     sportTeams,
     selectedYear,
@@ -23,7 +23,7 @@ function useScoring() {
   const { hydrateSportTeams, hydrateActiveYears } = useHydration();
 
   const [scores, setScores] = useState(null);
-  const [roflMonth, setRoflMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [league, setLeague] = useState(null);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
   const [display, setDisplay] = useState('score');
@@ -34,27 +34,27 @@ function useScoring() {
   const [filteredRecords, setFilteredRecords] = useState(null);
   const [finalLeagueToShow, setFinalLeagueToShow] = useState(null);
 
-  const formatPoints = (pointsData, league, roflMonth, year, fetchedSportTeams) => {
+  const formatPoints = (pointsData, league, selectedMonth, year, fetchedSportTeams) => {
     const teamTable = sportTeams || fetchedSportTeams;
-    if (pointsData[league][`${roflMonth}-${year}`]) {
+    if (pointsData[league][`${selectedMonth}-${year}`]) {
       const result = [];
-      Object.keys(pointsData[league][`${roflMonth}-${year}`]).forEach((teamId) => {
+      Object.keys(pointsData[league][`${selectedMonth}-${year}`]).forEach((teamId) => {
         result.push({
           id: teamId,
           teamName: `${teamTable[league][teamId].city} ${teamTable[league][teamId].name}`,
-          points: pointsData[league][`${roflMonth}-${year}`][teamId],
+          points: pointsData[league][`${selectedMonth}-${year}`][teamId],
         });
       });
       return result;
     }
     if (league === 1) {
-      setRoflMonth(1);
+      setSelectedMonth(1);
     }
     if (league === 2) {
-      setRoflMonth(6);
+      setSelectedMonth(6);
     }
     if (league === 3 || league === 4) {
-      setRoflMonth(7);
+      setSelectedMonth(7);
     }
 
     // setError('points data formatted wrong');
@@ -64,35 +64,9 @@ function useScoring() {
   // calculate and set the first and last rofl month for display
   // if set current is set to true, function will also calcualte set and return the current rofl month
   const setDisplayMonthRange = (selectedLeague, setCurrent, fetchedActiveYears) => {
-    const startingMonths = {
-      2022: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-      2023: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-    };
+    const startingMonths = STARTING_MONTHS;
 
-    const playoffMonths = {
-      2022: {
-        1: 7,
-        2: 10,
-        3: 13,
-        4: 13,
-      },
-      2023: {
-        1: 7,
-        2: 10,
-        3: 13,
-        4: 13,
-      },
-    };
+    const playoffMonths = PLAYOFF_MONTHS;
 
     const existingActiveYears = fetchedActiveYears || activeYears;
 
@@ -103,30 +77,25 @@ function useScoring() {
     const newStartingMonth = startingMonths[selectedYear][selectedLeague];
     setFinalMonthForDisplay(newFinalMonth);
     setFirstMonthForDisplay(newStartingMonth);
-    if (setCurrent) {
-      const newCurrentMonth = roflMonth > newStartingMonth && roflMonth < newFinalMonth
-        ? roflMonth
-        : newFinalMonth;
-      setRoflMonth(newCurrentMonth);
-      return newCurrentMonth;
+    // if (setCurrent) {
+    // const newCurrentMonth = selectedMonth > newStartingMonth && selectedMonth < newFinalMonth
+    //   ? selectedMonth
+    //   : newFinalMonth;
+    let newCurrentMonth;
+    newCurrentMonth = selectedMonth;
+    if (selectedMonth > newFinalMonth) {
+      newCurrentMonth = newFinalMonth;
     }
+    if (selectedMonth < newStartingMonth) {
+      newCurrentMonth = newStartingMonth;
+    }
+    setSelectedMonth(newCurrentMonth);
+    return newCurrentMonth;
+    // }
   };
 
   const calculateMonthsToDisplay = (records) => {
-    const startingMonths = {
-      2022: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-      2023: {
-        1: 1,
-        2: 6,
-        3: 7,
-        4: 7,
-      },
-    };
+    const startingMonths = STARTING_MONTHS;
     const allMonths = [];
     Object.keys(records).forEach((leagueId) => {
       Object.keys(records[leagueId]).forEach((monthKey) => {
@@ -193,13 +162,15 @@ function useScoring() {
   useEffect(() => {
     async function reCalculate() {
       setReadyToRender(false);
-      await setDisplayMonthRange(league, false);
-      setFilteredPoints(formatPoints(scores.points, league, roflMonth, selectedYear));
-      setFilteredRecords(scores.records[league][`${roflMonth}-${selectedYear}`]);
+      const newCurrentMonth = await setDisplayMonthRange(league, true);
+      setSelectedMonth(newCurrentMonth);
+      const newSelectedMonth = newCurrentMonth || selectedMonth;
+      setFilteredPoints(formatPoints(scores.points, league, newSelectedMonth, selectedYear));
+      setFilteredRecords(scores.records[league][`${newSelectedMonth}-${selectedYear}`]);
       setReadyToRender(true);
     }
-    if (readyToRender && league <= finalLeagueToShow) reCalculate();
-  }, [league, roflMonth]);
+    reCalculate();
+  }, [league, selectedMonth]);
 
   //  change data on year change
   useEffect(() => {
@@ -212,11 +183,11 @@ function useScoring() {
         setFinalLeagueToShow(Math.max(...activeLeagues));
         const startingActiveLeague = Math.min(...activeLeagues);
         setLeague(startingActiveLeague);
-        const newRoflMonth = setDisplayMonthRange(startingActiveLeague, true);
+        const newSelectedMonth = setDisplayMonthRange(startingActiveLeague, true);
         setFilteredPoints(
-          formatPoints(fetchedData.points, startingActiveLeague, newRoflMonth, selectedYear),
+          formatPoints(fetchedData.points, startingActiveLeague, newSelectedMonth, selectedYear),
         );
-        setFilteredRecords(fetchedData.records[startingActiveLeague][`${newRoflMonth}-${selectedYear}`]);
+        setFilteredRecords(fetchedData.records[startingActiveLeague][`${newSelectedMonth}-${selectedYear}`]);
         setReadyToRender(true);
       } catch (e) {
         setError(error);
@@ -233,11 +204,11 @@ function useScoring() {
   };
 
   const changeDisplay = (newDisplay) => {
-    if (roflMonth === 'total') {
-      if (league === 1) setRoflMonth(1);
-      if (league === 2) setRoflMonth(6);
-      if (league === 3) setRoflMonth(7);
-      if (league === 4) setRoflMonth(8);
+    if (selectedMonth === 'total') {
+      if (league === 1) setSelectedMonth(1);
+      if (league === 2) setSelectedMonth(6);
+      if (league === 3) setSelectedMonth(7);
+      if (league === 4) setSelectedMonth(8);
     }
     setDisplay(newDisplay);
   };
@@ -246,12 +217,12 @@ function useScoring() {
     playoffMonths,
     selectedYear,
     league,
-    roflMonth,
+    selectedMonth,
     sportTeams,
     scores,
     firstMonthForDisplay,
     finalMonthForDisplay,
-    setRoflMonth,
+    setSelectedMonth,
     display,
     setDisplay,
     readyToRender,

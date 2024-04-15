@@ -7,7 +7,7 @@ import {
 } from './components';
 import useAddTeam from './useAddTeam';
 import UnownedTeams from './UnownedTeams';
-import CurrentRosters from './CurrentRosters';
+import CurrentRosters from './Rosters';
 import CurrentBids from './CurrentBids';
 import Trades from './Trades';
 import ArchivedMessage from './ArchivedMessage';
@@ -40,7 +40,6 @@ function AddTeam() {
           return <ArchivedMessage />;
         }
         return <UnownedTeams waiverExceptions={waiverExceptions} isArchived={isArchived} firstActiveMonthForClaim={firstActiveMonthForClaim} handleAdd={handleAdd} firstLeagueToShow={firstLeagueToShow} handleAction={handleAction} handleClaim={handleClaim} league={league} setLeague={setLeague} activeYears={activeYears} unownedTeams={unownedTeams} sportTeams={sportTeams} />;
-
       case 'bids':
         if (isArchived) {
           return <ArchivedMessage />;

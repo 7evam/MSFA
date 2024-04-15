@@ -3,151 +3,18 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import '@fontsource/open-sans';
 import { toast } from 'react-toastify';
-import useApi from '../../hooks/useApi';
-import RosterComponent from '../../components/Roster';
-import Loading from '../../components/Loading';
-import useHydration from '../../hooks/useHydration';
+import useApi from '../../../hooks/useApi';
+import RosterComponent from '../../../components/Roster';
+import Loading from '../../../components/Loading';
+import useHydration from '../../../hooks/useHydration';
 import {
-  Section,
-  Select,
-  Label,
-  Headline,
   Container,
   League,
-  slotData,
-  SlotRow,
-  Th,
-  TitleRow,
-  Td,
-  Table,
-  CashContainer,
-} from './components';
-import useAddTeam from './useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
-import { lightBlue, mobileBreakPoint } from '../../constants/style';
-
-const LeagueSelector = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 700px;
-  justify-content: space-evenly;
-  background-color: ${lightBlue};
-  height: 30px;
-  align-items: center;
-  @media (max-width: ${mobileBreakPoint}){
-    width: 100vw;
-  }
-`;
-
-const TopText = styled.p`
-  padding: 10px;
-  width: 85%;
-  font-size: px;
-  text-align: center;
-`;
-
-const ScoringContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    width: 100%;
-    margin-top: 15px;
-    border: 2px solid #E5EAF4;
-    width: 90%;
-    border-radius: 10px;
-    & div:nth-child(4n+5),
-    & div:nth-child(4n+6) {
-      background-color: #F7FBFF;
-    }
-  }
-`;
-
-
-
-const ActionButton = styled.button`
-    height: 120%;
-    width: 80%;
-    z-index: 100;
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    font-weight: 500;
-    padding: 0 16px;
-    margin-left: 8px;
-    border-radius: 4px;
-    color: white;
-    background: ${(props) => (props.selectedSlot && props.selectedSlot === props.leagueKey
-    ? '#4E871F'
-    : '#17288F')};
-    line-height: 1.15;
-    font-size: 14px;
-    letter-spacing: .08em;
-    text-decoration: none;
-    text-transform: uppercase;
-    border: none;
-    text-align: center;
-    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
-    :hover {
-        background: #4E871F;
-        box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
-    }
-    @media (max-width: ${mobileBreakPoint}){
-        width: 80px;
-        height: 20px;
-       }
-`;
-
-const Cell = styled.div`
-    padding: 16px;
-    padding-right: 0px;
-    border-bottom: ${(props) => (props.isLastInList ? null : '2px solid #E5EAF4')}; 
-    background-color: ${(props) => (props.colored ? '#F7FBFF' : 'white')};
-    &:hover{
-        text-decoration: ${(props) => (props.teamName ? 'underline' : null)}; 
-        cursor: ${(props) => (props.teamName ? 'pointer' : null)}; 
-    }
-    @media (min-width: ${mobileBreakPoint}){
-        ${(props) => !props.firstItem && `
-            &:before {
-                content: "";
-                right: 0;
-                z-index: 100;
-                top: 0;
-                height: 50%; 
-                border-right: 2px solid #E5EAF4;
-                margin-right: 16px;
-            }
-        `}
-    }
-    ${(props) => props.hasButton && `
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 32px;
-  `}
-    @media (max-width: ${mobileBreakPoint}){
-        font-size: 14px;
-    }
-`;
-
-const HeaderLabel = styled.div`
-    padding: 16px 0px 8px 38px;
-    text-align:center;
-    background-color: #F7FBFF;
-    font-weight: 800;
-    font-size: 14px;
-    &:hover{
-      cursor: pointer;
-      text-decoration: underline;
-  }
-    @media (max-width: ${mobileBreakPoint}){
-      font-size: 10px;
-      padding-right: 16px;
-     }
-`;
+} from '../components';
+import useAddTeam from '../useAddTeam';
+import { convertRealToRofl, convertDateObjToReadable } from '../../../utils';
+import { lightBlue, mobileBreakPoint } from '../../../constants/style';
+import { HeaderLabel, Cell, ActionButton, TopText, ScoringContainer, LeagueSelector } from "./components";
 
 function UnownedTeams({
   league,

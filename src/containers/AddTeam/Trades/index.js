@@ -1,39 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 import '@fontsource/open-sans';
 import TradeCard from './TradeCard';
-import MonthTicker from '../../components/MonthTicker';
-import YearSelector from '../../components/YearSelector';
-import { red } from '../../constants/style';
-import { mobileBreakPoint } from '../../constants/style';
-
-const Container = styled.div`
-width: 600px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-    margin-top: 50px;
-    @media (max-width: ${mobileBreakPoint}){
-      width: 90%;
-     }
-`;
-
-const MonthContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-const YearContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
+import MonthTicker from '../../../components/MonthTicker';
+import { MonthContainer, Container } from './components';
 
 const tradeStates = ['received', 'proposed', 'accepted', 'declined'];
 
@@ -49,8 +19,6 @@ function Trades({ trades, reFetchTrades }) {
   const [roflMonth, setRoflMonth] = useState(
     trades ? Math.max(...Object.keys(trades)) : null,
   );
-
-  const activeYearArray = Object.keys(currentOrganization.activeYears);
 
   return (
     trades && Object.keys(trades).length
