@@ -39,15 +39,18 @@ function SeasonOverview({ userId, roflYear }) {
     fetchStandings();
   }, []);
 
-  console.log('is there standings?');
-  console.log(standings || 'no');
+  const sortKeys = (a, b) => {
+    const numA = parseInt(a.split("-")[0]);
+    const numB = parseInt(b.split("-")[0]);
+    return numA - numB;
+  }
 
   return standings ? (
     <OverviewContainer>
       <HeaderLabel>Month</HeaderLabel>
       <HeaderLabel>Monthly Points</HeaderLabel>
       <HeaderLabel>Total Points</HeaderLabel>
-      {Object.keys(standings).map((val, index) => {
+      {Object.keys(standings).sort(sortKeys).map((val, index) => {
         const currentUser = standings[val].find((el) => el.userId === userId);
         return (
           <SeasonOverviewSlot key={val} userPoints={currentUser} roflYear={roflYear} month={val.split('-')[0]} />

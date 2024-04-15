@@ -42,14 +42,12 @@ export default function useApi() {
           };
         })
         .catch((e) => {
-          /**
-                     * @TODO add logout on 401
-                     * Initiate refresh token process
-                     */
           const errorMessage = e.response?.data?.message ? e.response.data.message : e.response?.data ? e.response.data : 'Your request could not be completed';
-
+          /**
+          * @TODO replace logout on 401
+          * with refresh token process
+          */
           if (typeof errorMessage === 'string' && errorMessage.includes('Unauthorized')) {
-            console.log('401 code detected');
             dispatch({
               type: 'LOGOUT',
             });
@@ -65,8 +63,6 @@ export default function useApi() {
           }
         });
     } catch (err) {
-      console.log('here is error');
-      console.log(err);
       return err;
     }
   };

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-// import { checkIfRostersAreEqual } from '../../../utils';
-import useApi from '../../hooks/useApi';
+import { checkIfRostersAreEqual } from '../../../utils';
+import useApi from '../../../hooks/useApi';
 
 function useStandings() {
   const { selectedYear } = useSelector((state) => ({
@@ -19,7 +19,7 @@ function useStandings() {
   const { makeRequest, isLoading } = useApi();
 
   const [standings, setStandings] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [roflMonth, setRoflMonth] = useState(null);
   const [finalMonthForDisplay, setFinalMonthForDisplay] = useState(null);
   const [readyToRender, setReadyToRender] = useState(false);
 
@@ -29,17 +29,19 @@ function useStandings() {
       arrayOfMonths.push(Number(monthKey.split('-')[0]));
     });
     const maxMonth = Math.max(...arrayOfMonths);
-    setSelectedMonth(maxMonth);
+    setRoflMonth(maxMonth);
     setFinalMonthForDisplay(maxMonth);
   };
 
   const fetchStandings = async (year) => {
     const res = await makeRequest({
       method: 'get',
-      route: `/organizations/memberStandings/${currentOrganization.id}/${year}`,
+      route: `/organizations/memberStandings/${currentOrganization.id}/${year}}`,
     });
 
     const { body } = res;
+    console.log('here is standings')
+    console.log(body)
     getInitialMonth(body);
     setStandings(body);
     setReadyToRender(true);
@@ -66,13 +68,13 @@ function useStandings() {
   // }
 
   const goToSquad = (userId) => {
-    navigate(`/league/${userId}/${selectedYear}/${selectedMonth}`);
+    navigate(`/league/${userId}/${selectedYear}/${roflMonth}`);
   };
 
   return {
     standings,
-    selectedMonth,
-    setSelectedMonth,
+    roflMonth,
+    setRoflMonth,
     finalMonthForDisplay,
     goToSquad,
     selectedYear,

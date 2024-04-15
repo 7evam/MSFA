@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { mobileBreakPoint } from '../../constants/style';
 import TeamName from '../../components/TeamName';
-import Roster from '../../components/Roster2';
+import Roster from '../../components/Roster';
 
 const Container = styled.div`
   height: 100%;

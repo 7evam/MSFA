@@ -4,8 +4,6 @@ import { mobileBreakPoint, lightBlue } from '../../constants/style';
 
 const backgroundImg = 'https://rofl-public-assets.s3.us-east-2.amazonaws.com/26057+1.png';
 
-export 
-
 export const TeamNameContainer = styled.div`
     color: white;
     height: 90px;

@@ -9,7 +9,7 @@ import arrowUnClickable from '../../icons/arrowUnClickable';
 import arrowClickable from '../../icons/arrowClickable';
 
 const Container = styled.div`
-  width: 86%;
+  width: 84%;
   height: 65px;
   font-size: 18px;
   border-radius: 10px;
@@ -18,7 +18,6 @@ const Container = styled.div`
   padding: 0 3%;
   color: white;
   font-family: Inter;
-  
 `;
 
 const MonthText = styled.p`
@@ -31,7 +30,7 @@ const ArrowContainer = styled.span`
 `;
 
 function MonthSelector({
-  selectedMonth, setSelectedMonth, finalMonthForDisplay, firstMonthForDisplay,
+  selectedMonth, setSelectedMonth, finalMonthForDisplay, firstMonthForDisplay, onlyShownMonths
 }) {
   const { selectedYear } = useSelector((state) => ({
     ...state.sportReducer,
@@ -63,12 +62,23 @@ function MonthSelector({
     const months = {};
     for (let i = firstMonth; i <= finalMonth; i++) {
       // if onlyShownMonths array prop exists, only push months in that array. otherwise push all
-      if (onlyShownMonths ? onlyShownMonths.includes(allMonths[i]) : true) months[i] = allMonths[i];
+      if (!!onlyShownMonths ? onlyShownMonths.includes(i) : true) months[i] = allMonths[i];
     }
     return months;
   };
 
-  const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay);
+  const months = monthsForScroll(selectedYear, firstMonthForDisplay, finalMonthForDisplay, onlyShownMonths);
+
+  useEffect(() => {
+    const minMonth = Math.min(...Object.keys(months));
+    const maxMonth = Math.max(...Object.keys(months));
+    if (selectedMonth > maxMonth) {
+      setSelectedMonth(maxMonth);
+    }
+    if (selectedMonth < minMonth) {
+      setSelectedMonth(minMonth);
+    }
+  }, [selectedMonth]);
 
   return (
 

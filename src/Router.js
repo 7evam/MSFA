@@ -13,13 +13,14 @@ import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
 
 import Squad from './containers/Squad';
-import AddTeam from './containers/AddTeam';
+import Transactions from './containers/Transactions';
 // import RoflLeague from './containers/RoflLeague';
+// import Scoring from './containers/Scoring';
 import Scoring from './containers/Scoring';
 import Settings from './containers/Settings';
 import CreateNewLeague from './containers/CreateNewLeague';
 import NewSeason from './containers/NewSeason';
-import Roster from './containers/RoflLeague/Roster';
+import Roster from './containers/League/Roster';
 import Standings from './containers/Standings';
 import App from './App';
 import Draft from './containers/Draft';
@@ -62,7 +63,7 @@ function Router() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/set-league-year" element={<SetLeagueYear />} />
           <Route path="/scoring" element={<Scoring />} />
-          <Route path="/transactions" element={<AddTeam />} />
+          <Route path="/transactions" element={<Transactions />} />
           <Route path="/new-season" element={<NewSeason />} />
         </Route>
         <Route path="/" element={userToken ? <Navigate to="/squad" replace /> : <Navigate to="/login" replace />} />

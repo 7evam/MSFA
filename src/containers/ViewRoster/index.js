@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TeamName from '../../components/TeamName';
-import Roster from '../../components/Roster2';
+import Roster from '../../components/Roster';
 import IconLeft from '../../icons/iconLeft';
 import {
   Container, RosterNav, BackButton, MonthlyOrOverview, NavButton, OverviewContainer, HeaderLabel,

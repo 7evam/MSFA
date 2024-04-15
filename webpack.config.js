@@ -114,7 +114,7 @@ module.exports = (webpackServe, options) => {
         {
           test: /\.(png|woff|woff2|eot|ttf|svg)$/,
           use: {
-            loader: 'url-loader'
+            loader: 'url-loader',
           },
         },
       ],
@@ -136,7 +136,7 @@ module.exports = (webpackServe, options) => {
         directory: path.join(__dirname, 'dist'),
       },
       //   contentBase: path.join(__dirname, 'dist'),
-      port: 3000,
+      port: 3001,
       //   inline: true,
       hot: true,
       historyApiFallback: {
