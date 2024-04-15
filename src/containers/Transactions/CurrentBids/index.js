@@ -1,36 +1,10 @@
 import React, { useState, useEffect, useInsertionEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import '@fontsource/open-sans';
 import { toast } from 'react-toastify';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useApi from '../../../hooks/useApi';
 import { HeaderLabel, ScoringContainer, Container } from "./components";
-import RosterComponent from '../../../components/Roster';
-import Loading from '../../../components/Loading';
-import useHydration from '../../../hooks/useHydration';
-import {
-  Section,
-  Select,
-  Label,
-  Headline,
-  League,
-  LeagueSelector,
-  slotData,
-  SlotRow,
-  Th,
-  TitleRow,
-  Td,
-  Details,
-  DetailsHeader,
-  CashContainer,
-} from '../components';
-import useAddTeam from '../useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../../utils';
-import MonthTicker from '../../../components/MonthTicker';
-import YearSelector from '../../../components/YearSelector';
 import BidRow from './BidRow';
-import { mobileBreakPoint } from '../../../constants/style';
 import MonthSelector from '../../../components/MonthSelector';
 
 function CurrentBids({

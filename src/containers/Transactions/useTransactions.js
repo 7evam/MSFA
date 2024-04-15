@@ -10,7 +10,7 @@ import useHydration from '../../hooks/useHydration';
 import { Container, League, LeagueSelector } from './components';
 import { convertRealToRofl, getTeamName, convertDateObjToReadable } from '../../utils';
 
-function useAddTeam() {
+function useTransactions() {
   const dispatch = useDispatch();
 
   const { currentOrganization } = useSelector((state) => ({
@@ -566,4 +566,4 @@ function useAddTeam() {
   };
 }
 
-export default useAddTeam;
+export default useTransactions;

@@ -13,7 +13,7 @@ import About from './containers/About';
 import ResetPassword from './containers/ResetPassword';
 
 import Squad from './containers/Squad';
-import AddTeam from './containers/AddTeam';
+import Transactions from './containers/Transactions';
 // import RoflLeague from './containers/RoflLeague';
 // import Scoring from './containers/Scoring';
 import Scoring from './containers/Scoring';
@@ -63,7 +63,7 @@ function Router() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/set-league-year" element={<SetLeagueYear />} />
           <Route path="/scoring" element={<Scoring />} />
-          <Route path="/transactions" element={<AddTeam />} />
+          <Route path="/transactions" element={<Transactions />} />
           <Route path="/new-season" element={<NewSeason />} />
         </Route>
         <Route path="/" element={userToken ? <Navigate to="/squad" replace /> : <Navigate to="/login" replace />} />

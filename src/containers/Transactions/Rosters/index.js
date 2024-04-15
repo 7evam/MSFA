@@ -5,9 +5,6 @@ import '@fontsource/open-sans';
 import {
   Section, Select, Label, Headline, Container, League, LeagueSelector, slotData, SlotRow, Th, TitleRow, Td, Table, CashContainer,
 } from '../components';
-import useAddTeam from '../useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../../utils';
-import { mobileBreakPoint } from '../../../constants/style';
 import { ScoringContainer, ActionButton, Cell, HeaderLabel } from './components';
 
 function CurrentRosters({

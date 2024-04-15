@@ -11,7 +11,6 @@ import {
   Container,
   League,
 } from '../components';
-import useAddTeam from '../useAddTeam';
 import { convertRealToRofl, convertDateObjToReadable } from '../../../utils';
 import { lightBlue, mobileBreakPoint } from '../../../constants/style';
 import { HeaderLabel, Cell, ActionButton, TopText, ScoringContainer, LeagueSelector } from "./components";
@@ -44,7 +43,7 @@ function UnownedTeams({
 
   const calculateDeadline = (year, league) => {
     // PROBLEM there is no deadline for month 14 (nfl and nba playoff month) so this errors
-    // create archive view. isArchived should be calculated in useAddTeam hook
+    // create archive view. isArchived should be calculated in useTransactions hook
 
     // get rofl month of active year or if leaguee isnt active yet ccalculate rofl year
     const roflMonth = activeYears[year][league]?.roflMonth ? activeYears[year][league]?.roflMonth : currentDate.realMonth - 3;

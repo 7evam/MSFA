@@ -5,7 +5,7 @@ import Loading from '../../components/Loading';
 import {
   Tab, TabSelector, Container,
 } from './components';
-import useAddTeam from './useAddTeam';
+import useTransactions from './useTransactions';
 import UnownedTeams from './UnownedTeams';
 import CurrentRosters from './Rosters';
 import CurrentBids from './CurrentBids';
@@ -13,7 +13,7 @@ import Trades from './Trades';
 import ArchivedMessage from './ArchivedMessage';
 import PastTransactions from './PastTransactions';
 
-function AddTeam() {
+function Transactions() {
   const {
     isArchived,
     firstActiveMonthForClaim,
@@ -29,7 +29,7 @@ function AddTeam() {
     selectedMember, handleChange, currentRoster,
     sportTeams, league, setLeague,
     unownedTeams, currentOrganization, waiverExceptions, transactions,
-  } = useAddTeam();
+  } = useTransactions();
 
   const getContent = (tab) => {
     switch (tab) {
@@ -85,4 +85,4 @@ function AddTeam() {
   );
 }
 
-export default AddTeam;
+export default Transactions;

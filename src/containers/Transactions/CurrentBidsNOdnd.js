@@ -10,24 +10,9 @@ import Loading from '../../components/Loading';
 import useHydration from '../../hooks/useHydration';
 import MonthSelector from '../../components/MonthSelector';
 import {
-  Section,
-  Select,
-  Label,
-  Headline,
-  ActionButton,
-  Container,
-  League,
-  LeagueSelector,
-  slotData,
-  SlotRow,
   Th,
   TitleRow,
-  Td,
-  CashContainer,
 } from './components';
-import useAddTeam from './useAddTeam';
-import { convertRealToRofl, convertDateObjToReadable } from '../../utils';
-import MonthTicker from '../../components/MonthTicker';
 import YearSelector from '../../components/YearSelector';
 import BidRow from './CurrentBids/BidRow';
 
