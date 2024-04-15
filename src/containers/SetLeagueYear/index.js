@@ -19,7 +19,7 @@ const ActionButton = styled.button`
     outline: none;
     cursor: ${(props) => (!props.disabled
     && 'pointer'
-  )}
+  )};
     font-weight: 500;
     margin-left: 8px;
     border-radius: 4px;
