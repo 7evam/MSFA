@@ -28,6 +28,11 @@ function Landing() {
           Want to learn more about how it all works?
           {' '}
           <Link content={"Click here!"} onClick={goToAbout}>Click here!</Link>
+          <br />
+          Want to see a video demo of the full application?
+          {' '}
+          <Link content={"Click here!"} target="_blank" href="https://www.youtube.com/watch?v=Cjdyhlz4pYM">Click here!</Link>
+
         </SubHeadline>
       </LandingContainer>
       <Auth />
