@@ -34,6 +34,12 @@ function sportReducer(state = INITIAL_STATE, action) {
             3: 7,
             4: 8,
           },
+          2024: {
+            1: 1,
+            2: 6,
+            3: 7,
+            4: 8,
+          },
         },
         playoffMonths: {
           2022: {
@@ -47,6 +53,12 @@ function sportReducer(state = INITIAL_STATE, action) {
             2: 10,
             3: 13,
             4: 13,
+          },
+          2024: {
+            1: 7,
+            2: 10,
+            3: 14,
+            4: 14,
           },
         },
         leagueTable: {

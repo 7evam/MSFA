@@ -275,7 +275,6 @@ function useTransactions() {
   };
 
   const fetchAllTransactions = async (selectedRoflYear, abortController, sportTeams = sportTeams, orgMembers = orgMembers) => {
-    console.log('in fetch transactions')
     try {
       const res = await makeRequest({
         method: 'get',
