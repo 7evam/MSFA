@@ -71,13 +71,15 @@ function UnownedTeams({
       <ActionButton onClick={() => handleAdd(team)}>Add</ActionButton>
     );
 
-    return claim
+    // return claim
 
     if (waiverExceptions.includes(Number(team))) return claim;
     if (!activeYears[selectedYear][leagueId]) return claim;
     const currentRoflMonth = activeYears[selectedYear][leagueId].roflMonth;
+    const calculatedDeadline = new Date(calculateDeadline(selectedYear, league))
+    calculatedDeadline.setHours(calculatedDeadline.getHours() + 4);
     if (
-      currentDate.date < calculateDeadline(selectedYear, league)
+      new Date(currentDate.date) < calculatedDeadline
     ) {
       return claim;
     }
